@@ -1,5 +1,11 @@
 package com.example.storein;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,6 +26,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseQuery;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
@@ -38,8 +50,25 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	private static final String ARG_PARAM2 = "param2";
 
 	protected final static String TAG = CheckInFragment.class.getSimpleName();
+	
+	//Place Constant
+	private String selectedObjectId;
+	
+	// Map Constant
 	private GoogleMap mMap;
 	private LocationClient mLocationClient;
+	private final Map<String, Marker> mapMarkers = new HashMap<String, Marker>();
+	private float radius;
+	private float lastRadius;
+
+	// Parse Constants
+
+	private static final float METERS_PER_FEET = 0.3048f;
+	private static final int METERS_PER_KILOMETER = 1000;
+	private static final double OFFSET_CALCULATION_INIT_DIFF = 1.0;
+	private static final float OFFSET_CALCULATION_ACCURACY = 0.01f;
+	private static final int MAX_PLACE_SEARCH_RESULTS = 20;
+	private static final int MAX_PlACE_SEARCH_DISTANCE = 100;
 
 	// TODO: Rename and change types of parameters
 	private String mParam1;
@@ -74,6 +103,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		setUpMapIfNeeded();
 		setUpLocationClientIfNeeded();
 		mLocationClient.connect();
+
 	}
 
 	@Override
@@ -88,8 +118,71 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		View view = inflater.inflate(R.layout.fragment_check_in, container, false);
+		View view = inflater.inflate(R.layout.fragment_check_in, container,
+				false);
 		return view;
+	}
+
+	/*
+	 * Function Added
+	 */
+
+	private void doMapQuery() {
+		Location myLoc = mLocationClient.getLastLocation();
+		final ParseGeoPoint myPoint = new ParseGeoPoint(myLoc.getLatitude(),
+				myLoc.getLongitude());
+		ParseQuery<ParsePlace> mapQuery = ParsePlace.getQuery();
+
+		mapQuery.whereWithinKilometers("location", myPoint,
+				MAX_PlACE_SEARCH_DISTANCE);
+
+		mapQuery.include("name");
+		mapQuery.orderByDescending("createdAt");
+		mapQuery.setLimit(MAX_PLACE_SEARCH_RESULTS);
+		mapQuery.findInBackground(new FindCallback<ParsePlace>() {
+
+			@Override
+			public void done(List<ParsePlace> objects, ParseException e) {
+				// Initial Hash tag to keep the places
+				Set<String> toKeep = new HashSet<String>();
+				for (ParsePlace place : objects) {
+					toKeep.add(place.getObjectId());
+					Marker oldMarker = mapMarkers.get(place.getObjectId());
+					MarkerOptions markerOpts = new MarkerOptions()
+							.position(new LatLng(place.getLocation()
+									.getLatitude(), place.getLocation()
+									.getLongitude()));
+					// Setting up Boundaries
+					if (place.getLocation().distanceInKilometersTo(myPoint) > radius
+							* METERS_PER_FEET / METERS_PER_KILOMETER) {
+						// Set up an out-of-range marker
+					} else {
+						// Set up an in-range marker
+					}
+					// Add Marker to Maps
+					Marker marker = ((SupportMapFragment) getFragmentManager()
+							.findFragmentById(R.id.map)).getMap().addMarker(
+							markerOpts);
+					mapMarkers.put(place.getObjectId(), marker);
+					
+				    if (place.getObjectId().equals(selectedObjectId)) {
+				        marker.showInfoWindow();
+				        selectedObjectId = null;
+				      }
+				}
+			}
+		});
+	}
+
+	private void cleanUpMarkers(Set<String> markersToKeep) {
+		for (String objId : new HashSet<String>(mapMarkers.keySet())) {
+			if (!markersToKeep.contains(objId)) {
+				Marker marker = mapMarkers.get(objId);
+				marker.remove();
+				mapMarkers.get(objId).remove();
+				mapMarkers.remove(objId);
+			}
+		}
 	}
 
 	/*
