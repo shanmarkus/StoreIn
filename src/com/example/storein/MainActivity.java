@@ -1,29 +1,29 @@
 package com.example.storein;
 
 import android.app.Activity;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.content.Context;
-import android.os.Build;
-import android.os.Bundle;
-import android.view.Gravity;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.parse.ParseAnalytics;
+import com.parse.ParseUser;
 
 public class MainActivity extends ActionBarActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {
 
 	private NavigationDrawerFragment mNavigationDrawerFragment;
 	public static String TAG = MainActivity.class.getSimpleName();
-	
 
 	private CharSequence mTitle;
 
@@ -31,6 +31,15 @@ public class MainActivity extends ActionBarActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		ParseAnalytics.trackAppOpened(getIntent());
+		ParseUser currentUser = ParseUser.getCurrentUser();
+
+		if (currentUser == null) {
+			navigateToLogin();
+		} else {
+			Log.i(TAG, currentUser.getUsername());
+		}
 
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.navigation_drawer);
@@ -84,6 +93,21 @@ public class MainActivity extends ActionBarActivity implements
 		}
 		return super.onCreateOptionsMenu(menu);
 	}
+
+	/*
+	 * Added function 
+	 * */
+	
+	private void navigateToLogin() {
+		Intent intent = new Intent(this, LoginActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		startActivity(intent);
+	}
+	
+	/*
+	 * Generated function from Fragment Activity
+	 * */
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

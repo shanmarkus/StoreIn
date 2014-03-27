@@ -7,17 +7,20 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="19" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name="StoreInApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.example.storein.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,15 +30,14 @@
         <activity
             android:name="com.example.storein.LoginActivity"
             android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+            android:windowSoftInputMode="adjustResize|stateVisible" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.example.storein.SignUpActivity"
             android:label="@string/title_activity_sign_up"
-            android:parentActivityName="com.example.storein.LoginActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.storein.LoginActivity" />
+            android:parentActivityName="com.example.storein.LoginActivity" 
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

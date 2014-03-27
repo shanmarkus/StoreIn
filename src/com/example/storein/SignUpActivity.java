@@ -35,8 +35,6 @@ public class SignUpActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_sign_up);
-		Parse.initialize(this, "mgDWPieWTeiy4SRWiefaJ5QFLTlj2XGJwVAVuiJ3",
-				"g5j92J8jFzZXupil1EWT2Y0Sbo0ExCKvpdI1bRXV");
 
 		mUsername = (EditText) findViewById(R.id.usernameField);
 		mPassword = (EditText) findViewById(R.id.passwordField);
@@ -103,47 +101,5 @@ public class SignUpActivity extends ActionBarActivity {
 			}
 		});
 
-		if (savedInstanceState == null) {
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
-		}
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.sign_up, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_sign_up,
-					container, false);
-			return rootView;
-		}
-	}
-
 }
