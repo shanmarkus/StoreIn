@@ -336,8 +336,7 @@ int layout fragment_check_in 0x7f03001b
 int layout fragment_home 0x7f03001c
 int layout fragment_main 0x7f03001d
 int layout fragment_navigation_drawer 0x7f03001e
-int layout fragment_sign_up 0x7f03001f
-int layout support_simple_spinner_dropdown_item 0x7f030020
+int layout support_simple_spinner_dropdown_item 0x7f03001f
 int menu global 0x7f0c0000
 int menu home 0x7f0c0001
 int menu login 0x7f0c0002
