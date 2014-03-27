@@ -65,6 +65,9 @@ public class MainActivity extends ActionBarActivity implements
 		case 1:
 			fragment = new BrowseFragment();
 			break;
+		case 2:
+			fragment = new CheckInFragment();
+			break;
 		}
 //		fragmentManager
 //				.beginTransaction()
