@@ -21,16 +21,10 @@ import android.widget.TextView;
 public class MainActivity extends ActionBarActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {
 
-	/**
-	 * Fragment managing the behaviors, interactions and presentation of the
-	 * navigation drawer.
-	 */
 	private NavigationDrawerFragment mNavigationDrawerFragment;
+	public static String TAG = MainActivity.class.getSimpleName();
+	
 
-	/**
-	 * Used to store the last screen title. For use in
-	 * {@link #restoreActionBar()}.
-	 */
 	private CharSequence mTitle;
 
 	@Override

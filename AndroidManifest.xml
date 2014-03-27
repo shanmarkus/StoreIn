@@ -22,6 +22,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.example.storein.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
+        <activity
+            android:name="com.example.storein.SignUpActivity"
+            android:label="@string/title_activity_sign_up"
+            android:parentActivityName="com.example.storein.LoginActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.storein.LoginActivity" />
+        </activity>
     </application>
 
 </manifest>
