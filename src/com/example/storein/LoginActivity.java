@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -29,7 +30,7 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_login);
 
 		// Set up the sign up button
@@ -68,7 +69,8 @@ public class LoginActivity extends Activity {
 					AlertDialog dialog = builder.create();
 					dialog.show();
 				} else {
-					//TODO Login successfull
+					//Login
+					setProgressBarIndeterminateVisibility(true);
 				}
 
 			}
