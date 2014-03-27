@@ -6,9 +6,39 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="This is Check In Fragment" />
+        android:baselineAligned="false"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1" >
+
+            <fragment
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                class="com.google.android.gms.maps.SupportMapFragment" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1" >
+
+            <ListView
+                android:id="@+id/listView1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true" >
+            </ListView>
+
+        </RelativeLayout>
+    </LinearLayout>
 
 </FrameLayout>
