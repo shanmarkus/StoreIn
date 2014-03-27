@@ -23,10 +23,10 @@ public class LoginActivity extends Activity {
 	private String password;
 
 	// UI references.
-	private EditText mEmailView;
-	private EditText mPasswordView;
+	private EditText mUserNameField;
+	private EditText mPasswordField;
 	private TextView mSignUpText;
-	private Button mSignInButton;
+	private Button mLoginButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +47,16 @@ public class LoginActivity extends Activity {
 		});
 
 		// Set up the login form.
-		mEmailView = (EditText) findViewById(R.id.emailField);
-		mPasswordView = (EditText) findViewById(R.id.passwordField);
-		mSignInButton = (Button) findViewById(R.id.loginButton);
+		mUserNameField = (EditText) findViewById(R.id.usernameField);
+		mPasswordField = (EditText) findViewById(R.id.passwordField);
+		mLoginButton = (Button) findViewById(R.id.loginButton);
 
-		mSignInButton.setOnClickListener(new OnClickListener() {
+		mLoginButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				username = mEmailView.getText().toString();
-				password = mPasswordView.getText().toString();
+				username = mUserNameField.getText().toString();
+				password = mPasswordField.getText().toString();
 
 				username = username.trim();
 				password = password.trim();

@@ -21,6 +21,7 @@
     <string name="signup_error_message">Make sure you enter a username, email and password</string>
     <string name="signup_error_title">Sign Up Error</string>
     <string name="login_button_label">Login</string>
-    
+    <string name="menu_logout_label">Logout</string>
+    <string name="action_forgot_password">Forgot password</string>
 
 </resources>
