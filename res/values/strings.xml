@@ -2,9 +2,9 @@
 <resources>
 
     <string name="app_name">StoreIn</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string name="title_section1">Home</string>
+    <string name="title_section2">Browse</string>
+    <string name="title_section3">Check In!</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
@@ -23,5 +23,7 @@
     <string name="login_button_label">Login</string>
     <string name="menu_logout_label">Logout</string>
     <string name="action_forgot_password">Forgot password</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
