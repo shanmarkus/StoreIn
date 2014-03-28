@@ -47,8 +47,7 @@ public class SignUpActivity extends ActionBarActivity {
 				password = password.trim();
 				email = email.trim();
 
-				// TODO Updated to isEmpty and API 8 for Froyo
-				if (username == "" || password == "" || email == "") {
+				if (username.isEmpty() || password.isEmpty() || email.isEmpty()) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(
 							SignUpActivity.this);
 					builder.setMessage(R.string.signup_error_message)

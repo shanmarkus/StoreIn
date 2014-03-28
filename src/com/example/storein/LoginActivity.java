@@ -61,8 +61,7 @@ public class LoginActivity extends Activity {
 				username = username.trim();
 				password = password.trim();
 
-				// TODO change to isEmpty and updated to API 8 for froyo
-				if (username == "" || password == "") {
+				if (username.isEmpty() || password.isEmpty()) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(
 							LoginActivity.this);
 					builder.setMessage(R.string.login_error_message);

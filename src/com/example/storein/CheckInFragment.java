@@ -13,6 +13,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -192,6 +193,29 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 					ListView mListPlace = (ListView) getActivity()
 							.findViewById(R.id.listPlace);
 					mListPlace.setAdapter(adapter);
+					
+					/*
+					 * Set Listener to the ListView
+					 */
+					mListPlace.setOnItemClickListener(new OnItemClickListener() {
+						@Override
+						public void onItemClick(AdapterView<?> parent,
+								View view, int position, long id) {
+//							Toast.makeText(getActivity(), "Location Clicked", Toast.LENGTH_SHORT).show();
+							// Create new fragment and transaction
+							Fragment newFragment = new HomeFragment();
+							FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+							// Replace whatever is in the fragment_container view with this fragment,
+							// and add the transaction to the back stack
+							transaction.replace(R.id.fragment_container, newFragment);
+							transaction.addToBackStack(null);
+
+							// Commit the transaction
+							transaction.commit();
+							
+						}
+					});
 
 				} else {
 					// failed
@@ -209,12 +233,12 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		});
 
 	}
+	
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	private void cleanUpMarkers(Set<String> markersToKeep) {
