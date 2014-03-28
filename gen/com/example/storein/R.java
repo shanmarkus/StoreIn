@@ -1198,13 +1198,13 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f060026;
         public static final int action_bar_title=0x7f060025;
         public static final int action_context_bar=0x7f060020;
-        public static final int action_example=0x7f06004e;
-        public static final int action_forgot_password=0x7f06004f;
-        public static final int action_logout=0x7f060050;
+        public static final int action_example=0x7f06004d;
+        public static final int action_forgot_password=0x7f06004e;
+        public static final int action_logout=0x7f06004f;
         public static final int action_menu_divider=0x7f060019;
         public static final int action_menu_presenter=0x7f06001a;
         public static final int action_mode_close_button=0x7f060027;
-        public static final int action_settings=0x7f06004d;
+        public static final int action_settings=0x7f06004c;
         public static final int activity_chooser_view_content=0x7f060028;
         public static final int always=0x7f06000f;
         public static final int beginning=0x7f060014;
@@ -1221,7 +1221,6 @@ containing a value of this type.
         public static final int end=0x7f060016;
         public static final int expand_activities_button=0x7f060029;
         public static final int expanded_menu=0x7f06002f;
-        public static final int fragment1=0x7f060048;
         public static final int home=0x7f060017;
         public static final int homeAsUp=0x7f060009;
         public static final int hybrid=0x7f060004;
@@ -1229,11 +1228,11 @@ containing a value of this type.
         public static final int ifRoom=0x7f06000e;
         public static final int image=0x7f06002a;
         public static final int listMode=0x7f060005;
-        public static final int listPlace=0x7f06004b;
-        public static final int listView1=0x7f060049;
+        public static final int listPlace=0x7f06004a;
+        public static final int listView1=0x7f060048;
         public static final int list_item=0x7f06002c;
         public static final int loginButton=0x7f060042;
-        public static final int map=0x7f06004a;
+        public static final int map=0x7f060049;
         public static final int middle=0x7f060015;
         public static final int navigation_drawer=0x7f060045;
         public static final int never=0x7f06000d;
@@ -1254,7 +1253,7 @@ containing a value of this type.
         public static final int search_plate=0x7f060039;
         public static final int search_src_text=0x7f06003a;
         public static final int search_voice_btn=0x7f06003e;
-        public static final int section_label=0x7f06004c;
+        public static final int section_label=0x7f06004b;
         public static final int shortcut=0x7f060031;
         public static final int showCustom=0x7f06000b;
         public static final int showHome=0x7f060008;
@@ -1326,14 +1325,13 @@ containing a value of this type.
         public static final int activity_login=0x7f030018;
         public static final int activity_main=0x7f030019;
         public static final int activity_sign_up=0x7f03001a;
-        public static final int check_in_test_fragment=0x7f03001b;
-        public static final int fragment_browse=0x7f03001c;
-        public static final int fragment_check_in=0x7f03001d;
-        public static final int fragment_home=0x7f03001e;
-        public static final int fragment_location_detail=0x7f03001f;
-        public static final int fragment_main=0x7f030020;
-        public static final int fragment_navigation_drawer=0x7f030021;
-        public static final int support_simple_spinner_dropdown_item=0x7f030022;
+        public static final int fragment_browse=0x7f03001b;
+        public static final int fragment_check_in=0x7f03001c;
+        public static final int fragment_home=0x7f03001d;
+        public static final int fragment_location_detail=0x7f03001e;
+        public static final int fragment_main=0x7f03001f;
+        public static final int fragment_navigation_drawer=0x7f030020;
+        public static final int support_simple_spinner_dropdown_item=0x7f030021;
     }
     public static final class menu {
         public static final int global=0x7f0d0000;
