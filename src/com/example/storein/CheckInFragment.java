@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -85,7 +86,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	private static final int MAX_PlACE_SEARCH_DISTANCE = 100;
 
 	private static final LocationRequest REQUEST = LocationRequest.create()
-			.setInterval(5000) // 5 seconds
 			.setFastestInterval(16) // 16ms = 60fps
 			.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
@@ -108,15 +108,9 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		outState.putString("WORKAROUND_FOR_BUG_19917_KEY",
-				"WORKAROUND_FOR_BUG_19917_VALUE");
-		super.onSaveInstanceState(outState);
-	}
-
-	@Override
 	public void onResume() {
 		super.onResume();
+		getActivity().setProgressBarIndeterminateVisibility(true);
 		if (mMap == null) {
 			mMap = fragment.getMap();
 			mMap.setMyLocationEnabled(true);
@@ -170,7 +164,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 
 			@Override
 			public void done(List<ParsePlace> places, ParseException e) {
-
+				getActivity().setProgressBarIndeterminateVisibility(false);
 				if (e == null) {
 					// success
 					ArrayList<HashMap<String, String>> placesInfo = new ArrayList<HashMap<String, String>>();
