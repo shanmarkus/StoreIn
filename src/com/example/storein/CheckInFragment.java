@@ -1,6 +1,5 @@
 package com.example.storein;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -12,7 +11,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,10 +79,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	private static final int MAX_PLACE_SEARCH_RESULTS = 20;
 	private static final int MAX_PlACE_SEARCH_DISTANCE = 100;
 
-	// TODO: Rename and change types of parameters
-	private String mParam1;
-	private String mParam2;
-
 	private static final LocationRequest REQUEST = LocationRequest.create()
 			.setInterval(5000) // 5 seconds
 			.setFastestInterval(16) // 16ms = 60fps
@@ -120,8 +114,9 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		super.onResume();
 		if (mMap == null) {
 			mMap = fragment.getMap();
+			mMap.setMyLocationEnabled(true);
+			mMap.setOnMyLocationButtonClickListener(this);
 		}
-		setUpMapIfNeeded();
 		setUpLocationClientIfNeeded();
 		mLocationClient.connect();
 
@@ -141,9 +136,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_check_in, container,
 				false);
-		// if(mMap == null){
-		// mMap = ((SupportMapFragment) getFragmentManager().findFragmentById(
-		// R.id.map)).getMap();}
 		return view;
 	}
 
@@ -158,21 +150,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		}
 	}
 
-	/*
-	 * Destroy Map so it does not duplicate it self
-	 * 
-	 * @see android.support.v4.app.Fragment#onDestroyView()
-	 */
-
-	// public void onDestroyView() {
-	// super.onDestroyView();
-	// FragmentManager fm = getChildFragmentManager();
-	// fragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
-	// FragmentTransaction ft = getActivity().getSupportFragmentManager()
-	// .beginTransaction();
-	// ft.remove(fragment);
-	// ft.commitAllowingStateLoss();
-	// }
 
 	/*
 	 * Function Added
@@ -240,20 +217,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	/*
 	 * Map Functionality
 	 */
-
-	private void setUpMapIfNeeded() {
-		// Do a null check to confirm that we have not already instantiated the
-		// map.
-		if (mMap == null) {
-			// Try to obtain the map from the SupportMapFragment.
-
-			// Check if we were successful in obtaining the map.
-			if (mMap != null) {
-				mMap.setMyLocationEnabled(true);
-				mMap.setOnMyLocationButtonClickListener(this);
-			}
-		}
-	}
 
 	private void setUpLocationClientIfNeeded() {
 		if (mLocationClient == null) {
@@ -367,7 +330,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		// Get the bounds to zoom to
 		LatLngBounds bounds = calculateBoundsWithCenter(myLatLng);
 		// Zoom to the given bounds
-		mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0));
+		mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 5));
 	}
 
 	/*
