@@ -25,6 +25,8 @@
     <string name="action_forgot_password">Forgot password</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="post_out_range">Out of Range</string>
+    <string name="error_title">Oops Sorry !</string>
     <string-array name="category_label">
         <item >Flash Deals</item>
         <item >Apparel</item>

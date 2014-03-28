@@ -1,15 +1,17 @@
 package com.example.storein;
 
+import com.parse.ParseClassName;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+@ParseClassName("Place")
 public class ParsePlace extends ParseObject {
-	public String getText() {
+	public String getName() {
 		return getString("name");
 	}
 
-	public void setText(String value) {
+	public void setName(String value) {
 		put("name", value);
 	}
 

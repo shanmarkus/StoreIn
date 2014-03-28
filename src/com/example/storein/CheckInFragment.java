@@ -6,14 +6,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -31,10 +35,10 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 /**
@@ -116,7 +120,9 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 			mMap = fragment.getMap();
 			mMap.setMyLocationEnabled(true);
 			mMap.setOnMyLocationButtonClickListener(this);
+			doMapQuery();
 		}
+		doMapQuery();
 		setUpLocationClientIfNeeded();
 		mLocationClient.connect();
 
@@ -150,55 +156,47 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		}
 	}
 
-
 	/*
 	 * Function Added
 	 */
 
 	private void doMapQuery() {
-		Location myLoc = mLocationClient.getLastLocation();
-		final ParseGeoPoint myPoint = new ParseGeoPoint(myLoc.getLatitude(),
-				myLoc.getLongitude());
-		ParseQuery<ParsePlace> mapQuery = ParsePlace.getQuery();
-
-		mapQuery.whereWithinKilometers("location", myPoint,
-				MAX_PlACE_SEARCH_DISTANCE);
-
-		mapQuery.include("name");
-		mapQuery.orderByDescending("createdAt");
-		mapQuery.setLimit(MAX_PLACE_SEARCH_RESULTS);
-		mapQuery.findInBackground(new FindCallback<ParsePlace>() {
+		ParseObject.registerSubclass(ParsePlace.class);
+		ParseQuery<ParsePlace> query = ParsePlace.getQuery();
+		query.orderByAscending(ParseConstants.NAME);
+		query.setLimit(MAX_PLACE_SEARCH_RESULTS);
+		query.findInBackground(new FindCallback<ParsePlace>() {
 
 			@Override
-			public void done(List<ParsePlace> objects, ParseException e) {
-				// Initial Hash tag to keep the places
-				Set<String> toKeep = new HashSet<String>();
-				for (ParsePlace place : objects) {
-					toKeep.add(place.getObjectId());
-					Marker oldMarker = mapMarkers.get(place.getObjectId());
-					MarkerOptions markerOpts = new MarkerOptions()
-							.position(new LatLng(place.getLocation()
-									.getLatitude(), place.getLocation()
-									.getLongitude()));
-					// Setting up Boundaries
-					if (place.getLocation().distanceInKilometersTo(myPoint) > radius
-							* METERS_PER_FEET / METERS_PER_KILOMETER) {
-						// Set up an out-of-range marker
-					} else {
-						// Set up an in-range marker
-					}
-					// Add Marker to Maps
-					Marker marker = ((SupportMapFragment) getFragmentManager()
-							.findFragmentById(R.id.map)).getMap().addMarker(
-							markerOpts);
-					mapMarkers.put(place.getObjectId(), marker);
+			public void done(List<ParsePlace> places, ParseException e) {
 
-					if (place.getObjectId().equals(selectedObjectId)) {
-						marker.showInfoWindow();
-						selectedObjectId = null;
+				if (e == null) {
+					// success
+					String[] name = new String[places.size()];
+					int i = 0;
+					for (ParsePlace place : places) {
+						name[i] = place.getName();
+						i++;
 					}
+					ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+							getActivity(),
+							android.R.layout.simple_list_item_checked, name);
+					
+					ListView mListPlace= (ListView) getActivity().findViewById(R.id.listPlace);
+					mListPlace.setAdapter(adapter);
+
+				} else {
+					// failed
+					Log.e(TAG, e.getMessage());
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							getActivity());
+					builder.setMessage(e.getMessage())
+							.setTitle(R.string.error_title)
+							.setPositiveButton(android.R.string.ok, null);
+					AlertDialog dialog = builder.create();
+					dialog.show();
 				}
-				cleanUpMarkers(toKeep);
+
 			}
 		});
 	}
