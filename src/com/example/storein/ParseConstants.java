@@ -6,6 +6,7 @@ public final class ParseConstants {
 	// Field names
 	public static final String KEY_USERNAME = "username";
 	public static final String KEY_LOCATION = "location";
-	public static final String NAME = "name";
+	public static final String KEY_NAME = "name";
+	public static final String KEY_ADDRESS = "address";
 
 }

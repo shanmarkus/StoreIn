@@ -1,5 +1,6 @@
 package com.example.storein;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -16,8 +17,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -163,7 +164,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	private void doMapQuery() {
 		ParseObject.registerSubclass(ParsePlace.class);
 		ParseQuery<ParsePlace> query = ParsePlace.getQuery();
-		query.orderByAscending(ParseConstants.NAME);
+		query.orderByAscending(ParseConstants.KEY_NAME);
 		query.setLimit(MAX_PLACE_SEARCH_RESULTS);
 		query.findInBackground(new FindCallback<ParsePlace>() {
 
@@ -172,17 +173,30 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 
 				if (e == null) {
 					// success
-					String[] name = new String[places.size()];
+					ArrayList<HashMap<String, String>> placesInfo = new ArrayList<HashMap<String, String>>();
 					int i = 0;
 					for (ParsePlace place : places) {
-						name[i] = place.getName();
+						String name = place.getName();
+						String address = place.getAddress();
+
+						// add to the hash map
+						HashMap<String, String> placeInfo = new HashMap<String, String>();
+						placeInfo.put(ParseConstants.KEY_NAME, name);
+						placeInfo.put(ParseConstants.KEY_ADDRESS, address);
+						placesInfo.add(placeInfo);
 						i++;
 					}
-					ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-							getActivity(),
-							android.R.layout.simple_list_item_checked, name);
+
+					String[] keys = { ParseConstants.KEY_NAME,
+							ParseConstants.KEY_ADDRESS };
+					int[] ids = { android.R.id.text1, android.R.id.text2 };
 					
-					ListView mListPlace= (ListView) getActivity().findViewById(R.id.listPlace);
+					SimpleAdapter adapter = new SimpleAdapter(getActivity(), placesInfo,
+							android.R.layout.simple_list_item_2, 
+							keys, ids);
+
+					ListView mListPlace = (ListView) getActivity()
+							.findViewById(R.id.listPlace);
 					mListPlace.setAdapter(adapter);
 
 				} else {

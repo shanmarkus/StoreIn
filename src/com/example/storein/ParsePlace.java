@@ -10,6 +10,14 @@ public class ParsePlace extends ParseObject {
 	public String getName() {
 		return getString("name");
 	}
+	
+	public String getAddress(){
+		return getString("address");
+	}
+	
+	public void setAddress(String value){
+		put("address", value);
+	}
 
 	public void setName(String value) {
 		put("name", value);
