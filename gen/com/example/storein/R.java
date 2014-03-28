@@ -1228,10 +1228,10 @@ containing a value of this type.
         public static final int ifRoom=0x7f06000e;
         public static final int image=0x7f06002a;
         public static final int listMode=0x7f060005;
-        public static final int listView1=0x7f060049;
+        public static final int listView1=0x7f060048;
         public static final int list_item=0x7f06002c;
         public static final int loginButton=0x7f060041;
-        public static final int map=0x7f060048;
+        public static final int map=0x7f060049;
         public static final int middle=0x7f060015;
         public static final int navigation_drawer=0x7f060045;
         public static final int never=0x7f06000d;

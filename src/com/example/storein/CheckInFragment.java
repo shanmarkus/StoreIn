@@ -9,6 +9,8 @@ import java.util.Set;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +62,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	private final Map<String, Marker> mapMarkers = new HashMap<String, Marker>();
 	private float radius;
 	private float lastRadius;
+	private SupportMapFragment fragment;
 
 	// Parse Constants
 
@@ -122,6 +125,29 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 				false);
 		return view;
 	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+	    super.onActivityCreated(savedInstanceState);
+	    FragmentManager fm = getChildFragmentManager();
+	    fragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
+	    if (fragment == null) {
+	        fragment = SupportMapFragment.newInstance();
+	        fm.beginTransaction().replace(R.id.map, fragment).commit();
+	    }
+	}
+	/*
+	 * Destroy Map so it does not duplicate it self
+	 * @see android.support.v4.app.Fragment#onDestroyView()
+	 */
+	
+	public void onDestroyView() {
+		   super.onDestroyView(); 
+		   Fragment fragment = (getFragmentManager().findFragmentById(R.id.map));   
+		   FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+		   ft.remove(fragment);
+		   ft.commit();
+		}
 
 	/*
 	 * Function Added
@@ -170,6 +196,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 				        selectedObjectId = null;
 				      }
 				}
+				cleanUpMarkers(toKeep); 
 			}
 		});
 	}
@@ -194,8 +221,10 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		// map.
 		if (mMap == null) {
 			// Try to obtain the map from the SupportMapFragment.
-			mMap = ((SupportMapFragment) getFragmentManager().findFragmentById(
-					R.id.map)).getMap();
+//			mMap = ((SupportMapFragment) getFragmentManager().findFragmentById(
+//					R.id.map)).getMap();
+			mMap= fragment.getMap();
+
 
 			// Check if we were successful in obtaining the map.
 			if (mMap != null) {
@@ -268,5 +297,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		// (the camera animates to the user's current position).
 		return false;
 	}
+	
 
 }
