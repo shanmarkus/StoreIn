@@ -27,31 +27,34 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="post_out_range">Out of Range</string>
     <string name="error_title">Oops Sorry !</string>
+
     <string-array name="category_label">
-        <item >Flash Deals</item>
-        <item >Apparel</item>
-        <item >Babies and Kids</item>
-        <item >College and Education</item>
-        <item >Electronics</item>
-        <item >Green Living</item>
-        <item >Hobby and Collectible</item>
-        <item >Memorial Day</item>
-        <item >Office Supplies</item>
-        <item >Valentine Day</item>
-        <item >Computers</item>
-        <item >Event Tickets</item>
-        <item >Gift Certificates</item>
-        <item >Grocery</item>
-        <item >House and Home</item>
-        <item >Movies and Music</item>
-        <item >Outdoors</item>
-        <item >Tools and Hardware</item>
-        <item >Weddings</item>
-        <item >Automotive</item>
-        <item >Books and Magazines</item>
-        <item >Costumes</item>
-        <item >Department Stores</item>
-        <item />
+        <item>Flash Deals</item>
+        <item>Apparel</item>
+        <item>Babies and Kids</item>
+        <item>College and Education</item>
+        <item>Electronics</item>
+        <item>Green Living</item>
+        <item>Hobby and Collectible</item>
+        <item>Memorial Day</item>
+        <item>Office Supplies</item>
+        <item>Valentine Day</item>
+        <item>Computers</item>
+        <item>Event Tickets</item>
+        <item>Gift Certificates</item>
+        <item>Grocery</item>
+        <item>House and Home</item>
+        <item>Movies and Music</item>
+        <item>Outdoors</item>
+        <item>Tools and Hardware</item>
+        <item>Weddings</item>
+        <item>Automotive</item>
+        <item>Books and Magazines</item>
+        <item>Costumes</item>
+        <item>Department Stores</item>
+        <item/>
     </string-array>
+
+    <string name="title_activity_location_detail">Location Detail</string>
 
 </resources>

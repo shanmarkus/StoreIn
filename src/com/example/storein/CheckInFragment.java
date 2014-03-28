@@ -8,12 +8,12 @@ import java.util.Map;
 import java.util.Set;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +61,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	private static final String ARG_PARAM1 = "param1";
 	private static final String ARG_PARAM2 = "param2";
 
-	protected final static String TAG = CheckInFragment.class.getSimpleName();
+	protected final static String TAG = CheckInFragment.class.getSimpleName().toString();
 
 	// Place Constant
 	private String selectedObjectId;
@@ -201,19 +201,9 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 						@Override
 						public void onItemClick(AdapterView<?> parent,
 								View view, int position, long id) {
-//							Toast.makeText(getActivity(), "Location Clicked", Toast.LENGTH_SHORT).show();
-							// Create new fragment and transaction
-							Fragment newFragment = new HomeFragment();
-							FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-							// Replace whatever is in the fragment_container view with this fragment,
-							// and add the transaction to the back stack
-							transaction.replace(R.id.fragment_container, newFragment);
-							transaction.addToBackStack(null);
-
-							// Commit the transaction
-							transaction.commit();
-							
+									Intent intent = new Intent(getActivity(), LocationDetail.class);
+									startActivity(intent);
+									Toast.makeText(getActivity(), "Clicked" , Toast.LENGTH_LONG).show();
 						}
 					});
 
