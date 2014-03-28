@@ -17,11 +17,11 @@
             android:layout_height="0dp"
             android:layout_weight="1" >
 
-            <fragment
+            <RelativeLayout
                 android:id="@+id/map"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                class="com.google.android.gms.maps.SupportMapFragment" />
+                android:layout_height="wrap_content" >
+            </RelativeLayout>
         </RelativeLayout>
 
         <RelativeLayout
@@ -36,7 +36,6 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true" >
             </ListView>
-
         </RelativeLayout>
     </LinearLayout>
 

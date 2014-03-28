@@ -1,11 +1,13 @@
 package com.example.storein;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,12 +24,14 @@ import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailed
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
@@ -52,10 +56,13 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	private static final String ARG_PARAM2 = "param2";
 
 	protected final static String TAG = CheckInFragment.class.getSimpleName();
-	
-	//Place Constant
+
+	// Place Constant
 	private String selectedObjectId;
-	
+	private Location lastLocation = null;
+	private Location currentLocation = null;
+	private boolean hasSetUpInitialLocation = false;
+
 	// Map Constant
 	private GoogleMap mMap;
 	private LocationClient mLocationClient;
@@ -63,6 +70,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	private float radius;
 	private float lastRadius;
 	private SupportMapFragment fragment;
+	private Circle mapCircle;
 
 	// Parse Constants
 
@@ -101,8 +109,18 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	}
 
 	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putString("WORKAROUND_FOR_BUG_19917_KEY",
+				"WORKAROUND_FOR_BUG_19917_VALUE");
+		super.onSaveInstanceState(outState);
+	}
+
+	@Override
 	public void onResume() {
 		super.onResume();
+		if (mMap == null) {
+			mMap = fragment.getMap();
+		}
 		setUpMapIfNeeded();
 		setUpLocationClientIfNeeded();
 		mLocationClient.connect();
@@ -123,31 +141,38 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_check_in, container,
 				false);
+		// if(mMap == null){
+		// mMap = ((SupportMapFragment) getFragmentManager().findFragmentById(
+		// R.id.map)).getMap();}
 		return view;
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-	    super.onActivityCreated(savedInstanceState);
-	    FragmentManager fm = getChildFragmentManager();
-	    fragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
-	    if (fragment == null) {
-	        fragment = SupportMapFragment.newInstance();
-	        fm.beginTransaction().replace(R.id.map, fragment).commit();
-	    }
+		super.onActivityCreated(savedInstanceState);
+		FragmentManager fm = getChildFragmentManager();
+		fragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
+		if (fragment == null) {
+			fragment = SupportMapFragment.newInstance();
+			fm.beginTransaction().replace(R.id.map, fragment).commit();
+		}
 	}
+
 	/*
 	 * Destroy Map so it does not duplicate it self
+	 * 
 	 * @see android.support.v4.app.Fragment#onDestroyView()
 	 */
-	
-	public void onDestroyView() {
-		   super.onDestroyView(); 
-		   Fragment fragment = (getFragmentManager().findFragmentById(R.id.map));   
-		   FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-		   ft.remove(fragment);
-		   ft.commit();
-		}
+
+	// public void onDestroyView() {
+	// super.onDestroyView();
+	// FragmentManager fm = getChildFragmentManager();
+	// fragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
+	// FragmentTransaction ft = getActivity().getSupportFragmentManager()
+	// .beginTransaction();
+	// ft.remove(fragment);
+	// ft.commitAllowingStateLoss();
+	// }
 
 	/*
 	 * Function Added
@@ -190,13 +215,13 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 							.findFragmentById(R.id.map)).getMap().addMarker(
 							markerOpts);
 					mapMarkers.put(place.getObjectId(), marker);
-					
-				    if (place.getObjectId().equals(selectedObjectId)) {
-				        marker.showInfoWindow();
-				        selectedObjectId = null;
-				      }
+
+					if (place.getObjectId().equals(selectedObjectId)) {
+						marker.showInfoWindow();
+						selectedObjectId = null;
+					}
 				}
-				cleanUpMarkers(toKeep); 
+				cleanUpMarkers(toKeep);
 			}
 		});
 	}
@@ -221,10 +246,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		// map.
 		if (mMap == null) {
 			// Try to obtain the map from the SupportMapFragment.
-//			mMap = ((SupportMapFragment) getFragmentManager().findFragmentById(
-//					R.id.map)).getMap();
-			mMap= fragment.getMap();
-
 
 			// Check if we were successful in obtaining the map.
 			if (mMap != null) {
@@ -255,11 +276,24 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	 */
 	@Override
 	public void onLocationChanged(Location location) {
-		LatLng latLng = new LatLng(location.getLatitude(),
+
+		currentLocation = location;
+		if (lastLocation != null
+				&& geoPointFromLocation(location).distanceInKilometersTo(
+						geoPointFromLocation(lastLocation)) < 0.01) {
+			// If the location hasn't changed by more than 10 meters, ignore it.
+			return;
+		}
+		lastLocation = location;
+		LatLng myLatLng = new LatLng(location.getLatitude(),
 				location.getLongitude());
-		CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng,
-				15);
-		mMap.animateCamera(cameraUpdate);
+		if (!hasSetUpInitialLocation) {
+			// Zoom to the current location.
+			updateZoom(myLatLng);
+			hasSetUpInitialLocation = true;
+		}
+		// Update map radius indicator
+		updateCircle(myLatLng);
 	}
 
 	/**
@@ -290,13 +324,129 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 
 	@Override
 	public boolean onMyLocationButtonClick() {
-		Toast.makeText(getActivity().getApplicationContext(),
-				"MyLocation button clicked", Toast.LENGTH_LONG).show();
+		Toast.makeText(
+				getActivity().getApplicationContext(),
+				"MyLocation button clicked" + currentLocation.getLatitude()
+						+ " " + currentLocation.getLongitude(),
+				Toast.LENGTH_LONG).show();
 		// Return false so that we don't consume the event and the default
 		// behavior still occurs
 		// (the camera animates to the user's current position).
 		return false;
 	}
-	
+
+	/*
+	 * Helper method to get the Parse GEO point representation of a location
+	 */
+	private ParseGeoPoint geoPointFromLocation(Location loc) {
+		return new ParseGeoPoint(loc.getLatitude(), loc.getLongitude());
+	}
+
+	/*
+	 * Displays a circle on the map representing the search radius
+	 */
+	private void updateCircle(LatLng myLatLng) {
+		if (mapCircle == null) {
+			mapCircle = mMap.addCircle(new CircleOptions().center(myLatLng)
+					.radius(radius * METERS_PER_FEET));
+			int baseColor = Color.DKGRAY;
+			mapCircle.setStrokeColor(baseColor);
+			mapCircle.setStrokeWidth(2);
+			mapCircle.setFillColor(Color.argb(50, Color.red(baseColor),
+					Color.green(baseColor), Color.blue(baseColor)));
+		}
+		mapCircle.setCenter(myLatLng);
+		mapCircle.setRadius(radius * METERS_PER_FEET); // Convert radius in feet
+														// to meters.
+	}
+
+	/*
+	 * Zooms the map to show the area of interest based on the search radius
+	 */
+	private void updateZoom(LatLng myLatLng) {
+		// Get the bounds to zoom to
+		LatLngBounds bounds = calculateBoundsWithCenter(myLatLng);
+		// Zoom to the given bounds
+		mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0));
+	}
+
+	/*
+	 * Helper method to calculate the bounds for map zooming
+	 */
+	public LatLngBounds calculateBoundsWithCenter(LatLng myLatLng) {
+		// Create a bounds
+		LatLngBounds.Builder builder = LatLngBounds.builder();
+
+		// Calculate east/west points that should to be included
+		// in the bounds
+		double lngDifference = calculateLatLngOffset(myLatLng, false);
+		LatLng east = new LatLng(myLatLng.latitude, myLatLng.longitude
+				+ lngDifference);
+		builder.include(east);
+		LatLng west = new LatLng(myLatLng.latitude, myLatLng.longitude
+				- lngDifference);
+		builder.include(west);
+
+		// Calculate north/south points that should to be included
+		// in the bounds
+		double latDifference = calculateLatLngOffset(myLatLng, true);
+		LatLng north = new LatLng(myLatLng.latitude + latDifference,
+				myLatLng.longitude);
+		builder.include(north);
+		LatLng south = new LatLng(myLatLng.latitude - latDifference,
+				myLatLng.longitude);
+		builder.include(south);
+
+		return builder.build();
+	}
+
+	/*
+	 * Helper method to calculate the offset for the bounds used in map zooming
+	 */
+	private double calculateLatLngOffset(LatLng myLatLng, boolean bLatOffset) {
+		// The return offset, initialized to the default difference
+		double latLngOffset = OFFSET_CALCULATION_INIT_DIFF;
+		// Set up the desired offset distance in meters
+		float desiredOffsetInMeters = radius * METERS_PER_FEET;
+		// Variables for the distance calculation
+		float[] distance = new float[1];
+		boolean foundMax = false;
+		double foundMinDiff = 0;
+		// Loop through and get the offset
+		do {
+			// Calculate the distance between the point of interest
+			// and the current offset in the latitude or longitude direction
+			if (bLatOffset) {
+				Location.distanceBetween(myLatLng.latitude, myLatLng.longitude,
+						myLatLng.latitude + latLngOffset, myLatLng.longitude,
+						distance);
+			} else {
+				Location.distanceBetween(myLatLng.latitude, myLatLng.longitude,
+						myLatLng.latitude, myLatLng.longitude + latLngOffset,
+						distance);
+			}
+			// Compare the current difference with the desired one
+			float distanceDiff = distance[0] - desiredOffsetInMeters;
+			if (distanceDiff < 0) {
+				// Need to catch up to the desired distance
+				if (!foundMax) {
+					foundMinDiff = latLngOffset;
+					// Increase the calculated offset
+					latLngOffset *= 2;
+				} else {
+					double tmp = latLngOffset;
+					// Increase the calculated offset, at a slower pace
+					latLngOffset += (latLngOffset - foundMinDiff) / 2;
+					foundMinDiff = tmp;
+				}
+			} else {
+				// Overshot the desired distance
+				// Decrease the calculated offset
+				latLngOffset -= (latLngOffset - foundMinDiff) / 2;
+				foundMax = true;
+			}
+		} while (Math.abs(distance[0] - desiredOffsetInMeters) > OFFSET_CALCULATION_ACCURACY);
+		return latLngOffset;
+	}
 
 }
