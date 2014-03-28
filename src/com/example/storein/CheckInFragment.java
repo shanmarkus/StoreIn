@@ -17,7 +17,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -52,7 +53,7 @@ import com.parse.ParseQuery;
  * 
  */
 public class CheckInFragment extends Fragment implements ConnectionCallbacks,
-		OnConnectionFailedListener, LocationListener,
+		OnConnectionFailedListener, LocationListener, OnItemClickListener,
 		OnMyLocationButtonClickListener {
 	// TODO: Rename parameter arguments, choose names that match
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -168,7 +169,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 				if (e == null) {
 					// success
 					ArrayList<HashMap<String, String>> placesInfo = new ArrayList<HashMap<String, String>>();
-					int i = 0;
+
 					for (ParsePlace place : places) {
 						String name = place.getName();
 						String address = place.getAddress();
@@ -178,15 +179,14 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 						placeInfo.put(ParseConstants.KEY_NAME, name);
 						placeInfo.put(ParseConstants.KEY_ADDRESS, address);
 						placesInfo.add(placeInfo);
-						i++;
 					}
 
 					String[] keys = { ParseConstants.KEY_NAME,
 							ParseConstants.KEY_ADDRESS };
 					int[] ids = { android.R.id.text1, android.R.id.text2 };
-					
-					SimpleAdapter adapter = new SimpleAdapter(getActivity(), placesInfo,
-							android.R.layout.simple_list_item_2, 
+
+					SimpleAdapter adapter = new SimpleAdapter(getActivity(),
+							placesInfo, android.R.layout.simple_list_item_2,
 							keys, ids);
 
 					ListView mListPlace = (ListView) getActivity()
@@ -207,6 +207,14 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 
 			}
 		});
+
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		// TODO Auto-generated method stub
+
 	}
 
 	private void cleanUpMarkers(Set<String> markersToKeep) {
