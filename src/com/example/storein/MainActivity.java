@@ -69,10 +69,7 @@ public class MainActivity extends ActionBarActivity implements
 			fragment = new CheckInFragment();
 			break;
 		}
-//		fragmentManager
-//				.beginTransaction()
-//				.replace(R.id.container,
-//						PlaceholderFragment.newInstance(position + 1)).commit();
+
 		fragmentManager
 		.beginTransaction()
 		.replace(R.id.container, fragment

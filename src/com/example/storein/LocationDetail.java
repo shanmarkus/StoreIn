@@ -26,8 +26,8 @@ public class LocationDetail extends ActionBarActivity {
 
 	public static final String TAG = LocationDetail.class.getSimpleName();
 	protected String placeID;
-	
-	//UI Variable
+
+	// UI Variable
 	ImageView mLocationView;
 	TextView mLocationNameLabel;
 	TextView mLocationAddressLabel;
@@ -40,8 +40,8 @@ public class LocationDetail extends ActionBarActivity {
 		setContentView(R.layout.activity_location_detail);
 		placeID = getIntent().getExtras().getString(
 				ParseConstants.KEY_OBJECT_ID);
-		
-		//Setting up the UI
+
+		// Setting up the UI
 		mLocationNameLabel = (TextView) findViewById(R.id.locationNameLabel);
 		mLocationAddressLabel = (TextView) findViewById(R.id.locationAddressLabel);
 		mLocationPhoneLabel = (TextView) findViewById(R.id.locationPhoneLabel);
@@ -58,6 +58,12 @@ public class LocationDetail extends ActionBarActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.location_detail, menu);
 		return true;
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		doLocationQuery();
 	}
 
 	@Override
@@ -110,17 +116,25 @@ public class LocationDetail extends ActionBarActivity {
 				if (e == null) {
 					// success
 					ParseObject location = locationDetail.get(0);
-					String nameLocation = location.getString(ParseConstants.KEY_NAME);
-					String addressLocation = location.getString(ParseConstants.KEY_ADDRESS);
-					int phoneLocation = location.getInt(ParseConstants.KEY_PHONE);
-					
-					//Setting the information detail
-					
-					
-					
-					
+					String nameLocation = location
+							.getString(ParseConstants.KEY_NAME);
+					String addressLocation = location
+							.getString(ParseConstants.KEY_ADDRESS);
+					Integer temp = location
+							.getInt(ParseConstants.KEY_PHONE);
+					String phoneLocation = temp.toString();
+
+					// Setting the information detail
+					mLocationNameLabel = (TextView) findViewById(R.id.locationNameLabel);
+					mLocationAddressLabel = (TextView) findViewById(R.id.locationAddressLabel);
+					mLocationPhoneLabel = (TextView) findViewById(R.id.locationPhoneLabel);
+
+					mLocationNameLabel.setText(nameLocation);
+					mLocationAddressLabel.setText(addressLocation);
+					mLocationPhoneLabel.setText(phoneLocation);
+
 				} else {
-					//failed
+					// failed
 					Log.e(TAG, e.getMessage());
 					AlertDialog.Builder builder = new AlertDialog.Builder(
 							LocationDetail.this);
