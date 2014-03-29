@@ -296,15 +296,15 @@ int id action_bar_root 0x7f06001d
 int id action_bar_subtitle 0x7f060026
 int id action_bar_title 0x7f060025
 int id action_context_bar 0x7f060020
-int id action_example 0x7f060053
-int id action_forgot_password 0x7f060054
-int id action_logout 0x7f060055
+int id action_example 0x7f060052
+int id action_forgot_password 0x7f060053
+int id action_logout 0x7f060054
 int id action_menu_divider 0x7f060019
 int id action_menu_presenter 0x7f06001a
 int id action_mode_close_button 0x7f060027
-int id action_settings 0x7f060052
+int id action_settings 0x7f060051
 int id activity_chooser_view_content 0x7f060028
-int id addressLabel 0x7f060050
+int id addressLabel 0x7f06004e
 int id always 0x7f06000f
 int id beginning 0x7f060014
 int id checkbox 0x7f060030
@@ -331,8 +331,8 @@ int id listMode 0x7f060005
 int id listPlace 0x7f06004a
 int id listView1 0x7f060048
 int id list_item 0x7f06002c
-int id locationAddressLabel 0x7f06004e
-int id locationNameLabel 0x7f06004d
+int id locationAddressLabel 0x7f06004d
+int id locationNameLabel 0x7f06004c
 int id locationPhoneLabel 0x7f06004f
 int id loginButton 0x7f060042
 int id map 0x7f060049
@@ -345,7 +345,6 @@ int id passwordField 0x7f060041
 int id progress_circular 0x7f06001b
 int id progress_horizontal 0x7f06001c
 int id radio 0x7f060032
-int id relativeLayout1 0x7f06004c
 int id satellite 0x7f060002
 int id search_badge 0x7f060035
 int id search_bar 0x7f060034
@@ -357,7 +356,7 @@ int id search_mag_icon 0x7f060038
 int id search_plate 0x7f060039
 int id search_src_text 0x7f06003a
 int id search_voice_btn 0x7f06003e
-int id section_label 0x7f060051
+int id section_label 0x7f060050
 int id shortcut 0x7f060031
 int id showCustom 0x7f06000b
 int id showHome 0x7f060008
@@ -410,6 +409,7 @@ int layout fragment_location_detail 0x7f03001e
 int layout fragment_main 0x7f03001f
 int layout fragment_navigation_drawer 0x7f030020
 int layout support_simple_spinner_dropdown_item 0x7f030021
+int layout testing 0x7f030022
 int menu global 0x7f0d0000
 int menu home 0x7f0d0001
 int menu location_detail 0x7f0d0002

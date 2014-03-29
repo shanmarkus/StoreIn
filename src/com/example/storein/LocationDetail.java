@@ -1,20 +1,37 @@
 package com.example.storein;
 
+import java.util.List;
+
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 public class LocationDetail extends ActionBarActivity {
+
+	public static final String TAG = LocationDetail.class.getSimpleName();
+	protected String placeID;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_location_detail);
+		placeID = getIntent().getExtras().getString(
+				ParseConstants.KEY_OBJECT_ID);
 
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
@@ -57,6 +74,43 @@ public class LocationDetail extends ActionBarActivity {
 					container, false);
 			return rootView;
 		}
+	}
+
+	/*
+	 * Added Function
+	 */
+
+	/*
+	 * Get the query for location details
+	 */
+
+	protected void doLocationQuery() {
+		ParseObject.registerSubclass(ParsePlace.class);
+		ParseQuery<ParseObject> query = ParseQuery
+				.getQuery(ParseConstants.TABLE_PLACE);
+		query.whereEqualTo(ParseConstants.KEY_OBJECT_ID, placeID);
+		query.findInBackground(new FindCallback<ParseObject>() {
+
+			@Override
+			public void done(List<ParseObject> locationDetail, ParseException e) {
+				setProgressBarIndeterminateVisibility(false);
+				if (e == null) {
+					// success
+				} else {
+					//failed
+					Log.e(TAG, e.getMessage());
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							LocationDetail.this);
+					builder.setMessage(e.getMessage())
+							.setTitle(R.string.error_title)
+							.setPositiveButton(android.R.string.ok, null);
+					AlertDialog dialog = builder.create();
+					dialog.show();
+				}
+
+			}
+		});
+
 	}
 
 }
