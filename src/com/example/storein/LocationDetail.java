@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 public class LocationDetail extends ActionBarActivity {
@@ -32,6 +33,7 @@ public class LocationDetail extends ActionBarActivity {
 	TextView mLocationNameLabel;
 	TextView mLocationAddressLabel;
 	TextView mLocationPhoneLabel;
+	RatingBar mLocationRatingBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,8 @@ public class LocationDetail extends ActionBarActivity {
 		mLocationNameLabel = (TextView) findViewById(R.id.locationNameLabel);
 		mLocationAddressLabel = (TextView) findViewById(R.id.locationAddressLabel);
 		mLocationPhoneLabel = (TextView) findViewById(R.id.locationPhoneLabel);
-
+		mLocationRatingBar = (RatingBar) findViewById(R.id.locationRatingBar);
+		
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
@@ -123,15 +126,18 @@ public class LocationDetail extends ActionBarActivity {
 					Integer temp = location
 							.getInt(ParseConstants.KEY_PHONE);
 					String phoneLocation = temp.toString();
+					Float ratingLocation = (float) location.getInt(ParseConstants.KEY_RATING);
 
 					// Setting the information detail
 					mLocationNameLabel = (TextView) findViewById(R.id.locationNameLabel);
 					mLocationAddressLabel = (TextView) findViewById(R.id.locationAddressLabel);
 					mLocationPhoneLabel = (TextView) findViewById(R.id.locationPhoneLabel);
+					mLocationRatingBar = (RatingBar) findViewById(R.id.locationRatingBar);
 
 					mLocationNameLabel.setText(nameLocation);
 					mLocationAddressLabel.setText(addressLocation);
 					mLocationPhoneLabel.setText(phoneLocation);
+					mLocationRatingBar.setRating(ratingLocation);
 
 				} else {
 					// failed

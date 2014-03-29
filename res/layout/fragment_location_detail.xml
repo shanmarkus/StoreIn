@@ -34,6 +34,13 @@
             android:layout_height="0dp"
             android:layout_weight="0.7"
             android:orientation="vertical" >
+
+            <RatingBar
+                android:id="@+id/locationRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
             <TextView
                 android:id="@+id/locationNameLabel"
                 android:layout_width="wrap_content"
@@ -68,7 +75,16 @@
                 android:layout_marginTop="17dp"
                 android:text="@string/location_phone_label" />
 
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="17dp"
+                android:layout_gravity="center"
+                android:text="@string/check_in" />
+
         </LinearLayout>
+
     </LinearLayout>
 
 </ScrollView>
