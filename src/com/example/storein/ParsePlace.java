@@ -7,6 +7,11 @@ import com.parse.ParseQuery;
 
 @ParseClassName("Place")
 public class ParsePlace extends ParseObject {
+	
+	public String getID(){
+		return getString("objectId");
+	}
+
 	public String getName() {
 		return getString("name");
 	}

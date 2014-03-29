@@ -61,7 +61,8 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	private static final String ARG_PARAM1 = "param1";
 	private static final String ARG_PARAM2 = "param2";
 
-	protected final static String TAG = CheckInFragment.class.getSimpleName().toString();
+	protected final static String TAG = CheckInFragment.class.getSimpleName()
+			.toString();
 
 	// Place Constant
 	private String selectedObjectId;
@@ -170,16 +171,21 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 				if (e == null) {
 					// success
 					ArrayList<HashMap<String, String>> placesInfo = new ArrayList<HashMap<String, String>>();
+					final ArrayList<String> placesID = new ArrayList<String>();
 
 					for (ParsePlace place : places) {
 						String name = place.getName();
 						String address = place.getAddress();
+						String id = place.getObjectId();
 
 						// add to the hash map
 						HashMap<String, String> placeInfo = new HashMap<String, String>();
 						placeInfo.put(ParseConstants.KEY_NAME, name);
 						placeInfo.put(ParseConstants.KEY_ADDRESS, address);
 						placesInfo.add(placeInfo);
+						
+						// add ID
+						placesID.add(id);
 					}
 
 					String[] keys = { ParseConstants.KEY_NAME,
@@ -193,19 +199,23 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 					ListView mListPlace = (ListView) getActivity()
 							.findViewById(R.id.listPlace);
 					mListPlace.setAdapter(adapter);
-					
+
 					/*
-					 * Set Listener to the ListView
+					 * Set Listener to the ListView to open other intent 
 					 */
-					mListPlace.setOnItemClickListener(new OnItemClickListener() {
-						@Override
-						public void onItemClick(AdapterView<?> parent,
-								View view, int position, long id) {
-									Intent intent = new Intent(getActivity(), LocationDetail.class);
+					mListPlace
+							.setOnItemClickListener(new OnItemClickListener() {
+								@Override
+								public void onItemClick(AdapterView<?> parent,
+										View view, int position, long id) {
+									String placeID = placesID.get(position);
+									Intent intent = new Intent(getActivity(),
+											LocationDetail.class);
 									startActivity(intent);
-									Toast.makeText(getActivity(), "Clicked" , Toast.LENGTH_LONG).show();
-						}
-					});
+									Toast.makeText(getActivity(), placeID,
+											Toast.LENGTH_LONG).show();
+								}
+							});
 
 				} else {
 					// failed
@@ -223,12 +233,11 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		});
 
 	}
-	
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		
+
 	}
 
 	private void cleanUpMarkers(Set<String> markersToKeep) {
@@ -359,6 +368,10 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		LatLngBounds bounds = calculateBoundsWithCenter(myLatLng);
 		// Zoom to the given bounds
 		mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 5));
+		
+		//Zoom further 
+		float zoomLevel = 19;
+		mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, zoomLevel));
 	}
 
 	/*
