@@ -27,6 +27,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="post_out_range">Out of Range</string>
     <string name="error_title">Oops Sorry !</string>
+    <string name="image_preview_text">Preview Image</string>
 
     <string-array name="category_label">
         <item>Flash Deals</item>
@@ -56,5 +57,13 @@
     </string-array>
 
     <string name="title_activity_location_detail">Location Detail</string>
+
+    <string name="location_name_label">Preview Location Name</string>
+
+    <string name="location_address_label">Preview Location Address Which has Postal Code and Etc :D</string>
+
+    <string name="location_phone_label">0123456789</string>
+
+    <string name="phone_number">Phone Number</string>
 
 </resources>

@@ -9,21 +9,78 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
-        android:layout_weight="0.3">
+        android:layout_weight="0.7">
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/image_preview_text"
+            android:src="@drawable/abc_ab_bottom_solid_light_holo" />
+
     </RelativeLayout>
 
 <!-- Information and Top List Item View -->
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:layout_weight="0.5">
-    </RelativeLayout>
-    
-<!--   	User interface and stuff view    -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:layout_weight="0.2">
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3" >
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/locationNameLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="70dp"
+                android:layout_marginTop="17dp"
+                android:text="@string/location_name_label"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/locationAddressLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/locationNameLabel"
+                android:layout_centerVertical="true"
+                android:text="@string/location_address_label" />
+
+            <TextView
+                android:id="@+id/locationPhoneLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/locationNameLabel"
+                android:layout_below="@+id/locationAddressLabel"
+                android:layout_marginTop="17dp"
+                android:text="@string/location_phone_label" />
+
+            <TextView
+                android:id="@+id/addressLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/locationAddressLabel"
+                android:layout_below="@+id/locationAddressLabel"
+                android:layout_marginTop="17dp"
+                android:text="TextView" />
+
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/listView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/relativeLayout1" >
+        </ListView>
     </RelativeLayout>
 
 </LinearLayout>
