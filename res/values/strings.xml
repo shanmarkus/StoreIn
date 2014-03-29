@@ -28,6 +28,8 @@
     <string name="post_out_range">Out of Range</string>
     <string name="error_title">Oops Sorry !</string>
     <string name="image_preview_text">Preview Image</string>
+    
+    <string name="phone_label">Phone Number</string>
 
     <string-array name="category_label">
         <item>Flash Deals</item>

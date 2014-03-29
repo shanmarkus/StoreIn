@@ -19,11 +19,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 public class LocationDetail extends ActionBarActivity {
 
 	public static final String TAG = LocationDetail.class.getSimpleName();
 	protected String placeID;
+	
+	//UI Variable
+	ImageView mLocationView;
+	TextView mLocationNameLabel;
+	TextView mLocationAddressLabel;
+	TextView mLocationPhoneLabel;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +40,11 @@ public class LocationDetail extends ActionBarActivity {
 		setContentView(R.layout.activity_location_detail);
 		placeID = getIntent().getExtras().getString(
 				ParseConstants.KEY_OBJECT_ID);
+		
+		//Setting up the UI
+		mLocationNameLabel = (TextView) findViewById(R.id.locationNameLabel);
+		mLocationAddressLabel = (TextView) findViewById(R.id.locationAddressLabel);
+		mLocationPhoneLabel = (TextView) findViewById(R.id.locationPhoneLabel);
 
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
@@ -96,6 +109,16 @@ public class LocationDetail extends ActionBarActivity {
 				setProgressBarIndeterminateVisibility(false);
 				if (e == null) {
 					// success
+					ParseObject location = locationDetail.get(0);
+					String nameLocation = location.getString(ParseConstants.KEY_NAME);
+					String addressLocation = location.getString(ParseConstants.KEY_ADDRESS);
+					int phoneLocation = location.getInt(ParseConstants.KEY_PHONE);
+					
+					//Setting the information detail
+					
+					
+					
+					
 				} else {
 					//failed
 					Log.e(TAG, e.getMessage());

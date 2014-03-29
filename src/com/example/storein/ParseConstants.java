@@ -10,5 +10,6 @@ public final class ParseConstants {
 	public static final String KEY_NAME = "name";
 	public static final String KEY_ADDRESS = "address";
 	public static final String KEY_OBJECT_ID = "objectId";
+	public static final String KEY_PHONE ="phone";
 
 }
