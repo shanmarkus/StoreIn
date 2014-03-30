@@ -168,7 +168,6 @@ public class LocationDetail extends ActionBarActivity {
 					AlertDialog dialog = builder.create();
 					dialog.show();
 				}
-
 			}
 		});
 
