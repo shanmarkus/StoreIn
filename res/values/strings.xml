@@ -59,13 +59,10 @@
     </string-array>
 
     <string name="title_activity_location_detail">Location Detail</string>
-
     <string name="location_name_label">Preview Location Name</string>
-
     <string name="location_address_label">Preview Location Address Which has Postal Code and Etc :D</string>
-
     <string name="location_phone_label">0123456789</string>
-
     <string name="phone_number">Phone Number</string>
+    <string name="title_activity_location_catalog">LocationCatalog</string>
 
 </resources>

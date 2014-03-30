@@ -2,11 +2,6 @@ package com.example.storein;
 
 import java.util.List;
 
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,23 +12,31 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
 public class LocationDetail extends ActionBarActivity {
 
 	public static final String TAG = LocationDetail.class.getSimpleName();
-	protected String placeID;
+	protected static String placeID;
 
 	// UI Variable
-	ImageView mLocationView;
-	TextView mLocationNameLabel;
-	TextView mLocationAddressLabel;
-	TextView mLocationPhoneLabel;
-	RatingBar mLocationRatingBar;
+	protected ImageView mLocationView;
+	protected TextView mLocationNameLabel;
+	protected TextView mLocationAddressLabel;
+	protected TextView mLocationPhoneLabel;
+	protected RatingBar mLocationRatingBar;
+	protected Button mLocationCheckIn;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +51,12 @@ public class LocationDetail extends ActionBarActivity {
 		mLocationAddressLabel = (TextView) findViewById(R.id.locationAddressLabel);
 		mLocationPhoneLabel = (TextView) findViewById(R.id.locationPhoneLabel);
 		mLocationRatingBar = (RatingBar) findViewById(R.id.locationRatingBar);
-		
+		mLocationCheckIn = (Button) findViewById(R.id.locationCheckIn);
+
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
+
 		}
 	}
 
@@ -94,6 +99,19 @@ public class LocationDetail extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_location_detail,
 					container, false);
+			
+			
+			//Button
+			Button btn = (Button) rootView.findViewById(R.id.locationCheckIn);
+			btn.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(getActivity(), LocationCatalog.class);
+					intent.putExtra(ParseConstants.KEY_OBJECT_ID, placeID);
+					startActivity(intent);	
+				}
+			});
 			return rootView;
 		}
 	}
@@ -123,10 +141,10 @@ public class LocationDetail extends ActionBarActivity {
 							.getString(ParseConstants.KEY_NAME);
 					String addressLocation = location
 							.getString(ParseConstants.KEY_ADDRESS);
-					Integer temp = location
-							.getInt(ParseConstants.KEY_PHONE);
+					Integer temp = location.getInt(ParseConstants.KEY_PHONE);
 					String phoneLocation = temp.toString();
-					Float ratingLocation = (float) location.getInt(ParseConstants.KEY_RATING);
+					Float ratingLocation = (float) location
+							.getInt(ParseConstants.KEY_RATING);
 
 					// Setting the information detail
 					mLocationNameLabel = (TextView) findViewById(R.id.locationNameLabel);
