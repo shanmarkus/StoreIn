@@ -116,8 +116,8 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		getActivity().setProgressBarIndeterminateVisibility(true);
 		if (mMap == null) {
 			mMap = fragment.getMap();
-			mMap.setMyLocationEnabled(true);
-			mMap.setOnMyLocationButtonClickListener(this);
+			//mMap.setMyLocationEnabled(true);
+			//mMap.setOnMyLocationButtonClickListener(this);
 			doMapQuery();
 		}
 		doMapQuery();
