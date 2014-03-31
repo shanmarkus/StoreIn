@@ -1,7 +1,7 @@
 # cache for current jar dependency. DO NOT EDIT.
 # format is <lastModified> <length> <SHA-1> <path>
 # Encoding is UTF-8
-1396253752000 343731 3d62997c154488738d1367406fb7ac6074f992e2 /Users/Shan/Documents/workspace/StoreIn/libs/android-support-v7-appcompat.jar
-1396254274000 343731 3d62997c154488738d1367406fb7ac6074f992e2 /Users/Shan/Desktop/AndroidSDK/sdk/extras/android/support/v7/appcompat/libs/android-support-v7-appcompat.jar
-1396254279000 621451 5896b0a4e377ac4242eb2bc785220c1c4fc052f4 /Users/Shan/Documents/workspace/StoreIn/libs/android-support-v4.jar
-1396254273000 621451 5896b0a4e377ac4242eb2bc785220c1c4fc052f4 /Users/Shan/Desktop/AndroidSDK/sdk/extras/android/support/v7/appcompat/libs/android-support-v4.jar
+1395639664000 343731 3d62997c154488738d1367406fb7ac6074f992e2 /Users/Shan/Documents/workspace/appcompat_v7/libs/android-support-v7-appcompat.jar
+1396119174000 343731 3d62997c154488738d1367406fb7ac6074f992e2 /Users/Shan/Documents/workspace/StoreIn/libs/android-support-v7-appcompat.jar
+1347415736000 271754 53307dc2bd2b69fd5533458ee11885f55807de4b /Users/Shan/Desktop/JakeWharton-Android-ViewPagerIndicator-8cd549f/library/libs/android-support-v4.jar
+1395639662000 621451 5896b0a4e377ac4242eb2bc785220c1c4fc052f4 /Users/Shan/Documents/workspace/appcompat_v7/libs/android-support-v4.jar
