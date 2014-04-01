@@ -68,21 +68,21 @@ public class LocationCatalog extends ActionBarActivity {
 			ViewPager mViewPager = (ViewPager) rootView
 					.findViewById(R.id.view_pager);
 			ListView mListItem = (ListView) rootView
-					.findViewById(R.id.list_item);
+					.findViewById(R.id.listItem);
 			ImagePagerAdapter adapter = new ImagePagerAdapter();
 			mViewPager.setAdapter(adapter);
-			
-			//Setting up ontouch/click listener
-			
+
+			// Setting up on touch click listener
+
 			mViewPager.setOnTouchListener(new OnTouchListener() {
-				
+
 				@Override
 				public boolean onTouch(View v, MotionEvent event) {
 					// TODO Auto-generated method stub
 					return false;
 				}
 			});
-			
+
 			return rootView;
 		}
 
