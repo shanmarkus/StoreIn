@@ -14,8 +14,12 @@ public final class ParseConstants {
 	public static final String KEY_OBJECT_ID = "objectId";
 	public static final String KEY_PHONE = "phone";
 	public static final String KEY_RATING = "rating";
-	
-	//Relational name
+	public static final String KEY_ITEM_ID = "itemId";
+	public static final String KEY_PLACE_ID = "placeId";
+
+	// Relational names
 	public static final String KEY_RELATION_ITEMS_CATALOG = "itemsCatalog";
 
+	// Pointer names
+	public static final String KEY_POINTER_ITEM = "item";
 }
