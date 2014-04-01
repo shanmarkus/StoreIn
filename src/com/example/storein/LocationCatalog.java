@@ -84,17 +84,21 @@ public class LocationCatalog extends ActionBarActivity {
 		public ArrayList<String> itemsID = new ArrayList<String>();
 		public HashMap<String, String> itemInfo = new HashMap<String, String>();
 
-		public void setItemsID(ArrayList<String> itemsID) {
-			this.itemsID = itemsID;
+		public PlaceholderFragment() {
 		}
 
-		public PlaceholderFragment() {
+		public ArrayList<HashMap<String, String>> getItemsInfo() {
+			return itemsInfo;
+		}
+
+		public void setItemsInfo(ArrayList<HashMap<String, String>> itemsInfo) {
+			this.itemsInfo = itemsInfo;
 		}
 
 		@Override
 		public void onResume() {
 			super.onResume();
-			doItemQuery();
+
 		}
 
 		@Override
@@ -108,16 +112,7 @@ public class LocationCatalog extends ActionBarActivity {
 			ImagePagerAdapter adapter = new ImagePagerAdapter();
 			mViewPager.setAdapter(adapter);
 			doItemQuery();
-			// Setting up on touch click listener
 
-			mViewPager.setOnTouchListener(new OnTouchListener() {
-
-				@Override
-				public boolean onTouch(View v, MotionEvent event) {
-					// TODO Auto-generated method stub
-					return false;
-				}
-			});
 			return rootView;
 		}
 
@@ -126,143 +121,48 @@ public class LocationCatalog extends ActionBarActivity {
 		 */
 
 		public void doItemQuery() {
-			// ParseObject.registerSubclass(ParseLocationItems.class);
+			// Clear the array first
+
+			itemsID.clear();
+
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_LOCATION_ITEM);
 			query.whereEqualTo(ParseConstants.KEY_PLACE_ID, placeID);
-
-			query.findInBackground(new FindCallback<ParseObject>() {
-
-				@Override
-				public void done(List<ParseObject> itemsAvailable,
-						ParseException e) {
-					if (e == null) {
-						int itemsAvailableSize = itemsAvailable.size();
-						// Dapetin Query
-						for (int i = 0; i < itemsAvailableSize; i++) {
-							ParseObject itemLocation = itemsAvailable.get(i);
-							String temp = itemLocation
-									.getString(ParseConstants.KEY_ITEM_ID);
-							itemsID.add(temp);
-						}
-						// Setelah dapet size nya
-						Toast.makeText(getActivity(),
-								itemsID.size() + "Itmsid size ", Toast.LENGTH_LONG)
-								.show();
-						for (String id : itemsID) {
-							Toast.makeText(getActivity(),
-									id,
-									Toast.LENGTH_LONG).show();
-							ParseQuery<ParseObject> query = ParseQuery
-									.getQuery(ParseConstants.TABLE_ITEM);
-							query.whereEqualTo(ParseConstants.KEY_OBJECT_ID, id);
-							query.findInBackground(new FindCallback<ParseObject>() {
-
-								@Override
-								public void done(List<ParseObject> items,
-										ParseException e) {
-									if (e == null) {
-										// success
-										ParseObject item = items.get(0);
-										String name = item
-												.getString(ParseConstants.KEY_NAME);
-										Integer rating = item
-												.getInt(ParseConstants.KEY_RATING);
-										itemInfo.put(ParseConstants.KEY_NAME,
-												name);
-										itemInfo.put(ParseConstants.KEY_RATING,
-												rating.toString());
-										itemsInfo.add(itemInfo);
-
-										String[] keys = {
-												ParseConstants.KEY_NAME,
-												ParseConstants.KEY_RATING };
-										int[] ids = { android.R.id.text1,
-												android.R.id.text2 };
-
-										SimpleAdapter adapter = new SimpleAdapter(
-												getActivity(),
-												itemsInfo,
-												android.R.layout.simple_list_item_2,
-												keys, ids);
-
-										mListItem.setAdapter(adapter);
-									} else {
-										// failed
-										Log.e(TAG, e.getMessage());
-										AlertDialog.Builder builder = new AlertDialog.Builder(
-												getActivity());
-										builder.setMessage(e.getMessage())
-												.setTitle(R.string.error_title)
-												.setPositiveButton(
-														android.R.string.ok,
-														null);
-										AlertDialog dialog = builder.create();
-										dialog.show();
-									}
-								}
-							});
-						}
-					} else {
-						// failed
-						Log.e(TAG, e.getMessage());
-						AlertDialog.Builder builder = new AlertDialog.Builder(
-								getActivity());
-						builder.setMessage(e.getMessage())
-								.setTitle(R.string.error_title)
-								.setPositiveButton(android.R.string.ok, null);
-						AlertDialog dialog = builder.create();
-						dialog.show();
-					}
-
+			try {
+				List<ParseObject> items = query.find();
+				for (int i = 0; i < items.size(); i++) {
+					itemsID.add(items.get(i).getString(
+							ParseConstants.KEY_ITEM_ID));
 				}
-			});
-		}
-
-		public void getItemsID() {
-
-			Toast.makeText(getActivity(), itemsID.size() + "",
-					Toast.LENGTH_SHORT).show();
-			for (String id : itemsID) {
-				ParseQuery<ParseObject> query = ParseQuery
-						.getQuery(ParseConstants.TABLE_ITEM);
-				query.whereEqualTo(ParseConstants.KEY_OBJECT_ID, id);
-				query.findInBackground(new FindCallback<ParseObject>() {
-
-					@Override
-					public void done(List<ParseObject> items, ParseException e) {
-						if (e == null) {
-							// success
-							ParseObject item = items.get(0);
-							String name = item
-									.getString(ParseConstants.KEY_NAME);
-							Integer rating = item
-									.getInt(ParseConstants.KEY_RATING);
-							HashMap<String, String> itemInfo = new HashMap<String, String>();
-							itemInfo.put(ParseConstants.KEY_NAME, name);
-							itemInfo.put(ParseConstants.KEY_RATING,
-									rating.toString());
-							itemsInfo.add(itemInfo);
-							Toast.makeText(getActivity(), name,
-									Toast.LENGTH_SHORT).show();
-							Toast.makeText(getActivity(), rating + "",
-									Toast.LENGTH_SHORT).show();
-						} else {
-							// failed
-							Log.e(TAG, e.getMessage());
-							AlertDialog.Builder builder = new AlertDialog.Builder(
-									getActivity());
-							builder.setMessage(e.getMessage())
-									.setTitle(R.string.error_title)
-									.setPositiveButton(android.R.string.ok,
-											null);
-							AlertDialog dialog = builder.create();
-							dialog.show();
-						}
-					}
-				});
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
+			/*
+			 * Do second Query for the second Table
+			 */
+			itemInfo.clear();
+			itemsInfo.clear();
+			for (String id : itemsID) {
+				ParseQuery<ParseObject> innerQuery = ParseQuery
+						.getQuery(ParseConstants.TABLE_ITEM);
+				innerQuery.whereEqualTo(ParseConstants.KEY_OBJECT_ID, id);
+				try {
+					List<ParseObject> items = innerQuery.find();
+					ParseObject item = items.get(0);
+					String name = item.getString(ParseConstants.KEY_NAME);
+					Integer rating = item.getInt(ParseConstants.KEY_RATING);
+					HashMap<String, String> itemInfo = new HashMap<String, String>();
+					itemInfo.put(ParseConstants.KEY_NAME, name);
+					itemInfo.put(ParseConstants.KEY_RATING, rating.toString());
+					itemsInfo.add(itemInfo);
+
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			String[] keys = { ParseConstants.KEY_NAME,
 					ParseConstants.KEY_RATING };
 			int[] ids = { android.R.id.text1, android.R.id.text2 };
@@ -271,7 +171,6 @@ public class LocationCatalog extends ActionBarActivity {
 					android.R.layout.simple_list_item_2, keys, ids);
 
 			mListItem.setAdapter(adapter);
-
 		}
 
 		/*
