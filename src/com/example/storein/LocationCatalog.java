@@ -3,13 +3,15 @@ package com.example.storein;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -69,6 +71,18 @@ public class LocationCatalog extends ActionBarActivity {
 					.findViewById(R.id.list_item);
 			ImagePagerAdapter adapter = new ImagePagerAdapter();
 			mViewPager.setAdapter(adapter);
+			
+			//Setting up ontouch/click listener
+			
+			mViewPager.setOnTouchListener(new OnTouchListener() {
+				
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					// TODO Auto-generated method stub
+					return false;
+				}
+			});
+			
 			return rootView;
 		}
 
