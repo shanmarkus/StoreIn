@@ -4,26 +4,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -128,49 +123,41 @@ public class LocationCatalog extends ActionBarActivity {
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_LOCATION_ITEM);
 			query.whereEqualTo(ParseConstants.KEY_PLACE_ID, placeID);
-			try {
-				List<ParseObject> items = query.find();
-				for (int i = 0; i < items.size(); i++) {
-					itemsID.add(items.get(i).getString(
-							ParseConstants.KEY_ITEM_ID));
+			ParseQuery<ParseObject> innerQuery = ParseQuery
+					.getQuery(ParseConstants.TABLE_ITEM);
+			innerQuery.whereMatchesKeyInQuery(ParseConstants.KEY_OBJECT_ID,
+					ParseConstants.KEY_ITEM_ID, query);
+
+			innerQuery.findInBackground(new FindCallback<ParseObject>() {
+
+				@Override
+				public void done(List<ParseObject> items, ParseException e) {
+					if (e == null) {
+						for (ParseObject item : items) {
+							String name = item
+									.getString(ParseConstants.KEY_NAME);
+							Integer rating = item
+									.getInt(ParseConstants.KEY_RATING);
+							HashMap<String, String> itemInfo = new HashMap<String, String>();
+							itemInfo.put(ParseConstants.KEY_NAME, name);
+							itemInfo.put(ParseConstants.KEY_RATING,
+									rating.toString());
+							itemsInfo.add(itemInfo);
+						}
+						String[] keys = { ParseConstants.KEY_NAME,
+								ParseConstants.KEY_RATING };
+						int[] ids = { android.R.id.text1, android.R.id.text2 };
+
+						SimpleAdapter adapter = new SimpleAdapter(
+								getActivity(), itemsInfo,
+								android.R.layout.simple_list_item_2, keys, ids);
+
+						mListItem.setAdapter(adapter);
+					} else {
+						e.printStackTrace();
+					}
 				}
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			/*
-			 * Do second Query for the second Table
-			 */
-			itemInfo.clear();
-			itemsInfo.clear();
-			for (String id : itemsID) {
-				ParseQuery<ParseObject> innerQuery = ParseQuery
-						.getQuery(ParseConstants.TABLE_ITEM);
-				innerQuery.whereEqualTo(ParseConstants.KEY_OBJECT_ID, id);
-				try {
-					List<ParseObject> items = innerQuery.find();
-					ParseObject item = items.get(0);
-					String name = item.getString(ParseConstants.KEY_NAME);
-					Integer rating = item.getInt(ParseConstants.KEY_RATING);
-					HashMap<String, String> itemInfo = new HashMap<String, String>();
-					itemInfo.put(ParseConstants.KEY_NAME, name);
-					itemInfo.put(ParseConstants.KEY_RATING, rating.toString());
-					itemsInfo.add(itemInfo);
-
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			String[] keys = { ParseConstants.KEY_NAME,
-					ParseConstants.KEY_RATING };
-			int[] ids = { android.R.id.text1, android.R.id.text2 };
-
-			SimpleAdapter adapter = new SimpleAdapter(getActivity(), itemsInfo,
-					android.R.layout.simple_list_item_2, keys, ids);
-
-			mListItem.setAdapter(adapter);
+			});
 		}
 
 		/*
