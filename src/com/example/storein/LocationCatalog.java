@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
@@ -14,12 +15,17 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
+import com.example.storein.SimpleGestureFilter.SimpleGestureListener;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -79,6 +85,11 @@ public class LocationCatalog extends ActionBarActivity {
 		public ArrayList<String> itemsID = new ArrayList<String>();
 		public HashMap<String, String> itemInfo = new HashMap<String, String>();
 
+		final ViewConfiguration vc = ViewConfiguration.get(getActivity());
+		final int swipeMinDistance = vc.getScaledPagingTouchSlop();
+		final int swipeThresholdVelocity = vc.getScaledMinimumFlingVelocity();
+		final int swipeMaxOffPath = vc.getScaledTouchSlop();
+
 		public PlaceholderFragment() {
 		}
 
@@ -93,7 +104,6 @@ public class LocationCatalog extends ActionBarActivity {
 		@Override
 		public void onResume() {
 			super.onResume();
-
 		}
 
 		@Override
@@ -116,12 +126,12 @@ public class LocationCatalog extends ActionBarActivity {
 		 */
 
 		public void doItemQuery() {
-			// Clear the array first
 
+			// Clear the array first
 			itemsID.clear();
 
 			ParseQuery<ParseObject> query = ParseQuery
-					.getQuery(ParseConstants.TABLE_LOCATION_ITEM);
+					.getQuery(ParseConstants.TABLE_REL_PLACE_ITEM);
 			query.whereEqualTo(ParseConstants.KEY_PLACE_ID, placeID);
 			ParseQuery<ParseObject> innerQuery = ParseQuery
 					.getQuery(ParseConstants.TABLE_ITEM);
@@ -132,8 +142,10 @@ public class LocationCatalog extends ActionBarActivity {
 
 				@Override
 				public void done(List<ParseObject> items, ParseException e) {
+					final ArrayList<String> objectsId = new ArrayList<String>();
 					if (e == null) {
 						for (ParseObject item : items) {
+							String objectId = item.getObjectId();
 							String name = item
 									.getString(ParseConstants.KEY_NAME);
 							Integer rating = item
@@ -143,19 +155,46 @@ public class LocationCatalog extends ActionBarActivity {
 							itemInfo.put(ParseConstants.KEY_RATING,
 									rating.toString());
 							itemsInfo.add(itemInfo);
+							objectsId.add(objectId);
+
 						}
-						String[] keys = { ParseConstants.KEY_NAME,
-								ParseConstants.KEY_RATING };
-						int[] ids = { android.R.id.text1, android.R.id.text2 };
+						setAdapter();
+						onItemClickListener(objectsId);
 
-						SimpleAdapter adapter = new SimpleAdapter(
-								getActivity(), itemsInfo,
-								android.R.layout.simple_list_item_2, keys, ids);
-
-						mListItem.setAdapter(adapter);
 					} else {
 						e.printStackTrace();
 					}
+				}
+
+				private void onItemClickListener(
+						final ArrayList<String> objectsId) {
+					/*
+					 * Set On Click Listener on the each Item
+					 */
+					mListItem.setOnItemClickListener(new OnItemClickListener() {
+						@Override
+						public void onItemClick(AdapterView<?> parent,
+								View view, int position, long id) {
+							String objectId = objectsId.get(position);
+							Intent intent = new Intent(getActivity(),
+									ItemDetail.class);
+							intent.putExtra(ParseConstants.KEY_OBJECT_ID,
+									objectId);
+							startActivity(intent);
+						}
+					});
+				}
+
+				private void setAdapter() {
+					String[] keys = { ParseConstants.KEY_NAME,
+							ParseConstants.KEY_RATING };
+					int[] ids = { android.R.id.text1, android.R.id.text2 };
+
+					SimpleAdapter adapter = new SimpleAdapter(getActivity(),
+							itemsInfo, android.R.layout.simple_list_item_2,
+							keys, ids);
+
+					mListItem.setAdapter(adapter);
 				}
 			});
 		}
@@ -197,7 +236,9 @@ public class LocationCatalog extends ActionBarActivity {
 					Object object) {
 				((ViewPager) container).removeView((ImageView) object);
 			}
+
 		}
 
 	}
+
 }

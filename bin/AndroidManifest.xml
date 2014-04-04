@@ -26,7 +26,8 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" android:logo="@drawable/ic_launcher">
+        android:logo="@drawable/ic_launcher"
+        android:theme="@style/AppTheme" >
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyD5szxtCRk0QvMKKrNiSIsJM-hOy-esjSk" />
@@ -75,6 +76,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.storein.LocationDetail" />
+        </activity>
+        <activity
+            android:name="com.example.storein.ItemDetail"
+            android:label="@string/title_activity_item_detail"
+            android:parentActivityName="com.example.storein.LocationCatalog" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.storein.LocationCatalog" />
         </activity>
     </application>
 

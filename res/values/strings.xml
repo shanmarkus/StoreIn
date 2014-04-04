@@ -64,5 +64,6 @@
     <string name="location_phone_label">0123456789</string>
     <string name="phone_number">Phone Number</string>
     <string name="title_activity_location_catalog">LocationCatalog</string>
+    <string name="title_activity_item_detail">ItemDetail</string>
 
 </resources>

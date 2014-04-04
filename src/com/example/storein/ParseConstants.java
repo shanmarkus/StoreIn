@@ -4,7 +4,9 @@ public final class ParseConstants {
 	// Class name
 	public static final String TABLE_PLACE = "Place";
 	public static final String TABLE_ITEM = "Item";
-	public static final String TABLE_LOCATION_ITEM = "LocationItem";
+	
+	// Relational Class Name
+	public static final String TABLE_REL_PLACE_ITEM = "Rel_Place_Item";
 
 	// Field names
 	public static final String KEY_USERNAME = "username";
