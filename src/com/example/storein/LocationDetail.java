@@ -71,6 +71,7 @@ public class LocationDetail extends ActionBarActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		setSupportProgressBarIndeterminateVisibility(true); 
 		doLocationQuery();
 	}
 
