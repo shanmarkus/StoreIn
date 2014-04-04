@@ -15,10 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -89,7 +87,6 @@ public class LocationCatalog extends ActionBarActivity {
 		public PlaceholderFragment() {
 		}
 
-
 		public ArrayList<HashMap<String, String>> getItemsInfo() {
 			return itemsInfo;
 		}
@@ -139,6 +136,7 @@ public class LocationCatalog extends ActionBarActivity {
 
 				@Override
 				public void done(List<ParseObject> items, ParseException e) {
+					getActivity().setProgressBarIndeterminateVisibility(false);
 					final ArrayList<String> objectsId = new ArrayList<String>();
 					if (e == null) {
 						for (ParseObject item : items) {
@@ -224,14 +222,14 @@ public class LocationCatalog extends ActionBarActivity {
 				imageView.setPadding(padding, padding, padding, padding);
 				imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 				imageView.setImageResource(mImages[position]);
-				
-				//Go to the gallery page of promotional 
+
+				// Go to the gallery page of promotional
 				imageView.setOnClickListener(new OnClickListener() {
-					
+
 					@Override
 					public void onClick(View v) {
-						Log.d(TAG,"MAHO");
-						
+						Log.d(TAG, "MAHO");
+
 					}
 				});
 				((ViewPager) container).addView(imageView, 0);
