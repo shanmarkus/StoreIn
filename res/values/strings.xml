@@ -65,5 +65,9 @@
     <string name="phone_number">Phone Number</string>
     <string name="title_activity_location_catalog">LocationCatalog</string>
     <string name="title_activity_item_detail">ItemDetail</string>
+    <string name="check_review">Check Review</string>
+    <string name="love_it">Love It</string>
+    <string name="item_detail_title">Item Name</string>
+    <string name="item_detail_description">\"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"</string>
 
 </resources>

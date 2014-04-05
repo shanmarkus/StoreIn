@@ -204,7 +204,7 @@ public class LocationCatalog extends ActionBarActivity {
 		 * Image Adapter Class
 		 */
 
-		private class ImagePagerAdapter extends PagerAdapter {
+		public class ImagePagerAdapter extends PagerAdapter {
 			private int[] mImages = new int[] { R.drawable.chiang_mai,
 					R.drawable.himeji, R.drawable.petronas_twin_tower,
 					R.drawable.ulm };
@@ -249,7 +249,6 @@ public class LocationCatalog extends ActionBarActivity {
 			}
 
 		}
-
 	}
 
 }
