@@ -1,5 +1,6 @@
 package com.example.storein;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -35,11 +36,12 @@ public class ItemDetail extends ActionBarActivity {
 	protected static boolean isLoved;
 
 	// UI Variable Declaration
-	Button mBtnLoveIt;
+	static Button mBtnLoveIt;
 	Button mBtnReviewIt;
 	Button mBtnCheckReview;
 	TextView mItemTitleLabel;
 	TextView mItemDescription;
+	ViewPager mViewPager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +80,13 @@ public class ItemDetail extends ActionBarActivity {
 	 * A placeholder fragment containing a simple view.
 	 */
 	public static class PlaceholderFragment extends Fragment {
-		// Ui Variable
+		// UI Variable Declaration
+
+		Button mBtnLoveIt;
+		Button mBtnReviewIt;
+		Button mBtnCheckReview;
+		TextView mItemTitleLabel;
+		TextView mItemDescription;
 		ViewPager mViewPager;
 
 		public PlaceholderFragment() {
@@ -90,9 +98,10 @@ public class ItemDetail extends ActionBarActivity {
 			View rootView = inflater.inflate(R.layout.fragment_item_detail,
 					container, false);
 			mViewPager = (ViewPager) rootView.findViewById(R.id.view_pager);
+			mBtnLoveIt = (Button) rootView.findViewById(R.id.btnLoveIt);
 			ImagePagerAdapter adapter = new ImagePagerAdapter();
 			mViewPager.setAdapter(adapter);
-			checkLoveButton();
+			onClickLoveItButton();
 			return rootView;
 		}
 
@@ -172,23 +181,17 @@ public class ItemDetail extends ActionBarActivity {
 				} else {
 					// failed
 					Log.e(TAG, e.getMessage());
-					AlertDialog.Builder builder = new AlertDialog.Builder(
-							ItemDetail.this);
-					builder.setMessage(e.getMessage())
-							.setTitle(R.string.error_title)
-							.setPositiveButton(android.R.string.ok, null);
-					AlertDialog dialog = builder.create();
-					dialog.show();
 				}
 			}
 		});
 	}
 
-	public void onClickLoveItButton() {
+	public static void onClickLoveItButton() {
 		checkLoveButton();
 
 		if (isLoved == false) {
 			// The user HAVE NOT liked it
+			mBtnLoveIt.findViewById(R.id.btnLoveIt);
 			mBtnLoveIt.setText("Love It");
 			mBtnLoveIt.setOnClickListener(new OnClickListener() {
 
@@ -208,23 +211,10 @@ public class ItemDetail extends ActionBarActivity {
 						@Override
 						public void done(ParseException e) {
 							if (e == null) {
-								// success
-								Toast.makeText(getApplication(),
-										android.R.string.ok, Toast.LENGTH_SHORT)
-										.show();
-								// Re-check the situation
 								onClickLoveItButton();
 							} else {
 								// failed
 								Log.e(TAG, e.getMessage());
-								AlertDialog.Builder builder = new AlertDialog.Builder(
-										ItemDetail.this);
-								builder.setMessage(e.getMessage())
-										.setTitle(R.string.error_title)
-										.setPositiveButton(android.R.string.ok,
-												null);
-								AlertDialog dialog = builder.create();
-								dialog.show();
 							}
 
 						}
@@ -234,6 +224,7 @@ public class ItemDetail extends ActionBarActivity {
 			});
 		} else {
 			// User ALREADY like the item
+			mBtnLoveIt.findViewById(R.id.btnLoveIt);
 			mBtnLoveIt.setText("Un-Love It");
 			mBtnLoveIt.setOnClickListener(new OnClickListener() {
 
@@ -262,14 +253,6 @@ public class ItemDetail extends ActionBarActivity {
 							} else {
 								// failed
 								Log.e(TAG, e.getMessage());
-								AlertDialog.Builder builder = new AlertDialog.Builder(
-										ItemDetail.this);
-								builder.setMessage(e.getMessage())
-										.setTitle(R.string.error_title)
-										.setPositiveButton(android.R.string.ok,
-												null);
-								AlertDialog dialog = builder.create();
-								dialog.show();
 							}
 						}
 					});
