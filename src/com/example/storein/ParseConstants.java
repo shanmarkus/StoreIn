@@ -18,6 +18,7 @@ public final class ParseConstants {
 	public static final String KEY_RATING = "rating";
 	public static final String KEY_ITEM_ID = "itemId";
 	public static final String KEY_PLACE_ID = "placeId";
+	public static final String KEY_DESCRIPTION = "description";
 
 	// Relational names
 	public static final String KEY_RELATION_ITEMS_CATALOG = "itemsCatalog";

@@ -1,8 +1,8 @@
 package com.example.storein;
 
-import com.example.storein.LocationCatalog.PlaceholderFragment.ImagePagerAdapter;
-
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
@@ -19,14 +19,29 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
 public class ItemDetail extends ActionBarActivity {
 
 	public static final String TAG = ItemDetail.class.getSimpleName();
+	protected String itemId;
+
+	// UI Variable Declaration
+	Button mBtnLoveIt;
+	Button mBtnReviewIt;
+	Button mBtnCheckReview;
+	TextView mItemTitleLabel;
+	TextView mItemDescription;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_item_detail);
+		itemId = getIntent().getExtras()
+				.getString(ParseConstants.KEY_OBJECT_ID);
 
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
@@ -58,13 +73,8 @@ public class ItemDetail extends ActionBarActivity {
 	 * A placeholder fragment containing a simple view.
 	 */
 	public static class PlaceholderFragment extends Fragment {
-		//UI Variable Declaration
+		// Ui Variable
 		ViewPager mViewPager;
-		Button mBtnLoveIt;
-		Button mBtnReviewIt;
-		Button mBtnCheckReview;
-		TextView mItemTitleLabel;
-		TextView mItemDescription;
 
 		public PlaceholderFragment() {
 		}
@@ -129,5 +139,59 @@ public class ItemDetail extends ActionBarActivity {
 			}
 
 		}
+	}
+	
+	public void checkLoveVariable(){
+		
+	}
+
+	public void onClickLoveItButton() {
+
+	}
+
+	/*
+	 * When user wants to review the item by giving comments and ratings
+	 */
+	public void onClickReviewButton() {
+		Intent intent = new Intent(this, WriteReviewItem.class);
+		intent.putExtra(ParseConstants.KEY_OBJECT_ID, itemId);
+		startActivity(intent);
+	}
+
+	/*
+	 * Find the detail of an item including description and rating
+	 */
+	public void findItemDetail() {
+		ParseQuery<ParseObject> query = ParseQuery
+				.getQuery(ParseConstants.TABLE_ITEM);
+		query.whereEqualTo(ParseConstants.KEY_OBJECT_ID, itemId);
+		query.getFirstInBackground(new GetCallback<ParseObject>() {
+
+			@Override
+			public void done(ParseObject item, ParseException e) {
+				if (e == null) {
+					// success
+					mItemTitleLabel = (TextView) findViewById(R.id.itemTitleLabel);
+					mItemDescription = (TextView) findViewById(R.id.itemDescriptionLabel);
+					String title = item.getString(ParseConstants.KEY_NAME);
+					String description = item
+							.getString(ParseConstants.KEY_DESCRIPTION);
+
+					mItemTitleLabel.setText(title);
+					mItemDescription.setText(description);
+				} else {
+					// failed
+					Log.e(TAG, e.getMessage());
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							ItemDetail.this);
+					builder.setMessage(e.getMessage())
+							.setTitle(R.string.error_title)
+							.setPositiveButton(android.R.string.ok, null);
+					AlertDialog dialog = builder.create();
+					dialog.show();
+				}
+			}
+		});
+
 	}
 }

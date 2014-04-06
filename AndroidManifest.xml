@@ -85,6 +85,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.storein.LocationCatalog" />
         </activity>
+        <activity
+            android:name="com.example.storein.WriteReviewItem"
+            android:label="@string/title_activity_write_review_item"
+            android:parentActivityName="com.example.storein.ItemDetail" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.storein.ItemDetail" />
+        </activity>
     </application>
 
 </manifest>
