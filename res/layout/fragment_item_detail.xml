@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="551dp" >
+        android:layout_height="wrap_content" >
 
         <android.support.v4.view.ViewPager
             android:id="@+id/view_pager"
@@ -16,28 +16,28 @@
             android:onClick="myClickMethod" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btnLoveIt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/view_pager"
             android:layout_centerHorizontal="true"
-            android:text="Button" />
+            android:text="@string/love_it" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/itemTitleLabel"
             android:layout_width="wrap_content"
-            android:layout_below="@+id/button2"
+            android:layout_below="@+id/btnLoveIt"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:paddingTop="10dp"
-            android:text="Large Text"
+            android:text="@string/item_detail_title"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/itemDescriptionLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView1"
+            android:layout_below="@+id/itemTitleLabel"
             android:layout_centerHorizontal="true"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
@@ -48,17 +48,26 @@
             android:id="@+id/ratingBar1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView2"
+            android:layout_below="@+id/itemDescriptionLabel"
             android:layout_centerHorizontal="true"
             android:paddingTop="10dp" />
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/btnCheckReview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ratingBar1"
             android:layout_centerHorizontal="true"
             android:text="@string/check_review" />
+
+        <Button
+            android:id="@+id/btnReviewIt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnCheckReview"
+            android:layout_centerHorizontal="true"
+            android:text="@string/item_detail_write_review" />
+
     </RelativeLayout>
 
 </ScrollView>
