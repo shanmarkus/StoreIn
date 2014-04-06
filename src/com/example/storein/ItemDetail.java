@@ -18,16 +18,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.parse.CountCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class ItemDetail extends ActionBarActivity {
 
 	public static final String TAG = ItemDetail.class.getSimpleName();
-	protected String itemId;
+	protected static String itemId;
+	protected static boolean isLoved;
 
 	// UI Variable Declaration
 	Button mBtnLoveIt;
@@ -87,6 +92,7 @@ public class ItemDetail extends ActionBarActivity {
 			mViewPager = (ViewPager) rootView.findViewById(R.id.view_pager);
 			ImagePagerAdapter adapter = new ImagePagerAdapter();
 			mViewPager.setAdapter(adapter);
+			checkLoveButton();
 			return rootView;
 		}
 
@@ -140,13 +146,137 @@ public class ItemDetail extends ActionBarActivity {
 
 		}
 	}
-	
-	public void checkLoveVariable(){
-		
+
+	/*
+	 * Check whether user already love the item or not
+	 */
+	public static void checkLoveButton() {
+		ParseUser user = ParseUser.getCurrentUser();
+		String userId = user.getObjectId();
+
+		ParseQuery<ParseObject> query = ParseQuery
+				.getQuery(ParseConstants.TABLE_ITEM_LOVED);
+		query.whereEqualTo(ParseConstants.KEY_ITEM_ID, itemId);
+		query.whereEqualTo(ParseConstants.KEY_USER_ID, userId);
+		query.countInBackground(new CountCallback() {
+
+			@Override
+			public void done(int love, ParseException e) {
+				if (e == null) {
+					// success
+					if (love != 0) {
+						isLoved = true;
+					} else {
+						isLoved = false;
+					}
+				} else {
+					// failed
+					Log.e(TAG, e.getMessage());
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							ItemDetail.this);
+					builder.setMessage(e.getMessage())
+							.setTitle(R.string.error_title)
+							.setPositiveButton(android.R.string.ok, null);
+					AlertDialog dialog = builder.create();
+					dialog.show();
+				}
+			}
+		});
 	}
 
 	public void onClickLoveItButton() {
+		checkLoveButton();
 
+		if (isLoved == false) {
+			// The user HAVE NOT liked it
+			mBtnLoveIt.setText("Love It");
+			mBtnLoveIt.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// Get current userId and itemId
+					ParseUser user = ParseUser.getCurrentUser();
+					String userId = user.getObjectId();
+
+					// Do the query
+					ParseObject itemLoved = new ParseObject(
+							ParseConstants.TABLE_ITEM_LOVED);
+					itemLoved.put(ParseConstants.KEY_USER_ID, userId);
+					itemLoved.put(ParseConstants.KEY_ITEM_ID, itemId);
+					itemLoved.saveInBackground(new SaveCallback() {
+
+						@Override
+						public void done(ParseException e) {
+							if (e == null) {
+								// success
+								Toast.makeText(getApplication(),
+										android.R.string.ok, Toast.LENGTH_SHORT)
+										.show();
+								// Re-check the situation
+								onClickLoveItButton();
+							} else {
+								// failed
+								Log.e(TAG, e.getMessage());
+								AlertDialog.Builder builder = new AlertDialog.Builder(
+										ItemDetail.this);
+								builder.setMessage(e.getMessage())
+										.setTitle(R.string.error_title)
+										.setPositiveButton(android.R.string.ok,
+												null);
+								AlertDialog dialog = builder.create();
+								dialog.show();
+							}
+
+						}
+					});
+
+				}
+			});
+		} else {
+			// User ALREADY like the item
+			mBtnLoveIt.setText("Un-Love It");
+			mBtnLoveIt.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// get the userId
+					ParseUser user = ParseUser.getCurrentUser();
+					String userId = user.getObjectId();
+
+					ParseQuery<ParseObject> query = ParseQuery
+							.getQuery(ParseConstants.TABLE_ITEM_LOVED);
+					query.whereEqualTo(ParseConstants.KEY_USER_ID, userId);
+					query.whereEqualTo(ParseConstants.KEY_ITEM_ID, itemId);
+					query.getFirstInBackground(new GetCallback<ParseObject>() {
+
+						@Override
+						public void done(ParseObject itemLoved, ParseException e) {
+							if (e == null) {
+								try {
+									itemLoved.delete();
+									onClickLoveItButton();
+								} catch (ParseException e1) {
+									e1.printStackTrace();
+								}
+
+							} else {
+								// failed
+								Log.e(TAG, e.getMessage());
+								AlertDialog.Builder builder = new AlertDialog.Builder(
+										ItemDetail.this);
+								builder.setMessage(e.getMessage())
+										.setTitle(R.string.error_title)
+										.setPositiveButton(android.R.string.ok,
+												null);
+								AlertDialog dialog = builder.create();
+								dialog.show();
+							}
+						}
+					});
+
+				}
+			});
+		}
 	}
 
 	/*
