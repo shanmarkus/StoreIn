@@ -25,12 +25,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
 public class LocationCatalog extends ActionBarActivity {
 
@@ -178,43 +176,12 @@ public class LocationCatalog extends ActionBarActivity {
 						@Override
 						public void onItemClick(AdapterView<?> parent,
 								View view, int position, long id) {
-							// Get the Variable
-							String userId = ParseUser.getCurrentUser()
-									.getObjectId();
 							String objectId = objectsId.get(position);
-							// Start intent
-							final Intent intent = new Intent(getActivity(),
+							Intent intent = new Intent(getActivity(),
 									ItemDetail.class);
 							intent.putExtra(ParseConstants.KEY_OBJECT_ID,
 									objectId);
-							// Query for Checking Loved Items
-							ParseQuery<ParseObject> query = ParseQuery
-									.getQuery(ParseConstants.TABLE_ITEM_LOVED);
-							query.whereEqualTo(ParseConstants.KEY_ITEM_ID,
-									objectId);
-							query.whereEqualTo(ParseConstants.KEY_USER_ID,
-									userId);
-							query.countInBackground(new CountCallback() {
-								@Override
-								public void done(int love, ParseException e) {
-									if (e == null) {
-										// success
-										if (love != 0) {
-											Log.d(TAG, "Loved == true");
-											intent.putExtra("isLoved", "true");
-											startActivity(intent);
-										} else {
-											intent.putExtra("isLoved", "false");
-											Log.d(TAG, "Loved == false");
-											startActivity(intent);
-										}
-									} else {
-										// failed
-										Log.e(TAG, e.getMessage());
-									}
-								}
-							});
-
+							startActivity(intent);
 						}
 					});
 				}
