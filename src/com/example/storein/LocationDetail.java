@@ -115,6 +115,7 @@ public class LocationDetail extends ActionBarActivity {
 			});
 			return rootView;
 		}
+		
 	}
 
 	/*
