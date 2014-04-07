@@ -69,6 +69,20 @@ public class ItemDetail extends ActionBarActivity {
 	protected void onResume() {
 		super.onResume();
 		checkLoveButton();
+		mBtnLoveIt = (Button) findViewById(R.id.btnLoveIt);
+		if (isLoved.equals("true")) {
+			mBtnLoveIt.setText("Un-Love It");
+		} else {
+			mBtnLoveIt.setText("Love It");
+		}
+		mBtnLoveIt.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				setSupportProgressBarIndeterminate(true);
+				onClickLoveItButton();
+			}
+		});
 	}
 
 	@Override
