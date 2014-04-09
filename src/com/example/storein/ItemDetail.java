@@ -1,6 +1,5 @@
 package com.example.storein;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -14,12 +13,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.parse.CountCallback;
 import com.parse.GetCallback;
@@ -33,7 +32,7 @@ public class ItemDetail extends ActionBarActivity {
 
 	public static final String TAG = ItemDetail.class.getSimpleName();
 	protected static String itemId;
-	protected static boolean isLoved;
+	protected static String isLoved;
 
 	// UI Variable Declaration
 	static Button mBtnLoveIt;
@@ -46,14 +45,28 @@ public class ItemDetail extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_item_detail);
 		itemId = getIntent().getExtras()
 				.getString(ParseConstants.KEY_OBJECT_ID);
+
+		mBtnLoveIt = (Button) findViewById(R.id.btnLoveIt);
+		checkLoveButton();
 
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		setSupportProgressBarIndeterminateVisibility(true);
+		mBtnLoveIt = (Button) findViewById(R.id.btnLoveIt);
+		checkLoveButton();
+		Log.d("is Loved", isLoved);
+		//onClickLoveItButton();
 	}
 
 	@Override
@@ -101,7 +114,6 @@ public class ItemDetail extends ActionBarActivity {
 			mBtnLoveIt = (Button) rootView.findViewById(R.id.btnLoveIt);
 			ImagePagerAdapter adapter = new ImagePagerAdapter();
 			mViewPager.setAdapter(adapter);
-			onClickLoveItButton();
 			return rootView;
 		}
 
@@ -159,7 +171,7 @@ public class ItemDetail extends ActionBarActivity {
 	/*
 	 * Check whether user already love the item or not
 	 */
-	public static void checkLoveButton() {
+	public void checkLoveButton() {
 		ParseUser user = ParseUser.getCurrentUser();
 		String userId = user.getObjectId();
 
@@ -172,11 +184,12 @@ public class ItemDetail extends ActionBarActivity {
 			@Override
 			public void done(int love, ParseException e) {
 				if (e == null) {
+					setSupportProgressBarIndeterminateVisibility(false);
 					// success
 					if (love != 0) {
-						isLoved = true;
+						isLoved = "true";
 					} else {
-						isLoved = false;
+						isLoved = "false";
 					}
 				} else {
 					// failed
@@ -186,12 +199,13 @@ public class ItemDetail extends ActionBarActivity {
 		});
 	}
 
-	public static void onClickLoveItButton() {
-		checkLoveButton();
-
-		if (isLoved == false) {
+	public void onClickLoveItButton() {
+		if (isLoved == null) {
+			checkLoveButton();
+		}
+		mBtnLoveIt = (Button) findViewById(R.id.btnLoveIt);
+		if (isLoved.equals("false")) {
 			// The user HAVE NOT liked it
-			mBtnLoveIt.findViewById(R.id.btnLoveIt);
 			mBtnLoveIt.setText("Love It");
 			mBtnLoveIt.setOnClickListener(new OnClickListener() {
 
@@ -224,7 +238,6 @@ public class ItemDetail extends ActionBarActivity {
 			});
 		} else {
 			// User ALREADY like the item
-			mBtnLoveIt.findViewById(R.id.btnLoveIt);
 			mBtnLoveIt.setText("Un-Love It");
 			mBtnLoveIt.setOnClickListener(new OnClickListener() {
 
