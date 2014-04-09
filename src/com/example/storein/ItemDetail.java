@@ -13,12 +13,15 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.CountCallback;
 import com.parse.GetCallback;
@@ -35,7 +38,7 @@ public class ItemDetail extends ActionBarActivity {
 	protected static String isLoved;
 
 	// UI Variable Declaration
-	static Button mBtnLoveIt;
+	Button mBtnLoveIt;
 	Button mBtnReviewIt;
 	Button mBtnCheckReview;
 	TextView mItemTitleLabel;
@@ -47,11 +50,14 @@ public class ItemDetail extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_item_detail);
+		setSupportProgressBarIndeterminateVisibility(true);
 		itemId = getIntent().getExtras()
 				.getString(ParseConstants.KEY_OBJECT_ID);
 
+		isLoved = getIntent().getExtras().getString("isLoved");
+
+		mBtnCheckReview = (Button) findViewById(R.id.btnCheckReview);
 		mBtnLoveIt = (Button) findViewById(R.id.btnLoveIt);
-		checkLoveButton();
 
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
@@ -62,11 +68,7 @@ public class ItemDetail extends ActionBarActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		setSupportProgressBarIndeterminateVisibility(true);
-		mBtnLoveIt = (Button) findViewById(R.id.btnLoveIt);
 		checkLoveButton();
-		Log.d("is Loved", isLoved);
-		//onClickLoveItButton();
 	}
 
 	@Override
@@ -115,6 +117,12 @@ public class ItemDetail extends ActionBarActivity {
 			ImagePagerAdapter adapter = new ImagePagerAdapter();
 			mViewPager.setAdapter(adapter);
 			return rootView;
+		}
+
+		@Override
+		public void onResume() {
+			super.onResume();
+
 		}
 
 		/*
@@ -166,6 +174,7 @@ public class ItemDetail extends ActionBarActivity {
 			}
 
 		}
+
 	}
 
 	/*
@@ -183,8 +192,8 @@ public class ItemDetail extends ActionBarActivity {
 
 			@Override
 			public void done(int love, ParseException e) {
+				setSupportProgressBarIndeterminateVisibility(false);
 				if (e == null) {
-					setSupportProgressBarIndeterminateVisibility(false);
 					// success
 					if (love != 0) {
 						isLoved = "true";
@@ -200,6 +209,7 @@ public class ItemDetail extends ActionBarActivity {
 	}
 
 	public void onClickLoveItButton() {
+		setSupportProgressBarIndeterminateVisibility(true);
 		if (isLoved == null) {
 			checkLoveButton();
 		}
@@ -211,6 +221,10 @@ public class ItemDetail extends ActionBarActivity {
 
 				@Override
 				public void onClick(View v) {
+					// Toast Dialog
+					Toast.makeText(getApplication(), "Thank you for the Love",
+							Toast.LENGTH_SHORT).show();
+
 					// Get current userId and itemId
 					ParseUser user = ParseUser.getCurrentUser();
 					String userId = user.getObjectId();
@@ -224,8 +238,11 @@ public class ItemDetail extends ActionBarActivity {
 
 						@Override
 						public void done(ParseException e) {
+							setSupportProgressBarIndeterminateVisibility(false);
 							if (e == null) {
-								onClickLoveItButton();
+								// Success
+								mBtnLoveIt.setEnabled(false);
+								mBtnLoveIt.setVisibility(2);
 							} else {
 								// failed
 								Log.e(TAG, e.getMessage());
@@ -243,6 +260,10 @@ public class ItemDetail extends ActionBarActivity {
 
 				@Override
 				public void onClick(View v) {
+					// Toast Notification
+					Toast.makeText(getApplication(), "Un-Love The item :(",
+							Toast.LENGTH_SHORT).show();
+
 					// get the userId
 					ParseUser user = ParseUser.getCurrentUser();
 					String userId = user.getObjectId();
@@ -255,10 +276,13 @@ public class ItemDetail extends ActionBarActivity {
 
 						@Override
 						public void done(ParseObject itemLoved, ParseException e) {
+							setSupportProgressBarIndeterminateVisibility(false);
 							if (e == null) {
+								mBtnLoveIt.setEnabled(false);
+								mBtnLoveIt.setVisibility(2);
 								try {
 									itemLoved.delete();
-									onClickLoveItButton();
+
 								} catch (ParseException e1) {
 									e1.printStackTrace();
 								}
@@ -269,7 +293,6 @@ public class ItemDetail extends ActionBarActivity {
 							}
 						}
 					});
-
 				}
 			});
 		}
