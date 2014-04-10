@@ -127,6 +127,7 @@ public class ItemDetail extends ActionBarActivity {
 			onClickReviewItButton();
 			findItemDetail();
 			checkLoveButton();
+			onClickCheckReviewButton();
 		}
 
 		/*
