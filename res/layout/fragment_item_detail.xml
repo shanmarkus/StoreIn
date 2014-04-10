@@ -67,7 +67,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/btnCheckReview"
             android:layout_centerHorizontal="true"
-            android:text="@string/item_detail_write_review" />
+            android:text="@string/item_detail_write_review"
+            android:onClick="onClickReviewButton" />
 
     </RelativeLayout>
 

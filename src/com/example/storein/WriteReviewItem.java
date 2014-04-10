@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
@@ -22,7 +23,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 public class WriteReviewItem extends ActionBarActivity {
-	
+
 	// Variable
 	public final static String TAG = WriteReviewItem.class.getSimpleName();
 	protected static String itemId;
@@ -30,6 +31,7 @@ public class WriteReviewItem extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_write_review_item);
 
 		itemId = getIntent().getExtras()
@@ -78,6 +80,10 @@ public class WriteReviewItem extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(
 					R.layout.fragment_write_review_item, container, false);
+			mBtnSubmit = (Button) rootView.findViewById(R.id.btnSubmit);
+			mTxtUserReview = (EditText) rootView
+					.findViewById(R.id.txtUserReview);
+			mRatingBar = (RatingBar) rootView.findViewById(R.id.ratingBar1);
 
 			return rootView;
 		}
@@ -87,6 +93,7 @@ public class WriteReviewItem extends ActionBarActivity {
 		}
 
 		public void onSubmitBtn() {
+			getActivity().setProgressBarIndeterminateVisibility(true);
 			ParseUser user = ParseUser.getCurrentUser();
 			String userId = user.getObjectId();
 			String reviewText = mTxtUserReview.getText().toString();
@@ -102,6 +109,7 @@ public class WriteReviewItem extends ActionBarActivity {
 
 				@Override
 				public void done(ParseException e) {
+					getActivity().setProgressBarIndeterminateVisibility(false);
 					if (e == null) {
 						// success
 						Toast.makeText(getActivity(), "Review Saved",

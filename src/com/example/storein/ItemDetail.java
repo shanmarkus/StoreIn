@@ -275,9 +275,17 @@ public class ItemDetail extends ActionBarActivity {
 		 * When user wants to review the item by giving comments and ratings
 		 */
 		public void onClickReviewButton() {
-			Intent intent = new Intent(getActivity(), WriteReviewItem.class);
-			intent.putExtra(ParseConstants.KEY_OBJECT_ID, itemId);
-			startActivity(intent);
+			mBtnReviewIt.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(getActivity(),
+							WriteReviewItem.class);
+					intent.putExtra(ParseConstants.KEY_OBJECT_ID, itemId);
+					startActivity(intent);
+				}
+			});
+
 		}
 
 		/*
