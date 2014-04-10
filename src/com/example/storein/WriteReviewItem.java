@@ -199,6 +199,7 @@ public class WriteReviewItem extends ActionBarActivity {
 									Toast.makeText(getActivity(),
 											"Review Saved", Toast.LENGTH_SHORT)
 											.show();
+									checkExistingUserReview();
 									Intent intent = new Intent(getActivity(),
 											ItemDetail.class);
 									intent.putExtra(
@@ -227,7 +228,8 @@ public class WriteReviewItem extends ActionBarActivity {
 
 					@Override
 					public void onClick(View v) {
-						getActivity().setProgressBarIndeterminateVisibility(true);
+						getActivity().setProgressBarIndeterminateVisibility(
+								true);
 						String userId = user.getObjectId();
 						ParseQuery<ParseObject> query = ParseQuery
 								.getQuery(ParseConstants.TABLE_ITEM_REVIEW);
@@ -238,7 +240,9 @@ public class WriteReviewItem extends ActionBarActivity {
 							@Override
 							public void done(ParseObject review,
 									ParseException e) {
-								getActivity().setProgressBarIndeterminateVisibility(false);
+								getActivity()
+										.setProgressBarIndeterminateVisibility(
+												false);
 								if (e == null) {
 									// Success
 									String userId = user.getObjectId();
@@ -266,6 +270,14 @@ public class WriteReviewItem extends ActionBarActivity {
 														Toast.LENGTH_SHORT)
 														.show();
 												checkExistingUserReview();
+												Intent intent = new Intent(
+														getActivity(),
+														ItemDetail.class);
+												intent.putExtra(
+														ParseConstants.KEY_OBJECT_ID,
+														itemId);
+												startActivity(intent);
+
 											} else {
 												Log.e(TAG, e.getMessage());
 												AlertDialog.Builder builder = new AlertDialog.Builder(
