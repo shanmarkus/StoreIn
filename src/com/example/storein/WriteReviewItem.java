@@ -1,9 +1,11 @@
 package com.example.storein;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,16 +14,26 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.Toast;
 
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class WriteReviewItem extends ActionBarActivity {
+	
+	// Variable
+	public final static String TAG = WriteReviewItem.class.getSimpleName();
+	protected static String itemId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_write_review_item);
+
+		itemId = getIntent().getExtras()
+				.getString(ParseConstants.KEY_OBJECT_ID);
 
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
@@ -57,9 +69,6 @@ public class WriteReviewItem extends ActionBarActivity {
 		Button mBtnSubmit;
 		EditText mTxtUserReview;
 		RatingBar mRatingBar;
-		
-		// Variable
-		protected String itemID;
 
 		public PlaceholderFragment() {
 		}
@@ -69,8 +78,7 @@ public class WriteReviewItem extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(
 					R.layout.fragment_write_review_item, container, false);
-			
-			Intent intent = getActivity().getIntent();
+
 			return rootView;
 		}
 
@@ -83,10 +91,37 @@ public class WriteReviewItem extends ActionBarActivity {
 			String userId = user.getObjectId();
 			String reviewText = mTxtUserReview.getText().toString();
 			int rating = Math.round(mRatingBar.getRating());
-			
-			ParseObject reviewItem = new ParseObject(ParseConstants.TABLE_ITEM_REVIEW);
+
+			ParseObject reviewItem = new ParseObject(
+					ParseConstants.TABLE_ITEM_REVIEW);
 			reviewItem.put(ParseConstants.KEY_USER_ID, userId);
-			reviewItem.put(ParseConstants.KEY_ITEM_ID, value)
+			reviewItem.put(ParseConstants.KEY_ITEM_ID, itemId);
+			reviewItem.put(ParseConstants.KEY_REVIEW, reviewText);
+			reviewItem.put(ParseConstants.KEY_RATING, rating);
+			reviewItem.saveInBackground(new SaveCallback() {
+
+				@Override
+				public void done(ParseException e) {
+					if (e == null) {
+						// success
+						Toast.makeText(getActivity(), "Review Saved",
+								Toast.LENGTH_SHORT).show();
+						Intent intent = new Intent(getActivity(),
+								ItemDetail.class);
+						startActivity(intent);
+					} else {
+						Log.e(TAG, e.getMessage());
+						AlertDialog.Builder builder = new AlertDialog.Builder(
+								getActivity());
+						builder.setMessage(e.getMessage())
+								.setTitle(R.string.error_title)
+								.setPositiveButton(android.R.string.ok, null);
+						AlertDialog dialog = builder.create();
+						dialog.show();
+					}
+
+				}
+			});
 
 		}
 	}
