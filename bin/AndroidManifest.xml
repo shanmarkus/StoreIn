@@ -93,6 +93,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.storein.ItemDetail" />
         </activity>
+        <activity
+            android:name="com.example.storein.ItemReview"
+            android:label="@string/title_activity_item_review"
+            android:parentActivityName="com.example.storein.ItemDetail" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.storein.ItemDetail" />
+        </activity>
     </application>
 
 </manifest>

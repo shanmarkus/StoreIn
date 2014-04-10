@@ -165,6 +165,9 @@ public class ItemDetail extends ActionBarActivity {
 			});
 		}
 
+		/*
+		 * When user click the Love It Button
+		 */
 		public void onClickLoveItButton() {
 
 			if (isLoved == null) {
@@ -292,6 +295,24 @@ public class ItemDetail extends ActionBarActivity {
 				}
 			});
 
+		}
+
+		/*
+		 * When user click the Check Review Button
+		 */
+
+		public void onClickCheckReviewButton() {
+			mBtnCheckReview = (Button) getActivity().findViewById(
+					R.id.btnCheckReview);
+			mBtnCheckReview.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(getActivity(), ItemReview.class);
+					intent.putExtra(ParseConstants.KEY_OBJECT_ID, itemId);
+					startActivity(intent);
+				}
+			});
 		}
 
 		/*
