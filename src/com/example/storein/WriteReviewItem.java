@@ -1,15 +1,20 @@
 package com.example.storein;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RatingBar;
+
+import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 public class WriteReviewItem extends ActionBarActivity {
 
@@ -48,6 +53,13 @@ public class WriteReviewItem extends ActionBarActivity {
 	 * A placeholder fragment containing a simple view.
 	 */
 	public static class PlaceholderFragment extends Fragment {
+		// UI Declaration
+		Button mBtnSubmit;
+		EditText mTxtUserReview;
+		RatingBar mRatingBar;
+		
+		// Variable
+		protected String itemID;
 
 		public PlaceholderFragment() {
 		}
@@ -57,7 +69,25 @@ public class WriteReviewItem extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(
 					R.layout.fragment_write_review_item, container, false);
+			
+			Intent intent = getActivity().getIntent();
 			return rootView;
+		}
+
+		@Override
+		public void onResume() {
+		}
+
+		public void onSubmitBtn() {
+			ParseUser user = ParseUser.getCurrentUser();
+			String userId = user.getObjectId();
+			String reviewText = mTxtUserReview.getText().toString();
+			int rating = Math.round(mRatingBar.getRating());
+			
+			ParseObject reviewItem = new ParseObject(ParseConstants.TABLE_ITEM_REVIEW);
+			reviewItem.put(ParseConstants.KEY_USER_ID, userId);
+			reviewItem.put(ParseConstants.KEY_ITEM_ID, value)
+
 		}
 	}
 

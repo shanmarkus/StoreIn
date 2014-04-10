@@ -9,8 +9,44 @@
     tools:context="com.example.storein.WriteReviewItem$PlaceholderFragment" >
 
     <TextView
+        android:id="@+id/lblReviewIt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="38dp"
+        android:text="@string/item_detail_write_review"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/txtUserReview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/lblReviewIt"
+        android:layout_below="@+id/lblReviewIt"
+        android:layout_marginTop="21dp"
+        android:ems="10"
+        android:inputType="textMultiLine" >
+
+        <requestFocus />
+    </EditText>
+
+    <RatingBar
+        android:id="@+id/ratingBar1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txtUserReview"
+        android:layout_below="@+id/txtUserReview"
+        android:layout_marginTop="20dp" />
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/txtUserReview"
+        android:layout_below="@+id/ratingBar1"
+        android:layout_marginRight="19dp"
+        android:layout_marginTop="32dp"
+        android:text="@android:string/ok" />
 
 </RelativeLayout>
