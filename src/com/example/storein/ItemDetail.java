@@ -68,7 +68,6 @@ public class ItemDetail extends ActionBarActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		checkLoveButton();
 	}
 
 	@Override
@@ -122,6 +121,180 @@ public class ItemDetail extends ActionBarActivity {
 		@Override
 		public void onResume() {
 			super.onResume();
+			onClickLoveItButton();
+		}
+
+		/*
+		 * Check whether user already love the item or not
+		 */
+		public void checkLoveButton() {
+			ParseUser user = ParseUser.getCurrentUser();
+			String userId = user.getObjectId();
+
+			ParseQuery<ParseObject> query = ParseQuery
+					.getQuery(ParseConstants.TABLE_ITEM_LOVED);
+			query.whereEqualTo(ParseConstants.KEY_ITEM_ID, itemId);
+			query.whereEqualTo(ParseConstants.KEY_USER_ID, userId);
+			query.countInBackground(new CountCallback() {
+
+				@Override
+				public void done(int love, ParseException e) {
+					getActivity().setProgressBarIndeterminate(false);
+					if (e == null) {
+						// success
+						if (love != 0) {
+							isLoved = "true";
+						} else {
+							isLoved = "false";
+						}
+					} else {
+						// failed
+						Log.e(TAG, e.getMessage());
+					}
+				}
+			});
+		}
+
+		public void onClickLoveItButton() {
+			getActivity().setProgressBarIndeterminateVisibility(true);
+			if (isLoved == null) {
+				checkLoveButton();
+			}
+			mBtnLoveIt = (Button) getActivity().findViewById(R.id.btnLoveIt);
+			if (isLoved.equals("false")) {
+				// The user HAVE NOT liked it
+				mBtnLoveIt.setText("Love It");
+				mBtnLoveIt.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// Toast Dialog
+						Toast.makeText(getActivity(), "Thank you for the Love",
+								Toast.LENGTH_SHORT).show();
+
+						// Get current userId and itemId
+						ParseUser user = ParseUser.getCurrentUser();
+						String userId = user.getObjectId();
+
+						// Do the query
+						ParseObject itemLoved = new ParseObject(
+								ParseConstants.TABLE_ITEM_LOVED);
+						itemLoved.put(ParseConstants.KEY_USER_ID, userId);
+						itemLoved.put(ParseConstants.KEY_ITEM_ID, itemId);
+						itemLoved.saveInBackground(new SaveCallback() {
+
+							@Override
+							public void done(ParseException e) {
+								getActivity()
+										.setProgressBarIndeterminateVisibility(
+												false);
+								if (e == null) {
+									// Success
+									mBtnLoveIt.setEnabled(false);
+									mBtnLoveIt.setVisibility(2);
+								} else {
+									// failed
+									Log.e(TAG, e.getMessage());
+								}
+
+							}
+						});
+
+					}
+				});
+			} else {
+				// User ALREADY like the item
+				mBtnLoveIt.setText("Un-Love It");
+				mBtnLoveIt.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// Toast Notification
+						Toast.makeText(getActivity(), "Un-Love The item :(",
+								Toast.LENGTH_SHORT).show();
+
+						// get the userId
+						ParseUser user = ParseUser.getCurrentUser();
+						String userId = user.getObjectId();
+
+						ParseQuery<ParseObject> query = ParseQuery
+								.getQuery(ParseConstants.TABLE_ITEM_LOVED);
+						query.whereEqualTo(ParseConstants.KEY_USER_ID, userId);
+						query.whereEqualTo(ParseConstants.KEY_ITEM_ID, itemId);
+						query.getFirstInBackground(new GetCallback<ParseObject>() {
+
+							@Override
+							public void done(ParseObject itemLoved,
+									ParseException e) {
+								getActivity()
+										.setProgressBarIndeterminateVisibility(
+												false);
+								if (e == null) {
+									mBtnLoveIt.setEnabled(false);
+									mBtnLoveIt.setVisibility(2);
+									try {
+										itemLoved.delete();
+
+									} catch (ParseException e1) {
+										e1.printStackTrace();
+									}
+
+								} else {
+									// failed
+									Log.e(TAG, e.getMessage());
+								}
+							}
+						});
+					}
+				});
+			}
+		}
+
+		/*
+		 * When user wants to review the item by giving comments and ratings
+		 */
+		public void onClickReviewButton() {
+			Intent intent = new Intent(getActivity(), WriteReviewItem.class);
+			intent.putExtra(ParseConstants.KEY_OBJECT_ID, itemId);
+			startActivity(intent);
+		}
+
+		/*
+		 * Find the detail of an item including description and rating
+		 */
+		public void findItemDetail() {
+			ParseQuery<ParseObject> query = ParseQuery
+					.getQuery(ParseConstants.TABLE_ITEM);
+			query.whereEqualTo(ParseConstants.KEY_OBJECT_ID, itemId);
+			query.getFirstInBackground(new GetCallback<ParseObject>() {
+
+				@Override
+				public void done(ParseObject item, ParseException e) {
+					if (e == null) {
+						// success
+						mItemTitleLabel = (TextView) getActivity()
+								.findViewById(R.id.itemTitleLabel);
+						mItemDescription = (TextView) getActivity()
+								.findViewById(R.id.itemDescriptionLabel);
+						String title = item.getString(ParseConstants.KEY_NAME);
+						String description = item
+								.getString(ParseConstants.KEY_DESCRIPTION);
+
+						mItemTitleLabel.setText(title);
+						mItemDescription.setText(description);
+					} else {
+						// failed
+						Log.e(TAG, e.getMessage());
+						AlertDialog.Builder builder = new AlertDialog.Builder(
+								getActivity());
+						builder.setMessage(e.getMessage())
+								.setTitle(R.string.error_title)
+								.setPositiveButton(android.R.string.ok, null);
+						AlertDialog dialog = builder.create();
+						dialog.show();
+					}
+				}
+			});
 
 		}
 
@@ -174,173 +347,6 @@ public class ItemDetail extends ActionBarActivity {
 			}
 
 		}
-
-	}
-
-	/*
-	 * Check whether user already love the item or not
-	 */
-	public void checkLoveButton() {
-		ParseUser user = ParseUser.getCurrentUser();
-		String userId = user.getObjectId();
-
-		ParseQuery<ParseObject> query = ParseQuery
-				.getQuery(ParseConstants.TABLE_ITEM_LOVED);
-		query.whereEqualTo(ParseConstants.KEY_ITEM_ID, itemId);
-		query.whereEqualTo(ParseConstants.KEY_USER_ID, userId);
-		query.countInBackground(new CountCallback() {
-
-			@Override
-			public void done(int love, ParseException e) {
-				setSupportProgressBarIndeterminateVisibility(false);
-				if (e == null) {
-					// success
-					if (love != 0) {
-						isLoved = "true";
-					} else {
-						isLoved = "false";
-					}
-				} else {
-					// failed
-					Log.e(TAG, e.getMessage());
-				}
-			}
-		});
-	}
-
-	public void onClickLoveItButton() {
-		setSupportProgressBarIndeterminateVisibility(true);
-		if (isLoved == null) {
-			checkLoveButton();
-		}
-		mBtnLoveIt = (Button) findViewById(R.id.btnLoveIt);
-		if (isLoved.equals("false")) {
-			// The user HAVE NOT liked it
-			mBtnLoveIt.setText("Love It");
-			mBtnLoveIt.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					// Toast Dialog
-					Toast.makeText(getApplication(), "Thank you for the Love",
-							Toast.LENGTH_SHORT).show();
-
-					// Get current userId and itemId
-					ParseUser user = ParseUser.getCurrentUser();
-					String userId = user.getObjectId();
-
-					// Do the query
-					ParseObject itemLoved = new ParseObject(
-							ParseConstants.TABLE_ITEM_LOVED);
-					itemLoved.put(ParseConstants.KEY_USER_ID, userId);
-					itemLoved.put(ParseConstants.KEY_ITEM_ID, itemId);
-					itemLoved.saveInBackground(new SaveCallback() {
-
-						@Override
-						public void done(ParseException e) {
-							setSupportProgressBarIndeterminateVisibility(false);
-							if (e == null) {
-								// Success
-								mBtnLoveIt.setEnabled(false);
-								mBtnLoveIt.setVisibility(2);
-							} else {
-								// failed
-								Log.e(TAG, e.getMessage());
-							}
-
-						}
-					});
-
-				}
-			});
-		} else {
-			// User ALREADY like the item
-			mBtnLoveIt.setText("Un-Love It");
-			mBtnLoveIt.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					// Toast Notification
-					Toast.makeText(getApplication(), "Un-Love The item :(",
-							Toast.LENGTH_SHORT).show();
-
-					// get the userId
-					ParseUser user = ParseUser.getCurrentUser();
-					String userId = user.getObjectId();
-
-					ParseQuery<ParseObject> query = ParseQuery
-							.getQuery(ParseConstants.TABLE_ITEM_LOVED);
-					query.whereEqualTo(ParseConstants.KEY_USER_ID, userId);
-					query.whereEqualTo(ParseConstants.KEY_ITEM_ID, itemId);
-					query.getFirstInBackground(new GetCallback<ParseObject>() {
-
-						@Override
-						public void done(ParseObject itemLoved, ParseException e) {
-							setSupportProgressBarIndeterminateVisibility(false);
-							if (e == null) {
-								mBtnLoveIt.setEnabled(false);
-								mBtnLoveIt.setVisibility(2);
-								try {
-									itemLoved.delete();
-
-								} catch (ParseException e1) {
-									e1.printStackTrace();
-								}
-
-							} else {
-								// failed
-								Log.e(TAG, e.getMessage());
-							}
-						}
-					});
-				}
-			});
-		}
-	}
-
-	/*
-	 * When user wants to review the item by giving comments and ratings
-	 */
-	public void onClickReviewButton() {
-		Intent intent = new Intent(this, WriteReviewItem.class);
-		intent.putExtra(ParseConstants.KEY_OBJECT_ID, itemId);
-		startActivity(intent);
-	}
-
-	/*
-	 * Find the detail of an item including description and rating
-	 */
-	public void findItemDetail() {
-		ParseQuery<ParseObject> query = ParseQuery
-				.getQuery(ParseConstants.TABLE_ITEM);
-		query.whereEqualTo(ParseConstants.KEY_OBJECT_ID, itemId);
-		query.getFirstInBackground(new GetCallback<ParseObject>() {
-
-			@Override
-			public void done(ParseObject item, ParseException e) {
-				if (e == null) {
-					// success
-					mItemTitleLabel = (TextView) findViewById(R.id.itemTitleLabel);
-					mItemDescription = (TextView) findViewById(R.id.itemDescriptionLabel);
-					String title = item.getString(ParseConstants.KEY_NAME);
-					String description = item
-							.getString(ParseConstants.KEY_DESCRIPTION);
-
-					mItemTitleLabel.setText(title);
-					mItemDescription.setText(description);
-				} else {
-					// failed
-					Log.e(TAG, e.getMessage());
-					AlertDialog.Builder builder = new AlertDialog.Builder(
-							ItemDetail.this);
-					builder.setMessage(e.getMessage())
-							.setTitle(R.string.error_title)
-							.setPositiveButton(android.R.string.ok, null);
-					AlertDialog dialog = builder.create();
-					dialog.show();
-				}
-			}
-		});
 
 	}
 }
