@@ -121,6 +121,8 @@ public class ItemDetail extends ActionBarActivity {
 		@Override
 		public void onResume() {
 			super.onResume();
+			findItemDetail();
+			checkLoveButton();
 			onClickLoveItButton();
 		}
 
@@ -128,6 +130,7 @@ public class ItemDetail extends ActionBarActivity {
 		 * Check whether user already love the item or not
 		 */
 		public void checkLoveButton() {
+			mBtnLoveIt = (Button) getActivity().findViewById(R.id.btnLoveIt);
 			ParseUser user = ParseUser.getCurrentUser();
 			String userId = user.getObjectId();
 
@@ -139,13 +142,15 @@ public class ItemDetail extends ActionBarActivity {
 
 				@Override
 				public void done(int love, ParseException e) {
-					getActivity().setProgressBarIndeterminate(false);
+					getActivity().setProgressBarIndeterminateVisibility(false);
 					if (e == null) {
 						// success
 						if (love != 0) {
 							isLoved = "true";
+							mBtnLoveIt.setText("Un-Love It");
 						} else {
 							isLoved = "false";
+							mBtnLoveIt.setText("Love It");
 						}
 					} else {
 						// failed
@@ -156,18 +161,25 @@ public class ItemDetail extends ActionBarActivity {
 		}
 
 		public void onClickLoveItButton() {
-			getActivity().setProgressBarIndeterminateVisibility(true);
+
 			if (isLoved == null) {
 				checkLoveButton();
 			}
+			checkLoveButton();
+			
 			mBtnLoveIt = (Button) getActivity().findViewById(R.id.btnLoveIt);
+
 			if (isLoved.equals("false")) {
+
 				// The user HAVE NOT liked it
-				mBtnLoveIt.setText("Love It");
 				mBtnLoveIt.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
+						getActivity().setProgressBarIndeterminateVisibility(
+								true);
+						Toast.makeText(getActivity(), isLoved,
+								Toast.LENGTH_SHORT).show();
 						// Toast Dialog
 						Toast.makeText(getActivity(), "Thank you for the Love",
 								Toast.LENGTH_SHORT).show();
@@ -190,8 +202,9 @@ public class ItemDetail extends ActionBarActivity {
 												false);
 								if (e == null) {
 									// Success
-									mBtnLoveIt.setEnabled(false);
-									mBtnLoveIt.setVisibility(2);
+									checkLoveButton();
+									Toast.makeText(getActivity(), "Love it Parse success",
+											Toast.LENGTH_SHORT).show();
 								} else {
 									// failed
 									Log.e(TAG, e.getMessage());
@@ -202,15 +215,17 @@ public class ItemDetail extends ActionBarActivity {
 
 					}
 				});
-			} else {
+			} else if (isLoved.equals("true")) {
 				// User ALREADY like the item
-				mBtnLoveIt.setText("Un-Love It");
 				mBtnLoveIt.setOnClickListener(new OnClickListener() {
-
 					@Override
 					public void onClick(View v) {
+						getActivity().setProgressBarIndeterminateVisibility(
+								true);
 						// Toast Notification
 						Toast.makeText(getActivity(), "Un-Love The item :(",
+								Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity(), isLoved,
 								Toast.LENGTH_SHORT).show();
 
 						// get the userId
@@ -230,10 +245,11 @@ public class ItemDetail extends ActionBarActivity {
 										.setProgressBarIndeterminateVisibility(
 												false);
 								if (e == null) {
-									mBtnLoveIt.setEnabled(false);
-									mBtnLoveIt.setVisibility(2);
 									try {
 										itemLoved.delete();
+										checkLoveButton();
+										Toast.makeText(getActivity(), " UnLove it Parse success",
+												Toast.LENGTH_SHORT).show();
 
 									} catch (ParseException e1) {
 										e1.printStackTrace();
@@ -270,6 +286,7 @@ public class ItemDetail extends ActionBarActivity {
 
 				@Override
 				public void done(ParseObject item, ParseException e) {
+					getActivity().setProgressBarIndeterminateVisibility(false);
 					if (e == null) {
 						// success
 						mItemTitleLabel = (TextView) getActivity()
