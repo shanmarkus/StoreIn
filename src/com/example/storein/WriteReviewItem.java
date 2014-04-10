@@ -18,8 +18,11 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import com.parse.CountCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -28,6 +31,7 @@ public class WriteReviewItem extends ActionBarActivity {
 	// Variable
 	public final static String TAG = WriteReviewItem.class.getSimpleName();
 	protected static String itemId;
+	protected static String isReviewed;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +77,9 @@ public class WriteReviewItem extends ActionBarActivity {
 		EditText mTxtUserReview;
 		RatingBar mRatingBar;
 
+		// Variable
+		ParseUser user = ParseUser.getCurrentUser();
+
 		public PlaceholderFragment() {
 		}
 
@@ -96,61 +103,127 @@ public class WriteReviewItem extends ActionBarActivity {
 		}
 
 		/*
-		 * Submit the review when user click a button
+		 * Check Whether user already review the item or not
 		 */
-		public void onSubmitBtn() {
-			getActivity().setProgressBarIndeterminateVisibility(false);
 
-			mBtnSubmit = (Button) getActivity().findViewById(R.id.btnSubmit);
-			mBtnSubmit.setOnClickListener(new OnClickListener() {
+		public void checkExistingUserReview() {
+			String userId = user.getObjectId();
+			ParseQuery<ParseObject> query = ParseQuery
+					.getQuery(ParseConstants.TABLE_ITEM_REVIEW);
+			query.whereEqualTo(ParseConstants.KEY_USER_ID, userId);
+			query.whereEqualTo(ParseConstants.KEY_ITEM_ID, itemId);
+			query.countInBackground(new CountCallback() {
 
 				@Override
-				public void onClick(View v) {
-					getActivity().setProgressBarIndeterminateVisibility(true);
-					ParseUser user = ParseUser.getCurrentUser();
-					String userId = user.getObjectId();
-					String reviewText = mTxtUserReview.getText().toString();
-					int rating = Math.round(mRatingBar.getRating());
-
-					ParseObject reviewItem = new ParseObject(
-							ParseConstants.TABLE_ITEM_REVIEW);
-					reviewItem.put(ParseConstants.KEY_USER_ID, userId);
-					reviewItem.put(ParseConstants.KEY_ITEM_ID, itemId);
-					reviewItem.put(ParseConstants.KEY_REVIEW, reviewText);
-					reviewItem.put(ParseConstants.KEY_RATING, rating);
-					reviewItem.saveInBackground(new SaveCallback() {
-
-						@Override
-						public void done(ParseException e) {
-							getActivity()
-									.setProgressBarIndeterminateVisibility(
-											false);
-							if (e == null) {
-								// success
-								Toast.makeText(getActivity(), "Review Saved",
-										Toast.LENGTH_SHORT).show();
-								Intent intent = new Intent(getActivity(),
-										ItemDetail.class);
-								intent.putExtra(ParseConstants.KEY_OBJECT_ID,
-										itemId);
-								startActivity(intent);
-							} else {
-								Log.e(TAG, e.getMessage());
-								AlertDialog.Builder builder = new AlertDialog.Builder(
-										getActivity());
-								builder.setMessage(e.getMessage())
-										.setTitle(R.string.error_title)
-										.setPositiveButton(android.R.string.ok,
-												null);
-								AlertDialog dialog = builder.create();
-								dialog.show();
-							}
-
+				public void done(int count, ParseException e) {
+					if (e == null) {
+						// success
+						if (count == 0) {
+							// User have not review it yet
+							isReviewed = "false";
+							onSubmitBtn();
+						} else {
+							isReviewed = "true";
+							onSubmitBtn();
 						}
-					});
+					}
 
 				}
 			});
+		}
+
+		/*
+		 * Submit the review when user click a button
+		 */
+		public void onSubmitBtn() {
+			mBtnSubmit = (Button) getActivity().findViewById(R.id.btnSubmit);
+			if (isReviewed == null) {
+				checkExistingUserReview();
+			}
+
+			if (isReviewed.equals("false")) {
+				mBtnSubmit.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						getActivity().setProgressBarIndeterminateVisibility(
+								true);
+						String userId = user.getObjectId();
+						String reviewText = mTxtUserReview.getText().toString();
+						int rating = Math.round(mRatingBar.getRating());
+
+						ParseObject reviewItem = new ParseObject(
+								ParseConstants.TABLE_ITEM_REVIEW);
+						reviewItem.put(ParseConstants.KEY_USER_ID, userId);
+						reviewItem.put(ParseConstants.KEY_ITEM_ID, itemId);
+						reviewItem.put(ParseConstants.KEY_REVIEW, reviewText);
+						reviewItem.put(ParseConstants.KEY_RATING, rating);
+						reviewItem.saveInBackground(new SaveCallback() {
+
+							@Override
+							public void done(ParseException e) {
+								getActivity()
+										.setProgressBarIndeterminateVisibility(
+												false);
+								if (e == null) {
+									// success
+									Toast.makeText(getActivity(),
+											"Review Saved", Toast.LENGTH_SHORT)
+											.show();
+									Intent intent = new Intent(getActivity(),
+											ItemDetail.class);
+									intent.putExtra(
+											ParseConstants.KEY_OBJECT_ID,
+											itemId);
+									startActivity(intent);
+								} else {
+									Log.e(TAG, e.getMessage());
+									AlertDialog.Builder builder = new AlertDialog.Builder(
+											getActivity());
+									builder.setMessage(e.getMessage())
+											.setTitle(R.string.error_title)
+											.setPositiveButton(
+													android.R.string.ok, null);
+									AlertDialog dialog = builder.create();
+									dialog.show();
+								}
+
+							}
+						});
+
+					}
+				});
+			} else {
+				mBtnSubmit.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						String userId = user.getObjectId();
+						ParseQuery<ParseObject> query = ParseQuery
+								.getQuery(ParseConstants.TABLE_ITEM_REVIEW);
+						query.whereEqualTo(ParseConstants.KEY_ITEM_ID, itemId);
+						query.whereEqualTo(ParseConstants.KEY_USER_ID, userId);
+						query.getFirstInBackground(new GetCallback<ParseObject>() {
+
+							@Override
+							public void done(ParseObject review,
+									ParseException e) {
+								if(e == null){
+									//Success
+									String userId = user.getObjectId();
+									String reviewText = mTxtUserReview.getText().toString();
+									int rating = Math.round(mRatingBar.getRating());
+									
+									review.put(ParseConstants.KEY_USER_ID, userId);
+									review.put(ParseConstants.KEY_REVIEW, reviewText);
+									review.put(ParseConstants.KEY_RATING, rating);
+									
+								}
+							}
+						});
+					}
+				});
+			}
 
 		}
 	}
