@@ -99,7 +99,7 @@ public class WriteReviewItem extends ActionBarActivity {
 		@Override
 		public void onResume() {
 			super.onResume();
-			onSubmitBtn();
+			checkExistingUserReview();
 		}
 
 		/*
@@ -123,7 +123,36 @@ public class WriteReviewItem extends ActionBarActivity {
 							isReviewed = "false";
 							onSubmitBtn();
 						} else {
+							ParseUser temp = ParseUser.getCurrentUser();
+							String tempUserId = temp.getObjectId();
 							isReviewed = "true";
+							ParseQuery<ParseObject> query = ParseQuery
+									.getQuery(ParseConstants.TABLE_ITEM_REVIEW);
+							query.whereEqualTo(ParseConstants.KEY_USER_ID,
+									tempUserId);
+							query.whereEqualTo(ParseConstants.KEY_ITEM_ID,
+									itemId);
+							query.getFirstInBackground(new GetCallback<ParseObject>() {
+
+								@Override
+								public void done(ParseObject review,
+										ParseException e) {
+									if (e == null) {
+										mTxtUserReview = (EditText) getActivity()
+												.findViewById(
+														R.id.txtUserReview);
+										mRatingBar = (RatingBar) getActivity()
+												.findViewById(R.id.ratingBar1);
+
+										mTxtUserReview.setText(review
+												.getString(ParseConstants.KEY_REVIEW));
+										mRatingBar.setRating(review
+												.getInt(ParseConstants.KEY_RATING));
+									}
+
+								}
+							});
+
 							onSubmitBtn();
 						}
 					}
@@ -198,6 +227,7 @@ public class WriteReviewItem extends ActionBarActivity {
 
 					@Override
 					public void onClick(View v) {
+						getActivity().setProgressBarIndeterminateVisibility(true);
 						String userId = user.getObjectId();
 						ParseQuery<ParseObject> query = ParseQuery
 								.getQuery(ParseConstants.TABLE_ITEM_REVIEW);
@@ -208,16 +238,51 @@ public class WriteReviewItem extends ActionBarActivity {
 							@Override
 							public void done(ParseObject review,
 									ParseException e) {
-								if(e == null){
-									//Success
+								getActivity().setProgressBarIndeterminateVisibility(false);
+								if (e == null) {
+									// Success
 									String userId = user.getObjectId();
-									String reviewText = mTxtUserReview.getText().toString();
-									int rating = Math.round(mRatingBar.getRating());
-									
-									review.put(ParseConstants.KEY_USER_ID, userId);
-									review.put(ParseConstants.KEY_REVIEW, reviewText);
-									review.put(ParseConstants.KEY_RATING, rating);
-									
+									String reviewText = mTxtUserReview
+											.getText().toString();
+									int rating = Math.round(mRatingBar
+											.getRating());
+
+									review.put(ParseConstants.KEY_USER_ID,
+											userId);
+									review.put(ParseConstants.KEY_ITEM_ID,
+											itemId);
+									review.put(ParseConstants.KEY_REVIEW,
+											reviewText);
+									review.put(ParseConstants.KEY_RATING,
+											rating);
+									review.saveInBackground(new SaveCallback() {
+
+										@Override
+										public void done(ParseException e) {
+											if (e == null) {
+												Toast.makeText(
+														getActivity(),
+														"Your Review has been Updated",
+														Toast.LENGTH_SHORT)
+														.show();
+												checkExistingUserReview();
+											} else {
+												Log.e(TAG, e.getMessage());
+												AlertDialog.Builder builder = new AlertDialog.Builder(
+														getActivity());
+												builder.setMessage(
+														e.getMessage())
+														.setTitle(
+																R.string.error_title)
+														.setPositiveButton(
+																android.R.string.ok,
+																null);
+												AlertDialog dialog = builder
+														.create();
+												dialog.show();
+											}
+										}
+									});
 								}
 							}
 						});
