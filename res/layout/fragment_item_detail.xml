@@ -21,14 +21,14 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/view_pager"
             android:layout_centerHorizontal="true"
-            android:text="@string/love_it" 
-            android:onClick="onClickLoveItButton"/>
+            android:onClick="onClickLoveItButton"
+            android:text="@string/love_it" />
 
         <TextView
             android:id="@+id/itemTitleLabel"
             android:layout_width="wrap_content"
-            android:layout_below="@+id/btnLoveIt"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/btnLoveIt"
             android:layout_centerHorizontal="true"
             android:paddingTop="10dp"
             android:text="@string/item_detail_title"
@@ -67,9 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/btnCheckReview"
             android:layout_centerHorizontal="true"
-            android:text="@string/item_detail_write_review"
-            android:onClick="onClickReviewButton" />
-
+            android:text="@string/item_detail_write_review" />
     </RelativeLayout>
 
 </ScrollView>

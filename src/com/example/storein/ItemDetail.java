@@ -113,14 +113,18 @@ public class ItemDetail extends ActionBarActivity {
 					container, false);
 			mViewPager = (ViewPager) rootView.findViewById(R.id.view_pager);
 			mBtnLoveIt = (Button) rootView.findViewById(R.id.btnLoveIt);
+			mBtnReviewIt = (Button) rootView.findViewById(R.id.btnReviewIt);
+
 			ImagePagerAdapter adapter = new ImagePagerAdapter();
 			mViewPager.setAdapter(adapter);
+
 			return rootView;
 		}
 
 		@Override
 		public void onResume() {
 			super.onResume();
+			onClickReviewItButton();
 			findItemDetail();
 			checkLoveButton();
 		}
@@ -274,7 +278,9 @@ public class ItemDetail extends ActionBarActivity {
 		/*
 		 * When user wants to review the item by giving comments and ratings
 		 */
-		public void onClickReviewButton() {
+		public void onClickReviewItButton() {
+			mBtnReviewIt = (Button) getActivity()
+					.findViewById(R.id.btnReviewIt);
 			mBtnReviewIt.setOnClickListener(new OnClickListener() {
 
 				@Override

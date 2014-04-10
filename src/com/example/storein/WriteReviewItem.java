@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
@@ -90,43 +91,63 @@ public class WriteReviewItem extends ActionBarActivity {
 
 		@Override
 		public void onResume() {
+			super.onResume();
+			onSubmitBtn();
 		}
 
+		/*
+		 * Submit the review when user click a button
+		 */
 		public void onSubmitBtn() {
-			getActivity().setProgressBarIndeterminateVisibility(true);
-			ParseUser user = ParseUser.getCurrentUser();
-			String userId = user.getObjectId();
-			String reviewText = mTxtUserReview.getText().toString();
-			int rating = Math.round(mRatingBar.getRating());
+			getActivity().setProgressBarIndeterminateVisibility(false);
 
-			ParseObject reviewItem = new ParseObject(
-					ParseConstants.TABLE_ITEM_REVIEW);
-			reviewItem.put(ParseConstants.KEY_USER_ID, userId);
-			reviewItem.put(ParseConstants.KEY_ITEM_ID, itemId);
-			reviewItem.put(ParseConstants.KEY_REVIEW, reviewText);
-			reviewItem.put(ParseConstants.KEY_RATING, rating);
-			reviewItem.saveInBackground(new SaveCallback() {
+			mBtnSubmit = (Button) getActivity().findViewById(R.id.btnSubmit);
+			mBtnSubmit.setOnClickListener(new OnClickListener() {
 
 				@Override
-				public void done(ParseException e) {
-					getActivity().setProgressBarIndeterminateVisibility(false);
-					if (e == null) {
-						// success
-						Toast.makeText(getActivity(), "Review Saved",
-								Toast.LENGTH_SHORT).show();
-						Intent intent = new Intent(getActivity(),
-								ItemDetail.class);
-						startActivity(intent);
-					} else {
-						Log.e(TAG, e.getMessage());
-						AlertDialog.Builder builder = new AlertDialog.Builder(
-								getActivity());
-						builder.setMessage(e.getMessage())
-								.setTitle(R.string.error_title)
-								.setPositiveButton(android.R.string.ok, null);
-						AlertDialog dialog = builder.create();
-						dialog.show();
-					}
+				public void onClick(View v) {
+					getActivity().setProgressBarIndeterminateVisibility(true);
+					ParseUser user = ParseUser.getCurrentUser();
+					String userId = user.getObjectId();
+					String reviewText = mTxtUserReview.getText().toString();
+					int rating = Math.round(mRatingBar.getRating());
+
+					ParseObject reviewItem = new ParseObject(
+							ParseConstants.TABLE_ITEM_REVIEW);
+					reviewItem.put(ParseConstants.KEY_USER_ID, userId);
+					reviewItem.put(ParseConstants.KEY_ITEM_ID, itemId);
+					reviewItem.put(ParseConstants.KEY_REVIEW, reviewText);
+					reviewItem.put(ParseConstants.KEY_RATING, rating);
+					reviewItem.saveInBackground(new SaveCallback() {
+
+						@Override
+						public void done(ParseException e) {
+							getActivity()
+									.setProgressBarIndeterminateVisibility(
+											false);
+							if (e == null) {
+								// success
+								Toast.makeText(getActivity(), "Review Saved",
+										Toast.LENGTH_SHORT).show();
+								Intent intent = new Intent(getActivity(),
+										ItemDetail.class);
+								intent.putExtra(ParseConstants.KEY_OBJECT_ID,
+										itemId);
+								startActivity(intent);
+							} else {
+								Log.e(TAG, e.getMessage());
+								AlertDialog.Builder builder = new AlertDialog.Builder(
+										getActivity());
+								builder.setMessage(e.getMessage())
+										.setTitle(R.string.error_title)
+										.setPositiveButton(android.R.string.ok,
+												null);
+								AlertDialog dialog = builder.create();
+								dialog.show();
+							}
+
+						}
+					});
 
 				}
 			});
