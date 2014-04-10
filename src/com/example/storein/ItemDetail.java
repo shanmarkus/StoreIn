@@ -123,7 +123,6 @@ public class ItemDetail extends ActionBarActivity {
 			super.onResume();
 			findItemDetail();
 			checkLoveButton();
-			onClickLoveItButton();
 		}
 
 		/*
@@ -148,9 +147,11 @@ public class ItemDetail extends ActionBarActivity {
 						if (love != 0) {
 							isLoved = "true";
 							mBtnLoveIt.setText("Un-Love It");
+							onClickLoveItButton();
 						} else {
 							isLoved = "false";
 							mBtnLoveIt.setText("Love It");
+							onClickLoveItButton();
 						}
 					} else {
 						// failed
@@ -166,7 +167,7 @@ public class ItemDetail extends ActionBarActivity {
 				checkLoveButton();
 			}
 			checkLoveButton();
-			
+
 			mBtnLoveIt = (Button) getActivity().findViewById(R.id.btnLoveIt);
 
 			if (isLoved.equals("false")) {
@@ -203,8 +204,10 @@ public class ItemDetail extends ActionBarActivity {
 								if (e == null) {
 									// Success
 									checkLoveButton();
-									Toast.makeText(getActivity(), "Love it Parse success",
+									Toast.makeText(getActivity(),
+											"Love it Parse success",
 											Toast.LENGTH_SHORT).show();
+									onResume();
 								} else {
 									// failed
 									Log.e(TAG, e.getMessage());
@@ -248,8 +251,10 @@ public class ItemDetail extends ActionBarActivity {
 									try {
 										itemLoved.delete();
 										checkLoveButton();
-										Toast.makeText(getActivity(), " UnLove it Parse success",
+										Toast.makeText(getActivity(),
+												" UnLove it Parse success",
 												Toast.LENGTH_SHORT).show();
+										onResume();
 
 									} catch (ParseException e1) {
 										e1.printStackTrace();
