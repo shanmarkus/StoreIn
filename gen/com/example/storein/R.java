@@ -1237,6 +1237,7 @@ containing a value of this type.
         public static final int end=0x7f050013;
         public static final int expand_activities_button=0x7f050029;
         public static final int expanded_menu=0x7f05002f;
+        public static final int gridView=0x7f050048;
         public static final int home=0x7f050014;
         public static final int homeAsUp=0x7f050005;
         public static final int homeGrid=0x7f05004b;
@@ -1251,7 +1252,6 @@ containing a value of this type.
         public static final int listMode=0x7f050001;
         public static final int listPlace=0x7f05004a;
         public static final int listUsersReview=0x7f050054;
-        public static final int listView1=0x7f050048;
         public static final int list_item=0x7f05002c;
         public static final int locationAddressLabel=0x7f050059;
         public static final int locationCheckIn=0x7f05005c;
