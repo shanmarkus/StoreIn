@@ -1,5 +1,7 @@
 package com.example.storein;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.os.Bundle;
@@ -10,22 +12,26 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 public class ItemReview extends ActionBarActivity {
 
 	// Variable
 	public static final String TAG = ItemReview.class.getSimpleName();
-	protected String itemId;
+	protected static String itemId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_item_review);
 
 		itemId = getIntent().getExtras()
@@ -64,6 +70,11 @@ public class ItemReview extends ActionBarActivity {
 		// UI Declaration
 		ListView mListUsersReview;
 
+		// Variable
+		protected ArrayList<HashMap<String, String>> reviewsList = new ArrayList<HashMap<String, String>>();
+		public HashMap<String, String> reviewList = new HashMap<String, String>();
+		public ArrayList<String> itemsID = new ArrayList<String>();
+
 		public PlaceholderFragment() {
 		}
 
@@ -74,6 +85,7 @@ public class ItemReview extends ActionBarActivity {
 					container, false);
 			mListUsersReview = (ListView) rootView
 					.findViewById(R.id.listUsersReview);
+
 			return rootView;
 		}
 
@@ -89,11 +101,53 @@ public class ItemReview extends ActionBarActivity {
 			query.findInBackground(new FindCallback<ParseObject>() {
 
 				@Override
-				public void done(List<ParseObject> review, ParseException e) {
-					// TODO Auto-generated method stub
+				public void done(List<ParseObject> reviews, ParseException e) {
+					if (e == null) {
+						// success
+						for (ParseObject review : reviews) {
+							// Setup Hash Map
+							HashMap<String, String> reviewList = new HashMap<String, String>();
 
+							// Get the review text Information
+							String txtReview = review
+									.getString(ParseConstants.KEY_REVIEW);
+
+							reviewList
+									.put(ParseConstants.KEY_REVIEW, txtReview);
+
+							// Getting the user Information
+							String userId = review
+									.getString(ParseConstants.KEY_USER_ID);
+							ParseQuery<ParseUser> innerQuery = ParseUser
+									.getQuery();
+							innerQuery.whereEqualTo(
+									ParseConstants.KEY_OBJECT_ID, userId);
+							try {
+								ParseUser tempUser = innerQuery.getFirst();
+								String name = tempUser.getUsername();
+								reviewList.put(ParseConstants.KEY_NAME, name);
+							} catch (ParseException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							reviewsList.add(reviewList);
+						}
+					} else {
+						// failed
+					}
 				}
 			});
+		}
+
+		public void setAdapter() {
+			String[] keys = { ParseConstants.KEY_NAME,
+					ParseConstants.KEY_RATING };
+			int[] ids = { android.R.id.text1, android.R.id.text2 };
+
+			SimpleAdapter adapter = new SimpleAdapter(getActivity(),
+					reviewsList, android.R.layout.simple_list_item_2, keys, ids);
+
+			mListUsersReview.setAdapter(adapter);
 		}
 	}
 
