@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -92,9 +94,11 @@ public class ItemReview extends ActionBarActivity {
 		@Override
 		public void onResume() {
 			super.onResume();
+			getUsersReview();
 		}
 
 		public void getUsersReview() {
+			getActivity().setProgressBarIndeterminateVisibility(true);
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_ITEM_REVIEW);
 			query.whereEqualTo(ParseConstants.KEY_ITEM_ID, itemId);
@@ -102,6 +106,7 @@ public class ItemReview extends ActionBarActivity {
 
 				@Override
 				public void done(List<ParseObject> reviews, ParseException e) {
+					getActivity().setProgressBarIndeterminateVisibility(false);
 					if (e == null) {
 						// success
 						for (ParseObject review : reviews) {
@@ -132,8 +137,18 @@ public class ItemReview extends ActionBarActivity {
 							}
 							reviewsList.add(reviewList);
 						}
+						//Set the list View 
+						setAdapter();
 					} else {
 						// failed
+						Log.e(TAG, e.getMessage());
+						AlertDialog.Builder builder = new AlertDialog.Builder(
+								getActivity());
+						builder.setMessage(e.getMessage())
+								.setTitle(R.string.error_title)
+								.setPositiveButton(android.R.string.ok, null);
+						AlertDialog dialog = builder.create();
+						dialog.show();
 					}
 				}
 			});
@@ -141,7 +156,7 @@ public class ItemReview extends ActionBarActivity {
 
 		public void setAdapter() {
 			String[] keys = { ParseConstants.KEY_NAME,
-					ParseConstants.KEY_RATING };
+					ParseConstants.KEY_REVIEW };
 			int[] ids = { android.R.id.text1, android.R.id.text2 };
 
 			SimpleAdapter adapter = new SimpleAdapter(getActivity(),
