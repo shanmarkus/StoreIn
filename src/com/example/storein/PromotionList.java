@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -19,7 +20,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -201,9 +201,9 @@ public class PromotionList extends ActionBarActivity {
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
 					String objectId = objectsId.get(position);
-					Toast.makeText(getActivity(), objectId, Toast.LENGTH_SHORT)
-							.show();
-
+					Intent intent = new Intent(getActivity(), PromotionDetail.class);
+					intent.putExtra(ParseConstants.KEY_OBJECT_ID, objectId);
+					startActivity(intent);
 				}
 			});
 		}
