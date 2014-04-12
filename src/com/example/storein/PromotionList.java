@@ -112,6 +112,7 @@ public class PromotionList extends ActionBarActivity {
 				public void done(List<ParseObject> promotions, ParseException e) {
 					if (e == null) {
 						for (ParseObject promotion : promotions) {
+							HashMap<String, String> promotionInfo = new HashMap<String, String>();
 
 							// put promotion objectId to array list
 							String tempObjectId = promotion.getObjectId();
@@ -120,6 +121,10 @@ public class PromotionList extends ActionBarActivity {
 							// get name of promotion
 							final String promoName = promotion
 									.getString(ParseConstants.KEY_NAME);
+
+							promotionInfo.put(ParseConstants.KEY_NAME,
+									promoName);
+							promotionsInfo.add(promotionInfo);
 
 							// Debugging
 							Toast.makeText(getActivity(), promoName,
@@ -150,16 +155,6 @@ public class PromotionList extends ActionBarActivity {
 													String address = place
 															.getString(ParseConstants.KEY_NAME);
 
-													// Debugging
-													Toast.makeText(
-															getActivity(),
-															address,
-															Toast.LENGTH_SHORT)
-															.show();
-
-													promotionInfo
-															.put(ParseConstants.KEY_NAME,
-																	promoName);
 													promotionInfo
 															.put(ParseConstants.KEY_ADDRESS,
 																	address);
@@ -187,6 +182,7 @@ public class PromotionList extends ActionBarActivity {
 									});
 
 						}
+
 						setAdapter();
 					} else {
 						Log.e(TAG, e.getMessage());
@@ -206,6 +202,10 @@ public class PromotionList extends ActionBarActivity {
 		// Setting adapter for List
 
 		public void setAdapter() {
+			if (promotionsInfo.size() == 0) {
+				doPromotionQuery();
+			}
+
 			String[] keys = { ParseConstants.KEY_NAME,
 					ParseConstants.KEY_ADDRESS };
 			int[] ids = { android.R.id.text1, android.R.id.text2 };
