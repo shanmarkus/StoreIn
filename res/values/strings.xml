@@ -72,5 +72,6 @@
     <string name="item_detail_write_review">Review It</string>
     <string name="title_activity_write_review_item">WriteReviewItem</string>
     <string name="title_activity_item_review">ItemReview</string>
+    <string name="title_activity_promotion_list">PromotionList</string>
 
 </resources>
