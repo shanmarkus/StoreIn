@@ -4,15 +4,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -80,6 +84,8 @@ public class PromotionList extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_promotion_list,
 					container, false);
+			mListPromotions = (ListView) rootView
+					.findViewById(R.id.listPromotions);
 			categoryId = getActivity().getIntent().getExtras()
 					.getString(ParseConstants.KEY_OBJECT_ID);
 			return rootView;
@@ -88,6 +94,7 @@ public class PromotionList extends ActionBarActivity {
 		@Override
 		public void onResume() {
 			super.onResume();
+			doPromotionQuery();
 		}
 
 		/*
@@ -105,6 +112,7 @@ public class PromotionList extends ActionBarActivity {
 				public void done(List<ParseObject> promotions, ParseException e) {
 					if (e == null) {
 						for (ParseObject promotion : promotions) {
+
 							// put promotion objectId to array list
 							String tempObjectId = promotion.getObjectId();
 							objectsId.add(tempObjectId);
@@ -112,6 +120,10 @@ public class PromotionList extends ActionBarActivity {
 							// get name of promotion
 							final String promoName = promotion
 									.getString(ParseConstants.KEY_NAME);
+
+							// Debugging
+							Toast.makeText(getActivity(), promoName,
+									Toast.LENGTH_SHORT).show();
 
 							// find the location(s) of promotion
 							String objectId = promotion.getObjectId();
@@ -137,26 +149,72 @@ public class PromotionList extends ActionBarActivity {
 													HashMap<String, String> promotionInfo = new HashMap<String, String>();
 													String address = place
 															.getString(ParseConstants.KEY_NAME);
+
+													// Debugging
+													Toast.makeText(
+															getActivity(),
+															address,
+															Toast.LENGTH_SHORT)
+															.show();
+
 													promotionInfo
 															.put(ParseConstants.KEY_NAME,
 																	promoName);
 													promotionInfo
 															.put(ParseConstants.KEY_ADDRESS,
 																	address);
+													promotionsInfo
+															.add(promotionInfo);
 												}
 											} else {
 												// failed
+												Log.e(TAG, e.getMessage());
+												AlertDialog.Builder builder = new AlertDialog.Builder(
+														getActivity());
+												builder.setMessage(
+														e.getMessage()
+																+ " Inner ")
+														.setTitle(
+																R.string.error_title)
+														.setPositiveButton(
+																android.R.string.ok,
+																null);
+												AlertDialog dialog = builder
+														.create();
+												dialog.show();
 											}
 										}
 									});
 
 						}
+						setAdapter();
 					} else {
-						// failed
+						Log.e(TAG, e.getMessage());
+						AlertDialog.Builder builder = new AlertDialog.Builder(
+								getActivity());
+						builder.setMessage(e.getMessage() + " Outer ")
+								.setTitle(R.string.error_title)
+								.setPositiveButton(android.R.string.ok, null);
+						AlertDialog dialog = builder.create();
+						dialog.show();
 					}
 
 				}
 			});
+		}
+
+		// Setting adapter for List
+
+		public void setAdapter() {
+			String[] keys = { ParseConstants.KEY_NAME,
+					ParseConstants.KEY_ADDRESS };
+			int[] ids = { android.R.id.text1, android.R.id.text2 };
+
+			SimpleAdapter adapter = new SimpleAdapter(getActivity(),
+					promotionsInfo, android.R.layout.simple_list_item_2, keys,
+					ids);
+
+			mListPromotions.setAdapter(adapter);
 		}
 	}
 

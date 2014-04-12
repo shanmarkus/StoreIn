@@ -158,7 +158,7 @@ public class BrowseFragment extends Fragment {
 					int position, long id) {
 				String categoryId = objectsId.get(position);
 				Intent intent = new Intent(getActivity(), PromotionList.class);
-				intent.putExtra(ParseConstants.KEY_CATEGORY, categoryId);
+				intent.putExtra(ParseConstants.KEY_OBJECT_ID, categoryId);
 				startActivity(intent);
 			}
 		});
