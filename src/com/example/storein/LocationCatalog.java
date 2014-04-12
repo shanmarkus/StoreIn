@@ -89,8 +89,8 @@ public class LocationCatalog extends ActionBarActivity {
 		// Fixed Constants
 		protected static final int MAX_ITEMS = 5;
 		protected ArrayList<HashMap<String, String>> itemsInfo = new ArrayList<HashMap<String, String>>();
-		public ArrayList<String> itemsID = new ArrayList<String>();
 		public HashMap<String, String> itemInfo = new HashMap<String, String>();
+		public ArrayList<String> itemsID = new ArrayList<String>();
 
 		public PlaceholderFragment() {
 		}

@@ -1,10 +1,14 @@
 package com.example.storein;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
 /**
@@ -27,6 +31,10 @@ public class BrowseFragment extends Fragment {
 	// UI Variable
 	GridView mGridView;
 	String[] categories;
+
+	// Other Variables
+	protected ArrayList<HashMap<String, String>> categoriesInfo = new ArrayList<HashMap<String, String>>();
+	public HashMap<String, String> categoryInfo = new HashMap<String, String>();
 
 	// private OnFragmentInteractionListener mListener;
 
@@ -60,7 +68,6 @@ public class BrowseFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_browse, container,
 				false);
 		mGridView = (GridView) rootView.findViewById(R.id.gridView);
-		categories = getResources().getStringArray(R.array.category_label);
 
 		return rootView;
 	}
@@ -68,10 +75,21 @@ public class BrowseFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		setAdapter();
 	}
 
-	public void setAdapter() {
+	/*
+	 * Added Function
+	 */
 
+	// Setting up the grid view
+	public void setAdapter() {
+		categories = getResources().getStringArray(R.array.category_label);
+
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+				android.R.layout.simple_list_item_1, categories);
+
+		mGridView.setAdapter(adapter);
 	}
 
 }
