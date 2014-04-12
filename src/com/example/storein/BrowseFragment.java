@@ -2,10 +2,13 @@ package com.example.storein;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +16,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
+
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
@@ -37,8 +46,10 @@ public class BrowseFragment extends Fragment {
 	String[] categories;
 
 	// Other Variables
+	public static final String TAG = BrowseFragment.class.getSimpleName();
 	protected ArrayList<HashMap<String, String>> categoriesInfo = new ArrayList<HashMap<String, String>>();
 	public HashMap<String, String> categoryInfo = new HashMap<String, String>();
+	protected ArrayList<String> objectsId = new ArrayList<String>();
 
 	// private OnFragmentInteractionListener mListener;
 
@@ -79,7 +90,7 @@ public class BrowseFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		setAdapter();
+		getListCategories();
 		onClickCategoriesList();
 	}
 
@@ -87,12 +98,51 @@ public class BrowseFragment extends Fragment {
 	 * Added Function
 	 */
 
+	// Get list of categories
+	public void getListCategories() {
+
+		ParseQuery<ParseObject> query = ParseQuery
+				.getQuery(ParseConstants.TABLE_PROMOTION_CATEGORY);
+		query.orderByAscending(ParseConstants.KEY_CREATED_AT);
+		query.findInBackground(new FindCallback<ParseObject>() {
+
+			@Override
+			public void done(List<ParseObject> categoryInfos, ParseException e) {
+				if (e == null) {
+					// success
+					for (ParseObject category : categoryInfos) {
+						HashMap<String, String> categoryInfo = new HashMap<String, String>();
+						String categoryId = category.getObjectId();
+						String categoryName = category
+								.getString(ParseConstants.KEY_NAME);
+						categoryInfo.put(ParseConstants.KEY_NAME, categoryName);
+						objectsId.add(categoryId);
+						categoriesInfo.add(categoryInfo);
+					}
+					setAdapter();
+				} else {
+					// failed
+					Log.e(TAG, e.getMessage());
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							getActivity());
+					builder.setMessage(e.getMessage())
+							.setTitle(R.string.error_title)
+							.setPositiveButton(android.R.string.ok, null);
+					AlertDialog dialog = builder.create();
+					dialog.show();
+				}
+
+			}
+		});
+	}
+
 	// Setting up the grid view
 	public void setAdapter() {
-		categories = getResources().getStringArray(R.array.category_label);
+		String[] keys = { ParseConstants.KEY_NAME, ParseConstants.KEY_RATING };
+		int[] ids = { android.R.id.text1, android.R.id.text2 };
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-				android.R.layout.simple_list_item_1, categories);
+		SimpleAdapter adapter = new SimpleAdapter(getActivity(),
+				categoriesInfo, android.R.layout.simple_list_item_2, keys, ids);
 
 		mGridView.setAdapter(adapter);
 	}
@@ -105,10 +155,11 @@ public class BrowseFragment extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				String categoryName = categories[position];
-				Intent intent = new Intent(getActivity(), PromotionList.class);
-				intent.putExtra(ParseConstants.KEY_CATEGORY, categoryName);
-				startActivity(intent);
+				String categoryId = objectsId.get(position);
+				 Intent intent = new Intent(getActivity(),
+				 PromotionList.class);
+				 intent.putExtra(ParseConstants.KEY_CATEGORY, categoryId);
+				 startActivity(intent);
 			}
 		});
 	}

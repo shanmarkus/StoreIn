@@ -16,9 +16,6 @@ public final class R {
         public static final int abc_slide_out_bottom=0x7f040004;
         public static final int abc_slide_out_top=0x7f040005;
     }
-    public static final class array {
-        public static final int category_label=0x7f0c0000;
-    }
     public static final class attr {
         /**  Custom divider drawable to use for elements in the action bar. 
          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
@@ -1377,17 +1374,17 @@ containing a value of this type.
         public static final int support_simple_spinner_dropdown_item=0x7f03002b;
     }
     public static final class menu {
-        public static final int global=0x7f0d0000;
-        public static final int home=0x7f0d0001;
-        public static final int item_detail=0x7f0d0002;
-        public static final int item_review=0x7f0d0003;
-        public static final int location_catalog=0x7f0d0004;
-        public static final int location_detail=0x7f0d0005;
-        public static final int login=0x7f0d0006;
-        public static final int main=0x7f0d0007;
-        public static final int promotion_list=0x7f0d0008;
-        public static final int sign_up=0x7f0d0009;
-        public static final int write_review_item=0x7f0d000a;
+        public static final int global=0x7f0c0000;
+        public static final int home=0x7f0c0001;
+        public static final int item_detail=0x7f0c0002;
+        public static final int item_review=0x7f0c0003;
+        public static final int location_catalog=0x7f0c0004;
+        public static final int location_detail=0x7f0c0005;
+        public static final int login=0x7f0c0006;
+        public static final int main=0x7f0c0007;
+        public static final int promotion_list=0x7f0c0008;
+        public static final int sign_up=0x7f0c0009;
+        public static final int write_review_item=0x7f0c000a;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 

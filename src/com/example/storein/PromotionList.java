@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
 public class PromotionList extends ActionBarActivity {
 	// Variables
 	public static final String TAG = PromotionList.class.getSimpleName();
@@ -77,6 +80,11 @@ public class PromotionList extends ActionBarActivity {
 		/*
 		 * Added Function
 		 */
+
+		public void doPromotionQuery() {
+			ParseQuery<ParseObject> query = ParseQuery
+					.getQuery(ParseConstants.TABLE_PROMOTION);
+		}
 	}
 
 }

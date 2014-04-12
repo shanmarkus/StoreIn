@@ -182,11 +182,13 @@ public class LocationCatalog extends ActionBarActivity {
 							String userId = ParseUser.getCurrentUser()
 									.getObjectId();
 							String objectId = objectsId.get(position);
+							
 							// Start intent
 							final Intent intent = new Intent(getActivity(),
 									ItemDetail.class);
 							intent.putExtra(ParseConstants.KEY_OBJECT_ID,
 									objectId);
+							
 							// Query for Checking Loved Items
 							ParseQuery<ParseObject> query = ParseQuery
 									.getQuery(ParseConstants.TABLE_ITEM_LOVED);

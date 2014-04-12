@@ -30,34 +30,6 @@
     <string name="image_preview_text">Preview Image</string>
     <string name="check_in">Check In</string>
     <string name="phone_label">Phone Number</string>
-
-    <string-array name="category_label">
-        <item>Flash Deals</item>
-        <item>Apparel</item>
-        <item>Babies and Kids</item>
-        <item>College and Education</item>
-        <item>Electronics</item>
-        <item>Green Living</item>
-        <item>Hobby and Collectible</item>
-        <item>Memorial Day</item>
-        <item>Office Supplies</item>
-        <item>Valentine Day</item>
-        <item>Computers</item>
-        <item>Event Tickets</item>
-        <item>Gift Certificates</item>
-        <item>Grocery</item>
-        <item>House and Home</item>
-        <item>Movies and Music</item>
-        <item>Outdoors</item>
-        <item>Tools and Hardware</item>
-        <item>Weddings</item>
-        <item>Automotive</item>
-        <item>Books and Magazines</item>
-        <item>Costumes</item>
-        <item>Department Stores</item>
-        <item/>
-    </string-array>
-
     <string name="title_activity_location_detail">Location Detail</string>
     <string name="location_name_label">Preview Location Name</string>
     <string name="location_address_label">Preview Location Address Which has Postal Code and Etc :D</string>
