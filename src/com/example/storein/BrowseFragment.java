@@ -83,14 +83,13 @@ public class BrowseFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_browse, container,
 				false);
 		mGridView = (GridView) rootView.findViewById(R.id.gridView);
-
+		getListCategories();
 		return rootView;
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		getListCategories();
 		onClickCategoriesList();
 	}
 

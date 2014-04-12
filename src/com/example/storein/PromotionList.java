@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ public class PromotionList extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_promotion_list);
 
 		if (savedInstanceState == null) {
@@ -104,6 +106,7 @@ public class PromotionList extends ActionBarActivity {
 		// Find the list of the promotion according the PromotionID
 
 		public void doPromotionQuery() {
+			getActivity().setProgressBarIndeterminateVisibility(true);
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_PROMOTION);
 			query.whereEqualTo(ParseConstants.KEY_CATEGORY_ID, categoryId);
@@ -113,7 +116,6 @@ public class PromotionList extends ActionBarActivity {
 					if (e == null) {
 						for (ParseObject promotion : promotions) {
 							HashMap<String, String> promotionInfo = new HashMap<String, String>();
-
 							// put promotion objectId to array list
 							String tempObjectId = promotion.getObjectId();
 							objectsId.add(tempObjectId);
@@ -121,10 +123,6 @@ public class PromotionList extends ActionBarActivity {
 							// get name of promotion
 							final String promoName = promotion
 									.getString(ParseConstants.KEY_NAME);
-
-							promotionInfo.put(ParseConstants.KEY_NAME,
-									promoName);
-							promotionsInfo.add(promotionInfo);
 
 							// Debugging
 							Toast.makeText(getActivity(), promoName,
@@ -142,47 +140,25 @@ public class PromotionList extends ActionBarActivity {
 									ParseConstants.KEY_OBJECT_ID,
 									ParseConstants.KEY_PLACE_ID, query);
 
-							innerQuery
-									.findInBackground(new FindCallback<ParseObject>() {
-										@Override
-										public void done(
-												List<ParseObject> places,
-												ParseException e) {
-											if (e == null) {
-												// success
-												for (ParseObject place : places) {
-													HashMap<String, String> promotionInfo = new HashMap<String, String>();
-													String address = place
-															.getString(ParseConstants.KEY_NAME);
-
-													promotionInfo
-															.put(ParseConstants.KEY_ADDRESS,
-																	address);
-													promotionsInfo
-															.add(promotionInfo);
-												}
-											} else {
-												// failed
-												Log.e(TAG, e.getMessage());
-												AlertDialog.Builder builder = new AlertDialog.Builder(
-														getActivity());
-												builder.setMessage(
-														e.getMessage()
-																+ " Inner ")
-														.setTitle(
-																R.string.error_title)
-														.setPositiveButton(
-																android.R.string.ok,
-																null);
-												AlertDialog dialog = builder
-														.create();
-												dialog.show();
-											}
-										}
-									});
+							try {
+								getActivity().setProgressBarIndeterminateVisibility(false);
+								List<ParseObject> places = innerQuery.find();
+								for (ParseObject place : places) {
+									String address = place
+											.getString(ParseConstants.KEY_NAME);
+									promotionInfo.put(ParseConstants.KEY_NAME,
+											promoName);
+									promotionInfo
+											.put(ParseConstants.KEY_ADDRESS,
+													address);
+									promotionsInfo.add(promotionInfo);
+								}
+							} catch (ParseException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
 
 						}
-
 						setAdapter();
 					} else {
 						Log.e(TAG, e.getMessage());
@@ -202,10 +178,6 @@ public class PromotionList extends ActionBarActivity {
 		// Setting adapter for List
 
 		public void setAdapter() {
-			if (promotionsInfo.size() == 0) {
-				doPromotionQuery();
-			}
-
 			String[] keys = { ParseConstants.KEY_NAME,
 					ParseConstants.KEY_ADDRESS };
 			int[] ids = { android.R.id.text1, android.R.id.text2 };
