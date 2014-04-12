@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -97,6 +99,7 @@ public class PromotionList extends ActionBarActivity {
 		public void onResume() {
 			super.onResume();
 			doPromotionQuery();
+			onClickPromotionListener();
 		}
 
 		/*
@@ -118,17 +121,14 @@ public class PromotionList extends ActionBarActivity {
 							HashMap<String, String> promotionInfo = new HashMap<String, String>();
 							// put promotion objectId to array list
 							String tempObjectId = promotion.getObjectId();
-							objectsId.add(tempObjectId);
 
 							// get name of promotion
 							final String promoName = promotion
 									.getString(ParseConstants.KEY_NAME);
 
-							// Debugging
-							Toast.makeText(getActivity(), promoName,
-									Toast.LENGTH_SHORT).show();
+							// find the location(s) of promotion and adding to
+							// hash map
 
-							// find the location(s) of promotion
 							String objectId = promotion.getObjectId();
 							ParseQuery<ParseObject> query = ParseQuery
 									.getQuery(ParseConstants.TABLE_REL_PROMOTION_PLACE);
@@ -141,7 +141,9 @@ public class PromotionList extends ActionBarActivity {
 									ParseConstants.KEY_PLACE_ID, query);
 
 							try {
-								getActivity().setProgressBarIndeterminateVisibility(false);
+								getActivity()
+										.setProgressBarIndeterminateVisibility(
+												false);
 								List<ParseObject> places = innerQuery.find();
 								for (ParseObject place : places) {
 									String address = place
@@ -151,6 +153,7 @@ public class PromotionList extends ActionBarActivity {
 									promotionInfo
 											.put(ParseConstants.KEY_ADDRESS,
 													address);
+									objectsId.add(tempObjectId);
 									promotionsInfo.add(promotionInfo);
 								}
 							} catch (ParseException e1) {
@@ -187,6 +190,22 @@ public class PromotionList extends ActionBarActivity {
 					ids);
 
 			mListPromotions.setAdapter(adapter);
+		}
+
+		// Set on Click Listener
+
+		public void onClickPromotionListener() {
+			mListPromotions.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					String objectId = objectsId.get(position);
+					Toast.makeText(getActivity(), objectId, Toast.LENGTH_SHORT)
+							.show();
+
+				}
+			});
 		}
 	}
 
