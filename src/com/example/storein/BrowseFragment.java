@@ -3,13 +3,17 @@ package com.example.storein;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.Toast;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
@@ -76,6 +80,7 @@ public class BrowseFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 		setAdapter();
+		onClickCategoriesList();
 	}
 
 	/*
@@ -92,4 +97,19 @@ public class BrowseFragment extends Fragment {
 		mGridView.setAdapter(adapter);
 	}
 
+	// Add listener to GridView
+
+	public void onClickCategoriesList() {
+		mGridView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				String categoryName = categories[position];
+				Intent intent = new Intent(getActivity(), PromotionList.class);
+				intent.putExtra(ParseConstants.KEY_CATEGORY, categoryName);
+				startActivity(intent);
+			}
+		});
+	}
 }
