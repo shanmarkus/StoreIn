@@ -1,5 +1,7 @@
 package com.example.storein;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.os.Bundle;
@@ -66,6 +68,9 @@ public class PromotionList extends ActionBarActivity {
 
 		// Variables
 		protected String categoriesId;
+		protected ArrayList<HashMap<String, String>> promotionsInfo = new ArrayList<HashMap<String, String>>();
+		public HashMap<String, String> promotionInfo = new HashMap<String, String>();
+		protected ArrayList<String> objectsId = new ArrayList<String>();
 
 		public PlaceholderFragment() {
 		}
@@ -89,16 +94,22 @@ public class PromotionList extends ActionBarActivity {
 		 * Added Function
 		 */
 
+		// Find the list of the promotion according the PromotionID
+
 		public void doPromotionQuery() {
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_PROMOTION);
 			query.whereEqualTo(ParseConstants.KEY_CATEGORY, categoriesId);
 			query.findInBackground(new FindCallback<ParseObject>() {
-				
+
 				@Override
-				public void done(List<ParseObject> arg0, ParseException arg1) {
-					// TODO Auto-generated method stub
-					
+				public void done(List<ParseObject> promotions, ParseException e) {
+					if (e == null) {
+						// success
+					} else {
+						// failed
+					}
+
 				}
 			});
 		}

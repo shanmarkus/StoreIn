@@ -100,7 +100,7 @@ public class BrowseFragment extends Fragment {
 
 	// Get list of categories
 	public void getListCategories() {
-
+		getActivity().setProgressBarIndeterminateVisibility(true);
 		ParseQuery<ParseObject> query = ParseQuery
 				.getQuery(ParseConstants.TABLE_PROMOTION_CATEGORY);
 		query.orderByAscending(ParseConstants.KEY_CREATED_AT);
@@ -108,6 +108,7 @@ public class BrowseFragment extends Fragment {
 
 			@Override
 			public void done(List<ParseObject> categoryInfos, ParseException e) {
+				getActivity().setProgressBarIndeterminateVisibility(false);
 				if (e == null) {
 					// success
 					for (ParseObject category : categoryInfos) {
@@ -156,10 +157,9 @@ public class BrowseFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				String categoryId = objectsId.get(position);
-				 Intent intent = new Intent(getActivity(),
-				 PromotionList.class);
-				 intent.putExtra(ParseConstants.KEY_CATEGORY, categoryId);
-				 startActivity(intent);
+				Intent intent = new Intent(getActivity(), PromotionList.class);
+				intent.putExtra(ParseConstants.KEY_CATEGORY, categoryId);
+				startActivity(intent);
 			}
 		});
 	}
