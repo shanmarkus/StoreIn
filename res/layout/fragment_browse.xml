@@ -6,19 +6,15 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <RelativeLayout
+    <GridView
+        android:id="@+id/gridView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <GridView
-            android:id="@+id/gridView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:numColumns="3" >
-        </GridView>
-
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        android:divider="@android:color/black"
+        android:dividerHeight="0.5dp"
+        android:horizontalSpacing="10dp"
+        android:numColumns="3"
+        android:verticalSpacing="10dp" >
+    </GridView>
 
 </FrameLayout>
