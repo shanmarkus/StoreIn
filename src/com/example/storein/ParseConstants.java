@@ -11,6 +11,7 @@ public final class ParseConstants {
 
 	// Relational Class Name
 	public static final String TABLE_REL_PLACE_ITEM = "Rel_Place_Item";
+	public static final String TABLE_REL_PROMOTION_PLACE = "Rel_Promotion_Place";
 
 	// Field names
 	public static final String KEY_USERNAME = "username";
@@ -26,6 +27,8 @@ public final class ParseConstants {
 	public static final String KEY_USER_ID = "userId";
 	public static final String KEY_REVIEW = "review";
 	public static final String KEY_CATEGORY = "category";
+	public static final String KEY_CATEGORY_ID = "categoryId";
+	public static final String KEY_PROMOTION_ID = "promotionId";
 	public static final String KEY_CREATED_AT = "createdAt";
 
 	// Relational names

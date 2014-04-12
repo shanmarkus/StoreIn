@@ -67,7 +67,7 @@ public class PromotionList extends ActionBarActivity {
 		ListView mListPromotions;
 
 		// Variables
-		protected String categoriesId;
+		protected String categoryId;
 		protected ArrayList<HashMap<String, String>> promotionsInfo = new ArrayList<HashMap<String, String>>();
 		public HashMap<String, String> promotionInfo = new HashMap<String, String>();
 		protected ArrayList<String> objectsId = new ArrayList<String>();
@@ -80,7 +80,7 @@ public class PromotionList extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_promotion_list,
 					container, false);
-			categoriesId = getActivity().getIntent().getExtras()
+			categoryId = getActivity().getIntent().getExtras()
 					.getString(ParseConstants.KEY_OBJECT_ID);
 			return rootView;
 		}
@@ -99,15 +99,57 @@ public class PromotionList extends ActionBarActivity {
 		public void doPromotionQuery() {
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_PROMOTION);
-			query.whereEqualTo(ParseConstants.KEY_CATEGORY, categoriesId);
+			query.whereEqualTo(ParseConstants.KEY_CATEGORY_ID, categoryId);
 			query.findInBackground(new FindCallback<ParseObject>() {
-
 				@Override
 				public void done(List<ParseObject> promotions, ParseException e) {
 					if (e == null) {
-						for(ParseObject promotion : promotions){
-							String promoName = promotion.getString(ParseConstants.KEY_NAME);
-							String promoLocation = promotion.getString(ParseConstants.KEY_LOCATION);
+						for (ParseObject promotion : promotions) {
+							// put promotion objectId to array list
+							String tempObjectId = promotion.getObjectId();
+							objectsId.add(tempObjectId);
+
+							// get name of promotion
+							final String promoName = promotion
+									.getString(ParseConstants.KEY_NAME);
+
+							// find the location(s) of promotion
+							String objectId = promotion.getObjectId();
+							ParseQuery<ParseObject> query = ParseQuery
+									.getQuery(ParseConstants.TABLE_REL_PROMOTION_PLACE);
+							query.whereEqualTo(ParseConstants.KEY_PROMOTION_ID,
+									objectId);
+							ParseQuery<ParseObject> innerQuery = ParseQuery
+									.getQuery(ParseConstants.TABLE_PLACE);
+							innerQuery.whereMatchesKeyInQuery(
+									ParseConstants.KEY_OBJECT_ID,
+									ParseConstants.KEY_PLACE_ID, query);
+
+							innerQuery
+									.findInBackground(new FindCallback<ParseObject>() {
+										@Override
+										public void done(
+												List<ParseObject> places,
+												ParseException e) {
+											if (e == null) {
+												// success
+												for (ParseObject place : places) {
+													HashMap<String, String> promotionInfo = new HashMap<String, String>();
+													String address = place
+															.getString(ParseConstants.KEY_NAME);
+													promotionInfo
+															.put(ParseConstants.KEY_NAME,
+																	promoName);
+													promotionInfo
+															.put(ParseConstants.KEY_ADDRESS,
+																	address);
+												}
+											} else {
+												// failed
+											}
+										}
+									});
+
 						}
 					} else {
 						// failed
