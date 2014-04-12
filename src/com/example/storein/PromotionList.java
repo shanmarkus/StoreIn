@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -118,7 +119,7 @@ public class PromotionList extends ActionBarActivity {
 				public void done(List<ParseObject> promotions, ParseException e) {
 					if (e == null) {
 						for (ParseObject promotion : promotions) {
-							HashMap<String, String> promotionInfo = new HashMap<String, String>();
+							final HashMap<String, String> promotionInfo = new HashMap<String, String>();
 							// put promotion objectId to array list
 							String tempObjectId = promotion.getObjectId();
 
@@ -129,7 +130,7 @@ public class PromotionList extends ActionBarActivity {
 							// find the location(s) of promotion and adding to
 							// hash map
 
-							String objectId = promotion.getObjectId();
+							final String objectId = promotion.getObjectId();
 							ParseQuery<ParseObject> query = ParseQuery
 									.getQuery(ParseConstants.TABLE_REL_PROMOTION_PLACE);
 							query.whereEqualTo(ParseConstants.KEY_PROMOTION_ID,
@@ -139,7 +140,6 @@ public class PromotionList extends ActionBarActivity {
 							innerQuery.whereMatchesKeyInQuery(
 									ParseConstants.KEY_OBJECT_ID,
 									ParseConstants.KEY_PLACE_ID, query);
-
 							try {
 								getActivity()
 										.setProgressBarIndeterminateVisibility(
@@ -201,7 +201,8 @@ public class PromotionList extends ActionBarActivity {
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
 					String objectId = objectsId.get(position);
-					Intent intent = new Intent(getActivity(), PromotionDetail.class);
+					Intent intent = new Intent(getActivity(),
+							PromotionDetail.class);
 					intent.putExtra(ParseConstants.KEY_OBJECT_ID, objectId);
 					startActivity(intent);
 				}
