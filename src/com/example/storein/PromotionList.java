@@ -105,7 +105,10 @@ public class PromotionList extends ActionBarActivity {
 				@Override
 				public void done(List<ParseObject> promotions, ParseException e) {
 					if (e == null) {
-						// success
+						for(ParseObject promotion : promotions){
+							String promoName = promotion.getString(ParseConstants.KEY_NAME);
+							String promoLocation = promotion.getString(ParseConstants.KEY_LOCATION);
+						}
 					} else {
 						// failed
 					}
