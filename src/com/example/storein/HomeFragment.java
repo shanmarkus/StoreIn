@@ -61,8 +61,8 @@ public class HomeFragment extends Fragment {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_home, container, false);
 		mHomeGrid = (GridView) view.findViewById(R.id.homeGrid);
-		
-		//setAdapter();
+
+		// setAdapter();
 
 		// setting onClick
 		mHomeGrid.setOnItemClickListener(new OnItemClickListener() {
@@ -70,7 +70,8 @@ public class HomeFragment extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Toast.makeText(getActivity(), ((TextView) view).getText(), Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity(), ((TextView) view).getText(),
+						Toast.LENGTH_LONG).show();
 			}
 		});
 
@@ -78,7 +79,7 @@ public class HomeFragment extends Fragment {
 	}
 
 	public void setAdapter() {
-		String[] data = getResources().getStringArray(R.array.category_label);
+		String[] data = null;
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
 				android.R.layout.simple_list_item_1, data);
 		mHomeGrid.setAdapter(adapter);

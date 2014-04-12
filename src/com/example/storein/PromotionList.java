@@ -1,5 +1,7 @@
 package com.example.storein;
 
+import java.util.List;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -10,13 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 public class PromotionList extends ActionBarActivity {
 	// Variables
 	public static final String TAG = PromotionList.class.getSimpleName();
-	protected String categoriesName;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,9 @@ public class PromotionList extends ActionBarActivity {
 		// UI Variable
 		ListView mListPromotions;
 
+		// Variables
+		protected String categoriesId;
+
 		public PlaceholderFragment() {
 		}
 
@@ -69,6 +75,8 @@ public class PromotionList extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_promotion_list,
 					container, false);
+			categoriesId = getActivity().getIntent().getExtras()
+					.getString(ParseConstants.KEY_OBJECT_ID);
 			return rootView;
 		}
 
@@ -84,6 +92,15 @@ public class PromotionList extends ActionBarActivity {
 		public void doPromotionQuery() {
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_PROMOTION);
+			query.whereEqualTo(ParseConstants.KEY_CATEGORY, categoriesId);
+			query.findInBackground(new FindCallback<ParseObject>() {
+				
+				@Override
+				public void done(List<ParseObject> arg0, ParseException arg1) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 		}
 	}
 
