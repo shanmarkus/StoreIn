@@ -20,9 +20,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -99,7 +99,9 @@ public class PromotionList extends ActionBarActivity {
 		@Override
 		public void onResume() {
 			super.onResume();
-			doPromotionQuery();
+			if(promotionsInfo.size() == 0){
+				doPromotionQuery();
+			}
 			onClickPromotionListener();
 		}
 
@@ -114,68 +116,58 @@ public class PromotionList extends ActionBarActivity {
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_PROMOTION);
 			query.whereEqualTo(ParseConstants.KEY_CATEGORY_ID, categoryId);
-			query.findInBackground(new FindCallback<ParseObject>() {
+
+			ParseQuery<ParseObject> innerQuery = ParseQuery
+					.getQuery(ParseConstants.TABLE_REL_PROMOTION_PLACE);
+			innerQuery.whereMatchesKeyInQuery(ParseConstants.KEY_PROMOTION_ID,
+					ParseConstants.KEY_OBJECT_ID, query);
+			innerQuery.include(ParseConstants.KEY_PROMOTION_ID);
+			innerQuery.include(ParseConstants.KEY_PLACE_ID);
+
+			innerQuery.findInBackground(new FindCallback<ParseObject>() {
+
 				@Override
-				public void done(List<ParseObject> promotions, ParseException e) {
+				public void done(List<ParseObject> results, ParseException e) {
+					getActivity().setProgressBarIndeterminateVisibility(false);
 					if (e == null) {
-						for (ParseObject promotion : promotions) {
-							final HashMap<String, String> promotionInfo = new HashMap<String, String>();
-							// put promotion objectId to array list
-							String tempObjectId = promotion.getObjectId();
+						for (ParseObject result : results) {
+							HashMap<String, String> promotionInfo = new HashMap<String, String>();
 
-							// get name of promotion
-							final String promoName = promotion
+							ParseObject promotion = result
+									.getParseObject(ParseConstants.KEY_PROMOTION_ID);
+							ParseObject place = result
+									.getParseObject(ParseConstants.KEY_PLACE_ID);
+							String promotionName = promotion
 									.getString(ParseConstants.KEY_NAME);
+							String placeName = place
+									.getString(ParseConstants.KEY_NAME);
+							String objectId = promotion.getObjectId();
 
-							// find the location(s) of promotion and adding to
-							// hash map
-
-							final String objectId = promotion.getObjectId();
-							ParseQuery<ParseObject> query = ParseQuery
-									.getQuery(ParseConstants.TABLE_REL_PROMOTION_PLACE);
-							query.whereEqualTo(ParseConstants.KEY_PROMOTION_ID,
-									objectId);
-							ParseQuery<ParseObject> innerQuery = ParseQuery
-									.getQuery(ParseConstants.TABLE_PLACE);
-							innerQuery.whereMatchesKeyInQuery(
-									ParseConstants.KEY_OBJECT_ID,
-									ParseConstants.KEY_PLACE_ID, query);
-							try {
-								getActivity()
-										.setProgressBarIndeterminateVisibility(
-												false);
-								List<ParseObject> places = innerQuery.find();
-								for (ParseObject place : places) {
-									String address = place
-											.getString(ParseConstants.KEY_NAME);
-									promotionInfo.put(ParseConstants.KEY_NAME,
-											promoName);
-									promotionInfo
-											.put(ParseConstants.KEY_ADDRESS,
-													address);
-									objectsId.add(tempObjectId);
-									promotionsInfo.add(promotionInfo);
-								}
-							} catch (ParseException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
+							promotionInfo.put(ParseConstants.KEY_NAME,
+									promotionName);
+							promotionInfo.put(ParseConstants.KEY_ADDRESS,
+									placeName);
+							objectsId.add(objectId);
+							promotionsInfo.add(promotionInfo);
 
 						}
+
+						// set adapter
 						setAdapter();
 					} else {
+						// failed
 						Log.e(TAG, e.getMessage());
 						AlertDialog.Builder builder = new AlertDialog.Builder(
 								getActivity());
-						builder.setMessage(e.getMessage() + " Outer ")
+						builder.setMessage(e.getMessage())
 								.setTitle(R.string.error_title)
 								.setPositiveButton(android.R.string.ok, null);
 						AlertDialog dialog = builder.create();
 						dialog.show();
 					}
-
 				}
 			});
+
 		}
 
 		// Setting adapter for List
