@@ -57,6 +57,7 @@ public class PromotionDetail extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(
 					R.layout.fragment_promotion_detail, container, false);
+			
 			return rootView;
 		}
 	}
