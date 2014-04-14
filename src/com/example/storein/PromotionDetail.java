@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -16,11 +17,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.android.gms.maps.LocationSource;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -92,9 +95,12 @@ public class PromotionDetail extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(
 					R.layout.fragment_promotion_detail, container, false);
-			mLocationList = (ListView) rootView.findViewById(R.id.LocationsList);
-			getPromotionId();
+			mLocationList = (ListView) rootView
+					.findViewById(R.id.LocationsList);
 
+			// setting up needed function
+			getPromotionId();
+			onClickLocationList();
 			return rootView;
 		}
 
@@ -130,6 +136,26 @@ public class PromotionDetail extends ActionBarActivity {
 		}
 
 		/*
+		 * On Click Listener onListView
+		 */
+
+		public void onClickLocationList() {
+			mLocationList.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					Intent intent = new Intent(getActivity(),
+							LocationDetail.class);
+					String tempObjectId = objectsId.get(position);
+					intent.putExtra(ParseConstants.KEY_OBJECT_ID, tempObjectId);
+					startActivity(intent);
+
+				}
+			});
+		}
+
+		/*
 		 * Do Query to find promotion Location(s)
 		 */
 
@@ -137,6 +163,7 @@ public class PromotionDetail extends ActionBarActivity {
 			if (promotionId == null) {
 				getPromotionId();
 			}
+			locationsInfo.clear();
 			// set progress bar true
 			getActivity().setProgressBarIndeterminateVisibility(true);
 

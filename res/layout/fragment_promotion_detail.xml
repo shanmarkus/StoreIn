@@ -3,13 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="1"
     tools:context="com.example.storein.PromotionDetail$PlaceholderFragment" >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp" 
-        android:layout_weight="0.8">
+        android:layout_height="wrap_content" >
 
         <ImageView
             android:id="@+id/promotion_preview_image"
@@ -89,33 +87,29 @@
             android:layout_alignLeft="@+id/textPromotionDurationTitle"
             android:layout_below="@+id/textPromotionDurationTitle"
             android:text="@string/promotion_start_end_date" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
         <TextView
             android:id="@+id/textPromotionLocations"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textPromotionDuration"
-            android:layout_below="@+id/textPromotionDuration"
-            android:paddingTop="10dp"
+            android:padding="10dp"
             android:text="@string/promotion_location_title"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.2" >
 
         <ListView
             android:id="@+id/LocationsList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textPromotionLocations"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true" >
+            android:layout_below="@+id/textPromotionLocations" >
         </ListView>
-
     </RelativeLayout>
 
 </LinearLayout>

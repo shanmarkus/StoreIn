@@ -134,6 +134,7 @@ public class ItemDetail extends ActionBarActivity {
 		 * Check whether user already love the item or not
 		 */
 		public void checkLoveButton() {
+			getActivity().setProgressBarIndeterminateVisibility(true);
 			mBtnLoveIt = (Button) getActivity().findViewById(R.id.btnLoveIt);
 			ParseUser user = ParseUser.getCurrentUser();
 			String userId = user.getObjectId();
