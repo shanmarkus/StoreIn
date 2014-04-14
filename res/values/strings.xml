@@ -55,5 +55,9 @@
 	<string name="promotion_start_end_date_title">Duration</string>
 	<string name="promotion_start_end_date">Start Date - End Date</string>
 	<string name="promotion_location_title">Location(s)</string>
+	<string name="home_username">user name</string>
+	<string name="home_check_in_title">Check In</string>
+	<string name="home_following_title">Following</string>
+	<string name="home_follower_title">Follower</string>
     
 </resources>
