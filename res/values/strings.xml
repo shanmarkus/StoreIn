@@ -40,11 +40,19 @@
     <string name="check_review">Check Review</string>
     <string name="love_it">Love It</string>
     <string name="item_detail_title">Item Name</string>
-    <string name="item_detail_description">\"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"</string>
+    <string name="item_detail_description">"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"</string>
     <string name="item_detail_write_review">Review It</string>
     <string name="title_activity_write_review_item">WriteReviewItem</string>
     <string name="title_activity_item_review">ItemReview</string>
     <string name="title_activity_promotion_list">PromotionList</string>
     <string name="title_activity_promotion_detail">Promotion Detail</string>
-
+    <string name="image_description_testing">Testing image Description</string>
+    <string name="promotion_detail_title">Promotion Title</string>
+    <string name="promotion_detail_requirement_title">Requirement</string>
+    <string name="promotion_detail_requirement">Lorem Ipsum dolor si amet, consectetur adpisicing elit, sed do eius tempar incidunt</string>
+    <string name="promotion_detail_description_title">Promotion Description</string>
+    <string name="promotion_detail_decription">Lorem Ipsum dolor si amet, consectetur adpisicing elit, sed do eius tempar incidunt</string>
+	<string name="promotion_start_end_date_title">Duration</string>
+	<string name="promotion_start_end_date"></string>
+    
 </resources>

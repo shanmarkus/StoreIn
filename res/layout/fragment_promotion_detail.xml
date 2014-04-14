@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,35 +8,80 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.7" >
+        android:layout_height="380dp" >
 
         <ImageView
             android:id="@+id/iv_preview_image"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/image_description_testing"
+            android:padding="10dp"
+            android:src="@drawable/himeji" />
 
-        <Button
-            android:id="@+id/btnIvClose"
+        <TextView
+            android:id="@+id/txtPromotionTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:background="@drawable/himeji" />
-    </RelativeLayout>
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/iv_preview_image"
+            android:layout_marginLeft="14dp"
+            android:text="@string/promotion_detail_title"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.3" >
+        <TextView
+            android:id="@+id/textPromotionReqTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/txtPromotionTitle"
+            android:layout_below="@+id/txtPromotionTitle"
+            android:paddingTop="5dp"
+            android:text="@string/promotion_detail_requirement_title"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold" />
 
-        <ListView
-            android:id="@+id/listView1"
+        <TextView
+            android:id="@+id/textPromotionReq"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true" >
-        </ListView>
+            android:layout_alignLeft="@+id/textPromotionReqTitle"
+            android:layout_below="@+id/textPromotionReqTitle"
+            android:layout_marginRight="10dp"
+            android:paddingTop="2dp"
+            android:text="@string/promotion_detail_requirement" />
+
+        <TextView
+            android:id="@+id/textPromotionDescTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textPromotionReq"
+            android:layout_below="@+id/textPromotionReq"
+            android:paddingTop="10dp"
+            android:text="@string/promotion_detail_description_title"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textPromotionDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="2dp"
+            android:layout_alignLeft="@+id/textPromotionDescTitle"
+            android:layout_below="@+id/textPromotionDescTitle"
+            android:text="@string/promotion_detail_decription" />
+
+        <TextView
+            android:id="@+id/textPromotionDurationTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textPromotionDesc"
+            android:layout_below="@+id/textPromotionDesc"
+            android:paddingTop="10dp"
+            android:text="@string/promotion_start_end_date_title"
+            android:textAppearance="?android:attr/textAppearanceSmall" 
+            android:textStyle="bold"/>
+        
+        
     </RelativeLayout>
 
-</LinearLayout>
+</ScrollView>
