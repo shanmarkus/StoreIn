@@ -70,6 +70,44 @@
                 android:text="@string/home_follower_title"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/homeNumberCheckIn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/homeNumberCheckInTitle"
+                android:layout_toRightOf="@+id/homeProfilePicture"
+                android:text="@string/home_example_number"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <TextView
+                android:id="@+id/homeNumberFollower"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/homeNumberCheckIn"
+                android:layout_alignLeft="@+id/homeNumberFollowingTitle"
+                android:text="@string/home_example_number"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <TextView
+                android:id="@+id/homeNumberFollowing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/homeNumberFollowerTitle"
+                android:layout_alignLeft="@+id/homeNumberFollowerTitle"
+                android:text="@string/home_example_number"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <Button
+                android:id="@+id/homeEditProfile"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/homeNumberCheckInTitle"
+                android:layout_alignRight="@+id/homeNumberFollowerTitle"
+                android:layout_below="@+id/homeProfilePicture"
+                android:text="@string/home_edit_profile" />
+
         </RelativeLayout>
 
         <RelativeLayout
