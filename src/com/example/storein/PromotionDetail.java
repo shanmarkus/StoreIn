@@ -15,9 +15,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -32,6 +34,7 @@ public class PromotionDetail extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_promotion_detail);
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
@@ -89,6 +92,7 @@ public class PromotionDetail extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(
 					R.layout.fragment_promotion_detail, container, false);
+			getPromotionId();
 
 			return rootView;
 		}
@@ -96,14 +100,15 @@ public class PromotionDetail extends ActionBarActivity {
 		@Override
 		public void onResume() {
 			super.onResume();
-
+			// findPromotionDetail();
+			findPromotionLocation();
 		}
 
 		/*
 		 * Added Functions
 		 */
 		protected void getPromotionId() {
-			getActivity().getIntent().getExtras()
+			promotionId = (String) getActivity().getIntent().getExtras()
 					.get(ParseConstants.KEY_OBJECT_ID);
 		}
 
@@ -131,15 +136,23 @@ public class PromotionDetail extends ActionBarActivity {
 			if (promotionId == null) {
 				getPromotionId();
 			}
+			// set progress bar true
+			getActivity().setProgressBarIndeterminateVisibility(true);
 
 			ParseQuery<ParseObject> query = ParseQuery
+					.getQuery(ParseConstants.TABLE_PROMOTION);
+			query.whereEqualTo(ParseConstants.KEY_OBJECT_ID, promotionId);
+
+			ParseQuery<ParseObject> innerQuery = ParseQuery
 					.getQuery(ParseConstants.TABLE_REL_PROMOTION_PLACE);
-			query.whereEqualTo(ParseConstants.KEY_PROMOTION_ID, promotionId);
-			query.include(ParseConstants.KEY_PLACE_ID);
-			query.findInBackground(new FindCallback<ParseObject>() {
+			innerQuery.whereMatchesKeyInQuery(ParseConstants.KEY_PROMOTION_ID,
+					ParseConstants.KEY_OBJECT_ID, query);
+			innerQuery.include(ParseConstants.KEY_PLACE_ID);
+			innerQuery.findInBackground(new FindCallback<ParseObject>() {
 
 				@Override
 				public void done(List<ParseObject> places, ParseException e) {
+					getActivity().setProgressBarIndeterminateVisibility(false);
 					if (e == null) {
 						// success
 						for (ParseObject place : places) {
@@ -158,7 +171,11 @@ public class PromotionDetail extends ActionBarActivity {
 									placeAddress);
 							locationsInfo.add(locationInfo);
 							objectsId.add(objectId);
+
 						}
+						// setup adapter
+						setAdapter();
+
 					} else {
 						// failed
 						Log.e(TAG, e.getMessage());
@@ -183,6 +200,9 @@ public class PromotionDetail extends ActionBarActivity {
 			if (promotionId == null) {
 				getPromotionId();
 			}
+			// set progress bar true
+			getActivity().setProgressBarIndeterminateVisibility(true);
+
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_PROMOTION);
 			query.whereEqualTo(ParseConstants.KEY_OBJECT_ID, promotionId);
@@ -190,6 +210,7 @@ public class PromotionDetail extends ActionBarActivity {
 
 				@Override
 				public void done(ParseObject promotion, ParseException e) {
+					getActivity().setProgressBarIndeterminateVisibility(false);
 					if (e == null) {
 						// success
 						// Find all the Id
