@@ -1,14 +1,15 @@
 package com.example.storein;
 
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.os.Build;
+
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 public class PromotionDetail extends ActionBarActivity {
 	// Variables
@@ -70,6 +76,9 @@ public class PromotionDetail extends ActionBarActivity {
 
 		// Variables
 		protected String promotionId;
+		protected ArrayList<HashMap<String, String>> locationsInfo = new ArrayList<HashMap<String, String>>();
+		public HashMap<String, String> locationInfo = new HashMap<String, String>();
+		protected ArrayList<String> objectsId = new ArrayList<String>();
 
 		public PlaceholderFragment() {
 		}
@@ -97,6 +106,31 @@ public class PromotionDetail extends ActionBarActivity {
 					.get(ParseConstants.KEY_OBJECT_ID);
 		}
 
+		public void findPromotionLocation() {
+			if (promotionId == null) {
+				getPromotionId();
+			}
+
+			ParseQuery<ParseObject> query = ParseQuery
+					.getQuery(ParseConstants.TABLE_REL_PROMOTION_PLACE);
+			query.whereEqualTo(ParseConstants.KEY_PROMOTION_ID, promotionId);
+			query.include(ParseConstants.KEY_PLACE_ID);
+			query.findInBackground(new FindCallback<ParseObject>() {
+
+				@Override
+				public void done(List<ParseObject> places, ParseException e) {
+					for (ParseObject place : places) {
+						ParseObject placeDetail = place
+								.getParseObject(ParseConstants.KEY_PLACE_ID);
+						String placeName = placeDetail
+								.getString(ParseConstants.KEY_NAME);
+						String placeLocation = placeDetail
+								.getString(ParseConstants.KEY_ADDRESS);
+					}
+				}
+			});
+		}
+
 		public void findPromotionDetail() {
 			if (promotionId == null) {
 				getPromotionId();
@@ -110,8 +144,45 @@ public class PromotionDetail extends ActionBarActivity {
 				public void done(ParseObject promotion, ParseException e) {
 					if (e == null) {
 						// success
+						// Find all the Id
+						mTxtPromotionTitle = (TextView) getActivity()
+								.findViewById(R.id.txtPromotionTitle);
+						mTextPromotionReq = (TextView) getActivity()
+								.findViewById(R.id.textPromotionReq);
+						mTextPromotionDesc = (TextView) getActivity()
+								.findViewById(R.id.textPromotionDesc);
+						mTextPromotionDuration = (TextView) getActivity()
+								.findViewById(R.id.textPromotionDuration);
+
+						// Get all the important variables
+						String promoTitle = promotion
+								.getString(ParseConstants.KEY_NAME);
+						String promoRequirement = promotion
+								.getString(ParseConstants.KEY_REQUIREMENT);
+						String promoDescription = promotion
+								.getString(ParseConstants.KEY_DESCRIPTION);
+						Date promoStartDate = promotion
+								.getDate(ParseConstants.KEY_START_DATE);
+						Date promoEndDate = promotion
+								.getDate(ParseConstants.KEY_END_DATE);
+
+						// Put all the values
+						mTxtPromotionTitle.setText(promoTitle);
+						mTextPromotionReq.setText(promoRequirement);
+						mTextPromotionDesc.setText(promoDescription);
+						mTextPromotionDuration.setText(promoStartDate + " - "
+								+ promoEndDate);
+
 					} else {
 						// failed
+						Log.e(TAG, e.getMessage());
+						AlertDialog.Builder builder = new AlertDialog.Builder(
+								getActivity());
+						builder.setMessage(e.getMessage())
+								.setTitle(R.string.error_title)
+								.setPositiveButton(android.R.string.ok, null);
+						AlertDialog dialog = builder.create();
+						dialog.show();
 					}
 
 				}

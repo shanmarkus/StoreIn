@@ -30,6 +30,9 @@ public final class ParseConstants {
 	public static final String KEY_CATEGORY_ID = "categoryId";
 	public static final String KEY_PROMOTION_ID = "promotionId";
 	public static final String KEY_CREATED_AT = "createdAt";
+	public static final String KEY_REQUIREMENT = "requirement";
+	public static final String KEY_START_DATE = "startDate";
+	public static final String KEY_END_DATE = "endDate";
 
 	// Relational names
 	public static final String KEY_RELATION_ITEMS_CATALOG = "itemsCatalog";
