@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
@@ -106,6 +107,26 @@ public class PromotionDetail extends ActionBarActivity {
 					.get(ParseConstants.KEY_OBJECT_ID);
 		}
 
+		/*
+		 * Setting Adapter for Location List
+		 */
+
+		public void setAdapter() {
+			String[] keys = { ParseConstants.KEY_NAME,
+					ParseConstants.KEY_ADDRESS };
+			int[] ids = { android.R.id.text1, android.R.id.text2 };
+
+			SimpleAdapter adapter = new SimpleAdapter(getActivity(),
+					locationsInfo, android.R.layout.simple_list_item_2, keys,
+					ids);
+
+			mLocationList.setAdapter(adapter);
+		}
+
+		/*
+		 * Do Query to find promotion Location(s)
+		 */
+
 		public void findPromotionLocation() {
 			if (promotionId == null) {
 				getPromotionId();
@@ -153,6 +174,10 @@ public class PromotionDetail extends ActionBarActivity {
 				}
 			});
 		}
+
+		/*
+		 * Do Query for finding promotion details
+		 */
 
 		public void findPromotionDetail() {
 			if (promotionId == null) {
