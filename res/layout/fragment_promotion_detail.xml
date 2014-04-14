@@ -80,7 +80,24 @@
             android:text="@string/promotion_start_end_date_title"
             android:textAppearance="?android:attr/textAppearanceSmall" 
             android:textStyle="bold"/>
-        
+
+        <TextView
+            android:id="@+id/textPromotionDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textPromotionDurationTitle"
+            android:layout_below="@+id/textPromotionDurationTitle"
+            android:text="@string/promotion_start_end_date" />
+
+        <TextView
+            android:id="@+id/Location(s)"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textPromotionDuration"
+            android:paddingTop="10dp"
+            android:layout_below="@+id/textPromotionDuration"
+            android:text="@string/promotion_location_title"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
         
     </RelativeLayout>
 
