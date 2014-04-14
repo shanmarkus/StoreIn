@@ -1,5 +1,10 @@
 package com.example.storein;
 
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -9,19 +14,27 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.os.Build;
 
 public class PromotionDetail extends ActionBarActivity {
+	// Variables
+	public static final String TAG = PromotionDetail.class.getSimpleName();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_promotion_detail);
-
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
 	}
 
 	@Override
@@ -48,6 +61,15 @@ public class PromotionDetail extends ActionBarActivity {
 	 * A placeholder fragment containing a simple view.
 	 */
 	public static class PlaceholderFragment extends Fragment {
+		// UI Declaration
+		TextView mTxtPromotionTitle;
+		TextView mTextPromotionReq;
+		TextView mTextPromotionDesc;
+		TextView mTextPromotionDuration;
+		ListView mLocationList;
+
+		// Variables
+		protected String promotionId;
 
 		public PlaceholderFragment() {
 		}
@@ -57,8 +79,43 @@ public class PromotionDetail extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(
 					R.layout.fragment_promotion_detail, container, false);
-			
+
 			return rootView;
+		}
+
+		@Override
+		public void onResume() {
+			super.onResume();
+
+		}
+
+		/*
+		 * Added Functions
+		 */
+		protected void getPromotionId() {
+			getActivity().getIntent().getExtras()
+					.get(ParseConstants.KEY_OBJECT_ID);
+		}
+
+		public void findPromotionDetail() {
+			if (promotionId == null) {
+				getPromotionId();
+			}
+			ParseQuery<ParseObject> query = ParseQuery
+					.getQuery(ParseConstants.TABLE_PROMOTION);
+			query.whereEqualTo(ParseConstants.KEY_OBJECT_ID, promotionId);
+			query.getFirstInBackground(new GetCallback<ParseObject>() {
+
+				@Override
+				public void done(ParseObject promotion, ParseException e) {
+					if (e == null) {
+						// success
+					} else {
+						// failed
+					}
+
+				}
+			});
 		}
 	}
 

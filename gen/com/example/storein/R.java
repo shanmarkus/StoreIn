@@ -1198,7 +1198,7 @@ containing a value of this type.
         public static final int ulm=0x7f02007b;
     }
     public static final class id {
-        public static final int Location(s)=0x7f050066;
+        public static final int LocationsList=0x7f050067;
         public static final int ScrollView1=0x7f05004c;
         public static final int action_bar=0x7f05001f;
         public static final int action_bar_activity_content=0x7f050015;
@@ -1245,14 +1245,12 @@ containing a value of this type.
         public static final int image=0x7f05002a;
         public static final int itemDescriptionLabel=0x7f050050;
         public static final int itemTitleLabel=0x7f05004f;
-        public static final int iv_preview_image=0x7f05005e;
         public static final int lblReviewIt=0x7f050069;
         public static final int listItem=0x7f050055;
         public static final int listMode=0x7f050001;
         public static final int listPlace=0x7f05004a;
         public static final int listPromotions=0x7f050068;
         public static final int listUsersReview=0x7f050054;
-        public static final int listView1=0x7f050067;
         public static final int list_item=0x7f05002c;
         public static final int locationAddressLabel=0x7f050059;
         public static final int locationCheckIn=0x7f05005c;
@@ -1271,6 +1269,7 @@ containing a value of this type.
         public static final int phoneLabel=0x7f05005a;
         public static final int progress_circular=0x7f050018;
         public static final int progress_horizontal=0x7f050019;
+        public static final int promotion_preview_image=0x7f05005e;
         public static final int radio=0x7f050032;
         public static final int ratingBar1=0x7f050051;
         public static final int satellite=0x7f05001a;
@@ -1299,6 +1298,7 @@ containing a value of this type.
         public static final int textPromotionDescTitle=0x7f050062;
         public static final int textPromotionDuration=0x7f050065;
         public static final int textPromotionDurationTitle=0x7f050064;
+        public static final int textPromotionLocations=0x7f050066;
         public static final int textPromotionReq=0x7f050061;
         public static final int textPromotionReqTitle=0x7f050060;
         public static final int title=0x7f05002e;
