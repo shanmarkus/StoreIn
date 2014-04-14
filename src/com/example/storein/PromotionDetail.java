@@ -119,14 +119,37 @@ public class PromotionDetail extends ActionBarActivity {
 
 				@Override
 				public void done(List<ParseObject> places, ParseException e) {
-					for (ParseObject place : places) {
-						ParseObject placeDetail = place
-								.getParseObject(ParseConstants.KEY_PLACE_ID);
-						String placeName = placeDetail
-								.getString(ParseConstants.KEY_NAME);
-						String placeLocation = placeDetail
-								.getString(ParseConstants.KEY_ADDRESS);
+					if (e == null) {
+						// success
+						for (ParseObject place : places) {
+							HashMap<String, String> locationInfo = new HashMap<String, String>();
+							ParseObject placeDetail = place
+									.getParseObject(ParseConstants.KEY_PLACE_ID);
+							String placeName = placeDetail
+									.getString(ParseConstants.KEY_NAME);
+							String placeAddress = placeDetail
+									.getString(ParseConstants.KEY_ADDRESS);
+							String objectId = placeDetail.getObjectId();
+
+							locationInfo
+									.put(ParseConstants.KEY_NAME, placeName);
+							locationInfo.put(ParseConstants.KEY_ADDRESS,
+									placeAddress);
+							locationsInfo.add(locationInfo);
+							objectsId.add(objectId);
+						}
+					} else {
+						// failed
+						Log.e(TAG, e.getMessage());
+						AlertDialog.Builder builder = new AlertDialog.Builder(
+								getActivity());
+						builder.setMessage(e.getMessage())
+								.setTitle(R.string.error_title)
+								.setPositiveButton(android.R.string.ok, null);
+						AlertDialog dialog = builder.create();
+						dialog.show();
 					}
+
 				}
 			});
 		}
