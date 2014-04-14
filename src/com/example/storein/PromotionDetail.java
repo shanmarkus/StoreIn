@@ -92,6 +92,7 @@ public class PromotionDetail extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(
 					R.layout.fragment_promotion_detail, container, false);
+			mLocationList = (ListView) rootView.findViewById(R.id.LocationsList);
 			getPromotionId();
 
 			return rootView;
@@ -100,7 +101,7 @@ public class PromotionDetail extends ActionBarActivity {
 		@Override
 		public void onResume() {
 			super.onResume();
-			// findPromotionDetail();
+			findPromotionDetail();
 			findPromotionLocation();
 		}
 
