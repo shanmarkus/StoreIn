@@ -99,6 +99,7 @@ public class ItemReview extends ActionBarActivity {
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_ITEM_REVIEW);
 			query.whereEqualTo(ParseConstants.KEY_ITEM_ID, itemId);
+			query.include(ParseConstants.KEY_USER_ID);
 			query.findInBackground(new FindCallback<ParseObject>() {
 
 				@Override
@@ -109,6 +110,11 @@ public class ItemReview extends ActionBarActivity {
 						for (ParseObject review : reviews) {
 							// Setup Hash Map
 							HashMap<String, String> reviewList = new HashMap<String, String>();
+							
+							//Get User Information
+							ParseUser userInfo = review.getParseUser(ParseConstants.KEY_USER_ID);
+							String userName = userInfo.getUsername();
+							reviewList.put(ParseConstants.KEY_NAME, userName);
 
 							// Get the review text Information
 							String txtReview = review
@@ -117,21 +123,6 @@ public class ItemReview extends ActionBarActivity {
 							reviewList
 									.put(ParseConstants.KEY_REVIEW, txtReview);
 
-							// Getting the user Information
-							String userId = review
-									.getString(ParseConstants.KEY_USER_ID);
-							ParseQuery<ParseUser> innerQuery = ParseUser
-									.getQuery();
-							innerQuery.whereEqualTo(
-									ParseConstants.KEY_OBJECT_ID, userId);
-							try {
-								ParseUser tempUser = innerQuery.getFirst();
-								String name = tempUser.getUsername();
-								reviewList.put(ParseConstants.KEY_NAME, name);
-							} catch (ParseException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
 							reviewsList.add(reviewList);
 						}
 						//Set the list View 
