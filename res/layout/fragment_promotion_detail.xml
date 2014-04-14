@@ -1,4 +1,4 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,7 +8,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="380dp" >
+        android:layout_height="0dp" 
+        android:layout_weight="0.8">
 
         <ImageView
             android:id="@+id/iv_preview_image"
@@ -65,9 +66,9 @@
             android:id="@+id/textPromotionDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="2dp"
             android:layout_alignLeft="@+id/textPromotionDescTitle"
             android:layout_below="@+id/textPromotionDescTitle"
+            android:paddingTop="2dp"
             android:text="@string/promotion_detail_decription" />
 
         <TextView
@@ -78,8 +79,8 @@
             android:layout_below="@+id/textPromotionDesc"
             android:paddingTop="10dp"
             android:text="@string/promotion_start_end_date_title"
-            android:textAppearance="?android:attr/textAppearanceSmall" 
-            android:textStyle="bold"/>
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textPromotionDuration"
@@ -94,11 +95,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/textPromotionDuration"
-            android:paddingTop="10dp"
             android:layout_below="@+id/textPromotionDuration"
+            android:paddingTop="10dp"
             android:text="@string/promotion_location_title"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-        
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold" />
+
     </RelativeLayout>
 
-</ScrollView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2" >
+
+        <ListView
+            android:id="@+id/listView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true" >
+        </ListView>
+
+    </RelativeLayout>
+
+</LinearLayout>
