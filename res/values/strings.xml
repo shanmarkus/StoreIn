@@ -52,14 +52,15 @@
     <string name="promotion_detail_requirement">Lorem Ipsum dolor si amet, consectetur adpisicing elit, sed do eius tempar incidunt</string>
     <string name="promotion_detail_description_title">Promotion Description</string>
     <string name="promotion_detail_decription">Lorem Ipsum dolor si amet, consectetur adpisicing elit, sed do eius tempar incidunt</string>
-	<string name="promotion_start_end_date_title">Duration</string>
-	<string name="promotion_start_end_date">Start Date - End Date</string>
-	<string name="promotion_location_title">Location(s)</string>
-	<string name="home_username">user name</string>
-	<string name="home_check_in_title">Check In</string>
-	<string name="home_following_title">Following</string>
-	<string name="home_follower_title">Follower</string>
-	<string name="home_example_number">1</string>
-	<string name="home_edit_profile">edit your profile</string>
-    
+    <string name="promotion_start_end_date_title">Duration</string>
+    <string name="promotion_start_end_date">Start Date - End Date</string>
+    <string name="promotion_location_title">Location(s)</string>
+    <string name="home_username">user name</string>
+    <string name="home_check_in_title">Check In</string>
+    <string name="home_following_title">Following</string>
+    <string name="home_follower_title">Follower</string>
+    <string name="home_example_number">1</string>
+    <string name="home_edit_profile">edit your profile</string>
+    <string name="title_activity_claim_promotion">ClaimPromotion</string>
+
 </resources>

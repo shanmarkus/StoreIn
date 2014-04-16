@@ -117,6 +117,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.storein.PromotionList" />
         </activity>
+        <activity
+            android:name="com.example.storein.ClaimPromotion"
+            android:label="@string/title_activity_claim_promotion" >
+        </activity>
     </application>
 
 </manifest>

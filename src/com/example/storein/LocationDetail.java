@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -79,6 +80,7 @@ public class LocationDetail extends ActionBarActivity {
 	 * A placeholder fragment containing a simple view.
 	 */
 	public static class PlaceholderFragment extends Fragment {
+
 		// UI Variable
 		protected ImageView mLocationView;
 		protected TextView mLocationNameLabel;
@@ -86,6 +88,9 @@ public class LocationDetail extends ActionBarActivity {
 		protected TextView mLocationPhoneLabel;
 		protected RatingBar mLocationRatingBar;
 		protected Button mLocationCheckIn;
+
+		// Variables
+		protected String promotionId;
 
 		public PlaceholderFragment() {
 		}
@@ -95,6 +100,8 @@ public class LocationDetail extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_location_detail,
 					container, false);
+
+			getPromotionId();
 
 			// Setting up the UI
 			mLocationNameLabel = (TextView) rootView
@@ -111,10 +118,16 @@ public class LocationDetail extends ActionBarActivity {
 			return rootView;
 		}
 
+		private void getPromotionId() {
+			promotionId = getActivity().getIntent().getExtras()
+					.getString(ParseConstants.KEY_PROMOTION_ID);
+		}
+
 		@Override
 		public void onResume() {
 			super.onResume();
 			doLocationQuery();
+			onCheckInBtnClicked();
 		}
 
 		/*
@@ -122,6 +135,7 @@ public class LocationDetail extends ActionBarActivity {
 		 */
 
 		protected void onCheckInBtnClicked() {
+			getPromotionId();
 			mLocationCheckIn = (Button) getActivity().findViewById(
 					R.id.locationCheckIn);
 			mLocationCheckIn.setOnClickListener(new OnClickListener() {
@@ -139,8 +153,56 @@ public class LocationDetail extends ActionBarActivity {
 						public void done(ParseException e) {
 							if (e == null) {
 								// success
+								Toast.makeText(getActivity(),
+										"Check In Success", Toast.LENGTH_SHORT)
+										.show();
+
+								/*
+								 * Check if the user come from the promotion
+								 * page in the browse section then the intent
+								 * should contain the promotion ID if the intent
+								 * contain the promotion ID then send user
+								 * straight to the CLAIM PAGE
+								 * 
+								 * if not the send the user to the location
+								 * catalog
+								 */
+
+								if (promotionId != null) {
+									String userId = ParseUser.getCurrentUser()
+											.getObjectId();
+									Intent intent = new Intent(getActivity(),
+											ClaimPromotion.class);
+									intent.putExtra(ParseConstants.KEY_USER_ID,
+											userId);
+									intent.putExtra(
+											ParseConstants.KEY_PROMOTION_ID,
+											promotionId);
+									intent.putExtra(
+											ParseConstants.KEY_PLACE_ID,
+											placeID);
+									startActivity(intent);
+
+								} else {
+									Intent intent = new Intent(getActivity(),
+											LocationCatalog.class);
+									intent.putExtra(
+											ParseConstants.KEY_OBJECT_ID,
+											placeID);
+									startActivity(intent);
+								}
+
 							} else {
 								// failed
+								Log.e(TAG, e.getMessage());
+								AlertDialog.Builder builder = new AlertDialog.Builder(
+										getActivity());
+								builder.setMessage(e.getMessage())
+										.setTitle(R.string.error_title)
+										.setPositiveButton(android.R.string.ok,
+												null);
+								AlertDialog dialog = builder.create();
+								dialog.show();
 							}
 
 						}
