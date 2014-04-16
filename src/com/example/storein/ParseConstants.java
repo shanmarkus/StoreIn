@@ -9,6 +9,10 @@ public final class ParseConstants {
 	public static final String TABLE_PROMOTION = "Promotion";
 	public static final String TABLE_PROMOTION_CATEGORY = "PromotionCategory";
 
+	// User Activity class
+	public static final String TABLE_ACTV_USER_CLAIM_PROMOTION = "Activity_User_Claim_Promotion";
+	public static final String TABLE_ACTV_USER_CHECK_IN_PLACE = "Activity_User_Check_In_Place";
+
 	// Relational Class Name
 	public static final String TABLE_REL_PLACE_ITEM = "Rel_Place_Item";
 	public static final String TABLE_REL_PROMOTION_PLACE = "Rel_Promotion_Place";

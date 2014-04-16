@@ -24,19 +24,14 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class LocationDetail extends ActionBarActivity {
 
+	// Variables
 	public static final String TAG = LocationDetail.class.getSimpleName();
 	protected static String placeID;
-
-	// UI Variable
-	protected ImageView mLocationView;
-	protected TextView mLocationNameLabel;
-	protected TextView mLocationAddressLabel;
-	protected TextView mLocationPhoneLabel;
-	protected RatingBar mLocationRatingBar;
-	protected Button mLocationCheckIn;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +40,6 @@ public class LocationDetail extends ActionBarActivity {
 		setContentView(R.layout.activity_location_detail);
 		placeID = getIntent().getExtras().getString(
 				ParseConstants.KEY_OBJECT_ID);
-
-		// Setting up the UI
-		mLocationNameLabel = (TextView) findViewById(R.id.locationNameLabel);
-		mLocationAddressLabel = (TextView) findViewById(R.id.locationAddressLabel);
-		mLocationPhoneLabel = (TextView) findViewById(R.id.locationPhoneLabel);
-		mLocationRatingBar = (RatingBar) findViewById(R.id.locationRatingBar);
-		mLocationCheckIn = (Button) findViewById(R.id.locationCheckIn);
 
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
@@ -71,8 +59,8 @@ public class LocationDetail extends ActionBarActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		setSupportProgressBarIndeterminateVisibility(true); 
-		doLocationQuery();
+		setSupportProgressBarIndeterminateVisibility(true);
+
 	}
 
 	@Override
@@ -91,6 +79,13 @@ public class LocationDetail extends ActionBarActivity {
 	 * A placeholder fragment containing a simple view.
 	 */
 	public static class PlaceholderFragment extends Fragment {
+		// UI Variable
+		protected ImageView mLocationView;
+		protected TextView mLocationNameLabel;
+		protected TextView mLocationAddressLabel;
+		protected TextView mLocationPhoneLabel;
+		protected RatingBar mLocationRatingBar;
+		protected Button mLocationCheckIn;
 
 		public PlaceholderFragment() {
 		}
@@ -100,78 +95,120 @@ public class LocationDetail extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_location_detail,
 					container, false);
-			
-			
-			//Button
-			Button btn = (Button) rootView.findViewById(R.id.locationCheckIn);
-			btn.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					Intent intent = new Intent(getActivity(), LocationCatalog.class);
-					intent.putExtra(ParseConstants.KEY_OBJECT_ID, placeID);
-					startActivity(intent);	
-				}
-			});
+
+			// Setting up the UI
+			mLocationNameLabel = (TextView) rootView
+					.findViewById(R.id.locationNameLabel);
+			mLocationAddressLabel = (TextView) rootView
+					.findViewById(R.id.locationAddressLabel);
+			mLocationPhoneLabel = (TextView) rootView
+					.findViewById(R.id.locationPhoneLabel);
+			mLocationRatingBar = (RatingBar) rootView
+					.findViewById(R.id.locationRatingBar);
+			mLocationCheckIn = (Button) rootView
+					.findViewById(R.id.locationCheckIn);
+
 			return rootView;
 		}
-		
-	}
 
-	/*
-	 * Added Function
-	 */
+		@Override
+		public void onResume() {
+			super.onResume();
+			doLocationQuery();
+		}
 
-	/*
-	 * Get the query for location details
-	 */
+		/*
+		 * Added Function
+		 */
 
-	protected void doLocationQuery() {
-		ParseObject.registerSubclass(ParsePlace.class);
-		ParseQuery<ParseObject> query = ParseQuery
-				.getQuery(ParseConstants.TABLE_PLACE);
-		query.whereEqualTo(ParseConstants.KEY_OBJECT_ID, placeID);
-		query.findInBackground(new FindCallback<ParseObject>() {
+		protected void onCheckInBtnClicked() {
+			mLocationCheckIn = (Button) getActivity().findViewById(
+					R.id.locationCheckIn);
+			mLocationCheckIn.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void done(List<ParseObject> locationDetail, ParseException e) {
-				setProgressBarIndeterminateVisibility(false);
-				if (e == null) {
-					// success
-					ParseObject location = locationDetail.get(0);
-					String nameLocation = location
-							.getString(ParseConstants.KEY_NAME);
-					String addressLocation = location
-							.getString(ParseConstants.KEY_ADDRESS);
-					Integer temp = location.getInt(ParseConstants.KEY_PHONE);
-					String phoneLocation = temp.toString();
-					Float ratingLocation = (float) location
-							.getInt(ParseConstants.KEY_RATING);
+				@Override
+				public void onClick(View v) {
+					String userId = ParseUser.getCurrentUser().getObjectId();
+					ParseObject checkInActivity = new ParseObject(
+							ParseConstants.TABLE_ACTV_USER_CHECK_IN_PLACE);
+					checkInActivity.put(ParseConstants.KEY_USER_ID, userId);
+					checkInActivity.put(ParseConstants.KEY_PLACE_ID, placeID);
+					checkInActivity.saveInBackground(new SaveCallback() {
 
-					// Setting the information detail
-					mLocationNameLabel = (TextView) findViewById(R.id.locationNameLabel);
-					mLocationAddressLabel = (TextView) findViewById(R.id.locationAddressLabel);
-					mLocationPhoneLabel = (TextView) findViewById(R.id.locationPhoneLabel);
-					mLocationRatingBar = (RatingBar) findViewById(R.id.locationRatingBar);
+						@Override
+						public void done(ParseException e) {
+							if (e == null) {
+								// success
+							} else {
+								// failed
+							}
 
-					mLocationNameLabel.setText(nameLocation);
-					mLocationAddressLabel.setText(addressLocation);
-					mLocationPhoneLabel.setText(phoneLocation);
-					mLocationRatingBar.setRating(ratingLocation);
+						}
+					});
 
-				} else {
-					// failed
-					Log.e(TAG, e.getMessage());
-					AlertDialog.Builder builder = new AlertDialog.Builder(
-							LocationDetail.this);
-					builder.setMessage(e.getMessage())
-							.setTitle(R.string.error_title)
-							.setPositiveButton(android.R.string.ok, null);
-					AlertDialog dialog = builder.create();
-					dialog.show();
 				}
-			}
-		});
+			});
+		}
+
+		/*
+		 * Get the query for location details
+		 */
+
+		protected void doLocationQuery() {
+			getActivity().setProgressBarIndeterminateVisibility(true);
+			ParseObject.registerSubclass(ParsePlace.class);
+			ParseQuery<ParseObject> query = ParseQuery
+					.getQuery(ParseConstants.TABLE_PLACE);
+			query.whereEqualTo(ParseConstants.KEY_OBJECT_ID, placeID);
+			query.findInBackground(new FindCallback<ParseObject>() {
+
+				@Override
+				public void done(List<ParseObject> locationDetail,
+						ParseException e) {
+					getActivity().setProgressBarIndeterminateVisibility(false);
+					if (e == null) {
+						// success
+						ParseObject location = locationDetail.get(0);
+						String nameLocation = location
+								.getString(ParseConstants.KEY_NAME);
+						String addressLocation = location
+								.getString(ParseConstants.KEY_ADDRESS);
+						Integer temp = location
+								.getInt(ParseConstants.KEY_PHONE);
+						String phoneLocation = temp.toString();
+						Float ratingLocation = (float) location
+								.getInt(ParseConstants.KEY_RATING);
+
+						// Setting the information detail
+						mLocationNameLabel = (TextView) getActivity()
+								.findViewById(R.id.locationNameLabel);
+						mLocationAddressLabel = (TextView) getActivity()
+								.findViewById(R.id.locationAddressLabel);
+						mLocationPhoneLabel = (TextView) getActivity()
+								.findViewById(R.id.locationPhoneLabel);
+						mLocationRatingBar = (RatingBar) getActivity()
+								.findViewById(R.id.locationRatingBar);
+
+						mLocationNameLabel.setText(nameLocation);
+						mLocationAddressLabel.setText(addressLocation);
+						mLocationPhoneLabel.setText(phoneLocation);
+						mLocationRatingBar.setRating(ratingLocation);
+
+					} else {
+						// failed
+						Log.e(TAG, e.getMessage());
+						AlertDialog.Builder builder = new AlertDialog.Builder(
+								getActivity());
+						builder.setMessage(e.getMessage())
+								.setTitle(R.string.error_title)
+								.setPositiveButton(android.R.string.ok, null);
+						AlertDialog dialog = builder.create();
+						dialog.show();
+					}
+				}
+			});
+
+		}
 
 	}
 
