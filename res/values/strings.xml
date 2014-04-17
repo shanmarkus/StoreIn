@@ -62,5 +62,7 @@
     <string name="home_example_number">1</string>
     <string name="home_edit_profile">edit your profile</string>
     <string name="title_activity_claim_promotion">ClaimPromotion</string>
+    <string name="top_items">Top Items</string>
+    <string name="top_promotions">Top Promotions</string>
 
 </resources>

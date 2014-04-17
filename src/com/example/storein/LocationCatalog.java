@@ -1,14 +1,13 @@
 package com.example.storein;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -16,12 +15,10 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -92,6 +89,11 @@ public class LocationCatalog extends ActionBarActivity {
 		public HashMap<String, String> itemInfo = new HashMap<String, String>();
 		public ArrayList<String> itemsID = new ArrayList<String>();
 
+		protected ArrayList<HashMap<String, String>> promotionsInfo = new ArrayList<HashMap<String, String>>();
+		public HashMap<String, String> promotionInfo = new HashMap<String, String>();
+		public ArrayList<String> promotionId = new ArrayList<String>();
+		public ArrayList<Boolean> promotionClaimable = new ArrayList<Boolean>();
+
 		public PlaceholderFragment() {
 		}
 
@@ -116,8 +118,6 @@ public class LocationCatalog extends ActionBarActivity {
 
 			mViewPager = (ViewPager) rootView.findViewById(R.id.view_pager);
 			mListItem = (ListView) rootView.findViewById(R.id.listItem);
-			ImagePagerAdapter adapter = new ImagePagerAdapter();
-			mViewPager.setAdapter(adapter);
 			doItemQuery();
 
 			return rootView;
@@ -125,6 +125,57 @@ public class LocationCatalog extends ActionBarActivity {
 
 		/*
 		 * Added Function
+		 */
+
+		/*
+		 * find top promotion list
+		 */
+		protected void doPromotionQuery() {
+
+			getActivity().setProgressBarIndeterminateVisibility(true);
+			ParseQuery<ParseObject> query = ParseQuery
+					.getQuery(ParseConstants.TABLE_REL_PROMOTION_PLACE);
+			query.whereEqualTo(ParseConstants.KEY_PLACE_ID, placeID);
+			query.include(ParseConstants.KEY_PROMOTION_ID);
+			query.include(ParseConstants.KEY_PLACE_ID);
+			query.findInBackground(new FindCallback<ParseObject>() {
+
+				@Override
+				public void done(List<ParseObject> promotions, ParseException e) {
+					getActivity().setProgressBarIndeterminateVisibility(false);
+					if (e == null) {
+						for (ParseObject promo : promotions) {
+							HashMap<String, String> promotionInfo = new HashMap<String, String>();
+							ParseObject tempPromo = promo
+									.getParseObject(ParseConstants.KEY_PLACE_ID);
+							String promoName = tempPromo
+									.getString(ParseConstants.KEY_NAME);
+							Boolean claimable = tempPromo
+									.getBoolean(ParseConstants.KEY_CLAIMABLE);
+							if (claimable == true) {
+								promotionInfo.put(ParseConstants.KEY_CLAIMABLE,
+										"FLASH DEALS");
+							} else {
+								Date endDate = tempPromo
+										.getDate(ParseConstants.KEY_END_DATE);
+								promotionInfo.put(ParseConstants.KEY_CLAIMABLE,
+										endDate.toString());
+							}
+							promotionInfo.put(ParseConstants.KEY_NAME,
+									promoName);
+							promotionsInfo.add(promotionInfo);
+						}
+						setListPromotionAdapter();
+					} else {
+
+					}
+
+				}
+			});
+		}
+
+		/*
+		 * Getting Top Items on a place
 		 */
 
 		public void doItemQuery() {
@@ -161,7 +212,7 @@ public class LocationCatalog extends ActionBarActivity {
 							objectsId.add(objectId);
 
 						}
-						setAdapter();
+						setListItemAdapter();
 						onItemClickListener(objectsId);
 
 					} else {
@@ -182,13 +233,13 @@ public class LocationCatalog extends ActionBarActivity {
 							String userId = ParseUser.getCurrentUser()
 									.getObjectId();
 							String objectId = objectsId.get(position);
-							
+
 							// Start intent
 							final Intent intent = new Intent(getActivity(),
 									ItemDetail.class);
 							intent.putExtra(ParseConstants.KEY_OBJECT_ID,
 									objectId);
-							
+
 							// Query for Checking Loved Items
 							ParseQuery<ParseObject> query = ParseQuery
 									.getQuery(ParseConstants.TABLE_ITEM_LOVED);
@@ -220,70 +271,34 @@ public class LocationCatalog extends ActionBarActivity {
 						}
 					});
 				}
-
-				private void setAdapter() {
-					String[] keys = { ParseConstants.KEY_NAME,
-							ParseConstants.KEY_RATING };
-					int[] ids = { android.R.id.text1, android.R.id.text2 };
-
-					SimpleAdapter adapter = new SimpleAdapter(getActivity(),
-							itemsInfo, android.R.layout.simple_list_item_2,
-							keys, ids);
-
-					mListItem.setAdapter(adapter);
-				}
 			});
 		}
+		
 
-		/*
-		 * Image Adapter Class
-		 */
+		private void setListItemAdapter() {
+			String[] keys = { ParseConstants.KEY_NAME,
+					ParseConstants.KEY_RATING };
+			int[] ids = { android.R.id.text1, android.R.id.text2 };
 
-		public class ImagePagerAdapter extends PagerAdapter {
-			private int[] mImages = new int[] { R.drawable.chiang_mai,
-					R.drawable.himeji, R.drawable.petronas_twin_tower,
-					R.drawable.ulm };
+			SimpleAdapter adapter = new SimpleAdapter(getActivity(),
+					itemsInfo, android.R.layout.simple_list_item_2,
+					keys, ids);
 
-			@Override
-			public int getCount() {
-				return mImages.length;
-			}
-
-			@Override
-			public boolean isViewFromObject(View view, Object object) {
-				return view == ((ImageView) object);
-			}
-
-			@Override
-			public Object instantiateItem(ViewGroup container, int position) {
-				Context context = getActivity();
-				ImageView imageView = new ImageView(context);
-				int padding = context.getResources().getDimensionPixelSize(
-						R.dimen.padding_medium);
-				imageView.setPadding(padding, padding, padding, padding);
-				imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-				imageView.setImageResource(mImages[position]);
-
-				// Go to the gallery page of promotional
-				imageView.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						Log.d(TAG, "MAHO");
-
-					}
-				});
-				((ViewPager) container).addView(imageView, 0);
-				return imageView;
-			}
-
-			@Override
-			public void destroyItem(ViewGroup container, int position,
-					Object object) {
-				((ViewPager) container).removeView((ImageView) object);
-			}
-
+			mListItem.setAdapter(adapter);
 		}
+		
+		private void setListPromotionAdapter() {
+			String[] keys = { ParseConstants.KEY_NAME,
+					ParseConstants.KEY_RATING };
+			int[] ids = { android.R.id.text1, android.R.id.text2 };
+
+			SimpleAdapter adapter = new SimpleAdapter(getActivity(),
+					promotionsInfo, android.R.layout.simple_list_item_2,
+					keys, ids);
+
+			mListItem.setAdapter(adapter);
+		}
+
 	}
 
 }

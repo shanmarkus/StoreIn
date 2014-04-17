@@ -5,32 +5,61 @@
     android:orientation="vertical"
     tools:context="com.example.storein.LocationCatalog$PlaceholderFragment" >
 
-   <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.4" >
+        android:layout_weight="0.45" >
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/view_pager"
-            android:onClick="myClickMethod"
+        <TextView
+            android:id="@+id/textPromotion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+            android:text="@string/top_promotions"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <ListView
+            android:id="@+id/listPromotion"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textPromotion"
+            android:paddingLeft="24dp" >
+        </ListView>
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.6" >
+        android:layout_weight="0.1" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_centerInParent="true"
+            android:background="@android:color/darker_gray" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.45" >
+
+        <TextView
+            android:id="@+id/textTopItems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+            android:text="@string/top_items"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <ListView
             android:id="@+id/listItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:divider="@android:color/black"
-            android:dividerHeight="0.5dp" >
+            android:layout_below="@+id/textTopItems"
+            android:paddingLeft="24dp" >
         </ListView>
     </RelativeLayout>
 
