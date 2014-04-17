@@ -214,7 +214,11 @@ public class LocationCatalog extends ActionBarActivity {
 								promotionId);
 						startActivity(intent);
 					} else {
-
+						Intent intent = new Intent(getActivity(),
+								PromotionDetail.class);
+						intent.putExtra(ParseConstants.KEY_OBJECT_ID,
+								promotionId);
+						startActivity(intent);
 					}
 
 				}

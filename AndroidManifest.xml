@@ -121,6 +121,14 @@
             android:name="com.example.storein.ClaimPromotion"
             android:label="@string/title_activity_claim_promotion" >
         </activity>
+        <activity
+            android:name="com.example.storein.PromotionDetail"
+            android:label="@string/title_activity_promotion_detail"
+            android:parentActivityName="com.example.storein.LocationCatalog" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.storein.LocationCatalog" />
+        </activity>
     </application>
 
 </manifest>
