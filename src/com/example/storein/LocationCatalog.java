@@ -82,6 +82,7 @@ public class LocationCatalog extends ActionBarActivity {
 		// User Interface Variable
 		ViewPager mViewPager;
 		ListView mListItem;
+		ListView mListPromotion;
 
 		// Fixed Constants
 		protected static final int MAX_ITEMS = 5;
@@ -273,30 +274,34 @@ public class LocationCatalog extends ActionBarActivity {
 				}
 			});
 		}
-		
 
+		/*
+		 * Adapter setup
+		 */
 		private void setListItemAdapter() {
+			mListItem = (ListView) getActivity().findViewById(R.id.listItem);
 			String[] keys = { ParseConstants.KEY_NAME,
 					ParseConstants.KEY_RATING };
 			int[] ids = { android.R.id.text1, android.R.id.text2 };
 
-			SimpleAdapter adapter = new SimpleAdapter(getActivity(),
-					itemsInfo, android.R.layout.simple_list_item_2,
-					keys, ids);
+			SimpleAdapter adapter = new SimpleAdapter(getActivity(), itemsInfo,
+					android.R.layout.simple_list_item_2, keys, ids);
 
 			mListItem.setAdapter(adapter);
 		}
-		
+
 		private void setListPromotionAdapter() {
+			mListPromotion = (ListView) getActivity().findViewById(
+					R.id.listPromotion);
 			String[] keys = { ParseConstants.KEY_NAME,
-					ParseConstants.KEY_RATING };
+					ParseConstants.KEY_CLAIMABLE };
 			int[] ids = { android.R.id.text1, android.R.id.text2 };
 
 			SimpleAdapter adapter = new SimpleAdapter(getActivity(),
-					promotionsInfo, android.R.layout.simple_list_item_2,
-					keys, ids);
+					promotionsInfo, android.R.layout.simple_list_item_2, keys,
+					ids);
 
-			mListItem.setAdapter(adapter);
+			mListPromotion.setAdapter(adapter);
 		}
 
 	}
