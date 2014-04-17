@@ -192,7 +192,6 @@ public class PromotionDetail extends ActionBarActivity {
 							String placeAddress = placeDetail
 									.getString(ParseConstants.KEY_ADDRESS);
 							String objectId = placeDetail.getObjectId();
-
 							locationInfo
 									.put(ParseConstants.KEY_NAME, placeName);
 							locationInfo.put(ParseConstants.KEY_ADDRESS,
@@ -241,6 +240,7 @@ public class PromotionDetail extends ActionBarActivity {
 					getActivity().setProgressBarIndeterminateVisibility(false);
 					if (e == null) {
 						// success
+						
 						// Find all the Id
 						mTxtPromotionTitle = (TextView) getActivity()
 								.findViewById(R.id.txtPromotionTitle);

@@ -99,7 +99,7 @@ public class PromotionList extends ActionBarActivity {
 		@Override
 		public void onResume() {
 			super.onResume();
-			if(promotionsInfo.size() == 0){
+			if (promotionsInfo.size() == 0) {
 				doPromotionQuery();
 			}
 			onClickPromotionListener();
@@ -116,6 +116,8 @@ public class PromotionList extends ActionBarActivity {
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_PROMOTION);
 			query.whereEqualTo(ParseConstants.KEY_CATEGORY_ID, categoryId);
+			// Set only the general Promotion
+			query.whereEqualTo(ParseConstants.KEY_CLAIMABLE, false);
 
 			ParseQuery<ParseObject> innerQuery = ParseQuery
 					.getQuery(ParseConstants.TABLE_REL_PROMOTION_PLACE);

@@ -37,6 +37,7 @@ public final class ParseConstants {
 	public static final String KEY_REQUIREMENT = "requirement";
 	public static final String KEY_START_DATE = "startDate";
 	public static final String KEY_END_DATE = "endDate";
+	public static final String KEY_CLAIMABLE = "claimable";
 
 	// Relational names
 	public static final String KEY_RELATION_ITEMS_CATALOG = "itemsCatalog";

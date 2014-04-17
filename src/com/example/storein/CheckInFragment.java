@@ -44,6 +44,8 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
@@ -117,13 +119,9 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		if (mMap == null) {
 			mMap = fragment.getMap();
 			mMap.setMyLocationEnabled(true);
-			mMap.setOnMyLocationButtonClickListener(this);
-			doMapQuery();
 		}
-		doMapQuery();
 		setUpLocationClientIfNeeded();
 		mLocationClient.connect();
-
 	}
 
 	@Override
@@ -159,8 +157,15 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	 */
 
 	private void doMapQuery() {
+		// Get user Location
+		ParseGeoPoint location = ParseUser.getCurrentUser().getParseGeoPoint(
+				ParseConstants.KEY_LOCATION);
+		Toast.makeText(getActivity(), location + " ", Toast.LENGTH_SHORT)
+				.show();
+		// Do the Query
 		ParseObject.registerSubclass(ParsePlace.class);
 		ParseQuery<ParsePlace> query = ParsePlace.getQuery();
+		query.whereWithinKilometers(ParseConstants.KEY_LOCATION, location, 10);
 		query.orderByAscending(ParseConstants.KEY_NAME);
 		query.setLimit(MAX_PLACE_SEARCH_RESULTS);
 		query.findInBackground(new FindCallback<ParsePlace>() {
@@ -183,7 +188,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 						placeInfo.put(ParseConstants.KEY_NAME, name);
 						placeInfo.put(ParseConstants.KEY_ADDRESS, address);
 						placesInfo.add(placeInfo);
-						
+
 						// add ID
 						placesID.add(id);
 					}
@@ -201,7 +206,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 					mListPlace.setAdapter(adapter);
 
 					/*
-					 * Set Listener to the ListView to open other intent 
+					 * Set Listener to the ListView to open other intent
 					 */
 					mListPlace
 							.setOnItemClickListener(new OnItemClickListener() {
@@ -211,7 +216,9 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 									String placeID = placesID.get(position);
 									Intent intent = new Intent(getActivity(),
 											LocationDetail.class);
-									intent.putExtra(ParseConstants.KEY_OBJECT_ID, placeID);
+									intent.putExtra(
+											ParseConstants.KEY_OBJECT_ID,
+											placeID);
 									startActivity(intent);
 								}
 							});
@@ -290,6 +297,28 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 			// Zoom to the current location.
 			updateZoom(myLatLng);
 			hasSetUpInitialLocation = true;
+
+			// Update User Location to Parse
+			ParseGeoPoint temp = new ParseGeoPoint(myLatLng.latitude,
+					myLatLng.longitude);
+			ParseUser user = ParseUser.getCurrentUser();
+			user.put(ParseConstants.KEY_LOCATION, temp);
+			user.saveEventually(new SaveCallback() {
+
+				@Override
+				public void done(ParseException e) {
+					if (e == null) {
+						Toast.makeText(getActivity(), "Location Updated",
+								Toast.LENGTH_SHORT).show();
+						doMapQuery();
+
+					} else {
+						Toast.makeText(getActivity(), "Location Not Updated",
+								Toast.LENGTH_SHORT).show();
+					}
+
+				}
+			});
 		}
 		// Update map radius indicator
 		updateCircle(myLatLng);
@@ -367,10 +396,11 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		LatLngBounds bounds = calculateBoundsWithCenter(myLatLng);
 		// Zoom to the given bounds
 		mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 5));
-		
-		//Zoom further 
+
+		// Zoom further
 		float zoomLevel = 19;
-		mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, zoomLevel));
+		mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLatLng,
+				zoomLevel));
 	}
 
 	/*

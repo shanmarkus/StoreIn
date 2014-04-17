@@ -21,6 +21,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -33,14 +34,20 @@ public class LocationDetail extends ActionBarActivity {
 	// Variables
 	public static final String TAG = LocationDetail.class.getSimpleName();
 	protected static String placeID;
+	protected static String promotionId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_location_detail);
+		
+		//Get Stuff
 		placeID = getIntent().getExtras().getString(
 				ParseConstants.KEY_OBJECT_ID);
+		
+		promotionId = getIntent().getExtras().getString(
+				ParseConstants.KEY_PROMOTION_ID);
 
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
@@ -90,7 +97,7 @@ public class LocationDetail extends ActionBarActivity {
 		protected Button mLocationCheckIn;
 
 		// Variables
-		protected String promotionId;
+		private GoogleMap mMap;
 
 		public PlaceholderFragment() {
 		}
@@ -215,6 +222,10 @@ public class LocationDetail extends ActionBarActivity {
 		/*
 		 * Get the query for location details
 		 */
+		
+		protected void checkUserGeoLocation(){
+			
+		}
 
 		protected void doLocationQuery() {
 			getActivity().setProgressBarIndeterminateVisibility(true);

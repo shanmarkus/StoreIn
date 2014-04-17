@@ -62,18 +62,6 @@ public class HomeFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_home, container, false);
 		
 
-		// setAdapter();
-
-		// setting onClick
-		mHomeGrid.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				Toast.makeText(getActivity(), ((TextView) view).getText(),
-						Toast.LENGTH_LONG).show();
-			}
-		});
 
 		return view;
 	}
