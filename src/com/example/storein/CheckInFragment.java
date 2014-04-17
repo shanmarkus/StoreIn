@@ -161,13 +161,12 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		// Get user Location
 		ParseGeoPoint location = ParseUser.getCurrentUser().getParseGeoPoint(
 				ParseConstants.KEY_LOCATION);
-		Toast.makeText(getActivity(), location + " ", Toast.LENGTH_SHORT)
-				.show();
 
 		// Do the Query
 		ParseObject.registerSubclass(ParsePlace.class);
 		ParseQuery<ParsePlace> query = ParsePlace.getQuery();
-		query.whereWithinKilometers(ParseConstants.KEY_LOCATION, location, MAX_PlACE_SEARCH_DISTANCE);
+		query.whereWithinKilometers(ParseConstants.KEY_LOCATION, location,
+				MAX_PlACE_SEARCH_DISTANCE);
 		query.orderByAscending(ParseConstants.KEY_NAME);
 		query.setLimit(MAX_PLACE_SEARCH_RESULTS);
 		query.findInBackground(new FindCallback<ParsePlace>() {
@@ -249,7 +248,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 
 	}
 
-
 	/*
 	 * Map Functionality
 	 */
@@ -277,44 +275,50 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	public void onLocationChanged(Location location) {
 
 		currentLocation = location;
-		if (lastLocation != null
-				&& geoPointFromLocation(location).distanceInKilometersTo(
-						geoPointFromLocation(lastLocation)) < 0.01) {
-			// If the location hasn't changed by more than 10 meters, ignore it.
-			return;
-		}
 		lastLocation = location;
 		LatLng myLatLng = new LatLng(location.getLatitude(),
 				location.getLongitude());
+		
+		// Not changes
+		if (lastLocation != null
+				&& geoPointFromLocation(location).distanceInKilometersTo(
+						geoPointFromLocation(lastLocation)) < 0.01) {
+			updateZoom(myLatLng);
+			updateUserLocation(myLatLng);
+			return;
+		}
 		if (!hasSetUpInitialLocation) {
 			// Zoom to the current location.
 			updateZoom(myLatLng);
 			hasSetUpInitialLocation = true;
-
-			// Update User Location to Parse
-			ParseGeoPoint temp = new ParseGeoPoint(myLatLng.latitude,
-					myLatLng.longitude);
-			ParseUser user = ParseUser.getCurrentUser();
-			user.put(ParseConstants.KEY_LOCATION, temp);
-			user.saveEventually(new SaveCallback() {
-
-				@Override
-				public void done(ParseException e) {
-					if (e == null) {
-						Toast.makeText(getActivity(), "Location Updated",
-								Toast.LENGTH_SHORT).show();
-						doMapQuery();
-
-					} else {
-						Toast.makeText(getActivity(), "Location Not Updated",
-								Toast.LENGTH_SHORT).show();
-					}
-
-				}
-			});
+			updateUserLocation(myLatLng);
 		}
 		// Update map radius indicator
 		updateCircle(myLatLng);
+	}
+
+	private void updateUserLocation(LatLng myLatLng) {
+		// Update User Location to Parse
+		ParseGeoPoint temp = new ParseGeoPoint(myLatLng.latitude,
+				myLatLng.longitude);
+		ParseUser user = ParseUser.getCurrentUser();
+		user.put(ParseConstants.KEY_LOCATION, temp);
+		user.saveEventually(new SaveCallback() {
+
+			@Override
+			public void done(ParseException e) {
+				if (e == null) {
+					Toast.makeText(getActivity(), "Location Updated",
+							Toast.LENGTH_SHORT).show();
+					doMapQuery();
+
+				} else {
+					Toast.makeText(getActivity(), "Location Not Updated",
+							Toast.LENGTH_SHORT).show();
+				}
+
+			}
+		});
 	}
 
 	/**
@@ -479,7 +483,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

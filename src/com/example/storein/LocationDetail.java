@@ -107,7 +107,6 @@ public class LocationDetail extends ActionBarActivity {
 		protected Button mLocationCheckIn;
 
 		// Variables
-		private GoogleMap mMap;
 		private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 		LocationClient mLocationClient;
 		Location mCurrentLocation;
@@ -152,7 +151,6 @@ public class LocationDetail extends ActionBarActivity {
 			super.onResume();
 			mLocationClient.connect();
 			doLocationQuery();
-			onCheckInBtnClicked();
 		}
 
 		@Override
@@ -170,7 +168,6 @@ public class LocationDetail extends ActionBarActivity {
 			ParseGeoPoint location = user
 					.getParseGeoPoint(ParseConstants.KEY_LOCATION);
 			if (location == null) {
-				mCurrentLocation = mLocationClient.getLastLocation();
 				mCurrentGeoPoint = new ParseGeoPoint(
 						mCurrentLocation.getLatitude(),
 						mCurrentLocation.getLongitude());
@@ -223,7 +220,9 @@ public class LocationDetail extends ActionBarActivity {
 						// Check the distance between 2 Location in Meters
 						float result = Math.abs(userLocation
 								.distanceTo(placeLocation));
-
+						
+						// Debug
+						Toast.makeText(getActivity(), result + " ", Toast.LENGTH_SHORT).show();
 						if (result > 10000) {
 							// User are not near the location
 							mLocationCheckIn = (Button) getActivity()
@@ -273,43 +272,14 @@ public class LocationDetail extends ActionBarActivity {
 								Toast.makeText(getActivity(),
 										"Check In Success", Toast.LENGTH_SHORT)
 										.show();
+								Intent intent = new Intent(getActivity(),
+										LocationCatalog.class);
+								intent.putExtra(ParseConstants.KEY_OBJECT_ID,
+										placeID);
+								startActivity(intent);
+							}
 
-								/*
-								 * Check if the user come from the promotion
-								 * page in the browse section then the intent
-								 * should contain the promotion ID if the intent
-								 * contain the promotion ID then send user
-								 * straight to the CLAIM PAGE
-								 * 
-								 * if not the send the user to the location
-								 * catalog
-								 */
-
-								if (promotionId != null) {
-									String userId = ParseUser.getCurrentUser()
-											.getObjectId();
-									Intent intent = new Intent(getActivity(),
-											ClaimPromotion.class);
-									intent.putExtra(ParseConstants.KEY_USER_ID,
-											userId);
-									intent.putExtra(
-											ParseConstants.KEY_PROMOTION_ID,
-											promotionId);
-									intent.putExtra(
-											ParseConstants.KEY_PLACE_ID,
-											placeID);
-									startActivity(intent);
-
-								} else {
-									Intent intent = new Intent(getActivity(),
-											LocationCatalog.class);
-									intent.putExtra(
-											ParseConstants.KEY_OBJECT_ID,
-											placeID);
-									startActivity(intent);
-								}
-
-							} else {
+							else {
 								// failed
 								Log.e(TAG, e.getMessage());
 								AlertDialog.Builder builder = new AlertDialog.Builder(
@@ -417,6 +387,11 @@ public class LocationDetail extends ActionBarActivity {
 		public void onConnected(Bundle arg0) {
 			Toast.makeText(getActivity(), "Connected", Toast.LENGTH_SHORT)
 					.show();
+			
+			//Get current Location
+			mCurrentLocation = mLocationClient.getLastLocation();
+			//Check The Distance
+			checkDistance();
 		}
 
 		@Override
