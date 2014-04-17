@@ -92,8 +92,8 @@ public class LocationCatalog extends ActionBarActivity {
 
 		protected ArrayList<HashMap<String, String>> promotionsInfo = new ArrayList<HashMap<String, String>>();
 		public HashMap<String, String> promotionInfo = new HashMap<String, String>();
-		public ArrayList<String> promotionId = new ArrayList<String>();
-		public ArrayList<Boolean> promotionClaimable = new ArrayList<Boolean>();
+		public ArrayList<String> promotionsId = new ArrayList<String>();
+		public ArrayList<Boolean> promotionsClaimable = new ArrayList<Boolean>();
 
 		public PlaceholderFragment() {
 		}
@@ -165,12 +165,39 @@ public class LocationCatalog extends ActionBarActivity {
 							promotionInfo.put(ParseConstants.KEY_NAME,
 									promoName);
 							promotionsInfo.add(promotionInfo);
+							promotionsId.add(tempPromo.getObjectId());
+							promotionsClaimable.add(claimable);
 						}
 						setListPromotionAdapter();
 					} else {
 
 					}
 
+				}
+			});
+		}
+		
+		/*
+		 * On Click Listener for Promotion
+		 */
+		
+		protected void onPromotionClickListener(){
+			
+			mListPromotion.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					String promotionId = promotionsId.get(position);
+					Boolean claimable = promotionsClaimable.get(position);
+					if(claimable == true){
+						Intent intent = new Intent(getActivity(), ClaimPromotion.class);
+						intent.putExtra(ParseConstants.KEY_OBJECT_ID, promotionId);
+						startActivity(intent);
+					}else{
+						
+					}
+					
 				}
 			});
 		}
