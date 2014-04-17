@@ -1,16 +1,117 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.storein.PromotionDetail$PlaceholderFragment" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/promotion_preview_image"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/image_description_testing"
+            android:padding="10dp"
+            android:src="@drawable/himeji" />
+
+        <TextView
+            android:id="@+id/txtPromotionTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/promotion_preview_image"
+            android:layout_marginLeft="14dp"
+            android:text="@string/promotion_detail_title"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/textPromotionReqTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/txtPromotionTitle"
+            android:layout_below="@+id/txtPromotionTitle"
+            android:paddingTop="5dp"
+            android:text="@string/promotion_detail_requirement_title"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textPromotionReq"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textPromotionReqTitle"
+            android:layout_below="@+id/textPromotionReqTitle"
+            android:layout_marginRight="10dp"
+            android:paddingTop="2dp"
+            android:text="@string/promotion_detail_requirement" />
+
+        <TextView
+            android:id="@+id/textPromotionDescTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textPromotionReq"
+            android:layout_below="@+id/textPromotionReq"
+            android:paddingTop="10dp"
+            android:text="@string/promotion_detail_description_title"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textPromotionDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textPromotionDescTitle"
+            android:layout_below="@+id/textPromotionDescTitle"
+            android:paddingTop="2dp"
+            android:text="@string/promotion_detail_decription" />
+
+        <TextView
+            android:id="@+id/textPromotionDurationTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textPromotionDesc"
+            android:layout_below="@+id/textPromotionDesc"
+            android:paddingTop="10dp"
+            android:text="@string/promotion_start_end_date_title"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textPromotionDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textPromotionDurationTitle"
+            android:layout_below="@+id/textPromotionDurationTitle"
+            android:text="@string/promotion_start_end_date" />
+
+        <TextView
+            android:id="@+id/textRewardTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textPromotionDuration"
+            android:layout_below="@+id/textPromotionDuration"
+            android:layout_marginTop="14dp"
+            android:text="@string/location_title_reward"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/textReward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textRewardTitle"
+            android:layout_below="@+id/textRewardTitle"
+            android:text="@string/home_example_number"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </RelativeLayout>
+
+</LinearLayout>

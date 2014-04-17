@@ -64,5 +64,6 @@
     <string name="title_activity_claim_promotion">ClaimPromotion</string>
     <string name="top_items">Top Items</string>
     <string name="top_promotions">Top Promotions</string>
+    <string name="location_title_reward">Reward Points</string>
 
 </resources>
