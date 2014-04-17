@@ -249,22 +249,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 
 	}
 
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
-
-	}
-
-	private void cleanUpMarkers(Set<String> markersToKeep) {
-		for (String objId : new HashSet<String>(mapMarkers.keySet())) {
-			if (!markersToKeep.contains(objId)) {
-				Marker marker = mapMarkers.get(objId);
-				marker.remove();
-				mapMarkers.get(objId).remove();
-				mapMarkers.remove(objId);
-			}
-		}
-	}
 
 	/*
 	 * Map Functionality
@@ -489,6 +473,13 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 			}
 		} while (Math.abs(distance[0] - desiredOffsetInMeters) > OFFSET_CALCULATION_ACCURACY);
 		return latLngOffset;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

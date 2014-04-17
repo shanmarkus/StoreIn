@@ -4,6 +4,8 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -21,9 +23,14 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
+import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
+import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.GoogleMap;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -41,11 +48,11 @@ public class LocationDetail extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_location_detail);
-		
-		//Get Stuff
+
+		// Get Stuff
 		placeID = getIntent().getExtras().getString(
 				ParseConstants.KEY_OBJECT_ID);
-		
+
 		promotionId = getIntent().getExtras().getString(
 				ParseConstants.KEY_PROMOTION_ID);
 
@@ -86,7 +93,8 @@ public class LocationDetail extends ActionBarActivity {
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
-	public static class PlaceholderFragment extends Fragment {
+	public static class PlaceholderFragment extends Fragment implements
+			ConnectionCallbacks, OnConnectionFailedListener {
 
 		// UI Variable
 		protected ImageView mLocationView;
@@ -98,6 +106,10 @@ public class LocationDetail extends ActionBarActivity {
 
 		// Variables
 		private GoogleMap mMap;
+		private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+		LocationClient mLocationClient;
+		Location mCurrentLocation;
+		protected ParseGeoPoint mCurrentGeoPoint;
 
 		public PlaceholderFragment() {
 		}
@@ -109,6 +121,9 @@ public class LocationDetail extends ActionBarActivity {
 					container, false);
 
 			getPromotionId();
+
+			// Setup Location Client
+			mLocationClient = new LocationClient(getActivity(), this, this);
 
 			// Setting up the UI
 			mLocationNameLabel = (TextView) rootView
@@ -133,16 +148,53 @@ public class LocationDetail extends ActionBarActivity {
 		@Override
 		public void onResume() {
 			super.onResume();
+			mLocationClient.connect();
 			doLocationQuery();
 			onCheckInBtnClicked();
+		}
+
+		@Override
+		public void onStop() {
+			super.onStop();
+			mLocationClient.disconnect();
 		}
 
 		/*
 		 * Added Function
 		 */
 
+		protected void checkUserLastLocation() {
+			ParseUser user = ParseUser.getCurrentUser();
+			ParseGeoPoint location = user
+					.getParseGeoPoint(ParseConstants.KEY_LOCATION);
+			if (location == null) {
+				mCurrentLocation = mLocationClient.getLastLocation();
+				mCurrentGeoPoint = new ParseGeoPoint(
+						mCurrentLocation.getLatitude(),
+						mCurrentLocation.getLongitude());
+				user.put(ParseConstants.KEY_LOCATION, mCurrentGeoPoint);
+				user.saveEventually(new SaveCallback() {
+
+					@Override
+					public void done(ParseException e) {
+						if (e == null) {
+							Toast.makeText(getActivity(), "Updated Location",
+									Toast.LENGTH_SHORT).show();
+						}else{
+							Toast.makeText(getActivity(), "Failed Update Location",
+									Toast.LENGTH_SHORT).show();
+						}
+					}
+				});
+
+			} else {
+				mCurrentGeoPoint = location;
+			}
+		}
+
 		protected void onCheckInBtnClicked() {
 			getPromotionId();
+
 			mLocationCheckIn = (Button) getActivity().findViewById(
 					R.id.locationCheckIn);
 			mLocationCheckIn.setOnClickListener(new OnClickListener() {
@@ -222,9 +274,9 @@ public class LocationDetail extends ActionBarActivity {
 		/*
 		 * Get the query for location details
 		 */
-		
-		protected void checkUserGeoLocation(){
-			
+
+		protected void checkUserGeoLocation() {
+
 		}
 
 		protected void doLocationQuery() {
@@ -280,6 +332,43 @@ public class LocationDetail extends ActionBarActivity {
 					}
 				}
 			});
+
+		}
+
+		/*
+		 * Map Function
+		 * 
+		 * @see com.google.android.gms.common.GooglePlayServicesClient.
+		 * OnConnectionFailedListener
+		 * #onConnectionFailed(com.google.android.gms.common.ConnectionResult)
+		 */
+
+		@Override
+		public void onConnectionFailed(ConnectionResult e) {
+			if (e.hasResolution()) {
+				try {
+					e.startResolutionForResult(getActivity(),
+							CONNECTION_FAILURE_RESOLUTION_REQUEST);
+				} catch (IntentSender.SendIntentException e1) {
+					e1.printStackTrace();
+				}
+			} else {
+				Toast.makeText(getActivity(), e.getErrorCode(),
+						Toast.LENGTH_SHORT).show();
+			}
+
+		}
+
+		@Override
+		public void onConnected(Bundle arg0) {
+			Toast.makeText(getActivity(), "Connected", Toast.LENGTH_SHORT)
+					.show();
+		}
+
+		@Override
+		public void onDisconnected() {
+			Toast.makeText(getActivity(), "Disconnected. Please re-connect.",
+					Toast.LENGTH_SHORT).show();
 
 		}
 
