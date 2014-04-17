@@ -1379,7 +1379,7 @@ containing a value of this type.
         public static final int activity_location_detail=0x7f03001b;
         public static final int activity_login=0x7f03001c;
         public static final int activity_main=0x7f03001d;
-        public static final int activity_promotion_detail=0x7f03001e;
+        public static final int activity_promotion_detail_and_location=0x7f03001e;
         public static final int activity_promotion_list=0x7f03001f;
         public static final int activity_sign_up=0x7f030020;
         public static final int activity_write_review_item=0x7f030021;
@@ -1393,7 +1393,7 @@ containing a value of this type.
         public static final int fragment_location_detail=0x7f030029;
         public static final int fragment_main=0x7f03002a;
         public static final int fragment_navigation_drawer=0x7f03002b;
-        public static final int fragment_promotion_detail=0x7f03002c;
+        public static final int fragment_promotion_detail_and_location=0x7f03002c;
         public static final int fragment_promotion_list=0x7f03002d;
         public static final int fragment_write_review_item=0x7f03002e;
         public static final int support_simple_spinner_dropdown_item=0x7f03002f;

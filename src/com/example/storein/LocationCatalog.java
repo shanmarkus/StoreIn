@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.parse.CountCallback;
 import com.parse.FindCallback;
@@ -52,7 +54,7 @@ public class LocationCatalog extends ActionBarActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		setSupportProgressBarIndeterminateVisibility(true);
+
 	}
 
 	@Override
@@ -98,17 +100,11 @@ public class LocationCatalog extends ActionBarActivity {
 		public PlaceholderFragment() {
 		}
 
-		public ArrayList<HashMap<String, String>> getItemsInfo() {
-			return itemsInfo;
-		}
-
-		public void setItemsInfo(ArrayList<HashMap<String, String>> itemsInfo) {
-			this.itemsInfo = itemsInfo;
-		}
-
 		@Override
 		public void onResume() {
 			super.onResume();
+			doItemQuery();
+			doPromotionQuery();
 		}
 
 		@Override
@@ -119,7 +115,8 @@ public class LocationCatalog extends ActionBarActivity {
 
 			mViewPager = (ViewPager) rootView.findViewById(R.id.view_pager);
 			mListItem = (ListView) rootView.findViewById(R.id.listItem);
-			doItemQuery();
+			mListPromotion = (ListView) rootView
+					.findViewById(R.id.listPromotion);
 
 			return rootView;
 		}
@@ -131,24 +128,35 @@ public class LocationCatalog extends ActionBarActivity {
 		/*
 		 * find top promotion list
 		 */
-		protected void doPromotionQuery() {
+		public void doPromotionQuery() {
+			// Clear the Array
+			promotionsInfo.clear();
+			promotionsClaimable.clear();
+			promotionsId.clear();
 
+			// Do the Rest
 			getActivity().setProgressBarIndeterminateVisibility(true);
+			ParseObject obj = ParseObject.createWithoutData(
+					ParseConstants.TABLE_PLACE, placeID);
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_REL_PROMOTION_PLACE);
-			query.whereEqualTo(ParseConstants.KEY_PLACE_ID, placeID);
+			query.whereEqualTo(ParseConstants.KEY_PLACE_ID, obj);
 			query.include(ParseConstants.KEY_PROMOTION_ID);
-			query.include(ParseConstants.KEY_PLACE_ID);
 			query.findInBackground(new FindCallback<ParseObject>() {
 
 				@Override
 				public void done(List<ParseObject> promotions, ParseException e) {
 					getActivity().setProgressBarIndeterminateVisibility(false);
 					if (e == null) {
+						Toast.makeText(getActivity(), promotions.size() + " ",
+								Toast.LENGTH_SHORT).show();
 						for (ParseObject promo : promotions) {
 							HashMap<String, String> promotionInfo = new HashMap<String, String>();
+							Toast.makeText(getActivity(),
+									promotions.size() + " ", Toast.LENGTH_SHORT)
+									.show();
 							ParseObject tempPromo = promo
-									.getParseObject(ParseConstants.KEY_PLACE_ID);
+									.getParseObject(ParseConstants.KEY_PROMOTION_ID);
 							String promoName = tempPromo
 									.getString(ParseConstants.KEY_NAME);
 							Boolean claimable = tempPromo
@@ -169,20 +177,29 @@ public class LocationCatalog extends ActionBarActivity {
 							promotionsClaimable.add(claimable);
 						}
 						setListPromotionAdapter();
+						onPromotionClickListener();
 					} else {
-
+						// failed
+						Log.e(TAG, e.getMessage());
+						AlertDialog.Builder builder = new AlertDialog.Builder(
+								getActivity());
+						builder.setMessage(e.getMessage())
+								.setTitle(R.string.error_title)
+								.setPositiveButton(android.R.string.ok, null);
+						AlertDialog dialog = builder.create();
+						dialog.show();
 					}
 
 				}
 			});
 		}
-		
+
 		/*
 		 * On Click Listener for Promotion
 		 */
-		
-		protected void onPromotionClickListener(){
-			
+
+		protected void onPromotionClickListener() {
+
 			mListPromotion.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
@@ -190,14 +207,16 @@ public class LocationCatalog extends ActionBarActivity {
 						int position, long id) {
 					String promotionId = promotionsId.get(position);
 					Boolean claimable = promotionsClaimable.get(position);
-					if(claimable == true){
-						Intent intent = new Intent(getActivity(), ClaimPromotion.class);
-						intent.putExtra(ParseConstants.KEY_OBJECT_ID, promotionId);
+					if (claimable == true) {
+						Intent intent = new Intent(getActivity(),
+								ClaimPromotion.class);
+						intent.putExtra(ParseConstants.KEY_OBJECT_ID,
+								promotionId);
 						startActivity(intent);
-					}else{
-						
+					} else {
+
 					}
-					
+
 				}
 			});
 		}
@@ -207,10 +226,11 @@ public class LocationCatalog extends ActionBarActivity {
 		 */
 
 		public void doItemQuery() {
-
 			// Clear the array first
 			itemsID.clear();
+			itemsInfo.clear();
 
+			// Do the rest
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_REL_PLACE_ITEM);
 			query.whereEqualTo(ParseConstants.KEY_PLACE_ID, placeID);

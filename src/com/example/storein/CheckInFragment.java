@@ -283,9 +283,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		if (lastLocation != null
 				&& geoPointFromLocation(location).distanceInKilometersTo(
 						geoPointFromLocation(lastLocation)) < 0.01) {
-			updateZoom(myLatLng);
-			updateUserLocation(myLatLng);
-			return;
+			doMapQuery();
 		}
 		if (!hasSetUpInitialLocation) {
 			// Zoom to the current location.

@@ -452,7 +452,7 @@ int layout activity_location_catalog 0x7f03001a
 int layout activity_location_detail 0x7f03001b
 int layout activity_login 0x7f03001c
 int layout activity_main 0x7f03001d
-int layout activity_promotion_detail 0x7f03001e
+int layout activity_promotion_detail_and_location 0x7f03001e
 int layout activity_promotion_list 0x7f03001f
 int layout activity_sign_up 0x7f030020
 int layout activity_write_review_item 0x7f030021
@@ -466,7 +466,7 @@ int layout fragment_location_catalog 0x7f030028
 int layout fragment_location_detail 0x7f030029
 int layout fragment_main 0x7f03002a
 int layout fragment_navigation_drawer 0x7f03002b
-int layout fragment_promotion_detail 0x7f03002c
+int layout fragment_promotion_detail_and_location 0x7f03002c
 int layout fragment_promotion_list 0x7f03002d
 int layout fragment_write_review_item 0x7f03002e
 int layout support_simple_spinner_dropdown_item 0x7f03002f

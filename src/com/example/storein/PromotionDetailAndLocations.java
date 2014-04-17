@@ -30,15 +30,15 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-public class PromotionDetail extends ActionBarActivity {
+public class PromotionDetailAndLocations extends ActionBarActivity {
 	// Variables
-	public static final String TAG = PromotionDetail.class.getSimpleName();
+	public static final String TAG = PromotionDetailAndLocations.class.getSimpleName();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setContentView(R.layout.activity_promotion_detail);
+		setContentView(R.layout.activity_promotion_detail_and_location);
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
@@ -94,7 +94,7 @@ public class PromotionDetail extends ActionBarActivity {
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(
-					R.layout.fragment_promotion_detail, container, false);
+					R.layout.fragment_promotion_detail_and_location, container, false);
 			mLocationList = (ListView) rootView
 					.findViewById(R.id.LocationsList);
 

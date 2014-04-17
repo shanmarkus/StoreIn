@@ -196,7 +196,7 @@ public class PromotionList extends ActionBarActivity {
 						int position, long id) {
 					String objectId = objectsId.get(position);
 					Intent intent = new Intent(getActivity(),
-							PromotionDetail.class);
+							PromotionDetailAndLocations.class);
 					intent.putExtra(ParseConstants.KEY_OBJECT_ID, objectId);
 					startActivity(intent);
 				}
