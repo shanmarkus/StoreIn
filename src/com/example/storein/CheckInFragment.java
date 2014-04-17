@@ -39,6 +39,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -88,7 +89,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	private static final double OFFSET_CALCULATION_INIT_DIFF = 1.0;
 	private static final float OFFSET_CALCULATION_ACCURACY = 0.01f;
 	private static final int MAX_PLACE_SEARCH_RESULTS = 20;
-	private static final int MAX_PlACE_SEARCH_DISTANCE = 100;
+	private static final int MAX_PlACE_SEARCH_DISTANCE = 10; // In KiloMeters
 
 	private static final LocationRequest REQUEST = LocationRequest.create()
 			.setFastestInterval(16) // 16ms = 60fps
@@ -162,10 +163,11 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 				ParseConstants.KEY_LOCATION);
 		Toast.makeText(getActivity(), location + " ", Toast.LENGTH_SHORT)
 				.show();
+
 		// Do the Query
 		ParseObject.registerSubclass(ParsePlace.class);
 		ParseQuery<ParsePlace> query = ParsePlace.getQuery();
-		query.whereWithinKilometers(ParseConstants.KEY_LOCATION, location, 10);
+		query.whereWithinKilometers(ParseConstants.KEY_LOCATION, location, MAX_PlACE_SEARCH_DISTANCE);
 		query.orderByAscending(ParseConstants.KEY_NAME);
 		query.setLimit(MAX_PLACE_SEARCH_RESULTS);
 		query.findInBackground(new FindCallback<ParsePlace>() {
@@ -182,6 +184,13 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 						String name = place.getName();
 						String address = place.getAddress();
 						String id = place.getObjectId();
+						ParseGeoPoint geoPoint = place
+								.getParseGeoPoint(ParseConstants.KEY_LOCATION);
+
+						// Adding Marker
+						mMap.addMarker(new MarkerOptions().position(
+								new LatLng(geoPoint.getLatitude(), geoPoint
+										.getLongitude())).title(name));
 
 						// add to the hash map
 						HashMap<String, String> placeInfo = new HashMap<String, String>();
