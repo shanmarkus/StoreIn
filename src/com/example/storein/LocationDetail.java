@@ -28,7 +28,9 @@ import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallback
 import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -180,8 +182,9 @@ public class LocationDetail extends ActionBarActivity {
 						if (e == null) {
 							Toast.makeText(getActivity(), "Updated Location",
 									Toast.LENGTH_SHORT).show();
-						}else{
-							Toast.makeText(getActivity(), "Failed Update Location",
+						} else {
+							Toast.makeText(getActivity(),
+									"Failed Update Location",
 									Toast.LENGTH_SHORT).show();
 						}
 					}
@@ -190,6 +193,61 @@ public class LocationDetail extends ActionBarActivity {
 			} else {
 				mCurrentGeoPoint = location;
 			}
+		}
+
+		protected void checkDistance() {
+			if (mCurrentGeoPoint == null) {
+				checkUserLastLocation();
+			}
+			final Location userLocation = new Location("");
+			final Location placeLocation = new Location("");
+			userLocation.setLatitude(mCurrentGeoPoint.getLatitude());
+			userLocation.setLongitude(mCurrentGeoPoint.getLongitude());
+
+			ParseQuery<ParseObject> query = ParseQuery
+					.getQuery(ParseConstants.TABLE_PLACE);
+			query.whereEqualTo(ParseConstants.KEY_OBJECT_ID, placeID);
+			query.getFirstInBackground(new GetCallback<ParseObject>() {
+
+				@Override
+				public void done(ParseObject place, ParseException e) {
+					if (e == null) {
+						// success
+						ParseGeoPoint tempPlaceGeoPoint = place
+								.getParseGeoPoint(ParseConstants.KEY_LOCATION);
+						placeLocation.setLatitude(tempPlaceGeoPoint
+								.getLatitude());
+						placeLocation.setLongitude(tempPlaceGeoPoint
+								.getLongitude());
+
+						// Check the distance between 2 Location in Meters
+						float result = Math.abs(userLocation
+								.distanceTo(placeLocation));
+
+						if (result > 10000) {
+							// User are not near the location
+							mLocationCheckIn = (Button) getActivity()
+									.findViewById(R.id.locationCheckIn);
+							mLocationCheckIn.setEnabled(false);
+						} else {
+							mLocationCheckIn = (Button) getActivity()
+									.findViewById(R.id.locationCheckIn);
+							mLocationCheckIn.setEnabled(true);
+							onCheckInBtnClicked();
+						}
+					} else {
+						Log.e(TAG, e.getMessage());
+						AlertDialog.Builder builder = new AlertDialog.Builder(
+								getActivity());
+						builder.setMessage(e.getMessage())
+								.setTitle(R.string.error_title)
+								.setPositiveButton(android.R.string.ok, null);
+						AlertDialog dialog = builder.create();
+						dialog.show();
+					}
+
+				}
+			});
 		}
 
 		protected void onCheckInBtnClicked() {
@@ -274,10 +332,6 @@ public class LocationDetail extends ActionBarActivity {
 		/*
 		 * Get the query for location details
 		 */
-
-		protected void checkUserGeoLocation() {
-
-		}
 
 		protected void doLocationQuery() {
 			getActivity().setProgressBarIndeterminateVisibility(true);
