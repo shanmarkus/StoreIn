@@ -220,9 +220,10 @@ public class LocationDetail extends ActionBarActivity {
 						// Check the distance between 2 Location in Meters
 						float result = Math.abs(userLocation
 								.distanceTo(placeLocation));
-						
+
 						// Debug
-						Toast.makeText(getActivity(), result + " ", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity(), result + " ",
+								Toast.LENGTH_SHORT).show();
 						if (result > 10000) {
 							// User are not near the location
 							mLocationCheckIn = (Button) getActivity()
@@ -249,6 +250,7 @@ public class LocationDetail extends ActionBarActivity {
 			});
 		}
 
+		// add activity records when user check in to a place
 		protected void onCheckInBtnClicked() {
 			getPromotionId();
 
@@ -387,10 +389,10 @@ public class LocationDetail extends ActionBarActivity {
 		public void onConnected(Bundle arg0) {
 			Toast.makeText(getActivity(), "Connected", Toast.LENGTH_SHORT)
 					.show();
-			
-			//Get current Location
+
+			// Get current Location
 			mCurrentLocation = mLocationClient.getLastLocation();
-			//Check The Distance
+			// Check The Distance
 			checkDistance();
 		}
 

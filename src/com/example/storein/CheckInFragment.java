@@ -2,10 +2,7 @@ package com.example.storein;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -38,7 +35,6 @@ import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -76,7 +72,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	// Map Constant
 	private GoogleMap mMap;
 	private LocationClient mLocationClient;
-	private final Map<String, Marker> mapMarkers = new HashMap<String, Marker>();
 	private float radius;
 	private float lastRadius;
 	private SupportMapFragment fragment;
