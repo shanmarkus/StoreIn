@@ -207,21 +207,12 @@ public class LocationCatalog extends ActionBarActivity {
 						int position, long id) {
 					String promotionId = promotionsId.get(position);
 					Boolean claimable = promotionsClaimable.get(position);
-					if (claimable == true) {
-						Intent intent = new Intent(getActivity(),
-								ClaimPromotion.class);
-						intent.putExtra(ParseConstants.KEY_OBJECT_ID,
-								promotionId);
-						intent.putExtra(ParseConstants.KEY_CLAIMABLE, claimable);
-						intent.putExtra(ParseConstants.KEY_PLACE_ID, placeID);
-						startActivity(intent);
-					} else {
-						Intent intent = new Intent(getActivity(),
-								PromotionDetail.class);
-						intent.putExtra(ParseConstants.KEY_OBJECT_ID,
-								promotionId);
-						startActivity(intent);
-					}
+					Intent intent = new Intent(getActivity(),
+							PromotionDetail.class);
+					intent.putExtra(ParseConstants.KEY_OBJECT_ID, promotionId);
+					intent.putExtra(ParseConstants.KEY_CLAIMABLE, claimable);
+					intent.putExtra(ParseConstants.KEY_PLACE_ID, placeID);
+					startActivity(intent);
 
 				}
 			});

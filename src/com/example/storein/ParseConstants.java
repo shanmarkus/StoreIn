@@ -1,7 +1,9 @@
 package com.example.storein;
 
 public final class ParseConstants {
+	
 	// Class name
+	public static final String TABLE_USER ="_User";
 	public static final String TABLE_PLACE = "Place";
 	public static final String TABLE_ITEM = "Item";
 	public static final String TABLE_ITEM_REVIEW = "ItemReview";

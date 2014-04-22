@@ -168,9 +168,9 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 
 			@Override
 			public void done(List<ParsePlace> places, ParseException e) {
-				getActivity().setProgressBarIndeterminateVisibility(false);
 				if (e == null) {
 					// success
+					getActivity().setProgressBarIndeterminateVisibility(false);
 					ArrayList<HashMap<String, String>> placesInfo = new ArrayList<HashMap<String, String>>();
 					final ArrayList<String> placesID = new ArrayList<String>();
 
@@ -273,7 +273,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		lastLocation = location;
 		LatLng myLatLng = new LatLng(location.getLatitude(),
 				location.getLongitude());
-		
+
 		// Not changes
 		if (lastLocation != null
 				&& geoPointFromLocation(location).distanceInKilometersTo(

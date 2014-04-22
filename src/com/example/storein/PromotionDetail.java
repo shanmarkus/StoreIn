@@ -86,6 +86,10 @@ public class PromotionDetail extends ActionBarActivity {
 		protected String promotionQuotaId;
 		protected Integer numberUserStatusAndPromotion;
 
+		// Promotion Variables
+		public String promoTitle;
+		public String promoPlace;
+
 		public PlaceholderFragment() {
 		}
 
@@ -94,6 +98,18 @@ public class PromotionDetail extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(
 					R.layout.fragment_promotion_detail, container, false);
+			mTxtPromotionTitle = (TextView) rootView
+					.findViewById(R.id.txtPromotionTitle);
+			mTextPromotionDesc = (TextView) rootView
+					.findViewById(R.id.textPromotionDesc);
+			mTextPromotionDuration = (TextView) rootView
+					.findViewById(R.id.textPromotionDuration);
+			mTextPromotionReq = (TextView) rootView
+					.findViewById(R.id.textPromotionReq);
+			mTextReward = (TextView) rootView.findViewById(R.id.textReward);
+			mTextFlashDealNumber = (TextView) rootView
+					.findViewById(R.id.textFlashDealNumber);
+			mClaimButton = (Button) rootView.findViewById(R.id.claimButton);
 			checkFlashDeal();
 			return rootView;
 		}
@@ -101,6 +117,7 @@ public class PromotionDetail extends ActionBarActivity {
 		@Override
 		public void onResume() {
 			super.onResume();
+			findPromotionDetail();
 			onClickClaimButton();
 		}
 
@@ -125,15 +142,13 @@ public class PromotionDetail extends ActionBarActivity {
 		protected void checkFlashDeal() {
 			mTextFlashDealNumber = (TextView) getActivity().findViewById(
 					R.id.textFlashDealNumber);
-			mTextFlashDealNumber.setVisibility(2);
 			if (claimable == null) {
 				getClaimableValue();
 			}
 			if (claimable == true && numberUserStatusAndPromotion == 0) {
-				mTextFlashDealNumber.setVisibility(1);
 				getFlashPromotionQuantity();
 			} else {
-				mTextFlashDealNumber.setVisibility(2);
+
 			}
 		}
 
@@ -170,7 +185,7 @@ public class PromotionDetail extends ActionBarActivity {
 								.findViewById(R.id.textPromotionDuration);
 
 						// Get all the important variables
-						String promoTitle = promotion
+						promoTitle = promotion
 								.getString(ParseConstants.KEY_NAME);
 						String promoRequirement = promotion
 								.getString(ParseConstants.KEY_REQUIREMENT);
@@ -310,22 +325,6 @@ public class PromotionDetail extends ActionBarActivity {
 															.saveInBackground();
 													// save the log
 													saveUserClaimActivity();
-
-													// show AlertDialog
-
-													String message = "Thank you for claiming this promotion, please show this "
-															+ "number to the cashier to earn your points and get the rewards"
-															+ claimActivityId;
-													AlertDialog.Builder builder = new AlertDialog.Builder(
-															getActivity());
-													builder.setMessage(message)
-															.setPositiveButton(
-																	"Ok",
-																	dialogClaimClickListener)
-															.setNeutralButton(
-																	"Share",
-																	dialogClaimClickListener)
-															.show();
 												} else {
 													// failed
 												}
@@ -336,16 +335,6 @@ public class PromotionDetail extends ActionBarActivity {
 					} else {
 						// the promotion is just a ordinary deal
 						saveUserClaimActivity();
-						String message = "Thank you for claiming this promotion, please show this "
-								+ "number to the cashier to earn your points "
-								+ claimActivityId;
-						AlertDialog.Builder builder = new AlertDialog.Builder(
-								getActivity());
-						builder.setMessage(message)
-								.setPositiveButton("Ok",
-										dialogClaimClickListener)
-								.setNeutralButton("Share",
-										dialogClaimClickListener).show();
 					}
 				}
 			});
@@ -357,23 +346,33 @@ public class PromotionDetail extends ActionBarActivity {
 
 		public void saveUserClaimActivity() {
 			String userId = ParseUser.getCurrentUser().getObjectId();
-
-			final ParseObject claimActivity = new ParseObject(
+			ParseObject tempUserId = ParseObject.createWithoutData(
+					ParseConstants.TABLE_USER, userId);
+			final ParseObject tempPromotionId = ParseObject.createWithoutData(
+					ParseConstants.TABLE_PROMOTION, promotionId);
+			ParseObject claimActivity = new ParseObject(
 					ParseConstants.TABLE_ACTV_USER_CLAIM_PROMOTION);
-			claimActivity.put(ParseConstants.KEY_USER_ID, userId);
-			claimActivity.put(ParseConstants.KEY_PROMOTION_ID, promotionId);
-			claimActivity.saveEventually(new SaveCallback() {
+			claimActivity.put(ParseConstants.KEY_USER_ID, tempUserId);
+			claimActivity.put(ParseConstants.KEY_PROMOTION_ID, tempPromotionId);
+			claimActivity.saveInBackground(new SaveCallback() {
 
 				@Override
 				public void done(ParseException e) {
 					if (e == null) {
-						// Get the objectId for user claim activity
-						String tempClaimActivityId = claimActivity
-								.getObjectId();
-						claimActivityId = tempClaimActivityId;
 						Toast.makeText(getActivity(),
 								"Claim Activity has been saved",
 								Toast.LENGTH_SHORT).show();
+						claimActivityId = tempPromotionId.getObjectId();
+						String message = "Thank you for claiming this promotion, please show this "
+								+ "number to the cashier to earn your points "
+								+ claimActivityId;
+						AlertDialog.Builder builder = new AlertDialog.Builder(
+								getActivity());
+						builder.setMessage(message)
+								.setPositiveButton("Ok",
+										dialogClaimClickListener)
+								.setNeutralButton("Share",
+										dialogClaimClickListener).show();
 					} else {
 						Toast.makeText(getActivity(), e.getMessage(),
 								Toast.LENGTH_SHORT).show();
@@ -381,6 +380,10 @@ public class PromotionDetail extends ActionBarActivity {
 				}
 			});
 		}
+
+		/*
+		 * Getting objectId of claiming activity to
+		 */
 
 		// Dialog Box Action Listener
 
@@ -396,7 +399,7 @@ public class PromotionDetail extends ActionBarActivity {
 					Intent sendIntent = new Intent();
 					sendIntent.setAction(Intent.ACTION_SEND);
 					sendIntent.putExtra(Intent.EXTRA_TEXT,
-							"Hey I Just Claim a promotion");
+							"Hey I Just Claim a " + promoTitle);
 					sendIntent.setType("text/plain");
 					startActivity(sendIntent);
 					break;
