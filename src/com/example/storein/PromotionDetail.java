@@ -1,10 +1,10 @@
 package com.example.storein;
 
 import java.util.Date;
-import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -19,7 +19,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -311,7 +310,12 @@ public class PromotionDetail extends ActionBarActivity {
 					break;
 
 				case DialogInterface.BUTTON_NEUTRAL:
-					// It Should share something
+					Intent sendIntent = new Intent();
+					sendIntent.setAction(Intent.ACTION_SEND);
+					sendIntent.putExtra(Intent.EXTRA_TEXT,
+							"Hey I Just Claim a promotion");
+					sendIntent.setType("text/plain");
+					startActivity(sendIntent);
 					break;
 				}
 			}
