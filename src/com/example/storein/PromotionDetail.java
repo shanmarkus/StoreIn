@@ -81,6 +81,8 @@ public class PromotionDetail extends ActionBarActivity {
 
 		// Variables
 		protected String claimActivityId;
+		protected Integer flashPromoQuota;
+		protected String promotionQuotaId;
 
 		public PlaceholderFragment() {
 		}
@@ -225,7 +227,11 @@ public class PromotionDetail extends ActionBarActivity {
 						// success
 						Integer quantity = flashPromo
 								.getInt(ParseConstants.KEY_QUOTA);
+						String tempObjId = flashPromo.getObjectId();
+						flashPromoQuota = quantity;
 						mTextFlashDealNumber.setText(quantity);
+						promotionQuotaId = tempObjId;
+
 					} else {
 						Toast.makeText(getActivity(), e.getMessage(),
 								Toast.LENGTH_SHORT).show();
@@ -250,6 +256,53 @@ public class PromotionDetail extends ActionBarActivity {
 				public void onClick(View v) {
 					if (claimable == true) {
 						// if the promotion is flash deal
+						if (flashPromoQuota > 0) {
+							// update the value first
+							checkFlashDeal();
+							if (flashPromoQuota > 0) {
+								ParseQuery<ParseObject> claimFlashPromo = ParseQuery
+										.getQuery(ParseConstants.TABLE_PROMOTION_QUOTA);
+								claimFlashPromo.getInBackground(
+										promotionQuotaId,
+										new GetCallback<ParseObject>() {
+
+											@Override
+											public void done(
+													ParseObject promotion,
+													ParseException e) {
+												if (e == null) {
+													// success
+													flashPromoQuota = flashPromoQuota - 1;
+													promotion
+															.put(ParseConstants.KEY_QUOTA,
+																	flashPromoQuota);
+													promotion
+															.saveInBackground();
+													// save the log
+													saveUserClaimActivity();
+
+													// show AlertDialog
+
+													String message = "Thank you for claiming this promotion, please show this "
+															+ "number to the cashier to earn your points and get the rewards"
+															+ claimActivityId;
+													AlertDialog.Builder builder = new AlertDialog.Builder(
+															getActivity());
+													builder.setMessage(message)
+															.setPositiveButton(
+																	"Ok",
+																	dialogClaimClickListener)
+															.setNeutralButton(
+																	"Share",
+																	dialogClaimClickListener)
+															.show();
+												} else {
+													// failed
+												}
+											}
+										});
+							}
+						}
 					} else {
 						// the promotion is just a ordinary deal
 						saveUserClaimActivity();
