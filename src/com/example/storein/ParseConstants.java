@@ -8,6 +8,7 @@ public final class ParseConstants {
 	public static final String TABLE_ITEM_LOVED = "ItemLoved";
 	public static final String TABLE_PROMOTION = "Promotion";
 	public static final String TABLE_PROMOTION_CATEGORY = "PromotionCategory";
+	public static final String TABLE_PROMOTION_QUOTA = "PromotionQuota";
 
 	// User Activity class
 	public static final String TABLE_ACTV_USER_CLAIM_PROMOTION = "Activity_User_Claim_Promotion";
@@ -38,7 +39,8 @@ public final class ParseConstants {
 	public static final String KEY_START_DATE = "startDate";
 	public static final String KEY_END_DATE = "endDate";
 	public static final String KEY_CLAIMABLE = "claimable";
-	public static final String KEY_REWARD_POINT ="rewardPoint";
+	public static final String KEY_REWARD_POINT = "rewardPoint";
+	public static final String KEY_QUOTA = "quota";
 
 	// Relational names
 	public static final String KEY_RELATION_ITEMS_CATALOG = "itemsCatalog";

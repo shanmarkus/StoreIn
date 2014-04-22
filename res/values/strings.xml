@@ -66,5 +66,6 @@
     <string name="top_promotions">Top Promotions</string>
     <string name="location_title_reward">Reward Points</string>
     <string name="promotion_button_claim_it">Claim It</string>
+    <string name="promotion_flash_deal_quantity">0</string>
 
 </resources>

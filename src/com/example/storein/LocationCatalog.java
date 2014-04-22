@@ -213,6 +213,7 @@ public class LocationCatalog extends ActionBarActivity {
 						intent.putExtra(ParseConstants.KEY_OBJECT_ID,
 								promotionId);
 						intent.putExtra(ParseConstants.KEY_CLAIMABLE, claimable);
+						intent.putExtra(ParseConstants.KEY_PLACE_ID, placeID);
 						startActivity(intent);
 					} else {
 						Intent intent = new Intent(getActivity(),

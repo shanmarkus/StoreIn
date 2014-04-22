@@ -120,6 +120,16 @@
             android:layout_alignParentRight="true"
             android:text="@string/promotion_button_claim_it" />
 
+        <TextView
+            android:id="@+id/textFlashDealNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/txtPromotionTitle"
+            android:layout_alignBottom="@+id/txtPromotionTitle"
+            android:layout_toRightOf="@+id/textPromotionDescTitle"
+            android:text="@string/promotion_flash_deal_quantity"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
     </RelativeLayout>
 
 </LinearLayout>

@@ -1,6 +1,7 @@
 package com.example.storein;
 
 import java.util.Date;
+import java.util.List;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -15,12 +16,15 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class PromotionDetail extends ActionBarActivity {
 
@@ -68,10 +72,12 @@ public class PromotionDetail extends ActionBarActivity {
 		TextView mTextPromotionDuration;
 		TextView mTextReward;
 		Button mClaimButton;
+		TextView mTextFlashDealNumber;
 
 		// Variables
 		protected String promotionId;
 		protected Boolean claimable;
+		protected String placeId;
 
 		public PlaceholderFragment() {
 		}
@@ -81,6 +87,7 @@ public class PromotionDetail extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(
 					R.layout.fragment_promotion_detail, container, false);
+			checkFlashDeal();
 			return rootView;
 		}
 
@@ -100,6 +107,25 @@ public class PromotionDetail extends ActionBarActivity {
 		protected void getClaimableValue() {
 			claimable = getActivity().getIntent().getExtras()
 					.getBoolean(ParseConstants.KEY_CLAIMABLE);
+		}
+
+		protected void getPlaceId() {
+			placeId = (String) getActivity().getIntent().getExtras()
+					.get(ParseConstants.KEY_PLACE_ID);
+		}
+
+		protected void checkFlashDeal() {
+			mTextFlashDealNumber = (TextView) getActivity().findViewById(
+					R.id.textFlashDealNumber);
+			mTextFlashDealNumber.setVisibility(2);
+			if (claimable == null) {
+				getClaimableValue();
+			}
+			if (claimable == true) {
+				mTextFlashDealNumber.setVisibility(1);
+			} else {
+				mTextFlashDealNumber.setVisibility(2);
+			}
 		}
 
 		/*
@@ -173,11 +199,45 @@ public class PromotionDetail extends ActionBarActivity {
 		}
 
 		/*
+		 * if claimable value equal true then find the quantity of the promotion
+		 */
+
+		protected void getFlashPromotionQuantity() {
+
+			ParseObject promotionObj = ParseObject.createWithoutData(
+					ParseConstants.TABLE_PROMOTION, promotionId);
+			ParseObject placeObj = ParseObject.createWithoutData(
+					ParseConstants.TABLE_PLACE, placeId);
+			ParseQuery<ParseObject> flashPromo = ParseQuery
+					.getQuery(ParseConstants.TABLE_PROMOTION_QUOTA);
+			flashPromo.whereEqualTo(ParseConstants.KEY_PROMOTION_ID,
+					promotionObj);
+			flashPromo.whereEqualTo(ParseConstants.KEY_PLACE_ID, placeObj);
+			flashPromo.getFirstInBackground(new GetCallback<ParseObject>() {
+
+				@Override
+				public void done(ParseObject flashPromo, ParseException e) {
+					if (e == null) {
+						// success
+						Integer quantity = flashPromo
+								.getInt(ParseConstants.KEY_QUOTA);
+						mTextFlashDealNumber.setText(quantity);
+					} else {
+						Toast.makeText(getActivity(), e.getMessage(),
+								Toast.LENGTH_SHORT).show();
+					}
+
+				}
+			});
+		}
+
+		/*
 		 * Set On Click listener for claim Button and set activity that user has
 		 * already claim it
 		 */
 
 		public void onClickClaimButton() {
+			// first it have to check whether the promotion is left or not
 			mClaimButton = (Button) getActivity()
 					.findViewById(R.id.claimButton);
 			mClaimButton.setOnClickListener(new OnClickListener() {
@@ -198,6 +258,22 @@ public class PromotionDetail extends ActionBarActivity {
 
 			ParseObject claimActivity = new ParseObject(
 					ParseConstants.TABLE_ACTV_USER_CLAIM_PROMOTION);
+			claimActivity.put(ParseConstants.KEY_USER_ID, userId);
+			claimActivity.put(ParseConstants.KEY_PROMOTION_ID, promotionId);
+			claimActivity.saveEventually(new SaveCallback() {
+
+				@Override
+				public void done(ParseException e) {
+					if (e == null) {
+						Toast.makeText(getActivity(),
+								"Claim Activity has been saved",
+								Toast.LENGTH_SHORT).show();
+					} else {
+						Toast.makeText(getActivity(), e.getMessage(),
+								Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
 		}
 	}
 
