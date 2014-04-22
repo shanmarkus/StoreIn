@@ -254,7 +254,16 @@ public class PromotionDetail extends ActionBarActivity {
 					} else {
 						// the promotion is just a ordinary deal
 						saveUserClaimActivity();
-
+						String message = "Thank you for claiming this promotion, please show this "
+								+ "number to the cashier to earn your points "
+								+ claimActivityId;
+						AlertDialog.Builder builder = new AlertDialog.Builder(
+								getActivity());
+						builder.setMessage(message)
+								.setPositiveButton("Ok",
+										dialogClaimClickListener)
+								.setNeutralButton("Share",
+										dialogClaimClickListener).show();
 					}
 				}
 			});
@@ -267,10 +276,8 @@ public class PromotionDetail extends ActionBarActivity {
 		public void saveUserClaimActivity() {
 			String userId = ParseUser.getCurrentUser().getObjectId();
 
-			ParseObject claimActivity = new ParseObject(
+			final ParseObject claimActivity = new ParseObject(
 					ParseConstants.TABLE_ACTV_USER_CLAIM_PROMOTION);
-			String tempClaimActivityId = claimActivity.getObjectId();
-			claimActivityId = tempClaimActivityId;
 			claimActivity.put(ParseConstants.KEY_USER_ID, userId);
 			claimActivity.put(ParseConstants.KEY_PROMOTION_ID, promotionId);
 			claimActivity.saveEventually(new SaveCallback() {
@@ -278,6 +285,10 @@ public class PromotionDetail extends ActionBarActivity {
 				@Override
 				public void done(ParseException e) {
 					if (e == null) {
+						// Get the objectId for user claim activity
+						String tempClaimActivityId = claimActivity
+								.getObjectId();
+						claimActivityId = tempClaimActivityId;
 						Toast.makeText(getActivity(),
 								"Claim Activity has been saved",
 								Toast.LENGTH_SHORT).show();
@@ -299,8 +310,8 @@ public class PromotionDetail extends ActionBarActivity {
 					// Do Nothing
 					break;
 
-				case DialogInterface.BUTTON_NEGATIVE:
-					// Do nothing
+				case DialogInterface.BUTTON_NEUTRAL:
+					// It Should share something
 					break;
 				}
 			}
