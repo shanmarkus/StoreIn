@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -74,10 +75,13 @@ public class PromotionDetail extends ActionBarActivity {
 		Button mClaimButton;
 		TextView mTextFlashDealNumber;
 
-		// Variables
+		// Variables Intent
 		protected String promotionId;
 		protected Boolean claimable;
 		protected String placeId;
+
+		// Variables
+		protected String claimActivityId;
 
 		public PlaceholderFragment() {
 		}
@@ -123,6 +127,7 @@ public class PromotionDetail extends ActionBarActivity {
 			}
 			if (claimable == true) {
 				mTextFlashDealNumber.setVisibility(1);
+				getFlashPromotionQuantity();
 			} else {
 				mTextFlashDealNumber.setVisibility(2);
 			}
@@ -244,7 +249,13 @@ public class PromotionDetail extends ActionBarActivity {
 
 				@Override
 				public void onClick(View v) {
+					if (claimable == true) {
+						// if the promotion is flash deal
+					} else {
+						// the promotion is just a ordinary deal
+						saveUserClaimActivity();
 
+					}
 				}
 			});
 		}
@@ -258,6 +269,8 @@ public class PromotionDetail extends ActionBarActivity {
 
 			ParseObject claimActivity = new ParseObject(
 					ParseConstants.TABLE_ACTV_USER_CLAIM_PROMOTION);
+			String tempClaimActivityId = claimActivity.getObjectId();
+			claimActivityId = tempClaimActivityId;
 			claimActivity.put(ParseConstants.KEY_USER_ID, userId);
 			claimActivity.put(ParseConstants.KEY_PROMOTION_ID, promotionId);
 			claimActivity.saveEventually(new SaveCallback() {
@@ -275,6 +288,23 @@ public class PromotionDetail extends ActionBarActivity {
 				}
 			});
 		}
+
+		// Dialog Box Action Listener
+
+		DialogInterface.OnClickListener dialogClaimClickListener = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch (which) {
+				case DialogInterface.BUTTON_POSITIVE:
+					// Do Nothing
+					break;
+
+				case DialogInterface.BUTTON_NEGATIVE:
+					// Do nothing
+					break;
+				}
+			}
+		};
 	}
 
 }
