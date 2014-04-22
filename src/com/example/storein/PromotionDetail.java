@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.CountCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -83,6 +84,7 @@ public class PromotionDetail extends ActionBarActivity {
 		protected String claimActivityId;
 		protected Integer flashPromoQuota;
 		protected String promotionQuotaId;
+		protected Integer numberUserStatusAndPromotion;
 
 		public PlaceholderFragment() {
 		}
@@ -99,6 +101,7 @@ public class PromotionDetail extends ActionBarActivity {
 		@Override
 		public void onResume() {
 			super.onResume();
+			onClickClaimButton();
 		}
 
 		/*
@@ -126,7 +129,7 @@ public class PromotionDetail extends ActionBarActivity {
 			if (claimable == null) {
 				getClaimableValue();
 			}
-			if (claimable == true) {
+			if (claimable == true && numberUserStatusAndPromotion == 0) {
 				mTextFlashDealNumber.setVisibility(1);
 				getFlashPromotionQuantity();
 			} else {
@@ -200,6 +203,33 @@ public class PromotionDetail extends ActionBarActivity {
 						dialog.show();
 					}
 
+				}
+			});
+		}
+
+		/*
+		 * Check whether this user already claim the flash promotion or not
+		 */
+
+		protected void checkUserAndPromotionStatus() {
+			String userId = ParseUser.getCurrentUser().getObjectId();
+			ParseQuery<ParseObject> query = ParseQuery
+					.getQuery(ParseConstants.TABLE_ACTV_USER_CLAIM_PROMOTION);
+			query.whereEqualTo(ParseConstants.KEY_USER_ID, userId);
+			query.whereEqualTo(ParseConstants.KEY_PROMOTION_ID, promotionId);
+			query.countInBackground(new CountCallback() {
+
+				@Override
+				public void done(int total, ParseException e) {
+					if (e == null) {
+						// success
+						numberUserStatusAndPromotion = total;
+					} else {
+						// failed
+						Toast.makeText(getActivity(),
+								e.getMessage() + "CheckUserandPromotion",
+								Toast.LENGTH_SHORT).show();
+					}
 				}
 			});
 		}
