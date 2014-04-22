@@ -1,32 +1,29 @@
 package com.example.storein;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
-import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.Button;
 import android.widget.TextView;
-import android.os.Build;
+
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 public class PromotionDetail extends ActionBarActivity {
-	
+
 	protected static final String TAG = PromotionDetail.class.getSimpleName();
 
 	@Override
@@ -70,9 +67,11 @@ public class PromotionDetail extends ActionBarActivity {
 		TextView mTextPromotionDesc;
 		TextView mTextPromotionDuration;
 		TextView mTextReward;
+		Button mClaimButton;
 
 		// Variables
 		protected String promotionId;
+		protected Boolean claimable;
 
 		public PlaceholderFragment() {
 		}
@@ -96,6 +95,11 @@ public class PromotionDetail extends ActionBarActivity {
 		protected void getPromotionId() {
 			promotionId = (String) getActivity().getIntent().getExtras()
 					.get(ParseConstants.KEY_OBJECT_ID);
+		}
+
+		protected void getClaimableValue() {
+			claimable = getActivity().getIntent().getExtras()
+					.getBoolean(ParseConstants.KEY_CLAIMABLE);
 		}
 
 		/*
@@ -141,6 +145,8 @@ public class PromotionDetail extends ActionBarActivity {
 								.getDate(ParseConstants.KEY_START_DATE);
 						Date promoEndDate = promotion
 								.getDate(ParseConstants.KEY_END_DATE);
+						Integer promoPoint = promotion
+								.getInt(ParseConstants.KEY_REWARD_POINT);
 
 						// Put all the values
 						mTxtPromotionTitle.setText(promoTitle);
@@ -148,6 +154,7 @@ public class PromotionDetail extends ActionBarActivity {
 						mTextPromotionDesc.setText(promoDescription);
 						mTextPromotionDuration.setText(promoStartDate + " - "
 								+ promoEndDate);
+						mTextReward.setText(promoPoint.toString());
 
 					} else {
 						// failed
@@ -163,6 +170,34 @@ public class PromotionDetail extends ActionBarActivity {
 
 				}
 			});
+		}
+
+		/*
+		 * Set On Click listener for claim Button and set activity that user has
+		 * already claim it
+		 */
+
+		public void onClickClaimButton() {
+			mClaimButton = (Button) getActivity()
+					.findViewById(R.id.claimButton);
+			mClaimButton.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
+				}
+			});
+		}
+
+		/*
+		 * Saving Log Function
+		 */
+
+		public void saveUserClaimActivity() {
+			String userId = ParseUser.getCurrentUser().getObjectId();
+
+			ParseObject claimActivity = new ParseObject(
+					ParseConstants.TABLE_ACTV_USER_CLAIM_PROMOTION);
 		}
 	}
 
