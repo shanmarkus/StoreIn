@@ -111,6 +111,7 @@ public class PromotionDetail extends ActionBarActivity {
 					.findViewById(R.id.textFlashDealNumber);
 			mClaimButton = (Button) rootView.findViewById(R.id.claimButton);
 			checkFlashDeal();
+			checkUserAndPromotionStatus();
 			return rootView;
 		}
 
@@ -118,6 +119,7 @@ public class PromotionDetail extends ActionBarActivity {
 		public void onResume() {
 			super.onResume();
 			findPromotionDetail();
+			checkUserAndPromotionStatus();
 			onClickClaimButton();
 		}
 
@@ -145,7 +147,7 @@ public class PromotionDetail extends ActionBarActivity {
 			if (claimable == null) {
 				getClaimableValue();
 			}
-			if (claimable == true && numberUserStatusAndPromotion == 0) {
+			if (claimable == true) {
 				getFlashPromotionQuantity();
 			} else {
 
@@ -228,10 +230,15 @@ public class PromotionDetail extends ActionBarActivity {
 
 		protected void checkUserAndPromotionStatus() {
 			String userId = ParseUser.getCurrentUser().getObjectId();
+			ParseObject tempUser = ParseObject.createWithoutData(
+					ParseConstants.TABLE_USER, userId);
+			ParseObject tempPromo = ParseObject.createWithoutData(
+					ParseConstants.TABLE_PROMOTION, promotionId);
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_ACTV_USER_CLAIM_PROMOTION);
-			query.whereEqualTo(ParseConstants.KEY_USER_ID, userId);
-			query.whereEqualTo(ParseConstants.KEY_PROMOTION_ID, promotionId);
+			query.whereEqualTo(ParseConstants.KEY_USER_ID, tempUser);
+
+			query.whereEqualTo(ParseConstants.KEY_PROMOTION_ID, tempPromo);
 			query.countInBackground(new CountCallback() {
 
 				@Override
@@ -239,11 +246,16 @@ public class PromotionDetail extends ActionBarActivity {
 					if (e == null) {
 						// success
 						numberUserStatusAndPromotion = total;
+						mClaimButton = (Button) getActivity().findViewById(
+								R.id.claimButton);
+						if (total == 0) {
+							mClaimButton.setEnabled(true);
+						} else {
+							mClaimButton.setEnabled(false);
+						}
 					} else {
 						// failed
-						Toast.makeText(getActivity(),
-								e.getMessage() + "CheckUserandPromotion",
-								Toast.LENGTH_SHORT).show();
+						Log.e(TAG + " Check user and promo", e.getMessage());
 					}
 				}
 			});
@@ -278,8 +290,7 @@ public class PromotionDetail extends ActionBarActivity {
 						promotionQuotaId = tempObjId;
 
 					} else {
-						Toast.makeText(getActivity(), e.getMessage(),
-								Toast.LENGTH_SHORT).show();
+						Log.e(TAG + " get flash quantity", e.getMessage());
 					}
 
 				}
