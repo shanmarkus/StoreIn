@@ -168,9 +168,9 @@ public class LocationDetail extends ActionBarActivity {
 			ParseGeoPoint location = user
 					.getParseGeoPoint(ParseConstants.KEY_LOCATION);
 			if (location == null) {
-				mCurrentGeoPoint = new ParseGeoPoint(
-						mCurrentLocation.getLatitude(),
-						mCurrentLocation.getLongitude());
+				Location mlocation = mLocationClient.getLastLocation();
+				mCurrentGeoPoint = new ParseGeoPoint(mlocation.getLatitude(),
+						mlocation.getLongitude());
 				user.put(ParseConstants.KEY_LOCATION, mCurrentGeoPoint);
 				user.saveEventually(new SaveCallback() {
 
@@ -389,7 +389,6 @@ public class LocationDetail extends ActionBarActivity {
 		public void onConnected(Bundle arg0) {
 			Toast.makeText(getActivity(), "Connected", Toast.LENGTH_SHORT)
 					.show();
-
 			// Get current Location
 			mCurrentLocation = mLocationClient.getLastLocation();
 			// Check The Distance
