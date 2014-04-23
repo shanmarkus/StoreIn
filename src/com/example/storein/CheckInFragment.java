@@ -43,7 +43,6 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
@@ -73,7 +72,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	HashMap<String, String> placeInfo = new HashMap<String, String>();
 
 	// Place Constant
-	private String selectedObjectId;
 	private Location lastLocation = null;
 	private Location currentLocation = null;
 	private boolean hasSetUpInitialLocation = false;
@@ -82,18 +80,15 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	private GoogleMap mMap;
 	private LocationClient mLocationClient;
 	private float radius;
-	private float lastRadius;
 	private SupportMapFragment fragment;
 	private Circle mapCircle;
 
 	// Parse Constants
-
 	private static final float METERS_PER_FEET = 0.3048f;
-	private static final int METERS_PER_KILOMETER = 1000;
 	private static final double OFFSET_CALCULATION_INIT_DIFF = 1.0;
 	private static final float OFFSET_CALCULATION_ACCURACY = 0.01f;
 	private static final int MAX_PLACE_SEARCH_RESULTS = 20;
-	private static final int MAX_PlACE_SEARCH_DISTANCE = 1; // In KiloMeters
+	private static final int MAX_PlACE_SEARCH_DISTANCE = 10; // In KiloMeters
 
 	private static final LocationRequest REQUEST = LocationRequest.create()
 			.setFastestInterval(16) // 16ms = 60fps
