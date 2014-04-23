@@ -37,6 +37,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -63,6 +64,14 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	protected final static String TAG = CheckInFragment.class.getSimpleName()
 			.toString();
 
+	// UI Variable
+	ListView mListPlace;
+
+	// Variables
+	ArrayList<HashMap<String, String>> placesInfo = new ArrayList<HashMap<String, String>>();
+	protected ArrayList<String> placesID = new ArrayList<String>();
+	HashMap<String, String> placeInfo = new HashMap<String, String>();
+
 	// Place Constant
 	private String selectedObjectId;
 	private Location lastLocation = null;
@@ -84,7 +93,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	private static final double OFFSET_CALCULATION_INIT_DIFF = 1.0;
 	private static final float OFFSET_CALCULATION_ACCURACY = 0.01f;
 	private static final int MAX_PLACE_SEARCH_RESULTS = 20;
-	private static final int MAX_PlACE_SEARCH_DISTANCE = 10; // In KiloMeters
+	private static final int MAX_PlACE_SEARCH_DISTANCE = 1; // In KiloMeters
 
 	private static final LocationRequest REQUEST = LocationRequest.create()
 			.setFastestInterval(16) // 16ms = 60fps
@@ -118,6 +127,10 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		}
 		setUpLocationClientIfNeeded();
 		mLocationClient.connect();
+
+		// On Click listener
+		onListPlaceClickListener();
+
 	}
 
 	@Override
@@ -152,11 +165,8 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	 * Function Added
 	 */
 
-	private void doMapQuery() {
-		// Get user Location
-		ParseGeoPoint location = ParseUser.getCurrentUser().getParseGeoPoint(
-				ParseConstants.KEY_LOCATION);
-
+	private void doLocationQuery(ParseGeoPoint location) {
+		getActivity().setProgressBarIndeterminateVisibility(true);
 		// Do the Query
 		ParseObject.registerSubclass(ParsePlace.class);
 		ParseQuery<ParsePlace> query = ParsePlace.getQuery();
@@ -168,79 +178,124 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 
 			@Override
 			public void done(List<ParsePlace> places, ParseException e) {
+				getActivity().setProgressBarIndeterminateVisibility(false);
 				if (e == null) {
 					// success
-					getActivity().setProgressBarIndeterminateVisibility(false);
-					ArrayList<HashMap<String, String>> placesInfo = new ArrayList<HashMap<String, String>>();
-					final ArrayList<String> placesID = new ArrayList<String>();
+					if (places.size() > 0) {
+						for (ParsePlace place : places) {
+							String name = place.getName();
+							String address = place.getAddress();
+							String id = place.getObjectId();
+							ParseGeoPoint geoPoint = place
+									.getParseGeoPoint(ParseConstants.KEY_LOCATION);
 
-					for (ParsePlace place : places) {
-						String name = place.getName();
-						String address = place.getAddress();
-						String id = place.getObjectId();
-						ParseGeoPoint geoPoint = place
-								.getParseGeoPoint(ParseConstants.KEY_LOCATION);
+							// Adding Marker
+							mMap.addMarker(new MarkerOptions().position(
+									new LatLng(geoPoint.getLatitude(), geoPoint
+											.getLongitude())).title(name));
 
-						// Adding Marker
-						mMap.addMarker(new MarkerOptions().position(
-								new LatLng(geoPoint.getLatitude(), geoPoint
-										.getLongitude())).title(name));
+							// add to the hash map
+							HashMap<String, String> placeInfo = new HashMap<String, String>();
+							placeInfo.put(ParseConstants.KEY_NAME, name);
+							placeInfo.put(ParseConstants.KEY_ADDRESS, address);
+							placesInfo.add(placeInfo);
 
-						// add to the hash map
-						HashMap<String, String> placeInfo = new HashMap<String, String>();
-						placeInfo.put(ParseConstants.KEY_NAME, name);
-						placeInfo.put(ParseConstants.KEY_ADDRESS, address);
-						placesInfo.add(placeInfo);
-
-						// add ID
-						placesID.add(id);
+							// add ID
+							placesID.add(id);
+						}
+						setAdapter();
+					} else {
+						String message = "Sorry there are no promotion near you, please use browse to find other promotion";
+						Toast.makeText(getActivity(), message,
+								Toast.LENGTH_LONG).show();
 					}
-
-					String[] keys = { ParseConstants.KEY_NAME,
-							ParseConstants.KEY_ADDRESS };
-					int[] ids = { android.R.id.text1, android.R.id.text2 };
-
-					SimpleAdapter adapter = new SimpleAdapter(getActivity(),
-							placesInfo, android.R.layout.simple_list_item_2,
-							keys, ids);
-
-					ListView mListPlace = (ListView) getActivity()
-							.findViewById(R.id.listPlace);
-					mListPlace.setAdapter(adapter);
-
-					/*
-					 * Set Listener to the ListView to open other intent
-					 */
-					mListPlace
-							.setOnItemClickListener(new OnItemClickListener() {
-								@Override
-								public void onItemClick(AdapterView<?> parent,
-										View view, int position, long id) {
-									String placeID = placesID.get(position);
-									Intent intent = new Intent(getActivity(),
-											LocationDetail.class);
-									intent.putExtra(
-											ParseConstants.KEY_OBJECT_ID,
-											placeID);
-									startActivity(intent);
-								}
-							});
-
 				} else {
-					// failed
-					Log.e(TAG, e.getMessage());
-					AlertDialog.Builder builder = new AlertDialog.Builder(
-							getActivity());
-					builder.setMessage(e.getMessage())
-							.setTitle(R.string.error_title)
-							.setPositiveButton(android.R.string.ok, null);
-					AlertDialog dialog = builder.create();
-					dialog.show();
+					errorAlertDialog(e);
 				}
 
 			}
 		});
 
+	}
+
+	/*
+	 * Get user previous location (in Parse)
+	 */
+
+	private void initFindPlace() {
+		Location currentLocation = mLocationClient.getLastLocation();
+		ParseGeoPoint userLocation = new ParseGeoPoint(
+				currentLocation.getLatitude(), currentLocation.getLongitude());
+		doLocationQuery(userLocation);
+	}
+
+	/*
+	 * Set Adapter for list view
+	 */
+
+	public void setAdapter() {
+		String[] keys = { ParseConstants.KEY_NAME, ParseConstants.KEY_ADDRESS };
+		int[] ids = { android.R.id.text1, android.R.id.text2 };
+
+		SimpleAdapter adapter = new SimpleAdapter(getActivity(), placesInfo,
+				android.R.layout.simple_list_item_2, keys, ids);
+
+		mListPlace = (ListView) getActivity().findViewById(R.id.listPlace);
+		mListPlace.setAdapter(adapter);
+	}
+
+	/*
+	 * Set Listener to the ListView to open other intent
+	 */
+
+	public void onListPlaceClickListener() {
+		mListPlace = (ListView) getActivity().findViewById(R.id.listPlace);
+		
+		mListPlace.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				final String placeID = placesID.get(position);
+				final Intent intent = new Intent(getActivity(),
+						LocationDetail.class);
+				final Location currentLocation = mLocationClient
+						.getLastLocation();
+				ParseQuery<ParseUser> query = ParseQuery
+						.getQuery(ParseConstants.TABLE_USER);
+				query.getInBackground(ParseUser.getCurrentUser().getObjectId(),
+						new GetCallback<ParseUser>() {
+
+							@Override
+							public void done(ParseUser user, ParseException e) {
+								if (e == null) {
+									ParseGeoPoint temp = new ParseGeoPoint(
+											currentLocation.getLatitude(),
+											currentLocation.getLongitude());
+									user.put(ParseConstants.KEY_LOCATION, temp);
+									intent.putExtra(
+											ParseConstants.KEY_OBJECT_ID,
+											placeID);
+									startActivity(intent);
+								} else {
+									errorAlertDialog(e);
+								}
+							}
+						});
+			}
+		});
+	}
+
+	/*
+	 * Error Dialog
+	 */
+	private void errorAlertDialog(ParseException e) {
+		// failed
+		Log.e(TAG, e.getMessage());
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setMessage(e.getMessage()).setTitle(R.string.error_title)
+				.setPositiveButton(android.R.string.ok, null);
+		AlertDialog dialog = builder.create();
+		dialog.show();
 	}
 
 	/*
@@ -254,21 +309,12 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		}
 	}
 
-	private void locationChecker() {
-		// Checking wether the location is change or not
-		if (mLocationClient != null && mLocationClient.isConnected()) {
-			String msg = "Location = " + mLocationClient.getLastLocation();
-			Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-		}
-	}
-
 	/**
 	 * Implementation of {@link LocationListener}. Makes the camera always go to
 	 * the user location
 	 */
 	@Override
 	public void onLocationChanged(Location location) {
-
 		currentLocation = location;
 		lastLocation = location;
 		LatLng myLatLng = new LatLng(location.getLatitude(),
@@ -278,40 +324,15 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		if (lastLocation != null
 				&& geoPointFromLocation(location).distanceInKilometersTo(
 						geoPointFromLocation(lastLocation)) < 0.01) {
-			doMapQuery();
+
 		}
 		if (!hasSetUpInitialLocation) {
 			// Zoom to the current location.
 			updateZoom(myLatLng);
 			hasSetUpInitialLocation = true;
-			updateUserLocation(myLatLng);
 		}
 		// Update map radius indicator
 		updateCircle(myLatLng);
-	}
-
-	private void updateUserLocation(LatLng myLatLng) {
-		// Update User Location to Parse
-		ParseGeoPoint temp = new ParseGeoPoint(myLatLng.latitude,
-				myLatLng.longitude);
-		ParseUser user = ParseUser.getCurrentUser();
-		user.put(ParseConstants.KEY_LOCATION, temp);
-		user.saveEventually(new SaveCallback() {
-
-			@Override
-			public void done(ParseException e) {
-				if (e == null) {
-					Toast.makeText(getActivity(), "Location Updated",
-							Toast.LENGTH_SHORT).show();
-					doMapQuery();
-
-				} else {
-					Toast.makeText(getActivity(), "Location Not Updated",
-							Toast.LENGTH_SHORT).show();
-				}
-
-			}
-		});
 	}
 
 	/**
@@ -321,6 +342,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	@Override
 	public void onConnected(Bundle connectionHint) {
 		mLocationClient.requestLocationUpdates(REQUEST, this); // LocationListener
+		initFindPlace();
 	}
 
 	/**

@@ -230,6 +230,9 @@ public class PromotionDetail extends ActionBarActivity {
 
 		protected void checkUserAndPromotionStatus() {
 			String userId = ParseUser.getCurrentUser().getObjectId();
+			if (promotionId == null) {
+				getPromotionId();
+			}
 			ParseObject tempUser = ParseObject.createWithoutData(
 					ParseConstants.TABLE_USER, userId);
 			ParseObject tempPromo = ParseObject.createWithoutData(
@@ -266,7 +269,12 @@ public class PromotionDetail extends ActionBarActivity {
 		 */
 
 		protected void getFlashPromotionQuantity() {
-
+			if (promotionId == null) {
+				getPromotionId();
+			}
+			if (placeId == null) {
+				getPlaceId();
+			}
 			ParseObject promotionObj = ParseObject.createWithoutData(
 					ParseConstants.TABLE_PROMOTION, promotionId);
 			ParseObject placeObj = ParseObject.createWithoutData(
