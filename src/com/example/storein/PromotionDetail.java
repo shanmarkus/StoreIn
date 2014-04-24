@@ -122,6 +122,7 @@ public class PromotionDetail extends ActionBarActivity {
 			findPromotionDetail();
 			checkUserAndPromotionStatus();
 			onClickClaimButton();
+			checkFlashDeal();
 		}
 
 		/*
@@ -348,6 +349,9 @@ public class PromotionDetail extends ActionBarActivity {
 															.saveInBackground();
 													// save the log
 													saveUserClaimActivity();
+													
+													// Set to false
+													checkUserAndPromotionStatus();
 												} else {
 													// failed
 												}
