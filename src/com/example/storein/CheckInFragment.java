@@ -165,7 +165,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 
 		ParseGeoPoint location = new ParseGeoPoint(
 				currentLocation.getLatitude(), currentLocation.getLongitude());
-		
+
 		// Do the Query
 		ParseObject.registerSubclass(ParsePlace.class);
 		ParseQuery<ParsePlace> query = ParsePlace.getQuery();
@@ -317,16 +317,22 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	@Override
 	public void onLocationChanged(Location location) {
 		currentLocation = location;
-		lastLocation = location;
+		if (lastLocation == null)
+			lastLocation = location;
 		LatLng myLatLng = new LatLng(location.getLatitude(),
 				location.getLongitude());
 
-		// Not changes
-		if (lastLocation != null
-				&& geoPointFromLocation(location).distanceInKilometersTo(
-						geoPointFromLocation(lastLocation)) < 0.01) {
+		// Calculate distance
+		float temp = lastLocation.distanceTo(location);
 
+		// Check if user move more than 10 meters
+		if (temp > 10) {
+			initFindPlace();
+		} else {
+			// Do nothing
 		}
+		// Setup Initial Location
+
 		if (!hasSetUpInitialLocation) {
 			// Zoom to the current location.
 			updateZoom(myLatLng);
@@ -334,6 +340,11 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		}
 		// Update map radius indicator
 		updateCircle(myLatLng);
+
+		// Update Distance
+		// Update Distance
+		lastLocation = location;
+
 	}
 
 	/**
