@@ -109,6 +109,7 @@ public class PromotionDetail extends ActionBarActivity {
 			mTextReward = (TextView) rootView.findViewById(R.id.textReward);
 			mTextFlashDealNumber = (TextView) rootView
 					.findViewById(R.id.textFlashDealNumber);
+
 			mClaimButton = (Button) rootView.findViewById(R.id.claimButton);
 			checkFlashDeal();
 			checkUserAndPromotionStatus();
@@ -289,14 +290,17 @@ public class PromotionDetail extends ActionBarActivity {
 				@Override
 				public void done(ParseObject flashPromo, ParseException e) {
 					if (e == null) {
+						mTextFlashDealNumber = (TextView) getActivity()
+								.findViewById(R.id.textFlashDealNumber);
 						// success
 						Integer quantity = flashPromo
 								.getInt(ParseConstants.KEY_QUOTA);
 						String tempObjId = flashPromo.getObjectId();
+						Toast.makeText(getActivity(), quantity + " ",
+								Toast.LENGTH_SHORT).show();
+						mTextFlashDealNumber.setText(quantity + "");
 						flashPromoQuota = quantity;
-						mTextFlashDealNumber.setText(quantity);
 						promotionQuotaId = tempObjId;
-
 					} else {
 						Log.e(TAG + " get flash quantity", e.getMessage());
 					}

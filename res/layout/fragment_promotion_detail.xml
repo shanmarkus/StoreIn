@@ -124,9 +124,8 @@
             android:id="@+id/textFlashDealNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/txtPromotionTitle"
-            android:layout_alignBottom="@+id/txtPromotionTitle"
-            android:layout_toRightOf="@+id/textPromotionDescTitle"
+            android:layout_above="@+id/claimButton"
+            android:layout_alignLeft="@+id/claimButton"
             android:text="@string/promotion_flash_deal_quantity"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
