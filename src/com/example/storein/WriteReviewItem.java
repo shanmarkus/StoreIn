@@ -107,10 +107,16 @@ public class WriteReviewItem extends ActionBarActivity {
 		 */
 
 		public void checkExistingUserReview() {
-			String userId = user.getObjectId();
+			// Getting User Id
+			final String userId = user.getObjectId();
+
+			// Create parse object for store as Pointer
+			final ParseObject tempUser = ParseObject.createWithoutData(
+					ParseConstants.TABLE_USER, userId);
+
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_ITEM_REVIEW);
-			query.whereEqualTo(ParseConstants.KEY_USER_ID, userId);
+			query.whereEqualTo(ParseConstants.KEY_USER_ID, tempUser);
 			query.whereEqualTo(ParseConstants.KEY_ITEM_ID, itemId);
 			query.countInBackground(new CountCallback() {
 
@@ -123,13 +129,18 @@ public class WriteReviewItem extends ActionBarActivity {
 							isReviewed = "false";
 							onSubmitBtn();
 						} else {
-							ParseUser temp = ParseUser.getCurrentUser();
-							String tempUserId = temp.getObjectId();
+							// Getting User Id
+							final String userId = user.getObjectId();
+
+							// Create parse object for store as Pointer
+							final ParseObject tempUser = ParseObject
+									.createWithoutData(
+											ParseConstants.TABLE_USER, userId);
 							isReviewed = "true";
 							ParseQuery<ParseObject> query = ParseQuery
 									.getQuery(ParseConstants.TABLE_ITEM_REVIEW);
 							query.whereEqualTo(ParseConstants.KEY_USER_ID,
-									tempUserId);
+									tempUser);
 							query.whereEqualTo(ParseConstants.KEY_ITEM_ID,
 									itemId);
 							query.getFirstInBackground(new GetCallback<ParseObject>() {
@@ -258,14 +269,20 @@ public class WriteReviewItem extends ActionBarActivity {
 												false);
 								if (e == null) {
 									// Success
-									String userId = user.getObjectId();
+									// Getting User Id
+									final String userId = user.getObjectId();
+
+									// Create parse object for store as Pointer
+									final ParseObject tempUser = ParseObject.createWithoutData(
+											ParseConstants.TABLE_USER, userId);
+									
 									String reviewText = mTxtUserReview
 											.getText().toString();
 									int rating = Math.round(mRatingBar
 											.getRating());
 
 									review.put(ParseConstants.KEY_USER_ID,
-											userId);
+											tempUser);
 									review.put(ParseConstants.KEY_ITEM_ID,
 											itemId);
 									review.put(ParseConstants.KEY_REVIEW,
