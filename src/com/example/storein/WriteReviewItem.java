@@ -171,19 +171,27 @@ public class WriteReviewItem extends ActionBarActivity {
 			}
 
 			if (isReviewed.equals("false")) {
+				// Getting User Id
+				final String userId = user.getObjectId();
+
+				// Create parse object for store as Pointer
+				final ParseObject tempUser = ParseObject.createWithoutData(
+						ParseConstants.TABLE_USER, userId);
+
+				// On Click Listener
 				mBtnSubmit.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
 						getActivity().setProgressBarIndeterminateVisibility(
 								true);
-						String userId = user.getObjectId();
+
 						String reviewText = mTxtUserReview.getText().toString();
 						int rating = Math.round(mRatingBar.getRating());
 
 						ParseObject reviewItem = new ParseObject(
 								ParseConstants.TABLE_ITEM_REVIEW);
-						reviewItem.put(ParseConstants.KEY_USER_ID, userId);
+						reviewItem.put(ParseConstants.KEY_USER_ID, tempUser);
 						reviewItem.put(ParseConstants.KEY_ITEM_ID, itemId);
 						reviewItem.put(ParseConstants.KEY_REVIEW, reviewText);
 						reviewItem.put(ParseConstants.KEY_RATING, rating);
@@ -224,17 +232,22 @@ public class WriteReviewItem extends ActionBarActivity {
 					}
 				});
 			} else {
+				// Getting User Id
+				final String userId = user.getObjectId();
+
+				// Create parse object for store as Pointer
+				final ParseObject tempUser = ParseObject.createWithoutData(
+						ParseConstants.TABLE_USER, userId);
 				mBtnSubmit.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
 						getActivity().setProgressBarIndeterminateVisibility(
 								true);
-						String userId = user.getObjectId();
 						ParseQuery<ParseObject> query = ParseQuery
 								.getQuery(ParseConstants.TABLE_ITEM_REVIEW);
 						query.whereEqualTo(ParseConstants.KEY_ITEM_ID, itemId);
-						query.whereEqualTo(ParseConstants.KEY_USER_ID, userId);
+						query.whereEqualTo(ParseConstants.KEY_USER_ID, tempUser);
 						query.getFirstInBackground(new GetCallback<ParseObject>() {
 
 							@Override
