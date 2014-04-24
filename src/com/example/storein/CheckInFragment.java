@@ -160,8 +160,12 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	 * Function Added
 	 */
 
-	private void doLocationQuery(ParseGeoPoint location) {
+	private void doLocationQuery() {
 		getActivity().setProgressBarIndeterminateVisibility(true);
+
+		ParseGeoPoint location = new ParseGeoPoint(
+				currentLocation.getLatitude(), currentLocation.getLongitude());
+		
 		// Do the Query
 		ParseObject.registerSubclass(ParsePlace.class);
 		ParseQuery<ParsePlace> query = ParsePlace.getQuery();
@@ -218,10 +222,12 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	 */
 
 	private void initFindPlace() {
-		Location currentLocation = mLocationClient.getLastLocation();
-		ParseGeoPoint userLocation = new ParseGeoPoint(
-				currentLocation.getLatitude(), currentLocation.getLongitude());
-		doLocationQuery(userLocation);
+		currentLocation = mLocationClient.getLastLocation();
+
+		if (currentLocation != null) {
+			doLocationQuery();
+		}
+
 	}
 
 	/*
@@ -245,7 +251,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 
 	public void onListPlaceClickListener() {
 		mListPlace = (ListView) getActivity().findViewById(R.id.listPlace);
-		
+
 		mListPlace.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
