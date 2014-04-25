@@ -34,30 +34,13 @@ import com.parse.SaveCallback;
 public class ItemDetail extends ActionBarActivity {
 
 	public static final String TAG = ItemDetail.class.getSimpleName();
-	protected static String itemId;
-	protected static String isLoved;
-
-	// UI Variable Declaration
-	Button mBtnLoveIt;
-	Button mBtnReviewIt;
-	Button mBtnCheckReview;
-	TextView mItemTitleLabel;
-	TextView mItemDescription;
-	ViewPager mViewPager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// Request Window Feature
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_item_detail);
-		
-		itemId = getIntent().getExtras()
-				.getString(ParseConstants.KEY_OBJECT_ID);
-
-		isLoved = getIntent().getExtras().getString("isLoved");
-
-		mBtnCheckReview = (Button) findViewById(R.id.btnCheckReview);
-		mBtnLoveIt = (Button) findViewById(R.id.btnLoveIt);
 
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
@@ -80,9 +63,6 @@ public class ItemDetail extends ActionBarActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			return true;
@@ -94,14 +74,22 @@ public class ItemDetail extends ActionBarActivity {
 	 * A placeholder fragment containing a simple view.
 	 */
 	public static class PlaceholderFragment extends Fragment {
-		// UI Variable Declaration
 
+		// UI Variable Declaration
 		Button mBtnLoveIt;
 		Button mBtnReviewIt;
 		Button mBtnCheckReview;
 		TextView mItemTitleLabel;
 		TextView mItemDescription;
 		ViewPager mViewPager;
+
+		// Parse Variables
+		ParseUser user = ParseUser.getCurrentUser();
+		String userId = user.getObjectId();
+
+		// Intent Variables
+		protected static String itemId;
+		protected static String isLoved;
 
 		public PlaceholderFragment() {
 		}
@@ -111,12 +99,29 @@ public class ItemDetail extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_item_detail,
 					container, false);
+
+			// Declare UI Variables
 			mViewPager = (ViewPager) rootView.findViewById(R.id.view_pager);
 			mBtnLoveIt = (Button) rootView.findViewById(R.id.btnLoveIt);
 			mBtnReviewIt = (Button) rootView.findViewById(R.id.btnReviewIt);
+			mItemTitleLabel = (TextView) rootView
+					.findViewById(R.id.itemTitleLabel);
+			mItemDescription = (TextView) rootView
+					.findViewById(R.id.itemDescriptionLabel);
 
+			// Intent Variables
+			// Setup Variable from the previous intents
+			itemId = getActivity().getIntent().getExtras()
+					.getString(ParseConstants.KEY_OBJECT_ID);
+			isLoved = getActivity().getIntent().getExtras()
+					.getString("isLoved");
+
+			// Setup Image Adapter
 			ImagePagerAdapter adapter = new ImagePagerAdapter();
 			mViewPager.setAdapter(adapter);
+
+			// Find Item Details
+			findItemDetail();
 
 			return rootView;
 		}
@@ -124,20 +129,40 @@ public class ItemDetail extends ActionBarActivity {
 		@Override
 		public void onResume() {
 			super.onResume();
+			findAllUI();
 			onClickReviewItButton();
-			findItemDetail();
 			checkLoveButton();
 			onClickCheckReviewButton();
+		}
+		
+		/*
+		 * Setter and getter for intent
+		 */
+
+		/*
+		 * Dumb function to protect if the ui variable will return null
+		 */
+
+		protected void findAllUI() {
+			// Declare UI Variables
+			mViewPager = (ViewPager) getActivity()
+					.findViewById(R.id.view_pager);
+			mBtnLoveIt = (Button) getActivity().findViewById(R.id.btnLoveIt);
+			mBtnReviewIt = (Button) getActivity()
+					.findViewById(R.id.btnReviewIt);
+			mItemTitleLabel = (TextView) getActivity().findViewById(
+					R.id.itemTitleLabel);
+			mItemDescription = (TextView) getActivity().findViewById(
+					R.id.itemDescriptionLabel);
 		}
 
 		/*
 		 * Check whether user already love the item or not
 		 */
 		public void checkLoveButton() {
-			mBtnLoveIt = (Button) getActivity().findViewById(R.id.btnLoveIt);
-			ParseUser user = ParseUser.getCurrentUser();
-			String userId = user.getObjectId();
-
+			// Set Progress Bar
+			getActivity().setProgressBarIndeterminateVisibility(true);
+			// Do Query
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_ITEM_LOVED);
 			query.whereEqualTo(ParseConstants.KEY_ITEM_ID, itemId);
@@ -146,7 +171,8 @@ public class ItemDetail extends ActionBarActivity {
 
 				@Override
 				public void done(int love, ParseException e) {
-
+					// Set Progress Bar
+					getActivity().setProgressBarIndeterminateVisibility(false);
 					if (e == null) {
 						// success
 						if (love != 0) {
@@ -167,109 +193,106 @@ public class ItemDetail extends ActionBarActivity {
 		}
 
 		/*
+		 * On Click Listener
+		 */
+
+		// when user already love the items
+		OnClickListener isLovedTrue = new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// Create Toast
+				debugLoveVar();
+
+				// Set Progress Bar
+				getActivity().setProgressBarIndeterminateVisibility(true);
+				ParseQuery<ParseObject> query = ParseQuery
+						.getQuery(ParseConstants.TABLE_ITEM_LOVED);
+				query.whereEqualTo(ParseConstants.KEY_USER_ID, userId);
+				query.whereEqualTo(ParseConstants.KEY_ITEM_ID, itemId);
+				query.getFirstInBackground(new GetCallback<ParseObject>() {
+
+					@Override
+					public void done(ParseObject itemLoved, ParseException e) {
+						// Set Progress Bar
+						getActivity().setProgressBarIndeterminateVisibility(
+								false);
+						if (e == null) {
+							try {
+								itemLoved.delete();
+								checkLoveButton();
+								Toast.makeText(getActivity(),
+										" UnLove it Parse success",
+										Toast.LENGTH_SHORT).show();
+								onResume();
+
+							} catch (ParseException e1) {
+								e1.printStackTrace();
+							}
+
+						} else {
+							// failed
+							parseErrorDialog(e);
+						}
+					}
+				});
+			}
+		};
+
+		// when user have not love the items
+		OnClickListener isLovedFalse = new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// create toast
+				debugLoveVar();
+
+				// Set Progress Bar
+				getActivity().setProgressBarIndeterminateVisibility(true);
+
+				// Do the query
+				ParseObject itemLoved = new ParseObject(
+						ParseConstants.TABLE_ITEM_LOVED);
+				itemLoved.put(ParseConstants.KEY_USER_ID, userId);
+				itemLoved.put(ParseConstants.KEY_ITEM_ID, itemId);
+				itemLoved.saveInBackground(new SaveCallback() {
+
+					@Override
+					public void done(ParseException e) {
+						// Set Progress Bar
+						getActivity().setProgressBarIndeterminateVisibility(
+								false);
+						if (e == null) {
+							// Success
+							checkLoveButton();
+							Toast.makeText(getActivity(),
+									"Love it Parse success", Toast.LENGTH_SHORT)
+									.show();
+							onResume();
+						} else {
+							// failed
+							parseErrorDialog(e);
+						}
+
+					}
+				});
+			}
+		};
+
+		/*
 		 * When user click the Love It Button
 		 */
 		public void onClickLoveItButton() {
-
+			// Check whether the variables is null or not
 			if (isLoved == null) {
 				checkLoveButton();
 			}
-			checkLoveButton();
-
-			mBtnLoveIt = (Button) getActivity().findViewById(R.id.btnLoveIt);
 
 			if (isLoved.equals("false")) {
-
 				// The user HAVE NOT liked it
-				mBtnLoveIt.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-
-						Toast.makeText(getActivity(), isLoved,
-								Toast.LENGTH_SHORT).show();
-						// Toast Dialog
-						Toast.makeText(getActivity(), "Thank you for the Love",
-								Toast.LENGTH_SHORT).show();
-
-						// Get current userId and itemId
-						ParseUser user = ParseUser.getCurrentUser();
-						String userId = user.getObjectId();
-
-						// Do the query
-						ParseObject itemLoved = new ParseObject(
-								ParseConstants.TABLE_ITEM_LOVED);
-						itemLoved.put(ParseConstants.KEY_USER_ID, userId);
-						itemLoved.put(ParseConstants.KEY_ITEM_ID, itemId);
-						itemLoved.saveInBackground(new SaveCallback() {
-
-							@Override
-							public void done(ParseException e) {
-		
-								if (e == null) {
-									// Success
-									checkLoveButton();
-									Toast.makeText(getActivity(),
-											"Love it Parse success",
-											Toast.LENGTH_SHORT).show();
-									onResume();
-								} else {
-									// failed
-									Log.e(TAG, e.getMessage());
-								}
-
-							}
-						});
-
-					}
-				});
+				mBtnLoveIt.setOnClickListener(isLovedFalse);
 			} else if (isLoved.equals("true")) {
 				// User ALREADY like the item
-				mBtnLoveIt.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-
-						// Toast Notification
-						Toast.makeText(getActivity(), "Un-Love The item :(",
-								Toast.LENGTH_SHORT).show();
-						Toast.makeText(getActivity(), isLoved,
-								Toast.LENGTH_SHORT).show();
-
-						// get the userId
-						ParseUser user = ParseUser.getCurrentUser();
-						String userId = user.getObjectId();
-
-						ParseQuery<ParseObject> query = ParseQuery
-								.getQuery(ParseConstants.TABLE_ITEM_LOVED);
-						query.whereEqualTo(ParseConstants.KEY_USER_ID, userId);
-						query.whereEqualTo(ParseConstants.KEY_ITEM_ID, itemId);
-						query.getFirstInBackground(new GetCallback<ParseObject>() {
-
-							@Override
-							public void done(ParseObject itemLoved,
-									ParseException e) {
-		
-								if (e == null) {
-									try {
-										itemLoved.delete();
-										checkLoveButton();
-										Toast.makeText(getActivity(),
-												" UnLove it Parse success",
-												Toast.LENGTH_SHORT).show();
-										onResume();
-
-									} catch (ParseException e1) {
-										e1.printStackTrace();
-									}
-
-								} else {
-									// failed
-									Log.e(TAG, e.getMessage());
-								}
-							}
-						});
-					}
-				});
+				mBtnLoveIt.setOnClickListener(isLovedTrue);
 			}
 		}
 
@@ -314,6 +337,10 @@ public class ItemDetail extends ActionBarActivity {
 		 * Find the detail of an item including description and rating
 		 */
 		public void findItemDetail() {
+			// set progress bar
+			getActivity().setProgressBarIndeterminate(true);
+
+			// do the query
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_ITEM);
 			query.whereEqualTo(ParseConstants.KEY_OBJECT_ID, itemId);
@@ -321,12 +348,11 @@ public class ItemDetail extends ActionBarActivity {
 
 				@Override
 				public void done(ParseObject item, ParseException e) {
+					// set progress bar
+					getActivity().setProgressBarIndeterminate(false);
 					if (e == null) {
 						// success
-						mItemTitleLabel = (TextView) getActivity()
-								.findViewById(R.id.itemTitleLabel);
-						mItemDescription = (TextView) getActivity()
-								.findViewById(R.id.itemDescriptionLabel);
+						findAllUI();
 						String title = item.getString(ParseConstants.KEY_NAME);
 						String description = item
 								.getString(ParseConstants.KEY_DESCRIPTION);
@@ -335,14 +361,7 @@ public class ItemDetail extends ActionBarActivity {
 						mItemDescription.setText(description);
 					} else {
 						// failed
-						Log.e(TAG, e.getMessage());
-						AlertDialog.Builder builder = new AlertDialog.Builder(
-								getActivity());
-						builder.setMessage(e.getMessage())
-								.setTitle(R.string.error_title)
-								.setPositiveButton(android.R.string.ok, null);
-						AlertDialog dialog = builder.create();
-						dialog.show();
+						parseErrorDialog(e);
 					}
 				}
 			});
@@ -397,6 +416,36 @@ public class ItemDetail extends ActionBarActivity {
 				((ViewPager) container).removeView((ImageView) object);
 			}
 
+		}
+
+		/*
+		 * Debug Toast
+		 */
+
+		private void debugLoveVar() {
+			String tempMessage;
+			if (isLoved.equals("false")) {
+				tempMessage = "Thank you for the Love";
+			} else {
+				tempMessage = "UnLove the items";
+			}
+			Toast.makeText(getActivity(), isLoved, Toast.LENGTH_SHORT).show();
+			// Toast Dialog
+			Toast.makeText(getActivity(), tempMessage, Toast.LENGTH_SHORT)
+					.show();
+		}
+
+		/*
+		 * Debug if ParseException throw the alert dialog
+		 */
+
+		protected void parseErrorDialog(ParseException e) {
+			Log.e(TAG, e.getMessage());
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			builder.setMessage(e.getMessage()).setTitle(R.string.error_title)
+					.setPositiveButton(android.R.string.ok, null);
+			AlertDialog dialog = builder.create();
+			dialog.show();
 		}
 
 	}
