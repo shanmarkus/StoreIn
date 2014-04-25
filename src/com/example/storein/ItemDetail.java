@@ -134,13 +134,9 @@ public class ItemDetail extends ActionBarActivity {
 			checkLoveButton();
 			onClickCheckReviewButton();
 		}
-		
-		/*
-		 * Setter and getter for intent
-		 */
 
 		/*
-		 * Dumb function to protect if the ui variable will return null
+		 * Dumb function to protect if the UI variable will return null
 		 */
 
 		protected void findAllUI() {
@@ -309,6 +305,7 @@ public class ItemDetail extends ActionBarActivity {
 					Intent intent = new Intent(getActivity(),
 							WriteReviewItem.class);
 					intent.putExtra(ParseConstants.KEY_OBJECT_ID, itemId);
+					intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 					startActivity(intent);
 				}
 			});

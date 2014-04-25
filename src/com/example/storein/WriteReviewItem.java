@@ -237,6 +237,7 @@ public class WriteReviewItem extends ActionBarActivity {
 						Intent intent = new Intent(getActivity(),
 								ItemDetail.class);
 						intent.putExtra(ParseConstants.KEY_OBJECT_ID, itemId);
+						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						startActivity(intent);
 					} else {
 						parseErrorDialog(e);
