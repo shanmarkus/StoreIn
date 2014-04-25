@@ -50,7 +50,7 @@ public class ItemDetail extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_item_detail);
-		setSupportProgressBarIndeterminateVisibility(true);
+		
 		itemId = getIntent().getExtras()
 				.getString(ParseConstants.KEY_OBJECT_ID);
 
@@ -111,6 +111,7 @@ public class ItemDetail extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_item_detail,
 					container, false);
+			getActivity().requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 			mViewPager = (ViewPager) rootView.findViewById(R.id.view_pager);
 			mBtnLoveIt = (Button) rootView.findViewById(R.id.btnLoveIt);
 			mBtnReviewIt = (Button) rootView.findViewById(R.id.btnReviewIt);
@@ -147,7 +148,7 @@ public class ItemDetail extends ActionBarActivity {
 
 				@Override
 				public void done(int love, ParseException e) {
-					getActivity().setProgressBarIndeterminateVisibility(false);
+
 					if (e == null) {
 						// success
 						if (love != 0) {
