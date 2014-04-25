@@ -67,5 +67,7 @@
     <string name="location_title_reward">Reward Points</string>
     <string name="promotion_button_claim_it">Claim It</string>
     <string name="promotion_flash_deal_quantity">0</string>
+    <string name="check_in_title_list_place">List Place</string>
+    <string name="title_activity_location_information">LocationInformation</string>
 
 </resources>

@@ -8,12 +8,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,15 +28,11 @@ import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailed
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -58,10 +52,6 @@ import com.parse.ParseUser;
 public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		OnConnectionFailedListener, LocationListener, OnItemClickListener,
 		OnMyLocationButtonClickListener {
-	// TODO: Rename parameter arguments, choose names that match
-	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-	private static final String ARG_PARAM1 = "param1";
-	private static final String ARG_PARAM2 = "param2";
 
 	protected final static String TAG = CheckInFragment.class.getSimpleName()
 			.toString();
@@ -79,17 +69,11 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	private Location currentLocation = null;
 	private boolean hasSetUpInitialLocation = false;
 
-	// Map Constant
-	private GoogleMap mMap;
+	// Location Client
 	private LocationClient mLocationClient;
 	private float radius;
-	private SupportMapFragment fragment;
-	private Circle mapCircle;
 
 	// Parse Constants
-	private static final float METERS_PER_FEET = 0.3048f;
-	private static final double OFFSET_CALCULATION_INIT_DIFF = 1.0;
-	private static final float OFFSET_CALCULATION_ACCURACY = 0.01f;
 	private static final int MAX_PLACE_SEARCH_RESULTS = 20;
 	private static final int MAX_PlACE_SEARCH_DISTANCE = 10; // In KiloMeters
 
@@ -100,8 +84,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	public static CheckInFragment newInstance(String param1, String param2) {
 		CheckInFragment fragment = new CheckInFragment();
 		Bundle args = new Bundle();
-		args.putString(ARG_PARAM1, param1);
-		args.putString(ARG_PARAM2, param2);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -118,11 +100,10 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	@Override
 	public void onResume() {
 		super.onResume();
-		getActivity().setProgressBarIndeterminateVisibility(true);
-		if (mMap == null) {
-			mMap = fragment.getMap();
-			mMap.setMyLocationEnabled(true);
-		}
+		// Clear array list first
+		clearAdapter();
+
+		// set up location listener
 		setUpLocationClientIfNeeded();
 		mLocationClient.connect();
 
@@ -145,11 +126,14 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_check_in, container,
 				false);
-		
-		//Adding Location Manager 
+
+		// Setup Location Client
+		mLocationClient = new LocationClient(getActivity(), this, this);
+
+		// Adding Location Manager
 		LocationManager locationManager = (LocationManager) getActivity()
 				.getSystemService(Context.LOCATION_SERVICE);
-		
+
 		// Setup GPS
 		if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 			Toast.makeText(getActivity(), "GPS is Enabled in your devide",
@@ -157,23 +141,26 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		} else {
 			showGPSDisabledAlertToUser();
 		}
-		
-		return view;
-	}
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		FragmentManager fm = getChildFragmentManager();
-		fragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
-		if (fragment == null) {
-			fragment = SupportMapFragment.newInstance();
-			fm.beginTransaction().replace(R.id.map, fragment).commit();
-		}
+		return view;
 	}
 
 	/*
 	 * Function Added
+	 */
+
+	/*
+	 * Clear the array list when resume
+	 */
+
+	private void clearAdapter() {
+		placesInfo.clear();
+		placeInfo.clear();
+		placesID.clear();
+	}
+
+	/*
+	 * Location Query
 	 */
 
 	private void doLocationQuery() {
@@ -201,13 +188,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 							String name = place.getName();
 							String address = place.getAddress();
 							String id = place.getObjectId();
-							ParseGeoPoint geoPoint = place
-									.getParseGeoPoint(ParseConstants.KEY_LOCATION);
-
-							// Adding Marker
-							mMap.addMarker(new MarkerOptions().position(
-									new LatLng(geoPoint.getLatitude(), geoPoint
-											.getLongitude())).title(name));
 
 							// add to the hash map
 							HashMap<String, String> placeInfo = new HashMap<String, String>();
@@ -274,30 +254,8 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 					int position, long id) {
 				final String placeID = placesID.get(position);
 				final Intent intent = new Intent(getActivity(),
-						LocationDetail.class);
-				final Location currentLocation = mLocationClient
-						.getLastLocation();
-				ParseQuery<ParseUser> query = ParseQuery
-						.getQuery(ParseConstants.TABLE_USER);
-				query.getInBackground(ParseUser.getCurrentUser().getObjectId(),
-						new GetCallback<ParseUser>() {
-
-							@Override
-							public void done(ParseUser user, ParseException e) {
-								if (e == null) {
-									ParseGeoPoint temp = new ParseGeoPoint(
-											currentLocation.getLatitude(),
-											currentLocation.getLongitude());
-									user.put(ParseConstants.KEY_LOCATION, temp);
-									intent.putExtra(
-											ParseConstants.KEY_OBJECT_ID,
-											placeID);
-									startActivity(intent);
-								} else {
-									errorAlertDialog(e);
-								}
-							}
-						});
+						LocationInformation.class);
+				startActivity(intent);
 			}
 		});
 	}
@@ -357,49 +315,13 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	}
 
 	/**
-	 * Implementation of {@link LocationListener}. Makes the camera always go to
-	 * the user location
-	 */
-	@Override
-	public void onLocationChanged(Location location) {
-		currentLocation = location;
-		if (lastLocation == null)
-			lastLocation = location;
-		LatLng myLatLng = new LatLng(location.getLatitude(),
-				location.getLongitude());
-
-		// Calculate distance
-		float temp = lastLocation.distanceTo(location);
-
-		// Check if user move more than 10 meters
-		if (temp > 10) {
-			initFindPlace();
-		} else {
-			// Do nothing
-		}
-		// Setup Initial Location
-
-		if (!hasSetUpInitialLocation) {
-			// Zoom to the current location.
-			updateZoom(myLatLng);
-			hasSetUpInitialLocation = true;
-		}
-		// Update map radius indicator
-		updateCircle(myLatLng);
-
-		// Update Distance
-		// Update Distance
-		lastLocation = location;
-
-	}
-
-	/**
 	 * Callback called when connected to GCore. Implementation of
 	 * {@link ConnectionCallbacks}.
 	 */
 	@Override
 	public void onConnected(Bundle connectionHint) {
 		mLocationClient.requestLocationUpdates(REQUEST, this); // LocationListener
+		Toast.makeText(getActivity(), "Connected", Toast.LENGTH_SHORT).show();
 		initFindPlace();
 	}
 
@@ -427,134 +349,19 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 				"MyLocation button clicked" + currentLocation.getLatitude()
 						+ " " + currentLocation.getLongitude(),
 				Toast.LENGTH_LONG).show();
-		// Return false so that we don't consume the event and the default
-		// behavior still occurs
-		// (the camera animates to the user's current position).
+
 		return false;
-	}
-
-	/*
-	 * Helper method to get the Parse GEO point representation of a location
-	 */
-	private ParseGeoPoint geoPointFromLocation(Location loc) {
-		return new ParseGeoPoint(loc.getLatitude(), loc.getLongitude());
-	}
-
-	/*
-	 * Displays a circle on the map representing the search radius
-	 */
-	private void updateCircle(LatLng myLatLng) {
-		if (mapCircle == null) {
-			mapCircle = mMap.addCircle(new CircleOptions().center(myLatLng)
-					.radius(radius * METERS_PER_FEET));
-			int baseColor = Color.DKGRAY;
-			mapCircle.setStrokeColor(baseColor);
-			mapCircle.setStrokeWidth(2);
-			mapCircle.setFillColor(Color.argb(50, Color.red(baseColor),
-					Color.green(baseColor), Color.blue(baseColor)));
-		}
-		mapCircle.setCenter(myLatLng);
-		mapCircle.setRadius(radius * METERS_PER_FEET); // Convert radius in feet
-														// to meters.
-	}
-
-	/*
-	 * Zooms the map to show the area of interest based on the search radius
-	 */
-	private void updateZoom(LatLng myLatLng) {
-		// Get the bounds to zoom to
-		LatLngBounds bounds = calculateBoundsWithCenter(myLatLng);
-		// Zoom to the given bounds
-		mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 5));
-
-		// Zoom further
-		float zoomLevel = 19;
-		mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLatLng,
-				zoomLevel));
-	}
-
-	/*
-	 * Helper method to calculate the bounds for map zooming
-	 */
-	public LatLngBounds calculateBoundsWithCenter(LatLng myLatLng) {
-		// Create a bounds
-		LatLngBounds.Builder builder = LatLngBounds.builder();
-
-		// Calculate east/west points that should to be included
-		// in the bounds
-		double lngDifference = calculateLatLngOffset(myLatLng, false);
-		LatLng east = new LatLng(myLatLng.latitude, myLatLng.longitude
-				+ lngDifference);
-		builder.include(east);
-		LatLng west = new LatLng(myLatLng.latitude, myLatLng.longitude
-				- lngDifference);
-		builder.include(west);
-
-		// Calculate north/south points that should to be included
-		// in the bounds
-		double latDifference = calculateLatLngOffset(myLatLng, true);
-		LatLng north = new LatLng(myLatLng.latitude + latDifference,
-				myLatLng.longitude);
-		builder.include(north);
-		LatLng south = new LatLng(myLatLng.latitude - latDifference,
-				myLatLng.longitude);
-		builder.include(south);
-
-		return builder.build();
-	}
-
-	/*
-	 * Helper method to calculate the offset for the bounds used in map zooming
-	 */
-	private double calculateLatLngOffset(LatLng myLatLng, boolean bLatOffset) {
-		// The return offset, initialized to the default difference
-		double latLngOffset = OFFSET_CALCULATION_INIT_DIFF;
-		// Set up the desired offset distance in meters
-		float desiredOffsetInMeters = radius * METERS_PER_FEET;
-		// Variables for the distance calculation
-		float[] distance = new float[1];
-		boolean foundMax = false;
-		double foundMinDiff = 0;
-		// Loop through and get the offset
-		do {
-			// Calculate the distance between the point of interest
-			// and the current offset in the latitude or longitude direction
-			if (bLatOffset) {
-				Location.distanceBetween(myLatLng.latitude, myLatLng.longitude,
-						myLatLng.latitude + latLngOffset, myLatLng.longitude,
-						distance);
-			} else {
-				Location.distanceBetween(myLatLng.latitude, myLatLng.longitude,
-						myLatLng.latitude, myLatLng.longitude + latLngOffset,
-						distance);
-			}
-			// Compare the current difference with the desired one
-			float distanceDiff = distance[0] - desiredOffsetInMeters;
-			if (distanceDiff < 0) {
-				// Need to catch up to the desired distance
-				if (!foundMax) {
-					foundMinDiff = latLngOffset;
-					// Increase the calculated offset
-					latLngOffset *= 2;
-				} else {
-					double tmp = latLngOffset;
-					// Increase the calculated offset, at a slower pace
-					latLngOffset += (latLngOffset - foundMinDiff) / 2;
-					foundMinDiff = tmp;
-				}
-			} else {
-				// Overshot the desired distance
-				// Decrease the calculated offset
-				latLngOffset -= (latLngOffset - foundMinDiff) / 2;
-				foundMax = true;
-			}
-		} while (Math.abs(distance[0] - desiredOffsetInMeters) > OFFSET_CALCULATION_ACCURACY);
-		return latLngOffset;
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onLocationChanged(Location arg0) {
 		// TODO Auto-generated method stub
 
 	}

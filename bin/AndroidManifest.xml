@@ -96,8 +96,8 @@
         <activity
             android:name="com.example.storein.ItemReview"
             android:label="@string/title_activity_item_review"
-            android:parentActivityName="com.example.storein.ItemDetail" 
-            android:noHistory="true">
+            android:noHistory="true"
+            android:parentActivityName="com.example.storein.ItemDetail" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.storein.ItemDetail" />
@@ -129,6 +129,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.storein.LocationCatalog" />
+        </activity>
+        <activity
+            android:name="com.example.storein.LocationInformation"
+            android:label="@string/title_activity_location_information"
+            android:parentActivityName="com.example.storein.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.storein.MainActivity" />
         </activity>
     </application>
 

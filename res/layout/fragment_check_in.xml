@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,39 +6,23 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <LinearLayout
+    <ListView
+        android:id="@+id/listPlace"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:baselineAligned="false"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textView1" >
+    </ListView>
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1" >
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="17dp"
+        android:layout_marginLeft="17dp"
+        android:text="@string/check_in_title_list_place"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
-            <RelativeLayout
-                android:id="@+id/map"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-            </RelativeLayout>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1" >
-
-            <ListView
-                android:id="@+id/listPlace"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:dividerHeight="0.5dp"
-                android:divider="@android:color/black" >
-            </ListView>
-        </RelativeLayout>
-    </LinearLayout>
-
-</FrameLayout>
+</RelativeLayout>
