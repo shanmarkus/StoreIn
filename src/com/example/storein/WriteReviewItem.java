@@ -114,7 +114,7 @@ public class WriteReviewItem extends ActionBarActivity {
 				getUserID();
 				getItemId();
 			}
-			
+
 			// check user review
 			checkExistingUserReview();
 		}
@@ -189,11 +189,9 @@ public class WriteReviewItem extends ActionBarActivity {
 
 				@Override
 				public void done(ParseObject review, ParseException e) {
+					// set progress bar
+					getActivity().setProgressBarIndeterminateVisibility(false);
 					if (e == null) {
-						// set progress bar
-						getActivity().setProgressBarIndeterminateVisibility(
-								false);
-
 						// Set up the view
 						mTxtUserReview = (EditText) getActivity().findViewById(
 								R.id.txtUserReview);
@@ -238,7 +236,6 @@ public class WriteReviewItem extends ActionBarActivity {
 						checkExistingUserReview();
 						Intent intent = new Intent(getActivity(),
 								ItemDetail.class);
-						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						intent.putExtra(ParseConstants.KEY_OBJECT_ID, itemId);
 						startActivity(intent);
 					} else {
