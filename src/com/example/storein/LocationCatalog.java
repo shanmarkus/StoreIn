@@ -112,7 +112,6 @@ public class LocationCatalog extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(
 					R.layout.fragment_location_catalog, container, false);
-
 			mViewPager = (ViewPager) rootView.findViewById(R.id.view_pager);
 			mListItem = (ListView) rootView.findViewById(R.id.listItem);
 			mListPromotion = (ListView) rootView
@@ -146,7 +145,6 @@ public class LocationCatalog extends ActionBarActivity {
 
 				@Override
 				public void done(List<ParseObject> promotions, ParseException e) {
-					getActivity().setProgressBarIndeterminateVisibility(false);
 					if (e == null) {
 						Toast.makeText(getActivity(), promotions.size() + " ",
 								Toast.LENGTH_SHORT).show();

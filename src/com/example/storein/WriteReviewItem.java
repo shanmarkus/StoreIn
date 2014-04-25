@@ -239,7 +239,6 @@ public class WriteReviewItem extends ActionBarActivity {
 						Intent intent = new Intent(getActivity(),
 								ItemDetail.class);
 						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						intent.putExtra(ParseConstants.KEY_OBJECT_ID, itemId);
 						startActivity(intent);
 					} else {

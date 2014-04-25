@@ -111,7 +111,6 @@ public class ItemDetail extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_item_detail,
 					container, false);
-			getActivity().requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 			mViewPager = (ViewPager) rootView.findViewById(R.id.view_pager);
 			mBtnLoveIt = (Button) rootView.findViewById(R.id.btnLoveIt);
 			mBtnReviewIt = (Button) rootView.findViewById(R.id.btnReviewIt);
@@ -135,7 +134,6 @@ public class ItemDetail extends ActionBarActivity {
 		 * Check whether user already love the item or not
 		 */
 		public void checkLoveButton() {
-			getActivity().setProgressBarIndeterminateVisibility(true);
 			mBtnLoveIt = (Button) getActivity().findViewById(R.id.btnLoveIt);
 			ParseUser user = ParseUser.getCurrentUser();
 			String userId = user.getObjectId();
@@ -187,8 +185,7 @@ public class ItemDetail extends ActionBarActivity {
 
 					@Override
 					public void onClick(View v) {
-						getActivity().setProgressBarIndeterminateVisibility(
-								true);
+
 						Toast.makeText(getActivity(), isLoved,
 								Toast.LENGTH_SHORT).show();
 						// Toast Dialog
@@ -208,9 +205,7 @@ public class ItemDetail extends ActionBarActivity {
 
 							@Override
 							public void done(ParseException e) {
-								getActivity()
-										.setProgressBarIndeterminateVisibility(
-												false);
+		
 								if (e == null) {
 									// Success
 									checkLoveButton();
@@ -233,8 +228,7 @@ public class ItemDetail extends ActionBarActivity {
 				mBtnLoveIt.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						getActivity().setProgressBarIndeterminateVisibility(
-								true);
+
 						// Toast Notification
 						Toast.makeText(getActivity(), "Un-Love The item :(",
 								Toast.LENGTH_SHORT).show();
@@ -254,9 +248,7 @@ public class ItemDetail extends ActionBarActivity {
 							@Override
 							public void done(ParseObject itemLoved,
 									ParseException e) {
-								getActivity()
-										.setProgressBarIndeterminateVisibility(
-												false);
+		
 								if (e == null) {
 									try {
 										itemLoved.delete();
@@ -329,7 +321,6 @@ public class ItemDetail extends ActionBarActivity {
 
 				@Override
 				public void done(ParseObject item, ParseException e) {
-					getActivity().setProgressBarIndeterminateVisibility(false);
 					if (e == null) {
 						// success
 						mItemTitleLabel = (TextView) getActivity()
