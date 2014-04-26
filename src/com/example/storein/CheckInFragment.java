@@ -255,6 +255,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 				final String placeID = placesID.get(position);
 				final Intent intent = new Intent(getActivity(),
 						LocationInformation.class);
+				intent.putExtra(ParseConstants.KEY_OBJECT_ID, placeID);
 				startActivity(intent);
 			}
 		});
