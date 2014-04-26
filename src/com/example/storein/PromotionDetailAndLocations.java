@@ -41,6 +41,8 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class PromotionDetailAndLocations extends ActionBarActivity {
 	// Variables
@@ -98,6 +100,7 @@ public class PromotionDetailAndLocations extends ActionBarActivity {
 		public HashMap<String, String> locationInfo = new HashMap<String, String>();
 		protected ArrayList<String> objectsId = new ArrayList<String>();
 		protected ArrayList<ParseGeoPoint> locationsCoordinate = new ArrayList<ParseGeoPoint>();
+		protected String placeId;
 
 		// Location Variable
 		private Location currentLocation = null;
@@ -204,6 +207,7 @@ public class PromotionDetailAndLocations extends ActionBarActivity {
 					// Start Progress Dialog
 					initProgressDialog();
 					placeCurrentLocation = locationsCoordinate.get(position);
+					placeId = objectsId.get(position);
 				}
 			});
 		}
@@ -348,10 +352,9 @@ public class PromotionDetailAndLocations extends ActionBarActivity {
 			float Distance = Math
 					.abs(currentLocation.distanceTo(placeSelected));
 
-			// Dismis the progress dialog
 			progressDialog.dismiss();
-			
 			if (Distance > MAX_DISTANCE) {
+				// Dismis the progress dialog
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						getActivity());
 				String message = "Sorry it's seems you too far away to check in to this place, "
@@ -362,16 +365,15 @@ public class PromotionDetailAndLocations extends ActionBarActivity {
 			} else {
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						getActivity());
-				String message = "Sorry it's seems you too far away to check in to this place, "
-						+ " do you want open maps to direction to this location";
+				String message = "Hey you near this location, do you want to check in instead ?";
 				builder.setMessage(message)
-						.setPositiveButton("Ok", dialogOpenMaps)
-						.setNegativeButton("No", dialogOpenMaps).show();
+						.setPositiveButton("Ok", dialogNearLocation)
+						.setNegativeButton("No", dialogNearLocation).show();
 			}
 		}
 
 		/*
-		 * Alert Dialog
+		 * Alert Dialog listener
 		 */
 
 		// if to far away open maps
@@ -394,6 +396,53 @@ public class PromotionDetailAndLocations extends ActionBarActivity {
 				}
 			}
 		};
+
+		DialogInterface.OnClickListener dialogNearLocation = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch (which) {
+				case DialogInterface.BUTTON_POSITIVE:
+					saveUserActivity();
+					break;
+
+				case DialogInterface.BUTTON_NEGATIVE:
+					// do nothing
+					break;
+				}
+			}
+		};
+
+		/*
+		 * Parse Save User Check In if possible
+		 */
+
+		private void saveUserActivity() {
+			initProgressDialog();
+			String userId = ParseUser.getCurrentUser().getObjectId();
+			ParseObject checkInActivity = new ParseObject(
+					ParseConstants.TABLE_ACTV_USER_CHECK_IN_PLACE);
+			checkInActivity.put(ParseConstants.KEY_USER_ID, userId);
+			checkInActivity.put(ParseConstants.KEY_PLACE_ID, placeId);
+			checkInActivity.saveInBackground(new SaveCallback() {
+
+				@Override
+				public void done(ParseException e) {
+					progressDialog.dismiss();
+					if (e == null) {
+						// success
+						Toast.makeText(getActivity(), "Check In Success",
+								Toast.LENGTH_SHORT).show();
+						Intent intent = new Intent(getActivity(),
+								LocationInformation.class);
+						intent.putExtra(ParseConstants.KEY_OBJECT_ID, placeId);
+						startActivity(intent);
+					} else {
+						// failed
+						errorAlertDialog(e);
+					}
+				}
+			});
+		}
 
 		/*
 		 * Parse Error Method
