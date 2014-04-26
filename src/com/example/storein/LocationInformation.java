@@ -2,6 +2,7 @@ package com.example.storein;
 
 import java.util.Locale;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -92,6 +93,16 @@ public class LocationInformation extends ActionBarActivity implements
 			FragmentTransaction fragmentTransaction) {
 	}
 
+	/*
+	 * Added Function
+	 */
+
+	@Override
+	public void onBackPressed() {
+		Intent intent = new Intent(this, MainActivity.class);
+		startActivity(intent);
+	}
+
 	/**
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the sections/tabs/pages.
@@ -154,11 +165,14 @@ public class LocationInformation extends ActionBarActivity implements
 			Locale l = Locale.getDefault();
 			switch (position) {
 			case 0:
-				return getString(R.string.location_information_title_section1).toUpperCase(l);
+				return getString(R.string.location_information_title_section1)
+						.toUpperCase(l);
 			case 1:
-				return getString(R.string.location_information_title_section2).toUpperCase(l);
+				return getString(R.string.location_information_title_section2)
+						.toUpperCase(l);
 			case 2:
-				return getString(R.string.location_information_title_section3).toUpperCase(l);
+				return getString(R.string.location_information_title_section3)
+						.toUpperCase(l);
 			}
 			return null;
 		}

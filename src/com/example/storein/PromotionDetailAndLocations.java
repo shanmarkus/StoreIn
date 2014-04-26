@@ -440,8 +440,6 @@ public class PromotionDetailAndLocations extends ActionBarActivity {
 						Intent intent = new Intent(getActivity(),
 								LocationInformation.class);
 						intent.putExtra(ParseConstants.KEY_OBJECT_ID, placeId);
-						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						intent.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 						startActivity(intent);
 					} else {
 						// failed
