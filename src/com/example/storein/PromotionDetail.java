@@ -3,6 +3,7 @@ package com.example.storein;
 import java.util.Date;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -52,9 +53,6 @@ public class PromotionDetail extends ActionBarActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			return true;
@@ -85,11 +83,15 @@ public class PromotionDetail extends ActionBarActivity {
 		protected Integer flashPromoQuota;
 		protected String promotionQuotaId;
 		protected Integer numberUserStatusAndPromotion;
+		protected String userId = ParseUser.getCurrentUser().getObjectId();
 
 		// Promotion Variables
 		public String promoTitle;
 		public String promoPlace;
 
+		// Progress dialog
+		ProgressDialog progressDialog;
+		
 		public PlaceholderFragment() {
 		}
 
@@ -98,6 +100,8 @@ public class PromotionDetail extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(
 					R.layout.fragment_promotion_detail, container, false);
+
+			// Setup UI
 			mTxtPromotionTitle = (TextView) rootView
 					.findViewById(R.id.txtPromotionTitle);
 			mTextPromotionDesc = (TextView) rootView
@@ -109,8 +113,9 @@ public class PromotionDetail extends ActionBarActivity {
 			mTextReward = (TextView) rootView.findViewById(R.id.textReward);
 			mTextFlashDealNumber = (TextView) rootView
 					.findViewById(R.id.textFlashDealNumber);
-
 			mClaimButton = (Button) rootView.findViewById(R.id.claimButton);
+
+			// Do some Function
 			checkFlashDeal();
 			checkUserAndPromotionStatus();
 			return rootView;
@@ -128,6 +133,10 @@ public class PromotionDetail extends ActionBarActivity {
 		/*
 		 * Added Functions
 		 */
+		
+		/*
+		 * Setter and Getter
+		 */
 		protected void getPromotionId() {
 			promotionId = (String) getActivity().getIntent().getExtras()
 					.get(ParseConstants.KEY_OBJECT_ID);
@@ -141,6 +150,19 @@ public class PromotionDetail extends ActionBarActivity {
 		protected void getPlaceId() {
 			placeId = (String) getActivity().getIntent().getExtras()
 					.get(ParseConstants.KEY_PLACE_ID);
+		}
+		
+		/*
+		 * Progress Dialog init
+		 */
+		
+		private void initProgressDialog(){
+			progressDialog = new ProgressDialog(getActivity());
+			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			progressDialog.setMessage("Loading");
+			progressDialog.setIndeterminate(true);
+			progressDialog.setCancelable(false);   
+			progressDialog.show();
 		}
 
 		protected void checkFlashDeal() {
@@ -167,6 +189,7 @@ public class PromotionDetail extends ActionBarActivity {
 			// set progress bar true
 			getActivity().setProgressBarIndeterminateVisibility(true);
 
+			// Do the query
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_PROMOTION);
 			query.whereEqualTo(ParseConstants.KEY_OBJECT_ID, promotionId);
@@ -212,14 +235,7 @@ public class PromotionDetail extends ActionBarActivity {
 
 					} else {
 						// failed
-						Log.e(TAG, e.getMessage());
-						AlertDialog.Builder builder = new AlertDialog.Builder(
-								getActivity());
-						builder.setMessage(e.getMessage())
-								.setTitle(R.string.error_title)
-								.setPositiveButton(android.R.string.ok, null);
-						AlertDialog dialog = builder.create();
-						dialog.show();
+						parseErrorDialog(e);
 					}
 
 				}
@@ -231,7 +247,7 @@ public class PromotionDetail extends ActionBarActivity {
 		 */
 
 		protected void checkUserAndPromotionStatus() {
-			String userId = ParseUser.getCurrentUser().getObjectId();
+
 			if (promotionId == null) {
 				getPromotionId();
 			}
@@ -259,8 +275,7 @@ public class PromotionDetail extends ActionBarActivity {
 							mClaimButton.setEnabled(false);
 						}
 					} else {
-						// failed
-						Log.e(TAG + " Check user and promo", e.getMessage());
+						parseErrorDialog(e);
 					}
 				}
 			});
@@ -303,7 +318,7 @@ public class PromotionDetail extends ActionBarActivity {
 						flashPromoQuota = quantity;
 						promotionQuotaId = tempObjId;
 					} else {
-						Log.e(TAG + " get flash quantity", e.getMessage());
+						parseErrorDialog(e);
 					}
 
 				}
@@ -323,6 +338,7 @@ public class PromotionDetail extends ActionBarActivity {
 
 				@Override
 				public void onClick(View v) {
+					initProgressDialog();
 					if (claimable == true) {
 						// if the promotion is flash deal
 						if (flashPromoQuota > 0) {
@@ -349,11 +365,11 @@ public class PromotionDetail extends ActionBarActivity {
 															.saveInBackground();
 													// save the log
 													saveUserClaimActivity();
-													
+
 													// Set to false
 													checkUserAndPromotionStatus();
 												} else {
-													// failed
+													parseErrorDialog(e);
 												}
 											}
 										});
@@ -385,6 +401,8 @@ public class PromotionDetail extends ActionBarActivity {
 
 				@Override
 				public void done(ParseException e) {
+					//Dismis the progress bar
+					progressDialog.dismiss();
 					if (e == null) {
 						Toast.makeText(getActivity(),
 								"Claim Activity has been saved",
@@ -401,8 +419,7 @@ public class PromotionDetail extends ActionBarActivity {
 								.setNeutralButton("Share",
 										dialogClaimClickListener).show();
 					} else {
-						Toast.makeText(getActivity(), e.getMessage(),
-								Toast.LENGTH_SHORT).show();
+						parseErrorDialog(e);
 					}
 				}
 			});
@@ -433,6 +450,19 @@ public class PromotionDetail extends ActionBarActivity {
 				}
 			}
 		};
+
+		/*
+		 * Debug if ParseException throw the alert dialog
+		 */
+
+		protected void parseErrorDialog(ParseException e) {
+			Log.e(TAG, e.getMessage());
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			builder.setMessage(e.getMessage()).setTitle(R.string.error_title)
+					.setPositiveButton(android.R.string.ok, null);
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		}
 	}
 
 }
