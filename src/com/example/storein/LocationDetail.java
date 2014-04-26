@@ -184,14 +184,7 @@ public class LocationDetail extends Fragment implements ConnectionCallbacks,
 
 				} else {
 					// failed
-					Log.e(TAG, e.getMessage());
-					AlertDialog.Builder builder = new AlertDialog.Builder(
-							getActivity());
-					builder.setMessage(e.getMessage())
-							.setTitle(R.string.error_title)
-							.setPositiveButton(android.R.string.ok, null);
-					AlertDialog dialog = builder.create();
-					dialog.show();
+					parseErrorDialog(e);
 				}
 			}
 		});
@@ -220,6 +213,19 @@ public class LocationDetail extends Fragment implements ConnectionCallbacks,
 					.show();
 		}
 
+	}
+
+	/*
+	 * Debug Parse Error
+	 */
+
+	private void parseErrorDialog(ParseException e) {
+		Log.e(TAG, e.getMessage());
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setMessage(e.getMessage()).setTitle(R.string.error_title)
+				.setPositiveButton(android.R.string.ok, null);
+		AlertDialog dialog = builder.create();
+		dialog.show();
 	}
 
 	@Override

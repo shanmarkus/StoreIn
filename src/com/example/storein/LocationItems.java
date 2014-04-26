@@ -30,6 +30,9 @@ public class LocationItems extends Fragment {
 	// TAG
 	private static final String TAG = LocationDetail.class.getSimpleName();
 
+	// UI Variables
+	ListView mListItem;
+
 	// Variables
 	protected String placeId;
 	protected String userId = ParseUser.getCurrentUser().getObjectId();
@@ -48,12 +51,20 @@ public class LocationItems extends Fragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_location_items,
 				container, false);
+
+		// UI Declaration
+		mListItem = (ListView) getActivity().findViewById(R.id.listItem);
+
+		// get the placeId
+		getPlaceID();
+		
 		return rootView;
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
+		doItemsQuery();
 	}
 
 	/*
@@ -70,9 +81,14 @@ public class LocationItems extends Fragment {
 	 */
 
 	protected void doItemsQuery() {
+		getActivity().setProgressBarIndeterminateVisibility(true); // set progress bar
 		itemInfo.clear();
 		itemsId.clear();
 		itemsInfo.clear();
+		
+		if(placeId == null){
+			getPlaceID();
+		}
 
 		// Do the rest
 		ParseQuery<ParseObject> query = ParseQuery
@@ -92,12 +108,12 @@ public class LocationItems extends Fragment {
 					for (ParseObject item : items) {
 						// init the hashmap for the adapter
 						HashMap<String, String> itemInfo = new HashMap<String, String>();
-						
+
 						// get the values
 						String objectId = item.getObjectId();
 						String name = item.getString(ParseConstants.KEY_NAME);
 						Integer rating = item.getInt(ParseConstants.KEY_RATING);
-						
+
 						// put to the adapter
 						itemInfo.put(ParseConstants.KEY_NAME, name);
 						itemInfo.put(ParseConstants.KEY_RATING,
@@ -107,7 +123,7 @@ public class LocationItems extends Fragment {
 
 					}
 					setListItemAdapter();
-					// onItemClickListener(objectsId);
+					mListItem.setOnItemClickListener(itemSelected);
 
 				} else {
 					parseErrorDialog(e);
@@ -128,13 +144,11 @@ public class LocationItems extends Fragment {
 				long id) {
 			// Get the Variable
 			String objectId = itemsId.get(position);
-			
+
 			// Start intent
-			final Intent intent = new Intent(getActivity(),
-					ItemDetail.class);
-			intent.putExtra(ParseConstants.KEY_OBJECT_ID,
-					objectId);
-			
+			final Intent intent = new Intent(getActivity(), ItemDetail.class);
+			intent.putExtra(ParseConstants.KEY_OBJECT_ID, objectId);
+			startActivity(intent);
 		}
 	};
 
