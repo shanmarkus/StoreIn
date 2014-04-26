@@ -1,5 +1,11 @@
 package com.example.storein;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.net.ParseException;
+import android.util.Log;
+
 public final class ParseConstants {
 	
 	// Class name
@@ -49,4 +55,5 @@ public final class ParseConstants {
 
 	// Pointer names
 	public static final String KEY_POINTER_ITEM = "item";
+	
 }
