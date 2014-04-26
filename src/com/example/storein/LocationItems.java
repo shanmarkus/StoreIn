@@ -106,7 +106,7 @@ public class LocationItems extends Fragment {
 				getActivity().setProgressBarIndeterminateVisibility(false);
 				if (e == null) {
 					for (ParseObject item : items) {
-						// init the hashmap for the adapter
+						// initiate the hash map for the adapter
 						HashMap<String, String> itemInfo = new HashMap<String, String>();
 
 						// get the values
@@ -146,7 +146,7 @@ public class LocationItems extends Fragment {
 			String objectId = itemsId.get(position);
 
 			// Start intent
-			final Intent intent = new Intent(getActivity(), ItemDetail.class);
+			final Intent intent = new Intent(getActivity(), ItemInformation.class);
 			intent.putExtra(ParseConstants.KEY_OBJECT_ID, objectId);
 			startActivity(intent);
 		}

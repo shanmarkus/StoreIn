@@ -21,18 +21,8 @@ import android.widget.TextView;
 public class ItemInformation extends ActionBarActivity implements
 		ActionBar.TabListener {
 
-	/**
-	 * The {@link android.support.v4.view.PagerAdapter} that will provide
-	 * fragments for each of the sections. We use a {@link FragmentPagerAdapter}
-	 * derivative, which will keep every loaded fragment in memory. If this
-	 * becomes too memory intensive, it may be best to switch to a
-	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-	 */
 	SectionsPagerAdapter mSectionsPagerAdapter;
 
-	/**
-	 * The {@link ViewPager} that will host the section contents.
-	 */
 	ViewPager mViewPager;
 
 	@Override
@@ -44,18 +34,12 @@ public class ItemInformation extends ActionBarActivity implements
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-		// Create the adapter that will return a fragment for each of the three
-		// primary sections of the activity.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
 				getSupportFragmentManager());
 
-		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 
-		// When swiping between different sections, select the corresponding
-		// tab. We can also use ActionBar.Tab#select() to do this if we have
-		// a reference to the Tab.
 		mViewPager
 				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 					@Override
@@ -64,12 +48,7 @@ public class ItemInformation extends ActionBarActivity implements
 					}
 				});
 
-		// For each of the sections in the app, add a tab to the action bar.
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-			// Create a tab with text corresponding to the page title defined by
-			// the adapter. Also specify this Activity object, which implements
-			// the TabListener interface, as the callback (listener) for when
-			// this tab is selected.
 			actionBar.addTab(actionBar.newTab()
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
@@ -86,9 +65,6 @@ public class ItemInformation extends ActionBarActivity implements
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			return true;
@@ -99,8 +75,6 @@ public class ItemInformation extends ActionBarActivity implements
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
-		// When the given tab is selected, switch to the corresponding page in
-		// the ViewPager.
 		mViewPager.setCurrentItem(tab.getPosition());
 	}
 
@@ -120,22 +94,45 @@ public class ItemInformation extends ActionBarActivity implements
 	 */
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+		// Intent Variables
+		protected String itemId;
+
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
 		}
 
+		// Setter Getter for intents
+		public String getItemId() {
+			return itemId = getIntent().getExtras().getString(
+					ParseConstants.KEY_OBJECT_ID);
+		}
+
 		@Override
-		public Fragment getItem(int position) {
-			// getItem is called to instantiate the fragment for the given page.
-			// Return a PlaceholderFragment (defined as a static inner class
-			// below).
-			return PlaceholderFragment.newInstance(position + 1);
+		public Fragment getItem(int i) {
+			if (itemId == null) {
+				getItemId();
+			}
+			Fragment fragment = new ItemDetail();
+			Bundle args = new Bundle();
+			switch (i) {
+			case 0:
+				fragment = new ItemDetail();
+				args.putString(ParseConstants.KEY_OBJECT_ID, itemId);
+				fragment.setArguments(args);
+				return fragment;
+
+			default:
+				fragment = new ItemDetail();
+				args.putString(ParseConstants.KEY_OBJECT_ID, itemId);
+				fragment.setArguments(args);
+				return fragment;
+			}
 		}
 
 		@Override
 		public int getCount() {
-			// Show 3 total pages.
-			return 3;
+			// Show 2 total pages.
+			return 2;
 		}
 
 		@Override
@@ -143,11 +140,11 @@ public class ItemInformation extends ActionBarActivity implements
 			Locale l = Locale.getDefault();
 			switch (position) {
 			case 0:
-				return getString(R.string.title_section1).toUpperCase(l);
+				return getString(R.string.item_information_title_section1)
+						.toUpperCase(l);
 			case 1:
-				return getString(R.string.title_section2).toUpperCase(l);
-			case 2:
-				return getString(R.string.title_section3).toUpperCase(l);
+				return getString(R.string.item_information_title_section2)
+						.toUpperCase(l);
 			}
 			return null;
 		}
@@ -157,15 +154,9 @@ public class ItemInformation extends ActionBarActivity implements
 	 * A placeholder fragment containing a simple view.
 	 */
 	public static class PlaceholderFragment extends Fragment {
-		/**
-		 * The fragment argument representing the section number for this
-		 * fragment.
-		 */
+
 		private static final String ARG_SECTION_NUMBER = "section_number";
 
-		/**
-		 * Returns a new instance of this fragment for the given section number.
-		 */
 		public static PlaceholderFragment newInstance(int sectionNumber) {
 			PlaceholderFragment fragment = new PlaceholderFragment();
 			Bundle args = new Bundle();
