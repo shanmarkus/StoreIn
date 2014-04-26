@@ -29,20 +29,14 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
 public class CheckInFragment extends Fragment implements ConnectionCallbacks,
-		OnConnectionFailedListener, LocationListener, OnItemClickListener,
+		OnConnectionFailedListener, LocationListener,
 		OnMyLocationButtonClickListener {
 
 	protected final static String TAG = CheckInFragment.class.getSimpleName()
@@ -55,15 +49,14 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	ArrayList<HashMap<String, String>> placesInfo = new ArrayList<HashMap<String, String>>();
 	protected ArrayList<String> placesID = new ArrayList<String>();
 	HashMap<String, String> placeInfo = new HashMap<String, String>();
+	private String placeName;
+	private String placeID;
 
 	// Place Constant
-	private Location lastLocation = null;
 	private Location currentLocation = null;
-	private boolean hasSetUpInitialLocation = false;
 
 	// Location Client
 	private LocationClient mLocationClient;
-	private float radius;
 
 	// Parse Constants
 	private static final int MAX_PLACE_SEARCH_RESULTS = 20;
@@ -156,6 +149,9 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	 */
 
 	private void doLocationQuery() {
+		// Clear ArrayList
+		clearAdapter();
+
 		getActivity().setProgressBarIndeterminateVisibility(true);
 
 		ParseGeoPoint location = new ParseGeoPoint(
@@ -177,13 +173,13 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 					// success
 					if (places.size() > 0) {
 						for (ParsePlace place : places) {
-							String name = place.getName();
+							placeName = place.getName();
 							String address = place.getAddress();
 							String id = place.getObjectId();
 
 							// add to the hash map
 							HashMap<String, String> placeInfo = new HashMap<String, String>();
-							placeInfo.put(ParseConstants.KEY_NAME, name);
+							placeInfo.put(ParseConstants.KEY_NAME, placeName);
 							placeInfo.put(ParseConstants.KEY_ADDRESS, address);
 							placesInfo.add(placeInfo);
 
@@ -211,7 +207,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 
 	private void initFindPlace() {
 		currentLocation = mLocationClient.getLastLocation();
-
 		if (currentLocation != null) {
 			doLocationQuery();
 		}
@@ -244,14 +239,50 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				final String placeID = placesID.get(position);
-				final Intent intent = new Intent(getActivity(),
-						LocationInformation.class);
-				intent.putExtra(ParseConstants.KEY_OBJECT_ID, placeID);
-				startActivity(intent);
+				placeID = placesID.get(position);
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						getActivity());
+				String message = "Check In at " + placeName;
+				builder.setMessage(message)
+						.setPositiveButton("Ok", dialogCheckInListener)
+						.setNeutralButton("Share", dialogCheckInListener)
+						.setNegativeButton("No", dialogCheckInListener)
+						.show();
 			}
 		});
 	}
+
+	/*
+	 * Alert Dialog For Check In
+	 */
+
+	DialogInterface.OnClickListener dialogCheckInListener = new DialogInterface.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			switch (which) {
+			case DialogInterface.BUTTON_POSITIVE:
+				Intent intent = new Intent(getActivity(),
+						LocationInformation.class);
+				intent.putExtra(ParseConstants.KEY_OBJECT_ID, placeID);
+				startActivity(intent);
+				break;
+
+			case DialogInterface.BUTTON_NEUTRAL:
+				Intent sendIntent = new Intent();
+				sendIntent.setAction(Intent.ACTION_SEND);
+				sendIntent.putExtra(Intent.EXTRA_TEXT,
+						"Hey I Just Check In at " + placeName
+								+ " Using StoreIn");
+				sendIntent.setType("text/plain");
+				startActivity(sendIntent);
+				break;
+
+			case DialogInterface.BUTTON_NEGATIVE:
+				// do nothing
+				break;
+			}
+		}
+	};
 
 	/*
 	 * Error Dialog
@@ -344,13 +375,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 				Toast.LENGTH_LONG).show();
 
 		return false;
-	}
-
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
