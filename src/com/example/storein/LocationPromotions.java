@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.parse.FindCallback;
@@ -23,6 +26,10 @@ import com.parse.ParseQuery;
 
 public class LocationPromotions extends Fragment {
 	private static final String TAG = LocationPromotions.class.getSimpleName();
+
+	// UI Variables
+	ListView mListPromotion;
+	ProgressDialog progressDialog;
 
 	// Fixed Variables
 	private String placeId;
@@ -42,12 +49,18 @@ public class LocationPromotions extends Fragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_location_promotions,
 				container, false);
+		getPlaceID();
+
+		// initiate UI
+		mListPromotion = (ListView) rootView.findViewById(R.id.listPromotion);
 		return rootView;
+
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
+		doPromotionQuery();
 	}
 
 	/*
@@ -67,6 +80,8 @@ public class LocationPromotions extends Fragment {
 	 * find top promotion list
 	 */
 	public void doPromotionQuery() {
+		getActivity().setProgressBarIndeterminateVisibility(true);
+
 		if (placeObj == null) {
 			getPlaceID();
 		}
@@ -75,8 +90,7 @@ public class LocationPromotions extends Fragment {
 		promotionsClaimable.clear();
 		promotionsId.clear();
 
-		// Do the Rest
-		getActivity().setProgressBarIndeterminateVisibility(true);
+		// Do the query
 
 		ParseQuery<ParseObject> query = ParseQuery
 				.getQuery(ParseConstants.TABLE_REL_PROMOTION_PLACE);
@@ -87,6 +101,7 @@ public class LocationPromotions extends Fragment {
 			@Override
 			public void done(List<ParseObject> promotions, ParseException e) {
 				getActivity().setProgressBarIndeterminateVisibility(false);
+
 				if (e == null) {
 					for (ParseObject promo : promotions) {
 						// initiate new hash map
@@ -115,8 +130,8 @@ public class LocationPromotions extends Fragment {
 						promotionsId.add(tempPromo.getObjectId());
 						promotionsClaimable.add(claimable);
 					}
-					// setListPromotionAdapter();
-					onPromotionClickListener();
+					setListPromotionAdapter();
+					mListPromotion.setOnItemClickListener(promotionSelected);
 				} else {
 					// failed
 					parseErrorDialog(e);
@@ -144,6 +159,22 @@ public class LocationPromotions extends Fragment {
 
 		}
 	};
+
+	/*
+	 * Set Adapter
+	 */
+
+	private void setListPromotionAdapter() {
+		mListPromotion = (ListView) getActivity().findViewById(
+				R.id.listPromotion);
+		String[] keys = { ParseConstants.KEY_NAME, ParseConstants.KEY_CLAIMABLE };
+		int[] ids = { android.R.id.text1, android.R.id.text2 };
+
+		SimpleAdapter adapter = new SimpleAdapter(getActivity(),
+				promotionsInfo, android.R.layout.simple_list_item_2, keys, ids);
+
+		mListPromotion.setAdapter(adapter);
+	}
 
 	/*
 	 * Debug Parse Error

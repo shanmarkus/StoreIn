@@ -2,45 +2,60 @@ package com.example.storein;
 
 import java.util.Locale;
 
-import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.TextView;
 
-public class LocationInformation extends ActionBarActivity implements
+public class ItemInformation extends ActionBarActivity implements
 		ActionBar.TabListener {
 
+	/**
+	 * The {@link android.support.v4.view.PagerAdapter} that will provide
+	 * fragments for each of the sections. We use a {@link FragmentPagerAdapter}
+	 * derivative, which will keep every loaded fragment in memory. If this
+	 * becomes too memory intensive, it may be best to switch to a
+	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+	 */
 	SectionsPagerAdapter mSectionsPagerAdapter;
 
+	/**
+	 * The {@link ViewPager} that will host the section contents.
+	 */
 	ViewPager mViewPager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setContentView(R.layout.activity_location_information);
+		setContentView(R.layout.activity_item_information);
 
 		// Set up the action bar.
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
+		// Create the adapter that will return a fragment for each of the three
+		// primary sections of the activity.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
 				getSupportFragmentManager());
 
+		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 
+		// When swiping between different sections, select the corresponding
+		// tab. We can also use ActionBar.Tab#select() to do this if we have
+		// a reference to the Tab.
 		mViewPager
 				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 					@Override
@@ -51,6 +66,10 @@ public class LocationInformation extends ActionBarActivity implements
 
 		// For each of the sections in the app, add a tab to the action bar.
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
+			// Create a tab with text corresponding to the page title defined by
+			// the adapter. Also specify this Activity object, which implements
+			// the TabListener interface, as the callback (listener) for when
+			// this tab is selected.
 			actionBar.addTab(actionBar.newTab()
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
@@ -61,12 +80,15 @@ public class LocationInformation extends ActionBarActivity implements
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.location_information, menu);
+		getMenuInflater().inflate(R.menu.item_information, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			return true;
@@ -98,49 +120,16 @@ public class LocationInformation extends ActionBarActivity implements
 	 */
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-		// Intent Variables
-		protected String placeId;
-
-		// Setter Getter for intents
-		public String getPlaceId() {
-			return placeId = getIntent().getExtras().getString(
-					ParseConstants.KEY_OBJECT_ID);
-		}
-
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
 		}
 
 		@Override
-		public Fragment getItem(int i) {
-			if (placeId == null) {
-				getPlaceId();
-			}
-			Fragment fragment = new LocationDetail();
-			Bundle args = new Bundle();
-			switch (i) {
-			case 0:
-				fragment = new LocationDetail();
-				args.putString(ParseConstants.KEY_OBJECT_ID, placeId);
-				fragment.setArguments(args);
-				return fragment;
-			case 2:
-				fragment = new LocationItems();
-				args.putString(ParseConstants.KEY_OBJECT_ID, placeId);
-				fragment.setArguments(args);
-				return fragment;
-			case 1:
-				fragment = new LocationPromotions();
-				args.putString(ParseConstants.KEY_OBJECT_ID, placeId);
-				fragment.setArguments(args);
-				return fragment;
-
-			default:
-				fragment = new LocationDetail();
-				args.putString(ParseConstants.KEY_OBJECT_ID, placeId);
-				fragment.setArguments(args);
-				return fragment;
-			}
+		public Fragment getItem(int position) {
+			// getItem is called to instantiate the fragment for the given page.
+			// Return a PlaceholderFragment (defined as a static inner class
+			// below).
+			return PlaceholderFragment.newInstance(position + 1);
 		}
 
 		@Override
@@ -154,11 +143,11 @@ public class LocationInformation extends ActionBarActivity implements
 			Locale l = Locale.getDefault();
 			switch (position) {
 			case 0:
-				return getString(R.string.location_information_title_section1).toUpperCase(l);
+				return getString(R.string.title_section1).toUpperCase(l);
 			case 1:
-				return getString(R.string.location_information_title_section2).toUpperCase(l);
+				return getString(R.string.title_section2).toUpperCase(l);
 			case 2:
-				return getString(R.string.location_information_title_section3).toUpperCase(l);
+				return getString(R.string.title_section3).toUpperCase(l);
 			}
 			return null;
 		}
@@ -192,7 +181,7 @@ public class LocationInformation extends ActionBarActivity implements
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(
-					R.layout.fragment_location_information, container, false);
+					R.layout.fragment_item_information, container, false);
 			TextView textView = (TextView) rootView
 					.findViewById(R.id.section_label);
 			textView.setText(Integer.toString(getArguments().getInt(

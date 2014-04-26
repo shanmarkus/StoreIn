@@ -3,40 +3,27 @@ package com.example.storein;
 import java.util.List;
 
 import android.app.AlertDialog;
-import android.content.Intent;
-import android.content.IntentSender;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
-import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
-import com.google.android.gms.location.LocationClient;
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class LocationDetail extends Fragment implements ConnectionCallbacks,
-		OnConnectionFailedListener {
+public class LocationDetail extends Fragment {
 
 	protected static final String TAG = LocationDetail.class.getSimpleName();
 	protected String placeID;
@@ -50,9 +37,6 @@ public class LocationDetail extends Fragment implements ConnectionCallbacks,
 	protected Button mLocationCheckIn;
 
 	// Variables
-	private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-	LocationClient mLocationClient;
-	Location mCurrentLocation;
 	protected ParseGeoPoint mCurrentGeoPoint;
 
 	public LocationDetail() {
@@ -64,11 +48,9 @@ public class LocationDetail extends Fragment implements ConnectionCallbacks,
 		View rootView = inflater.inflate(R.layout.fragment_location_detail,
 				container, false);
 
+
 		// Init bundle variables
 		getPlaceID();
-
-		// Setup Location Client
-		mLocationClient = new LocationClient(getActivity(), this, this);
 
 		// Setting up the UI
 		mLocationNameLabel = (TextView) rootView
@@ -79,20 +61,21 @@ public class LocationDetail extends Fragment implements ConnectionCallbacks,
 				.findViewById(R.id.locationPhoneLabel);
 		mLocationRatingBar = (RatingBar) rootView
 				.findViewById(R.id.locationRatingBar);
+
+		// Init Function
+		doLocationQuery();
+
 		return rootView;
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		mLocationClient.connect();
-		doLocationQuery();
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
-		mLocationClient.disconnect();
 	}
 
 	/*
@@ -108,34 +91,6 @@ public class LocationDetail extends Fragment implements ConnectionCallbacks,
 	/*
 	 * Added Function
 	 */
-
-	protected void checkUserLastLocation() {
-		ParseUser user = ParseUser.getCurrentUser();
-		ParseGeoPoint location = user
-				.getParseGeoPoint(ParseConstants.KEY_LOCATION);
-		if (location == null) {
-			Location mlocation = mLocationClient.getLastLocation();
-			mCurrentGeoPoint = new ParseGeoPoint(mlocation.getLatitude(),
-					mlocation.getLongitude());
-			user.put(ParseConstants.KEY_LOCATION, mCurrentGeoPoint);
-			user.saveEventually(new SaveCallback() {
-
-				@Override
-				public void done(ParseException e) {
-					if (e == null) {
-						Toast.makeText(getActivity(), "Updated Location",
-								Toast.LENGTH_SHORT).show();
-					} else {
-						Toast.makeText(getActivity(), "Failed Update Location",
-								Toast.LENGTH_SHORT).show();
-					}
-				}
-			});
-
-		} else {
-			mCurrentGeoPoint = location;
-		}
-	}
 
 	/*
 	 * Get the query for location details
@@ -192,30 +147,6 @@ public class LocationDetail extends Fragment implements ConnectionCallbacks,
 	}
 
 	/*
-	 * Map Function
-	 * 
-	 * @see com.google.android.gms.common.GooglePlayServicesClient.
-	 * OnConnectionFailedListener
-	 * #onConnectionFailed(com.google.android.gms.common.ConnectionResult)
-	 */
-
-	@Override
-	public void onConnectionFailed(ConnectionResult e) {
-		if (e.hasResolution()) {
-			try {
-				e.startResolutionForResult(getActivity(),
-						CONNECTION_FAILURE_RESOLUTION_REQUEST);
-			} catch (IntentSender.SendIntentException e1) {
-				e1.printStackTrace();
-			}
-		} else {
-			Toast.makeText(getActivity(), e.getErrorCode(), Toast.LENGTH_SHORT)
-					.show();
-		}
-
-	}
-
-	/*
 	 * Debug Parse Error
 	 */
 
@@ -226,20 +157,6 @@ public class LocationDetail extends Fragment implements ConnectionCallbacks,
 				.setPositiveButton(android.R.string.ok, null);
 		AlertDialog dialog = builder.create();
 		dialog.show();
-	}
-
-	@Override
-	public void onConnected(Bundle arg0) {
-		Toast.makeText(getActivity(), "Connected", Toast.LENGTH_SHORT).show();
-		// Get current Location
-		mCurrentLocation = mLocationClient.getLastLocation();
-	}
-
-	@Override
-	public void onDisconnected() {
-		Toast.makeText(getActivity(), "Disconnected. Please re-connect.",
-				Toast.LENGTH_SHORT).show();
-
 	}
 
 }
