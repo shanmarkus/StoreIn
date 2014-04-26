@@ -120,7 +120,13 @@ public class ItemInformation extends ActionBarActivity implements
 				args.putString(ParseConstants.KEY_OBJECT_ID, itemId);
 				fragment.setArguments(args);
 				return fragment;
-
+				
+			case 1:
+				fragment = new ItemReview();
+				args.putString(ParseConstants.KEY_OBJECT_ID, itemId);
+				fragment.setArguments(args);
+				return fragment;
+				
 			default:
 				fragment = new ItemDetail();
 				args.putString(ParseConstants.KEY_OBJECT_ID, itemId);
