@@ -1383,30 +1383,32 @@ containing a value of this type.
         public static final int activity_location_detail=0x7f03001b;
         public static final int activity_location_information=0x7f03001c;
         public static final int activity_location_items=0x7f03001d;
-        public static final int activity_login=0x7f03001e;
-        public static final int activity_main=0x7f03001f;
-        public static final int activity_promotion_detail=0x7f030020;
-        public static final int activity_promotion_detail_and_location=0x7f030021;
-        public static final int activity_promotion_list=0x7f030022;
-        public static final int activity_sign_up=0x7f030023;
-        public static final int activity_write_review_item=0x7f030024;
-        public static final int fragment_browse=0x7f030025;
-        public static final int fragment_check_in=0x7f030026;
-        public static final int fragment_claim_promotion=0x7f030027;
-        public static final int fragment_home=0x7f030028;
-        public static final int fragment_item_detail=0x7f030029;
-        public static final int fragment_item_review=0x7f03002a;
-        public static final int fragment_location_catalog=0x7f03002b;
-        public static final int fragment_location_detail=0x7f03002c;
-        public static final int fragment_location_information=0x7f03002d;
-        public static final int fragment_location_items=0x7f03002e;
-        public static final int fragment_main=0x7f03002f;
-        public static final int fragment_navigation_drawer=0x7f030030;
-        public static final int fragment_promotion_detail=0x7f030031;
-        public static final int fragment_promotion_detail_and_location=0x7f030032;
-        public static final int fragment_promotion_list=0x7f030033;
-        public static final int fragment_write_review_item=0x7f030034;
-        public static final int support_simple_spinner_dropdown_item=0x7f030035;
+        public static final int activity_location_promotions=0x7f03001e;
+        public static final int activity_login=0x7f03001f;
+        public static final int activity_main=0x7f030020;
+        public static final int activity_promotion_detail=0x7f030021;
+        public static final int activity_promotion_detail_and_location=0x7f030022;
+        public static final int activity_promotion_list=0x7f030023;
+        public static final int activity_sign_up=0x7f030024;
+        public static final int activity_write_review_item=0x7f030025;
+        public static final int fragment_browse=0x7f030026;
+        public static final int fragment_check_in=0x7f030027;
+        public static final int fragment_claim_promotion=0x7f030028;
+        public static final int fragment_home=0x7f030029;
+        public static final int fragment_item_detail=0x7f03002a;
+        public static final int fragment_item_review=0x7f03002b;
+        public static final int fragment_location_catalog=0x7f03002c;
+        public static final int fragment_location_detail=0x7f03002d;
+        public static final int fragment_location_information=0x7f03002e;
+        public static final int fragment_location_items=0x7f03002f;
+        public static final int fragment_location_promotions=0x7f030030;
+        public static final int fragment_main=0x7f030031;
+        public static final int fragment_navigation_drawer=0x7f030032;
+        public static final int fragment_promotion_detail=0x7f030033;
+        public static final int fragment_promotion_detail_and_location=0x7f030034;
+        public static final int fragment_promotion_list=0x7f030035;
+        public static final int fragment_write_review_item=0x7f030036;
+        public static final int support_simple_spinner_dropdown_item=0x7f030037;
     }
     public static final class menu {
         public static final int claim_promotion=0x7f0c0000;
@@ -1418,12 +1420,13 @@ containing a value of this type.
         public static final int location_detail=0x7f0c0006;
         public static final int location_information=0x7f0c0007;
         public static final int location_items=0x7f0c0008;
-        public static final int login=0x7f0c0009;
-        public static final int main=0x7f0c000a;
-        public static final int promotion_detail=0x7f0c000b;
-        public static final int promotion_list=0x7f0c000c;
-        public static final int sign_up=0x7f0c000d;
-        public static final int write_review_item=0x7f0c000e;
+        public static final int location_promotions=0x7f0c0009;
+        public static final int login=0x7f0c000a;
+        public static final int main=0x7f0c000b;
+        public static final int promotion_detail=0x7f0c000c;
+        public static final int promotion_list=0x7f0c000d;
+        public static final int sign_up=0x7f0c000e;
+        public static final int write_review_item=0x7f0c000f;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
@@ -1469,8 +1472,8 @@ containing a value of this type.
         public static final int action_example=0x7f0a002d;
         public static final int action_forgot_password=0x7f0a003c;
         public static final int action_settings=0x7f0a002e;
-        public static final int action_sign_in_register=0x7f0a0072;
-        public static final int action_sign_in_short=0x7f0a0073;
+        public static final int action_sign_in_register=0x7f0a0073;
+        public static final int action_sign_in_short=0x7f0a0074;
         public static final int app_name=0x7f0a0027;
         /**   Title for notification shown when GooglePlayServices needs to be
         enabled for a application to work. [CHAR LIMIT=70] 
@@ -1570,10 +1573,10 @@ containing a value of this type.
          */
         public static final int common_signin_button_text_long=0x7f0a0020;
         public static final int email_hint=0x7f0a0036;
-        public static final int error_field_required=0x7f0a0078;
-        public static final int error_incorrect_password=0x7f0a0077;
-        public static final int error_invalid_email=0x7f0a0075;
-        public static final int error_invalid_password=0x7f0a0076;
+        public static final int error_field_required=0x7f0a0079;
+        public static final int error_incorrect_password=0x7f0a0078;
+        public static final int error_invalid_email=0x7f0a0076;
+        public static final int error_invalid_password=0x7f0a0077;
         public static final int error_title=0x7f0a0040;
         public static final int hello_blank_fragment=0x7f0a003e;
         public static final int hello_world=0x7f0a0031;
@@ -1598,7 +1601,7 @@ containing a value of this type.
         public static final int login_button_label=0x7f0a003a;
         public static final int login_error_message=0x7f0a0032;
         public static final int login_error_title=0x7f0a0033;
-        public static final int login_progress_signing_in=0x7f0a0074;
+        public static final int login_progress_signing_in=0x7f0a0075;
         public static final int love_it=0x7f0a004c;
         public static final int menu_logout_label=0x7f0a003b;
         public static final int navigation_drawer_close=0x7f0a002c;
@@ -1619,8 +1622,8 @@ containing a value of this type.
         public static final int promotion_start_end_date_title=0x7f0a005a;
         /**  Strings related to login 
          */
-        public static final int prompt_email=0x7f0a0070;
-        public static final int prompt_password=0x7f0a0071;
+        public static final int prompt_email=0x7f0a0071;
+        public static final int prompt_password=0x7f0a0072;
         public static final int sign_up_button_label=0x7f0a0037;
         public static final int sign_up_label=0x7f0a002f;
         public static final int signup_error_message=0x7f0a0038;
@@ -1633,7 +1636,8 @@ containing a value of this type.
         public static final int title_activity_location_detail=0x7f0a0044;
         public static final int title_activity_location_information=0x7f0a006a;
         public static final int title_activity_location_items=0x7f0a006e;
-        public static final int title_activity_login=0x7f0a006f;
+        public static final int title_activity_location_promotions=0x7f0a006f;
+        public static final int title_activity_login=0x7f0a0070;
         public static final int title_activity_promotion_detail=0x7f0a0053;
         public static final int title_activity_promotion_list=0x7f0a0052;
         public static final int title_activity_sign_up=0x7f0a0030;
