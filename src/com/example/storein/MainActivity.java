@@ -3,6 +3,7 @@ package com.example.storein;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.ParseAnalytics;
 import com.parse.ParseUser;
@@ -27,6 +29,9 @@ public class MainActivity extends ActionBarActivity implements
 	public static String TAG = MainActivity.class.getSimpleName();
 
 	private CharSequence mTitle;
+	
+	// Variables
+	private boolean doubleBackToExitPressedOnce = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +56,13 @@ public class MainActivity extends ActionBarActivity implements
 		mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
 				(DrawerLayout) findViewById(R.id.drawer_layout));
 	}
-	
 
 	@Override
 	public void onNavigationDrawerItemSelected(int position) {
 		// update the main content by replacing fragments
 		Fragment fragment = new HomeFragment();
 		FragmentManager fragmentManager = getSupportFragmentManager();
-		switch(position){
+		switch (position) {
 		case 0:
 			fragment = new HomeFragment();
 			break;
@@ -70,10 +74,8 @@ public class MainActivity extends ActionBarActivity implements
 			break;
 		}
 
-		fragmentManager
-		.beginTransaction()
-		.replace(R.id.container, fragment
-				).commit();
+		fragmentManager.beginTransaction().replace(R.id.container, fragment)
+				.commit();
 	}
 
 	public void onSectionAttached(int number) {
@@ -108,19 +110,39 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	/*
-	 * Added function 
-	 * */
-	
+	 * Added function
+	 */
+
 	private void navigateToLogin() {
 		Intent intent = new Intent(this, LoginActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		startActivity(intent);
 	}
-	
+
+	@Override
+	public void onBackPressed() {
+		if (doubleBackToExitPressedOnce) {
+			super.onBackPressed();
+			return;
+		}
+
+		this.doubleBackToExitPressedOnce = true;
+		Toast.makeText(this, "Please click BACK again to exit",
+				Toast.LENGTH_SHORT).show();
+
+		new Handler().postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				doubleBackToExitPressedOnce = false;
+			}
+		}, 2000);
+	}
+
 	/*
 	 * Generated function from Fragment Activity
-	 * */
+	 */
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -128,8 +150,8 @@ public class MainActivity extends ActionBarActivity implements
 		if (id == R.id.action_settings) {
 			return true;
 		}
-		//Log out menu item
-		else if(id == R.id.action_logout){
+		// Log out menu item
+		else if (id == R.id.action_logout) {
 			ParseUser.logOut();
 			navigateToLogin();
 		}
