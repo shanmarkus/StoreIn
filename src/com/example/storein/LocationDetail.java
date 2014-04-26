@@ -79,8 +79,6 @@ public class LocationDetail extends Fragment implements ConnectionCallbacks,
 				.findViewById(R.id.locationPhoneLabel);
 		mLocationRatingBar = (RatingBar) rootView
 				.findViewById(R.id.locationRatingBar);
-		mLocationCheckIn = (Button) rootView.findViewById(R.id.locationCheckIn);
-
 		return rootView;
 	}
 
@@ -106,7 +104,6 @@ public class LocationDetail extends Fragment implements ConnectionCallbacks,
 		placeID = args.getString(ParseConstants.KEY_OBJECT_ID);
 		return placeID;
 	}
-
 
 	/*
 	 * Added Function
@@ -140,117 +137,12 @@ public class LocationDetail extends Fragment implements ConnectionCallbacks,
 		}
 	}
 
-	protected void checkDistance() {
-		if (mCurrentGeoPoint == null) {
-			checkUserLastLocation();
-		}
-		final Location userLocation = new Location("");
-		final Location placeLocation = new Location("");
-		userLocation.setLatitude(mCurrentGeoPoint.getLatitude());
-		userLocation.setLongitude(mCurrentGeoPoint.getLongitude());
-
-		ParseQuery<ParseObject> query = ParseQuery
-				.getQuery(ParseConstants.TABLE_PLACE);
-		query.whereEqualTo(ParseConstants.KEY_OBJECT_ID, placeID);
-		query.getFirstInBackground(new GetCallback<ParseObject>() {
-
-			@Override
-			public void done(ParseObject place, ParseException e) {
-				if (e == null) {
-					// success
-					ParseGeoPoint tempPlaceGeoPoint = place
-							.getParseGeoPoint(ParseConstants.KEY_LOCATION);
-					placeLocation.setLatitude(tempPlaceGeoPoint.getLatitude());
-					placeLocation.setLongitude(tempPlaceGeoPoint.getLongitude());
-
-					// Check the distance between 2 Location in Meters
-					float result = Math.abs(userLocation
-							.distanceTo(placeLocation));
-
-					// Debug
-					Toast.makeText(getActivity(), result + " ",
-							Toast.LENGTH_SHORT).show();
-					if (result > 10000) {
-						// User are not near the location
-						mLocationCheckIn = (Button) getActivity().findViewById(
-								R.id.locationCheckIn);
-						mLocationCheckIn.setEnabled(false);
-					} else {
-						mLocationCheckIn = (Button) getActivity().findViewById(
-								R.id.locationCheckIn);
-						mLocationCheckIn.setEnabled(true);
-						onCheckInBtnClicked();
-					}
-				} else {
-					Log.e(TAG, e.getMessage());
-					AlertDialog.Builder builder = new AlertDialog.Builder(
-							getActivity());
-					builder.setMessage(e.getMessage())
-							.setTitle(R.string.error_title)
-							.setPositiveButton(android.R.string.ok, null);
-					AlertDialog dialog = builder.create();
-					dialog.show();
-				}
-
-			}
-		});
-	}
-
-	// add activity records when user check in to a place
-	protected void onCheckInBtnClicked() {
-
-		mLocationCheckIn = (Button) getActivity().findViewById(
-				R.id.locationCheckIn);
-		mLocationCheckIn.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				String userId = ParseUser.getCurrentUser().getObjectId();
-				ParseObject checkInActivity = new ParseObject(
-						ParseConstants.TABLE_ACTV_USER_CHECK_IN_PLACE);
-				checkInActivity.put(ParseConstants.KEY_USER_ID, userId);
-				checkInActivity.put(ParseConstants.KEY_PLACE_ID, placeID);
-				checkInActivity.saveInBackground(new SaveCallback() {
-
-					@Override
-					public void done(ParseException e) {
-						if (e == null) {
-							// success
-							Toast.makeText(getActivity(), "Check In Success",
-									Toast.LENGTH_SHORT).show();
-							Intent intent = new Intent(getActivity(),
-									LocationCatalog.class);
-							intent.putExtra(ParseConstants.KEY_OBJECT_ID,
-									placeID);
-							startActivity(intent);
-						}
-
-						else {
-							// failed
-							Log.e(TAG, e.getMessage());
-							AlertDialog.Builder builder = new AlertDialog.Builder(
-									getActivity());
-							builder.setMessage(e.getMessage())
-									.setTitle(R.string.error_title)
-									.setPositiveButton(android.R.string.ok,
-											null);
-							AlertDialog dialog = builder.create();
-							dialog.show();
-						}
-
-					}
-				});
-
-			}
-		});
-	}
-
 	/*
 	 * Get the query for location details
 	 */
 
 	protected void doLocationQuery() {
-		if(placeID == null){
+		if (placeID == null) {
 			getPlaceID();
 		}
 		getActivity().setProgressBarIndeterminateVisibility(true);
@@ -335,8 +227,6 @@ public class LocationDetail extends Fragment implements ConnectionCallbacks,
 		Toast.makeText(getActivity(), "Connected", Toast.LENGTH_SHORT).show();
 		// Get current Location
 		mCurrentLocation = mLocationClient.getLastLocation();
-		// Check The Distance
-		//checkDistance();
 	}
 
 	@Override

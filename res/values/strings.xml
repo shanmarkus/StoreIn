@@ -69,5 +69,8 @@
     <string name="promotion_flash_deal_quantity">0</string>
     <string name="check_in_title_list_place">List Place</string>
     <string name="title_activity_location_information">LocationInformation</string>
+    <string name="location_information_title_section1">Place Info</string>
+    <string name="location_information_title_section2">Promotions</string>
+    <string name="location_information_title_section3">Top Items</string>
 
 </resources>
