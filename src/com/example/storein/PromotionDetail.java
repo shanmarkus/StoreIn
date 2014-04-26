@@ -91,7 +91,7 @@ public class PromotionDetail extends ActionBarActivity {
 
 		// Progress dialog
 		ProgressDialog progressDialog;
-		
+
 		public PlaceholderFragment() {
 		}
 
@@ -116,24 +116,31 @@ public class PromotionDetail extends ActionBarActivity {
 			mClaimButton = (Button) rootView.findViewById(R.id.claimButton);
 
 			// Do some Function
-			checkFlashDeal();
-			checkUserAndPromotionStatus();
+			getClaimableValue();
+			if (claimable == true) {
+				checkFlashDeal();
+				checkUserAndPromotionStatus();
+			}
+
 			return rootView;
 		}
 
 		@Override
 		public void onResume() {
 			super.onResume();
+			if(claimable == true){
+				checkFlashDeal();
+				checkUserAndPromotionStatus();
+			}
 			findPromotionDetail();
-			checkUserAndPromotionStatus();
 			onClickClaimButton();
-			checkFlashDeal();
+	
 		}
 
 		/*
 		 * Added Functions
 		 */
-		
+
 		/*
 		 * Setter and Getter
 		 */
@@ -151,17 +158,17 @@ public class PromotionDetail extends ActionBarActivity {
 			placeId = (String) getActivity().getIntent().getExtras()
 					.get(ParseConstants.KEY_PLACE_ID);
 		}
-		
+
 		/*
 		 * Progress Dialog init
 		 */
-		
-		private void initProgressDialog(){
+
+		private void initProgressDialog() {
 			progressDialog = new ProgressDialog(getActivity());
 			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 			progressDialog.setMessage("Loading");
 			progressDialog.setIndeterminate(true);
-			progressDialog.setCancelable(false);   
+			progressDialog.setCancelable(false);
 			progressDialog.show();
 		}
 
@@ -174,7 +181,8 @@ public class PromotionDetail extends ActionBarActivity {
 			if (claimable == true) {
 				getFlashPromotionQuantity();
 			} else {
-
+				findPromotionDetail();
+				mClaimButton.setEnabled(true);
 			}
 		}
 
@@ -401,7 +409,7 @@ public class PromotionDetail extends ActionBarActivity {
 
 				@Override
 				public void done(ParseException e) {
-					//Dismis the progress bar
+					// Dismis the progress bar
 					progressDialog.dismiss();
 					if (e == null) {
 						Toast.makeText(getActivity(),
