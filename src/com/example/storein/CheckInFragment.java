@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,6 +35,8 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		OnConnectionFailedListener, LocationListener,
@@ -51,6 +54,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	HashMap<String, String> placeInfo = new HashMap<String, String>();
 	private String placeName;
 	private String placeID;
+	private ProgressDialog progressDialog;
 
 	// Place Constant
 	private Location currentLocation = null;
@@ -133,6 +137,19 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	/*
 	 * Function Added
 	 */
+
+	/*
+	 * Progress Dialog initiate
+	 */
+
+	private void initProgressDialog() {
+		progressDialog = new ProgressDialog(getActivity());
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progressDialog.setMessage("Loading");
+		progressDialog.setIndeterminate(true);
+		progressDialog.setCancelable(false);
+		progressDialog.show();
+	}
 
 	/*
 	 * Clear the array list when resume
@@ -246,8 +263,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 				builder.setMessage(message)
 						.setPositiveButton("Ok", dialogCheckInListener)
 						.setNeutralButton("Share", dialogCheckInListener)
-						.setNegativeButton("No", dialogCheckInListener)
-						.show();
+						.setNegativeButton("No", dialogCheckInListener).show();
 			}
 		});
 	}
@@ -261,10 +277,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		public void onClick(DialogInterface dialog, int which) {
 			switch (which) {
 			case DialogInterface.BUTTON_POSITIVE:
-				Intent intent = new Intent(getActivity(),
-						LocationInformation.class);
-				intent.putExtra(ParseConstants.KEY_OBJECT_ID, placeID);
-				startActivity(intent);
+				saveUserActivity();
 				break;
 
 			case DialogInterface.BUTTON_NEUTRAL:
@@ -283,6 +296,38 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 			}
 		}
 	};
+
+	/*
+	 * Parse Save User Check In if possible
+	 */
+
+	private void saveUserActivity() {
+		initProgressDialog();
+		String userId = ParseUser.getCurrentUser().getObjectId();
+		ParseObject checkInActivity = new ParseObject(
+				ParseConstants.TABLE_ACTV_USER_CHECK_IN_PLACE);
+		checkInActivity.put(ParseConstants.KEY_USER_ID, userId);
+		checkInActivity.put(ParseConstants.KEY_PLACE_ID, placeID);
+		checkInActivity.saveInBackground(new SaveCallback() {
+
+			@Override
+			public void done(ParseException e) {
+				progressDialog.dismiss();
+				if (e == null) {
+					// success
+					Toast.makeText(getActivity(), "Check In Success",
+							Toast.LENGTH_SHORT).show();
+					Intent intent = new Intent(getActivity(),
+							LocationInformation.class);
+					intent.putExtra(ParseConstants.KEY_OBJECT_ID, placeID);
+					startActivity(intent);
+				} else {
+					// failed
+					errorAlertDialog(e);
+				}
+			}
+		});
+	}
 
 	/*
 	 * Error Dialog

@@ -129,6 +129,9 @@ public class PromotionDetailAndLocations extends ActionBarActivity {
 			mLocationList = (ListView) rootView
 					.findViewById(R.id.LocationsList);
 
+			// Setup Location Client
+			mLocationClient = new LocationClient(getActivity(), this, this);
+
 			// setting up needed function
 			getPromotionId();
 			onClickLocationList();
@@ -138,6 +141,7 @@ public class PromotionDetailAndLocations extends ActionBarActivity {
 		@Override
 		public void onResume() {
 			super.onResume();
+			mLocationClient.connect();
 			findPromotionDetail();
 			findPromotionLocation();
 		}
@@ -208,6 +212,7 @@ public class PromotionDetailAndLocations extends ActionBarActivity {
 					initProgressDialog();
 					placeCurrentLocation = locationsCoordinate.get(position);
 					placeId = objectsId.get(position);
+					checkUserDistance();
 				}
 			});
 		}
@@ -339,7 +344,7 @@ public class PromotionDetailAndLocations extends ActionBarActivity {
 
 		private void checkUserDistance() {
 			if (currentLocation == null) {
-				mLocationClient.getLastLocation();
+				currentLocation = mLocationClient.getLastLocation();
 			}
 
 			// Check if user within the range of check in or not by
@@ -435,6 +440,8 @@ public class PromotionDetailAndLocations extends ActionBarActivity {
 						Intent intent = new Intent(getActivity(),
 								LocationInformation.class);
 						intent.putExtra(ParseConstants.KEY_OBJECT_ID, placeId);
+						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						intent.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 						startActivity(intent);
 					} else {
 						// failed
