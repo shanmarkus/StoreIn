@@ -64,10 +64,8 @@ public class LocationDetail extends Fragment implements ConnectionCallbacks,
 		View rootView = inflater.inflate(R.layout.fragment_location_detail,
 				container, false);
 
-		// Debug
-		Bundle args = getArguments();
-		placeID = args.getString(ParseConstants.KEY_OBJECT_ID);
-		Toast.makeText(getActivity(), placeID, Toast.LENGTH_SHORT).show();
+		// Init bundle variables
+		getPlaceID();
 
 		// Setup Location Client
 		mLocationClient = new LocationClient(getActivity(), this, this);
@@ -90,7 +88,7 @@ public class LocationDetail extends Fragment implements ConnectionCallbacks,
 	public void onResume() {
 		super.onResume();
 		mLocationClient.connect();
-		// doLocationQuery();
+		doLocationQuery();
 	}
 
 	@Override
@@ -104,13 +102,11 @@ public class LocationDetail extends Fragment implements ConnectionCallbacks,
 	 */
 
 	public String getPlaceID() {
-		return getActivity().getIntent().getStringExtra(
-				ParseConstants.KEY_OBJECT_ID);
+		Bundle args = getArguments();
+		placeID = args.getString(ParseConstants.KEY_OBJECT_ID);
+		return placeID;
 	}
 
-	public void setPlaceID(String placeID) {
-		this.placeID = placeID;
-	}
 
 	/*
 	 * Added Function
@@ -254,6 +250,9 @@ public class LocationDetail extends Fragment implements ConnectionCallbacks,
 	 */
 
 	protected void doLocationQuery() {
+		if(placeID == null){
+			getPlaceID();
+		}
 		getActivity().setProgressBarIndeterminateVisibility(true);
 		ParseObject.registerSubclass(ParsePlace.class);
 		ParseQuery<ParseObject> query = ParseQuery
