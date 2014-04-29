@@ -1270,7 +1270,6 @@ containing a value of this type.
         public static final int listPromotion=0x7f050077;
         public static final int listPromotions=0x7f050086;
         public static final int listUsersReview=0x7f05006d;
-        public static final int listView1=0x7f050055;
         public static final int list_item=0x7f05002c;
         public static final int locationAddressLabel=0x7f050071;
         public static final int locationNameLabel=0x7f050070;
@@ -1291,6 +1290,7 @@ containing a value of this type.
         public static final int promotion_preview_image=0x7f050078;
         public static final int radio=0x7f050032;
         public static final int ratingBar1=0x7f05006a;
+        public static final int recentActivity=0x7f050055;
         public static final int relativeLayout1=0x7f050056;
         public static final int relativeLayout2=0x7f050059;
         public static final int satellite=0x7f05001a;

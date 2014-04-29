@@ -424,10 +424,16 @@ public class PromotionDetailAndLocations extends ActionBarActivity {
 		private void saveUserActivity() {
 			initProgressDialog();
 			String userId = ParseUser.getCurrentUser().getObjectId();
+
+			ParseObject tempUser = ParseObject.createWithoutData(
+					ParseConstants.TABLE_USER, userId);
+			ParseObject tempPlace = ParseObject.createWithoutData(
+					ParseConstants.TABLE_PLACE, placeId);
+
 			ParseObject checkInActivity = new ParseObject(
 					ParseConstants.TABLE_ACTV_USER_CHECK_IN_PLACE);
-			checkInActivity.put(ParseConstants.KEY_USER_ID, userId);
-			checkInActivity.put(ParseConstants.KEY_PLACE_ID, placeId);
+			checkInActivity.put(ParseConstants.KEY_USER_ID, tempUser);
+			checkInActivity.put(ParseConstants.KEY_PLACE_ID, tempPlace);
 			checkInActivity.saveInBackground(new SaveCallback() {
 
 				@Override

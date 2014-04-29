@@ -115,7 +115,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <ListView
-                android:id="@+id/listView1"
+                android:id="@+id/recentActivity"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:layout_alignParentLeft="true"

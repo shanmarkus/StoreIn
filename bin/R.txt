@@ -369,7 +369,6 @@ int id listPlace 0x7f05004a
 int id listPromotion 0x7f050077
 int id listPromotions 0x7f050086
 int id listUsersReview 0x7f05006d
-int id listView1 0x7f050055
 int id list_item 0x7f05002c
 int id locationAddressLabel 0x7f050071
 int id locationNameLabel 0x7f050070
@@ -390,6 +389,7 @@ int id progress_horizontal 0x7f050019
 int id promotion_preview_image 0x7f050078
 int id radio 0x7f050032
 int id ratingBar1 0x7f05006a
+int id recentActivity 0x7f050055
 int id relativeLayout1 0x7f050056
 int id relativeLayout2 0x7f050059
 int id satellite 0x7f05001a
