@@ -51,21 +51,14 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/itemDescriptionLabel"
             android:layout_centerHorizontal="true"
+            android:isIndicator="true"
             android:paddingTop="10dp" />
-
-        <Button
-            android:id="@+id/btnCheckReview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ratingBar1"
-            android:layout_centerHorizontal="true"
-            android:text="@string/check_review" />
 
         <Button
             android:id="@+id/btnReviewIt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/btnCheckReview"
+            android:layout_below="@+id/ratingBar1"
             android:layout_centerHorizontal="true"
             android:text="@string/item_detail_write_review" />
     </RelativeLayout>

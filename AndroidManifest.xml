@@ -96,8 +96,8 @@
         <activity
             android:name="com.example.storein.ItemReview"
             android:label="@string/title_activity_item_review"
-            android:parentActivityName="com.example.storein.ItemDetail" 
-            android:noHistory="true">
+            android:noHistory="true"
+            android:parentActivityName="com.example.storein.ItemDetail" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.storein.ItemDetail" />
@@ -129,6 +129,62 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.storein.LocationCatalog" />
+        </activity>
+        <activity
+            android:name="com.example.storein.LocationInformation"
+            android:label="@string/title_activity_location_information"
+            android:parentActivityName="com.example.storein.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.storein.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.example.storein.LocationItems"
+            android:label="@string/title_activity_location_items"
+            android:parentActivityName="com.example.storein.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.storein.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.example.storein.LocationPromotions"
+            android:label="@string/title_activity_location_promotions"
+            android:parentActivityName="com.example.storein.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.storein.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.example.storein.ItemInformation"
+            android:label="@string/title_activity_item_information"
+            android:parentActivityName="com.example.storein.LocationInformation" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.storein.LocationInformation" />
+        </activity>
+        <activity
+            android:name="com.example.storein.FriendInformation"
+            android:label="@string/title_activity_friend_information"
+            android:parentActivityName="com.example.storein.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.storein.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.example.storein.FriendDetail"
+            android:label="@string/title_activity_friend_detail"
+            android:parentActivityName="com.example.storein.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.storein.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.example.storein.AddFriend"
+            android:label="@string/title_activity_add_friend"
+            android:parentActivityName="com.example.storein.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.storein.MainActivity" />
         </activity>
     </application>
 

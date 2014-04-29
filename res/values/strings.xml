@@ -5,6 +5,7 @@
     <string name="title_section1">Home</string>
     <string name="title_section2">Browse</string>
     <string name="title_section3">Check In!</string>
+    <string name="title_section4">Friends</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
@@ -67,5 +68,25 @@
     <string name="location_title_reward">Reward Points</string>
     <string name="promotion_button_claim_it">Claim It</string>
     <string name="promotion_flash_deal_quantity">0</string>
+    <string name="check_in_title_list_place">Nearby Places</string>
+    <string name="title_activity_location_information">LocationInformation</string>
+    <string name="location_information_title_section1">Place Info</string>
+    <string name="location_information_title_section2">Promotions</string>
+    <string name="location_information_title_section3">Top Items</string>
+    <string name="title_activity_location_items">Store Top Items</string>
+    <string name="title_activity_location_promotions">Promotions</string>
+    <string name="title_activity_item_information">Item Detail</string>
+    <string name="item_information_title_section1">Item Info</string>
+    <string name="item_information_title_section2">User Review</string>
+    <string name="title_activity_friend_information">Friend Manager</string>
+    <string name="friend_information_imagebutton_desc">Search Friend Id</string>
+    <string name="friend_information_hint">Input Friend Id</string>
+    <string name="friend_information_friend_list_title">Following</string>
+    <string name="title_activity_friend_detail">Friend Detail</string>
+    <string name="home_recent_activity_title">Recent Activity</string>
+    <string name="title_activity_add_friend">Add Friend</string>
+    <string name="friend_relation_status">Status</string>
+    <string name="add_friend_button_follow">Follow</string>
+    <string name="add_friend_username">Friend Username</string>
 
 </resources>

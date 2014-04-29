@@ -1,5 +1,6 @@
 package com.example.storein;
 
+
 public final class ParseConstants {
 	
 	// Class name
@@ -19,6 +20,7 @@ public final class ParseConstants {
 	// Relational Class Name
 	public static final String TABLE_REL_PLACE_ITEM = "Rel_Place_Item";
 	public static final String TABLE_REL_PROMOTION_PLACE = "Rel_Promotion_Place";
+	public static final String TABLE_REL_USER_USER = "Rel_User_User";
 
 	// Field names
 	public static final String KEY_USERNAME = "username";
@@ -32,6 +34,7 @@ public final class ParseConstants {
 	public static final String KEY_PLACE_ID = "placeId";
 	public static final String KEY_DESCRIPTION = "description";
 	public static final String KEY_USER_ID = "userId";
+	public static final String KEY_FOLLOWING_ID ="followingId";
 	public static final String KEY_REVIEW = "review";
 	public static final String KEY_CATEGORY = "category";
 	public static final String KEY_CATEGORY_ID = "categoryId";
@@ -49,4 +52,5 @@ public final class ParseConstants {
 
 	// Pointer names
 	public static final String KEY_POINTER_ITEM = "item";
+	
 }
