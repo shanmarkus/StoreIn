@@ -280,7 +280,7 @@ public class FriendDetail extends ActionBarActivity {
 		}
 
 		/*
-		 * Get User recent Activity
+		 * Get User recent Check In Activity
 		 */
 
 		private void getFriendCheckInActivity() {
