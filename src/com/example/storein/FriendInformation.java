@@ -190,12 +190,12 @@ public class FriendInformation extends Fragment {
 			// Create notification
 			Toast.makeText(getActivity(), "Sorry Friend Id cannot be empty",
 					Toast.LENGTH_SHORT).show();
+		} else {
+			// Send to other activity to find friend
+			Intent intent = new Intent(getActivity(), AddFriend.class);
+			intent.putExtra(ParseConstants.KEY_OBJECT_ID, friendId);
+			startActivity(intent);
 		}
-
-		// Send to other activity to find friend
-		Intent intent = new Intent(getActivity(), FriendDetail.class);
-		intent.putExtra(ParseConstants.KEY_OBJECT_ID, friendId);
-		startActivity(intent);
 	}
 
 	/*
