@@ -75,7 +75,6 @@ public class FriendDetail extends ActionBarActivity {
 
 		// Fixed Variables
 		ArrayList<HashMap<String, String>> friendActivities = new ArrayList<HashMap<String, String>>();
-		protected ArrayList<String> friendIds = new ArrayList<String>();
 		HashMap<String, String> friendActivity = new HashMap<String, String>();
 
 		protected static final String KEY_FRIEND_ACTIVITY = "KEY_FRIEND_ACTIVITY";
@@ -96,8 +95,7 @@ public class FriendDetail extends ActionBarActivity {
 		// Parse Variables
 		ParseObject currentUser = ParseObject.createWithoutData(
 				ParseConstants.TABLE_USER, userId);
-		ParseObject friendObj = ParseObject.createWithoutData(
-				ParseConstants.TABLE_USER, friendId);
+		ParseObject friendObj;
 
 		public PlaceholderFragment() {
 		}
@@ -111,6 +109,9 @@ public class FriendDetail extends ActionBarActivity {
 			// Intent Extra
 			friendId = getActivity().getIntent().getStringExtra(
 					ParseConstants.KEY_OBJECT_ID);
+
+			friendObj = ParseObject.createWithoutData(
+					ParseConstants.TABLE_USER, friendId);
 
 			mFriendUsername = (TextView) rootView
 					.findViewById(R.id.friendUserName);
@@ -132,8 +133,18 @@ public class FriendDetail extends ActionBarActivity {
 		@Override
 		public void onResume() {
 			super.onResume();
+			clearArrayList();
 			getFriendInformation(); // 4 in 1
 			checkRelation();
+		}
+
+		/*
+		 * Clear ArrayList
+		 */
+
+		private void clearArrayList() {
+			friendActivities.clear();
+			friendActivity.clear();
 		}
 
 		/*
@@ -369,6 +380,7 @@ public class FriendDetail extends ActionBarActivity {
 
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_ACTV_USER_CHECK_IN_PLACE);
+			query.whereEqualTo(ParseConstants.KEY_USER_ID, friendObj);
 			query.whereGreaterThan(ParseConstants.KEY_CREATED_AT, yesterday);
 			query.orderByAscending(ParseConstants.KEY_CREATED_AT);
 			query.setLimit(5);
@@ -418,6 +430,7 @@ public class FriendDetail extends ActionBarActivity {
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_ACTV_USER_CLAIM_PROMOTION);
 			query.whereGreaterThan(ParseConstants.KEY_CREATED_AT, yesterday);
+			query.whereEqualTo(ParseConstants.KEY_USER_ID, friendObj);
 			query.orderByAscending(ParseConstants.KEY_CREATED_AT);
 			query.setLimit(5);
 			query.include(ParseConstants.KEY_PROMOTION_ID);
