@@ -41,7 +41,7 @@ public class ItemReview extends Fragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_item_review,
 				container, false);
-		
+
 		// Get Variable
 		getItemId();
 
@@ -59,6 +59,16 @@ public class ItemReview extends Fragment {
 	}
 
 	/*
+	 * Clear ArrayList
+	 */
+
+	private void clearArrayList() {
+		reviewList.clear();
+		reviewsList.clear();
+		itemsID.clear();
+	}
+
+	/*
 	 * Getter for placeId variables
 	 */
 	public String getItemId() {
@@ -69,9 +79,13 @@ public class ItemReview extends Fragment {
 
 	public void getUsersReview() {
 		getActivity().setProgressBarIndeterminateVisibility(true);
+		
 		if (itemId == null) {
 			getItemId();
 		}
+		
+		// Clear ArrayList
+		clearArrayList();
 		ParseQuery<ParseObject> query = ParseQuery
 				.getQuery(ParseConstants.TABLE_ITEM_REVIEW);
 		query.whereEqualTo(ParseConstants.KEY_ITEM_ID, itemId);

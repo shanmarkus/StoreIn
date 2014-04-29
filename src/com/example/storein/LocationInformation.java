@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.TextView;
 
 public class LocationInformation extends ActionBarActivity implements
 		ActionBar.TabListener {
@@ -207,10 +206,6 @@ public class LocationInformation extends ActionBarActivity implements
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(
 					R.layout.fragment_location_information, container, false);
-			TextView textView = (TextView) rootView
-					.findViewById(R.id.section_label);
-			textView.setText(Integer.toString(getArguments().getInt(
-					ARG_SECTION_NUMBER)));
 			return rootView;
 		}
 	}

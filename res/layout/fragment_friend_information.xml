@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.storein.FriendInformation$PlaceholderFragment" >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/textFindFriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:ems="10"
+            android:hint="@string/friend_information_hint" >
+
+            <requestFocus />
+        </EditText>
+
+        <ImageButton
+            android:id="@+id/ButtonSearch"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignBottom="@+id/textFindFriend"
+            android:layout_marginLeft="19dp"
+            android:layout_toRightOf="@+id/textFindFriend"
+            android:contentDescription="@string/friend_information_imagebutton_desc"
+            android:scaleType="fitXY"
+            android:src="@android:drawable/ic_search_category_default" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp" >
+
+        <TextView
+            android:id="@+id/textTitleFollowing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:text="@string/friend_information_friend_list_title"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <ListView
+            android:id="@+id/listFriend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp" >
+        </ListView>
+
+    </RelativeLayout>
+
+</RelativeLayout>

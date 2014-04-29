@@ -64,6 +64,17 @@ public class LocationPromotions extends Fragment {
 	}
 
 	/*
+	 * Clear ArrayList
+	 */
+
+	private void clearArrayList() {
+		promotionInfo.clear();
+		promotionsClaimable.clear();
+		promotionsId.clear();
+		promotionsInfo.clear();
+	}
+
+	/*
 	 * Getter for placeId variables
 	 */
 	public String getPlaceID() {
@@ -85,10 +96,8 @@ public class LocationPromotions extends Fragment {
 		if (placeObj == null) {
 			getPlaceID();
 		}
-		// Clear the Array
-		promotionsInfo.clear();
-		promotionsClaimable.clear();
-		promotionsId.clear();
+		// Clear array list
+		clearArrayList();
 
 		// Do the query
 

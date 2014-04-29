@@ -162,6 +162,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.storein.LocationInformation" />
         </activity>
+        <activity
+            android:name="com.example.storein.FriendInformation"
+            android:label="@string/title_activity_friend_information"
+            android:parentActivityName="com.example.storein.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.storein.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

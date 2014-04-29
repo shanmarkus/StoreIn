@@ -72,6 +72,9 @@ public class MainActivity extends ActionBarActivity implements
 		case 2:
 			fragment = new CheckInFragment();
 			break;
+		case 3:
+			fragment = new FriendInformation();
+			break;
 		}
 
 		fragmentManager.beginTransaction().replace(R.id.container, fragment)
@@ -88,6 +91,9 @@ public class MainActivity extends ActionBarActivity implements
 			break;
 		case 3:
 			mTitle = getString(R.string.title_section3);
+			break;
+		case 4:
+			mTitle = getString(R.string.title_section4);
 			break;
 		}
 	}

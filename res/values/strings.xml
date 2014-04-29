@@ -5,6 +5,7 @@
     <string name="title_section1">Home</string>
     <string name="title_section2">Browse</string>
     <string name="title_section3">Check In!</string>
+    <string name="title_section4">Friends</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
@@ -77,5 +78,9 @@
     <string name="title_activity_item_information">Item Detail</string>
     <string name="item_information_title_section1">Item Info</string>
     <string name="item_information_title_section2">User Review</string>
+    <string name="title_activity_friend_information">Friend Manager</string>
+    <string name="friend_information_imagebutton_desc">Search Friend Id</string>
+    <string name="friend_information_hint">Input Friend Id</string>
+    <string name="friend_information_friend_list_title">Following</string>
 
 </resources>
