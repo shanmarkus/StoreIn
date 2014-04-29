@@ -68,7 +68,7 @@
     <string name="location_title_reward">Reward Points</string>
     <string name="promotion_button_claim_it">Claim It</string>
     <string name="promotion_flash_deal_quantity">0</string>
-    <string name="check_in_title_list_place">List Place</string>
+    <string name="check_in_title_list_place">Nearby Places</string>
     <string name="title_activity_location_information">LocationInformation</string>
     <string name="location_information_title_section1">Place Info</string>
     <string name="location_information_title_section2">Promotions</string>
@@ -82,5 +82,6 @@
     <string name="friend_information_imagebutton_desc">Search Friend Id</string>
     <string name="friend_information_hint">Input Friend Id</string>
     <string name="friend_information_friend_list_title">Following</string>
+    <string name="title_activity_friend_detail">Friend Detail</string>
 
 </resources>
