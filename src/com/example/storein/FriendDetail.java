@@ -150,35 +150,6 @@ public class FriendDetail extends ActionBarActivity {
 		}
 
 		/*
-		 * Check for friendId
-		 */
-
-		private Boolean checkFriendId() {
-			if (friendId == userId) {
-				isFriendExist = false;
-			} else {
-				ParseQuery<ParseUser> query = ParseUser.getQuery();
-				query.whereEqualTo(ParseConstants.KEY_OBJECT_ID, friendId);
-				query.countInBackground(new CountCallback() {
-
-					@Override
-					public void done(int count, ParseException e) {
-						if (e == null) {
-							if (count == 0) {
-								isFriendExist = false;
-							} else {
-								isFriendExist = true;
-							}
-						} else {
-							errorAlertDialog(e);
-						}
-					}
-				});
-			}
-			return isFriendExist;
-		}
-
-		/*
 		 * Check Relation between friend and user
 		 */
 

@@ -1,9 +1,17 @@
 package com.example.storein;
 
+import com.parse.CountCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +20,8 @@ import android.view.ViewGroup;
 import android.os.Build;
 
 public class AddFriend extends ActionBarActivity {
+
+	private static final String TAG = AddFriend.class.getSimpleName();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,16 +37,12 @@ public class AddFriend extends ActionBarActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.add_friend, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			return true;
@@ -44,10 +50,21 @@ public class AddFriend extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
 	public static class PlaceholderFragment extends Fragment {
+
+		// Fixed variables
+		boolean isFriendExist;
+		boolean isAlreadyFollow;
+		String userId = ParseUser.getCurrentUser().getObjectId();
+
+		// Intent Extra
+		String friendId = getActivity().getIntent().getStringExtra(
+				ParseConstants.KEY_OBJECT_ID);
+
+		// ParseConstant
+		ParseObject currentUser = ParseObject.createWithoutData(
+				ParseConstants.TABLE_USER, userId);
+		ParseObject friendObj;
 
 		public PlaceholderFragment() {
 		}
@@ -59,6 +76,85 @@ public class AddFriend extends ActionBarActivity {
 					container, false);
 			return rootView;
 		}
+
+		/*
+		 * Check for friendId
+		 */
+
+		private Boolean checkFriendId() {
+			if (friendId == userId) {
+				isFriendExist = false;
+			} else {
+				ParseQuery<ParseUser> query = ParseUser.getQuery();
+				query.whereEqualTo(ParseConstants.KEY_OBJECT_ID, friendId);
+				query.countInBackground(new CountCallback() {
+
+					@Override
+					public void done(int count, ParseException e) {
+						if (e == null) {
+							if (count == 0) {
+								friendObj = ParseObject.createWithoutData(
+										ParseConstants.TABLE_USER, friendId);
+								isFriendExist = false;
+							} else {
+								isFriendExist = true;
+							}
+						} else {
+							errorAlertDialog(e);
+						}
+					}
+				});
+			}
+			return isFriendExist;
+		}
+
+		/*
+		 * Check whether this user already follow the checked user
+		 */
+		
+		private Boolean isAlreadyFollow() {
+
+			ParseQuery<ParseObject> query = ParseQuery
+					.getQuery(ParseConstants.TABLE_REL_USER_USER);
+			query.whereEqualTo(ParseConstants.KEY_USER_ID, currentUser);
+			query.whereEqualTo(ParseConstants.KEY_FOLLOWING_ID, friendObj);
+			query.countInBackground(new CountCallback() {
+
+				@Override
+				public void done(int total, ParseException e) {
+					if (e == null) {
+						if (total != 0) {
+							isAlreadyFollow = true;
+						} else {
+							isAlreadyFollow = false;
+						}
+					} else {
+						errorAlertDialog(e);
+					}
+				}
+			});
+			return isAlreadyFollow();
+		}
+		
+		/*
+		 * Add Function
+		 */
+		
+		
+
+		/*
+		 * Error Dialog Parse
+		 */
+		private void errorAlertDialog(ParseException e) {
+			// failed
+			Log.e(TAG, e.getMessage());
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			builder.setMessage(e.getMessage()).setTitle(R.string.error_title)
+					.setPositiveButton(android.R.string.ok, null);
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		}
+
 	}
 
 }
