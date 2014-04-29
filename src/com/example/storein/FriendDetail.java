@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -99,14 +100,35 @@ public class FriendDetail extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_friend_detail,
 					container, false);
+
+			// Intent Extra
 			friendId = getActivity().getIntent().getStringExtra(
 					ParseConstants.KEY_OBJECT_ID);
+
+			mFriendUsername = (TextView) rootView
+					.findViewById(R.id.friendUserName);
+			mFriendNumberCheckIn = (TextView) rootView
+					.findViewById(R.id.friendNumberCheckIn);
+			mFriendNumberFollower = (TextView) rootView
+					.findViewById(R.id.friendNumberFollower);
+			mFriendNumberFollowing = (TextView) rootView
+					.findViewById(R.id.friendNumberFollowing);
+			mRecentActivity = (ListView) rootView
+					.findViewById(R.id.recentActivity);
+
 			return rootView;
 		}
 
 		@Override
 		public void onResume() {
 			super.onResume();
+			getFriendCheckIn();
+			getFriendName();
+			getNumberFollower();
+			getNumberFollowing();
+			getFriendCheckInActivity();
+			getFriendClaimActivity();
+			
 		}
 
 		/*
@@ -315,21 +337,51 @@ public class FriendDetail extends ActionBarActivity {
 			query.setLimit(5);
 			query.include(ParseConstants.KEY_PROMOTION_ID);
 			query.findInBackground(new FindCallback<ParseObject>() {
-				
+
 				@Override
-				public void done(List<ParseObject> friendClaimAcitivities, ParseException e) {
-					if(e == null){
+				public void done(List<ParseObject> friendClaimAcitivities,
+						ParseException e) {
+					if (e == null) {
 						// success
-						for(ParseObject claimActivity : friendClaimAcitivities){
-							
+						for (ParseObject activity : friendClaimAcitivities) {
+							// Setup Hash map
+							HashMap<String, String> friendActivity = new HashMap<String, String>();
+
+							Date date = activity.getCreatedAt();
+							String createAt = date.toString();
+							ParseObject tempPromotion = activity
+									.getParseObject(ParseConstants.KEY_PROMOTION_ID);
+
+							String promotionName = tempPromotion
+									.getString(ParseConstants.KEY_NAME);
+
+							String message = "Claim " + promotionName + " on "
+									+ createAt;
+							friendActivity.put(KEY_FRIEND_ACTIVITY, message);
+							friendActivities.add(friendActivity);
 						}
-					}else{
+						setAdapter();
+					} else {
 						// failed
 						errorAlertDialog(e);
 					}
-					
+
 				}
 			});
+		}
+
+		/*
+		 * Setup adapter
+		 */
+		public void setAdapter() {
+			String[] keys = { KEY_FRIEND_ACTIVITY, ParseConstants.KEY_REVIEW };
+			int[] ids = { android.R.id.text1, android.R.id.text2 };
+
+			SimpleAdapter adapter = new SimpleAdapter(getActivity(),
+					friendActivities, android.R.layout.simple_list_item_2,
+					keys, ids);
+
+			mRecentActivity.setAdapter(adapter);
 		}
 
 		/*
