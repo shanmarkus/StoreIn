@@ -124,8 +124,6 @@ public class FriendDetail extends ActionBarActivity {
 			// Running some functions
 			getFriendCheckIn();
 			getFriendName();
-			getNumberFollower();
-			getNumberFollowing();
 			getFriendCheckInActivity(); // 2 in 1
 
 			return rootView;
@@ -134,6 +132,7 @@ public class FriendDetail extends ActionBarActivity {
 		@Override
 		public void onResume() {
 			super.onResume();
+			getNumberFollower(); // 2 in 1
 			checkRelation();
 
 		}
@@ -172,10 +171,13 @@ public class FriendDetail extends ActionBarActivity {
 		 */
 
 		private void checkRelation() {
+			ParseObject tempFriendObj = ParseObject.createWithoutData(
+					ParseConstants.TABLE_USER, friendId);
+
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_REL_USER_USER);
 			query.whereEqualTo(ParseConstants.KEY_USER_ID, currentUser);
-			query.whereEqualTo(ParseConstants.KEY_FOLLOWING_ID, friendObj);
+			query.whereEqualTo(ParseConstants.KEY_FOLLOWING_ID, tempFriendObj);
 			query.countInBackground(new CountCallback() {
 
 				@Override
@@ -205,10 +207,12 @@ public class FriendDetail extends ActionBarActivity {
 
 			@Override
 			public void onClick(View v) {
+				ParseObject tempFriendObj = ParseObject.createWithoutData(
+						ParseConstants.TABLE_USER, friendId);
 				ParseObject object = new ParseObject(
 						ParseConstants.TABLE_REL_USER_USER);
 				object.put(ParseConstants.KEY_USER_ID, currentUser);
-				object.put(ParseConstants.KEY_FOLLOWING_ID, friendObj);
+				object.put(ParseConstants.KEY_FOLLOWING_ID, tempFriendObj);
 				object.saveInBackground(new SaveCallback() {
 
 					@Override
@@ -234,10 +238,13 @@ public class FriendDetail extends ActionBarActivity {
 
 			@Override
 			public void onClick(View v) {
+				ParseObject tempFriendObj = ParseObject.createWithoutData(
+						ParseConstants.TABLE_USER, friendId);
 				ParseQuery<ParseObject> query = ParseQuery
 						.getQuery(ParseConstants.TABLE_REL_USER_USER);
 				query.whereEqualTo(ParseConstants.KEY_USER_ID, currentUser);
-				query.whereEqualTo(ParseConstants.KEY_FOLLOWING_ID, friendObj);
+				query.whereEqualTo(ParseConstants.KEY_FOLLOWING_ID,
+						tempFriendObj);
 				query.getFirstInBackground(new GetCallback<ParseObject>() {
 
 					@Override
@@ -306,9 +313,11 @@ public class FriendDetail extends ActionBarActivity {
 
 		// Get number of follower
 		private void getNumberFollower() {
+			ParseObject tempFriendObj = ParseObject.createWithoutData(
+					ParseConstants.TABLE_USER, friendId);
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_REL_USER_USER);
-			query.whereEqualTo(ParseConstants.KEY_FOLLOWING_ID, friendId);
+			query.whereEqualTo(ParseConstants.KEY_USER_ID, tempFriendObj);
 			query.countInBackground(new CountCallback() {
 
 				@Override
@@ -317,6 +326,7 @@ public class FriendDetail extends ActionBarActivity {
 						// success
 						mFriendNumberFollower.setText(total + "");
 						countThread += 1;
+						getNumberFollowing();
 					} else {
 						// failed
 						errorAlertDialog(e);
@@ -327,16 +337,18 @@ public class FriendDetail extends ActionBarActivity {
 
 		// Get number of following
 		private void getNumberFollowing() {
+			ParseObject tempFriendObj = ParseObject.createWithoutData(
+					ParseConstants.TABLE_USER, friendId);
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_REL_USER_USER);
-			query.whereEqualTo(ParseConstants.KEY_USER_ID, friendId);
+			query.whereEqualTo(ParseConstants.KEY_FOLLOWING_ID, tempFriendObj);
 			query.countInBackground(new CountCallback() {
 
 				@Override
 				public void done(int total, ParseException e) {
 					if (e == null) {
 						// success
-						mFriendNumberFollower.setText(total + "");
+						mFriendNumberFollowing.setText(total + "");
 						countThread += 1;
 					} else {
 						// failed
