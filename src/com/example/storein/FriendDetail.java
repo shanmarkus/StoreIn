@@ -1,18 +1,10 @@
 package com.example.storein;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
-import com.google.android.gms.internal.er;
-import com.parse.CountCallback;
-import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -23,11 +15,22 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.parse.CountCallback;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class FriendDetail extends ActionBarActivity {
 
@@ -67,6 +70,7 @@ public class FriendDetail extends ActionBarActivity {
 		TextView mFriendNumberFollower;
 		TextView mFriendNumberFollowing;
 		ListView mRecentActivity;
+		Button mButtonStatus;
 
 		// Fixed Variables
 		ArrayList<HashMap<String, String>> friendActivities = new ArrayList<HashMap<String, String>>();
@@ -115,6 +119,14 @@ public class FriendDetail extends ActionBarActivity {
 					.findViewById(R.id.friendNumberFollowing);
 			mRecentActivity = (ListView) rootView
 					.findViewById(R.id.recentActivity);
+			mButtonStatus = (Button) rootView.findViewById(R.id.buttonStatus);
+
+			// Running some functions
+			getFriendCheckIn();
+			getFriendName();
+			getNumberFollower();
+			getNumberFollowing();
+			getFriendCheckInActivity(); // 2 in 1
 
 			return rootView;
 		}
@@ -122,13 +134,8 @@ public class FriendDetail extends ActionBarActivity {
 		@Override
 		public void onResume() {
 			super.onResume();
-			getFriendCheckIn();
-			getFriendName();
-			getNumberFollower();
-			getNumberFollowing();
-			getFriendCheckInActivity();
-			getFriendClaimActivity();
-			
+			checkRelation();
+
 		}
 
 		/*
@@ -164,7 +171,7 @@ public class FriendDetail extends ActionBarActivity {
 		 * Check Relation between friend and user
 		 */
 
-		private Boolean checkRelation() {
+		private void checkRelation() {
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_REL_USER_USER);
 			query.whereEqualTo(ParseConstants.KEY_USER_ID, currentUser);
@@ -176,9 +183,11 @@ public class FriendDetail extends ActionBarActivity {
 					if (e == null) {
 						// success
 						if (total != 0) {
-							isFriend = true;
+							mButtonStatus.setText("Unfollow");
+							mButtonStatus.setOnClickListener(unFollowFriend);
 						} else {
-							isFriend = false;
+							mButtonStatus.setText("Follow");
+							mButtonStatus.setOnClickListener(followFriend);
 						}
 					} else {
 						// failed
@@ -186,8 +195,66 @@ public class FriendDetail extends ActionBarActivity {
 					}
 				}
 			});
-			return isFriend;
 		}
+
+		/*
+		 * Action Listener for follow / unfollow friend
+		 */
+
+		OnClickListener followFriend = new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				ParseObject object = new ParseObject(
+						ParseConstants.TABLE_REL_USER_USER);
+				object.put(ParseConstants.KEY_USER_ID, currentUser);
+				object.put(ParseConstants.KEY_FOLLOWING_ID, friendObj);
+				object.saveInBackground(new SaveCallback() {
+
+					@Override
+					public void done(ParseException e) {
+						if (e == null) {
+							// success
+							Toast.makeText(getActivity(),
+									"Successful Folowing", Toast.LENGTH_SHORT)
+									.show();
+							// Reload the page
+							onResume();
+						} else {
+							// error
+							errorAlertDialog(e);
+						}
+					}
+				});
+
+			}
+		};
+
+		OnClickListener unFollowFriend = new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				ParseQuery<ParseObject> query = ParseQuery
+						.getQuery(ParseConstants.TABLE_REL_USER_USER);
+				query.whereEqualTo(ParseConstants.KEY_USER_ID, currentUser);
+				query.whereEqualTo(ParseConstants.KEY_FOLLOWING_ID, friendObj);
+				query.getFirstInBackground(new GetCallback<ParseObject>() {
+
+					@Override
+					public void done(ParseObject object, ParseException e) {
+						if (e == null) {
+							object.deleteInBackground();
+							Toast.makeText(getActivity(), "Unfollow the user",
+									Toast.LENGTH_SHORT).show();
+							onResume();
+						} else {
+							errorAlertDialog(e);
+						}
+					}
+				});
+
+			}
+		};
 
 		/*
 		 * Get FriendInformation Information
@@ -316,6 +383,9 @@ public class FriendDetail extends ActionBarActivity {
 							friendActivity.put(KEY_FRIEND_ACTIVITY, message);
 							friendActivities.add(friendActivity);
 						}
+
+						// Do the second Finding
+						getFriendClaimActivity();
 					} else {
 						// failed
 						errorAlertDialog(e);
@@ -374,6 +444,9 @@ public class FriendDetail extends ActionBarActivity {
 		 * Setup adapter
 		 */
 		public void setAdapter() {
+
+			Collections.shuffle(friendActivities);
+
 			String[] keys = { KEY_FRIEND_ACTIVITY, ParseConstants.KEY_REVIEW };
 			int[] ids = { android.R.id.text1, android.R.id.text2 };
 

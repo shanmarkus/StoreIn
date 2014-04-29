@@ -84,5 +84,7 @@
     <string name="friend_information_friend_list_title">Following</string>
     <string name="title_activity_friend_detail">Friend Detail</string>
     <string name="home_recent_activity_title">Recent Activity</string>
+    <string name="title_activity_add_friend">Add Friend</string>
+    <string name="friend_relation_status">Status</string>
 
 </resources>
