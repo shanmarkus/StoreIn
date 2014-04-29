@@ -68,9 +68,11 @@ public class FriendDetail extends ActionBarActivity {
 		ListView mRecentActivity;
 
 		// Fixed Variables
-		ArrayList<HashMap<String, String>> friendsInfo = new ArrayList<HashMap<String, String>>();
+		ArrayList<HashMap<String, String>> friendActivities = new ArrayList<HashMap<String, String>>();
 		protected ArrayList<String> friendIds = new ArrayList<String>();
-		HashMap<String, String> friendInfo = new HashMap<String, String>();
+		HashMap<String, String> friendActivity = new HashMap<String, String>();
+
+		protected static final String KEY_FRIEND_ACTIVITY = "KEY_FRIEND_ACTIVITY";
 
 		protected String friendId;
 
@@ -79,6 +81,9 @@ public class FriendDetail extends ActionBarActivity {
 
 		boolean isFriendExist;
 		boolean isFriend;
+
+		Date yesterday = new Date(System.currentTimeMillis() - 24 * 60 * 60
+				* 1000L);
 
 		// Parse Variables
 		ParseObject currentUser = ParseObject.createWithoutData(
@@ -191,10 +196,11 @@ public class FriendDetail extends ActionBarActivity {
 
 		// Get number of check in
 		private void getFriendCheckIn() {
-
+			ParseObject tempFriend = ParseObject.createWithoutData(
+					ParseConstants.TABLE_USER, friendId);
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_ACTV_USER_CHECK_IN_PLACE);
-			query.whereEqualTo(ParseConstants.KEY_USER_ID, friendId);
+			query.whereEqualTo(ParseConstants.KEY_USER_ID, tempFriend);
 			query.countInBackground(new CountCallback() {
 
 				@Override
@@ -255,28 +261,75 @@ public class FriendDetail extends ActionBarActivity {
 		 * Get User recent Activity
 		 */
 
-		private void getUserCheckInActivity() {
-			Date yesterday = new Date(System.currentTimeMillis() - 24 * 60 * 60
-					* 1000L);
+		private void getFriendCheckInActivity() {
 
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_ACTV_USER_CHECK_IN_PLACE);
 			query.whereGreaterThan(ParseConstants.KEY_CREATED_AT, yesterday);
 			query.orderByAscending(ParseConstants.KEY_CREATED_AT);
 			query.setLimit(5);
+			query.include(ParseConstants.KEY_PLACE_ID);
+
 			query.findInBackground(new FindCallback<ParseObject>() {
 
 				@Override
-				public void done(List<ParseObject> friendCheckInActivities, ParseException e) {
-					if(e == null){
-						// 
-					}else{
+				public void done(List<ParseObject> friendCheckInActivities,
+						ParseException e) {
+					if (e == null) {
+						// success
+						for (ParseObject activity : friendCheckInActivities) {
+							// Setup Hash map
+							HashMap<String, String> friendActivity = new HashMap<String, String>();
+
+							Date date = activity.getCreatedAt();
+							String createAt = date.toString();
+							ParseObject tempPlace = activity
+									.getParseObject(ParseConstants.KEY_PLACE_ID);
+
+							String placeName = tempPlace
+									.getString(ParseConstants.KEY_NAME);
+
+							String message = "Check in at " + placeName
+									+ " on " + createAt;
+							friendActivity.put(KEY_FRIEND_ACTIVITY, message);
+							friendActivities.add(friendActivity);
+						}
+					} else {
 						// failed
 						errorAlertDialog(e);
 					}
 				}
 			});
 
+		}
+
+		/*
+		 * get User Claim Promotion Activity
+		 */
+
+		private void getFriendClaimActivity() {
+			ParseQuery<ParseObject> query = ParseQuery
+					.getQuery(ParseConstants.TABLE_ACTV_USER_CLAIM_PROMOTION);
+			query.whereGreaterThan(ParseConstants.KEY_CREATED_AT, yesterday);
+			query.orderByAscending(ParseConstants.KEY_CREATED_AT);
+			query.setLimit(5);
+			query.include(ParseConstants.KEY_PROMOTION_ID);
+			query.findInBackground(new FindCallback<ParseObject>() {
+				
+				@Override
+				public void done(List<ParseObject> friendClaimAcitivities, ParseException e) {
+					if(e == null){
+						// success
+						for(ParseObject claimActivity : friendClaimAcitivities){
+							
+						}
+					}else{
+						// failed
+						errorAlertDialog(e);
+					}
+					
+				}
+			});
 		}
 
 		/*
