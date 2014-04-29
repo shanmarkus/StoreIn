@@ -83,5 +83,6 @@
     <string name="friend_information_hint">Input Friend Id</string>
     <string name="friend_information_friend_list_title">Following</string>
     <string name="title_activity_friend_detail">Friend Detail</string>
+    <string name="home_recent_activity_title">Recent Activity</string>
 
 </resources>
