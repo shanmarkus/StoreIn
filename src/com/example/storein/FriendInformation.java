@@ -116,6 +116,8 @@ public class FriendInformation extends Fragment {
 			@Override
 			public void done(List<ParseObject> friends, ParseException e) {
 				getActivity().setProgressBarIndeterminateVisibility(false);
+				Toast.makeText(getActivity(), friends.size() + " ",
+						Toast.LENGTH_SHORT).show();
 				if (e == null) {
 					for (ParseObject friend : friends) {
 						// setting the hash map for adapter
@@ -130,6 +132,7 @@ public class FriendInformation extends Fragment {
 
 						// add to array list
 						friendInfo.put(ParseConstants.KEY_NAME, friendName);
+						friendsInfo.add(friendInfo);
 						friendIds.add(friendId);
 					}
 					// Set the adapter
