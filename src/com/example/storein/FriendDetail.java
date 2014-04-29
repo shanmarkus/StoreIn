@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -87,6 +88,8 @@ public class FriendDetail extends ActionBarActivity {
 		boolean isFriendExist;
 		boolean isFriend;
 
+		ProgressDialog progressDialog;
+
 		Date yesterday = new Date(System.currentTimeMillis() - 24 * 60 * 60
 				* 1000L);
 
@@ -121,10 +124,7 @@ public class FriendDetail extends ActionBarActivity {
 					.findViewById(R.id.recentActivity);
 			mButtonStatus = (Button) rootView.findViewById(R.id.buttonStatus);
 
-			// Running some functions
-			getFriendCheckIn();
-			getFriendName();
-			getFriendCheckInActivity(); // 2 in 1
+			getFriendAllActivity(); // 2 in 1
 
 			return rootView;
 		}
@@ -132,9 +132,21 @@ public class FriendDetail extends ActionBarActivity {
 		@Override
 		public void onResume() {
 			super.onResume();
-			getNumberFollower(); // 2 in 1
+			getFriendInformation(); // 4 in 1
 			checkRelation();
+		}
 
+		/*
+		 * Progress Dialog init
+		 */
+
+		private void initProgressDialog() {
+			progressDialog = new ProgressDialog(getActivity());
+			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			progressDialog.setMessage("Loading");
+			progressDialog.setIndeterminate(true);
+			progressDialog.setCancelable(false);
+			progressDialog.show();
 		}
 
 		/*
@@ -267,12 +279,22 @@ public class FriendDetail extends ActionBarActivity {
 		 * Get FriendInformation Information
 		 */
 
+		// Get All
+
+		private void getFriendInformation() {
+			getFriendName(); // 4 in 1 method
+		}
+
 		// Get the name
 		private void getFriendName() {
+			// Set progress dialog
+			initProgressDialog();
+
+			String tempFriend = friendId;
 
 			ParseQuery<ParseUser> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_USER);
-			query.whereEqualTo(ParseConstants.KEY_OBJECT_ID, friendId);
+			query.whereEqualTo(ParseConstants.KEY_OBJECT_ID, tempFriend);
 			query.getFirstInBackground(new GetCallback<ParseUser>() {
 
 				@Override
@@ -283,6 +305,8 @@ public class FriendDetail extends ActionBarActivity {
 								.getString(ParseConstants.KEY_NAME);
 						mFriendUsername.setText(friendName);
 						countThread += 1;
+						// Run the second Query
+						getFriendCheckIn();
 					} else {
 						errorAlertDialog(e);
 					}
@@ -304,6 +328,8 @@ public class FriendDetail extends ActionBarActivity {
 					if (e == null) {
 						mFriendNumberCheckIn.setText(total + "");
 						countThread += 1;
+						// Run the third task
+						getNumberFollower();
 					} else {
 						errorAlertDialog(e);
 					}
@@ -326,6 +352,7 @@ public class FriendDetail extends ActionBarActivity {
 						// success
 						mFriendNumberFollower.setText(total + "");
 						countThread += 1;
+						// run the forth task
 						getNumberFollowing();
 					} else {
 						// failed
@@ -346,6 +373,7 @@ public class FriendDetail extends ActionBarActivity {
 
 				@Override
 				public void done(int total, ParseException e) {
+					progressDialog.dismiss();
 					if (e == null) {
 						// success
 						mFriendNumberFollowing.setText(total + "");
@@ -361,6 +389,10 @@ public class FriendDetail extends ActionBarActivity {
 		/*
 		 * Get User recent Check In Activity
 		 */
+
+		private void getFriendAllActivity() {
+			getFriendCheckInActivity(); // 2 in 1 method
+		}
 
 		private void getFriendCheckInActivity() {
 
