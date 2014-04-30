@@ -91,5 +91,9 @@
     <string name="add_friend_username">Friend Username</string>
     <string name="title_activity_beacon">Beacon Search</string>
     <string name="title_activity_beacon_manager">Beacon Finder</string>
+    <string name="home_claimed_promotion_title">Claimed Promotion</string>
+    <string name="home_recomendation_title">Recomendation</string>
+    <string name="home_recomendation_place">Recommended place</string>
+    <string name="home_recomended_item">recomended item</string>
 
 </resources>
