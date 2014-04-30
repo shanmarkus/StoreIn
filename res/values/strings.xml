@@ -90,5 +90,6 @@
     <string name="add_friend_button_follow">Follow</string>
     <string name="add_friend_username">Friend Username</string>
     <string name="title_activity_beacon">Beacon Search</string>
+    <string name="title_activity_beacon_manager">Beacon Finder</string>
 
 </resources>
