@@ -95,5 +95,6 @@
     <string name="home_recomendation_title">Recomendation</string>
     <string name="home_recomendation_place">Recommended place</string>
     <string name="home_recomended_item">recomended item</string>
+    <string name="home_button_recommend_me">"Recommend Me "</string>
 
 </resources>

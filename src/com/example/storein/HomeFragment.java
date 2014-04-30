@@ -1,7 +1,6 @@
 package com.example.storein;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -9,20 +8,18 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.parse.CountCallback;
 import com.parse.FindCallback;
@@ -44,6 +41,7 @@ public class HomeFragment extends Fragment {
 	TextView mTextRecommendedPlace;
 	TextView mTextRecommendedPromotion;
 	ListView mListClaimedPromotion;
+	Button mButtonRecommend;
 
 	// Fixed Variables
 	Date yesterday = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000L);
@@ -94,10 +92,14 @@ public class HomeFragment extends Fragment {
 		mHomeUserName = (TextView) rootView.findViewById(R.id.homeUserName);
 		mListClaimedPromotion = (ListView) rootView
 				.findViewById(R.id.listClaimedPromotion);
+		mButtonRecommend = (Button) rootView.findViewById(R.id.buttonRecommend);
+
 		mTextRecommendedPromotion = (TextView) rootView
 				.findViewById(R.id.textRecommendedPromotion);
 		mTextRecommendedPlace = (TextView) rootView
 				.findViewById(R.id.textRecommendedPlace);
+
+		setRecommendationUIFalse();
 
 		return rootView;
 	}
@@ -107,6 +109,20 @@ public class HomeFragment extends Fragment {
 		super.onResume();
 		getUserInformation();
 		getUserClaimActivity();
+	}
+
+	/*
+	 * Set Recommendation UI to false on the start
+	 */
+
+	private void setRecommendationUIFalse() {
+		mTextRecommendedPlace.setVisibility(View.INVISIBLE);
+		mTextRecommendedPromotion.setVisibility(View.INVISIBLE);
+	}
+
+	private void setRecommendationUITrue() {
+		mTextRecommendedPlace.setVisibility(View.VISIBLE);
+		mTextRecommendedPromotion.setVisibility(View.VISIBLE);
 	}
 
 	/*
@@ -121,7 +137,7 @@ public class HomeFragment extends Fragment {
 		progressDialog.setCancelable(false);
 		progressDialog.show();
 	}
-	
+
 	/*
 	 * Get Recommendation place
 	 */

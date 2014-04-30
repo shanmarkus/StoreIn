@@ -99,7 +99,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/homeProfilePicture"
                 android:layout_toLeftOf="@+id/homeNumberFollower"
-                android:pa="20dp"
                 android:text="@string/home_username"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -137,6 +136,16 @@
                 android:layout_below="@+id/textRecommendedPlace"
                 android:layout_marginTop="19dp"
                 android:text="@string/home_recomended_item" />
+
+            <Button
+                android:id="@+id/buttonRecommend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/textRecommendedPlace"
+                android:layout_alignBottom="@+id/textRecommendedPlace"
+                android:layout_alignLeft="@+id/textRecommendedPlace"
+                android:text="@string/home_button_recommend_me" />
+
         </RelativeLayout>
 
         <RelativeLayout
