@@ -130,13 +130,13 @@ public class PromotionDetail extends ActionBarActivity {
 		@Override
 		public void onResume() {
 			super.onResume();
-			if(claimable == true){
+			if (claimable == true) {
 				checkFlashDeal();
 				checkUserAndPromotionStatus();
 			}
 			findPromotionDetail();
 			onClickClaimButton();
-	
+
 		}
 
 		/*
@@ -401,12 +401,15 @@ public class PromotionDetail extends ActionBarActivity {
 			String userId = ParseUser.getCurrentUser().getObjectId();
 			ParseObject tempUserId = ParseObject.createWithoutData(
 					ParseConstants.TABLE_USER, userId);
+			ParseObject tempPlaceId = ParseObject.createWithoutData(
+					ParseConstants.TABLE_PLACE, placeId);
 			final ParseObject tempPromotionId = ParseObject.createWithoutData(
 					ParseConstants.TABLE_PROMOTION, promotionId);
 			ParseObject claimActivity = new ParseObject(
 					ParseConstants.TABLE_ACTV_USER_CLAIM_PROMOTION);
 			claimActivity.put(ParseConstants.KEY_USER_ID, tempUserId);
 			claimActivity.put(ParseConstants.KEY_PROMOTION_ID, tempPromotionId);
+			claimActivity.put(ParseConstants.KEY_PLACE_ID, tempPlaceId);
 			claimActivity.saveInBackground(new SaveCallback() {
 
 				@Override

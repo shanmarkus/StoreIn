@@ -13,29 +13,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.3" >
-
-            <ImageView
-                android:id="@+id/homeProfilePicture"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/image_description_testing"
-                android:padding="10dp"
-                android:src="@drawable/himeji" />
-
-            <TextView
-                android:id="@+id/homeUserName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/homeProfilePicture"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="15dp"
-                android:text="@string/home_username"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:layout_weight="0.28" >
 
             <TextView
                 android:id="@+id/homeNumberCheckInTitle"
@@ -43,6 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/homeProfilePicture"
+                android:paddingTop="5dp"
                 android:text="@string/home_check_in_title"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textStyle="bold" />
@@ -55,6 +34,7 @@
                 android:layout_alignBottom="@+id/homeNumberCheckInTitle"
                 android:layout_marginLeft="20dp"
                 android:layout_toRightOf="@+id/homeNumberCheckInTitle"
+                android:paddingTop="5dp"
                 android:text="@string/home_following_title"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textStyle="bold" />
@@ -67,6 +47,7 @@
                 android:layout_alignBottom="@+id/homeNumberFollowingTitle"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"
+                android:paddingTop="5dp"
                 android:text="@string/home_follower_title"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textStyle="bold" />
@@ -77,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/homeNumberCheckInTitle"
                 android:layout_toRightOf="@+id/homeProfilePicture"
+                android:paddingTop="10dp"
                 android:text="@string/home_example_number"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -86,6 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/homeNumberCheckIn"
                 android:layout_alignLeft="@+id/homeNumberFollowingTitle"
+                android:paddingTop="10dp"
                 android:text="@string/home_example_number"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -95,18 +78,30 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/homeNumberFollowerTitle"
                 android:layout_alignLeft="@+id/homeNumberFollowerTitle"
+                android:paddingTop="10dp"
                 android:text="@string/home_example_number"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
-            <Button
-                android:id="@+id/homeEditProfile"
-                style="?android:attr/buttonStyleSmall"
+            <ImageView
+                android:id="@+id/homeProfilePicture"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/image_description_testing"
+                android:padding="10dp"
+                android:src="@drawable/himeji" />
+
+            <TextView
+                android:id="@+id/homeUserName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/homeNumberCheckInTitle"
-                android:layout_alignRight="@+id/homeNumberFollowerTitle"
-                android:layout_below="@+id/homeProfilePicture"
-                android:text="@string/home_edit_profile" />
+                android:layout_alignBottom="@+id/homeProfilePicture"
+                android:layout_toLeftOf="@+id/homeNumberFollower"
+                android:pa="20dp"
+                android:text="@string/home_username"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
         </RelativeLayout>
 
@@ -142,7 +137,6 @@
                 android:layout_below="@+id/textRecommendedPlace"
                 android:layout_marginTop="19dp"
                 android:text="@string/home_recomended_item" />
-
         </RelativeLayout>
 
         <RelativeLayout
@@ -169,7 +163,6 @@
                 android:layout_below="@+id/textPromotionClaimedTitle"
                 android:layout_marginTop="16dp" >
             </ListView>
-
         </RelativeLayout>
     </LinearLayout>
 
