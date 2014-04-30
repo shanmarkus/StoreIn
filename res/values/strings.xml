@@ -6,6 +6,7 @@
     <string name="title_section2">Browse</string>
     <string name="title_section3">Check In!</string>
     <string name="title_section4">Friends</string>
+    <string name="title_section5">Beacons</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
@@ -88,5 +89,6 @@
     <string name="friend_relation_status">Status</string>
     <string name="add_friend_button_follow">Follow</string>
     <string name="add_friend_username">Friend Username</string>
+    <string name="title_activity_beacon">Beacon Search</string>
 
 </resources>

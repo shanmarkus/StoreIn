@@ -20,6 +20,9 @@
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
+    <!-- Estimote beacon needs Bluetooth -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:name="com.example.storein.StoreInApplication"
@@ -31,6 +34,12 @@
         android:logo="@drawable/ic_launcher"
         android:theme="@style/AppTheme"
         android:vmSafeMode="true" >
+
+        <!-- Estimote Services -->
+        <service
+            android:name="com.estimote.sdk.service.BeaconService"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyD5szxtCRk0QvMKKrNiSIsJM-hOy-esjSk" />
@@ -185,6 +194,10 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.storein.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.example.storein.BeaconFragment"
+            android:label="@string/title_activity_beacon" >
         </activity>
     </application>
 
