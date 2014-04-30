@@ -48,7 +48,6 @@ public class LocationDetail extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_location_detail,
 				container, false);
 
-
 		// Init bundle variables
 		getPlaceID();
 
@@ -62,15 +61,14 @@ public class LocationDetail extends Fragment {
 		mLocationRatingBar = (RatingBar) rootView
 				.findViewById(R.id.locationRatingBar);
 
-		// Init Function
-		doLocationQuery();
-
 		return rootView;
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
+		// Init Function
+		doLocationQuery();
 	}
 
 	@Override
@@ -122,15 +120,15 @@ public class LocationDetail extends Fragment {
 					Float ratingLocation = (float) location
 							.getInt(ParseConstants.KEY_RATING);
 
-					// Setting the information detail
-					mLocationNameLabel = (TextView) getActivity().findViewById(
-							R.id.locationNameLabel);
-					mLocationAddressLabel = (TextView) getActivity()
-							.findViewById(R.id.locationAddressLabel);
-					mLocationPhoneLabel = (TextView) getActivity()
-							.findViewById(R.id.locationPhoneLabel);
-					mLocationRatingBar = (RatingBar) getActivity()
-							.findViewById(R.id.locationRatingBar);
+//					// Setting the information detail
+//					mLocationNameLabel = (TextView) getActivity().findViewById(
+//							R.id.locationNameLabel);
+//					mLocationAddressLabel = (TextView) getActivity()
+//							.findViewById(R.id.locationAddressLabel);
+//					mLocationPhoneLabel = (TextView) getActivity()
+//							.findViewById(R.id.locationPhoneLabel);
+//					mLocationRatingBar = (RatingBar) getActivity()
+//							.findViewById(R.id.locationRatingBar);
 
 					mLocationNameLabel.setText(nameLocation);
 					mLocationAddressLabel.setText(addressLocation);

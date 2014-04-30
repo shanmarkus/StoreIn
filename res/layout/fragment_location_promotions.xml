@@ -1,24 +1,63 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1"
     tools:context="com.example.storein.LocationPromotions$PlaceholderFragment" >
 
-    <TextView
-        android:id="@+id/textPromotion"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="15dp"
-        android:text="@string/top_promotions"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_height="0dp"
+        android:layout_weight="0.5" >
 
-    <ListView
-        android:id="@+id/listPromotion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textPromotion"
-        android:paddingLeft="24dp" >
-    </ListView>
+        <TextView
+            android:id="@+id/textPromotion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+            android:text="@string/top_promotions"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-</RelativeLayout>
+        <ListView
+            android:id="@+id/listPromotion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textPromotion"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="13dp" >
+        </ListView>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.5" >
+
+        <TextView
+            android:id="@+id/textTopItems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+             android:paddingTop="5dp"
+            android:text="@string/top_items"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <ListView
+            android:id="@+id/listItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textTopItems"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="13dp" >
+        </ListView>
+    </RelativeLayout>
+
+</LinearLayout>

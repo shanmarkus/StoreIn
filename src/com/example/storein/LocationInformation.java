@@ -128,26 +128,19 @@ public class LocationInformation extends ActionBarActivity implements
 			}
 			Fragment fragment = new LocationDetail();
 			Bundle args = new Bundle();
+			args.putString(ParseConstants.KEY_OBJECT_ID, placeId);
 			switch (i) {
 			case 0:
 				fragment = new LocationDetail();
-				args.putString(ParseConstants.KEY_OBJECT_ID, placeId);
-				fragment.setArguments(args);
-				return fragment;
-			case 2:
-				fragment = new LocationItems();
-				args.putString(ParseConstants.KEY_OBJECT_ID, placeId);
 				fragment.setArguments(args);
 				return fragment;
 			case 1:
 				fragment = new LocationPromotions();
-				args.putString(ParseConstants.KEY_OBJECT_ID, placeId);
 				fragment.setArguments(args);
 				return fragment;
 
 			default:
 				fragment = new LocationDetail();
-				args.putString(ParseConstants.KEY_OBJECT_ID, placeId);
 				fragment.setArguments(args);
 				return fragment;
 			}
@@ -156,7 +149,7 @@ public class LocationInformation extends ActionBarActivity implements
 		@Override
 		public int getCount() {
 			// Show 3 total pages.
-			return 3;
+			return 2;
 		}
 
 		@Override
@@ -168,9 +161,6 @@ public class LocationInformation extends ActionBarActivity implements
 						.toUpperCase(l);
 			case 1:
 				return getString(R.string.location_information_title_section2)
-						.toUpperCase(l);
-			case 2:
-				return getString(R.string.location_information_title_section3)
 						.toUpperCase(l);
 			}
 			return null;

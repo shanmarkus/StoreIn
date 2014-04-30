@@ -29,7 +29,7 @@ public class LocationPromotions extends Fragment {
 
 	// UI Variables
 	ListView mListPromotion;
-	ProgressDialog progressDialog;
+	ListView mListItem;
 
 	// Fixed Variables
 	private String placeId;
@@ -37,6 +37,11 @@ public class LocationPromotions extends Fragment {
 	public HashMap<String, String> promotionInfo = new HashMap<String, String>();
 	public ArrayList<String> promotionsId = new ArrayList<String>();
 	public ArrayList<Boolean> promotionsClaimable = new ArrayList<Boolean>();
+
+	protected static final int MAX_ITEMS = 5;
+	protected ArrayList<HashMap<String, String>> itemsInfo = new ArrayList<HashMap<String, String>>();
+	public HashMap<String, String> itemInfo = new HashMap<String, String>();
+	public ArrayList<String> itemsId = new ArrayList<String>();
 
 	// Parse Variable
 	ParseObject placeObj;
@@ -53,6 +58,8 @@ public class LocationPromotions extends Fragment {
 
 		// initiate UI
 		mListPromotion = (ListView) rootView.findViewById(R.id.listPromotion);
+		mListItem = (ListView) getActivity().findViewById(R.id.listItem);
+
 		return rootView;
 
 	}
@@ -61,6 +68,7 @@ public class LocationPromotions extends Fragment {
 	public void onResume() {
 		super.onResume();
 		doPromotionQuery();
+		doItemsQuery();
 	}
 
 	/*
@@ -183,6 +191,98 @@ public class LocationPromotions extends Fragment {
 				promotionsInfo, android.R.layout.simple_list_item_2, keys, ids);
 
 		mListPromotion.setAdapter(adapter);
+	}
+
+	// ////////////////////////// Items Query
+
+	protected void doItemsQuery() {
+		// set progress bar
+		getActivity().setProgressBarIndeterminateVisibility(true); 
+		itemInfo.clear();
+		itemsId.clear();
+		itemsInfo.clear();
+
+		if (placeId == null) {
+			getPlaceID();
+		}
+
+		// Do the rest
+		ParseQuery<ParseObject> query = ParseQuery
+				.getQuery(ParseConstants.TABLE_REL_PLACE_ITEM);
+		query.whereEqualTo(ParseConstants.KEY_PLACE_ID, placeId);
+		ParseQuery<ParseObject> innerQuery = ParseQuery
+				.getQuery(ParseConstants.TABLE_ITEM);
+		innerQuery.whereMatchesKeyInQuery(ParseConstants.KEY_OBJECT_ID,
+				ParseConstants.KEY_ITEM_ID, query);
+
+		innerQuery.findInBackground(new FindCallback<ParseObject>() {
+
+			@Override
+			public void done(List<ParseObject> items, ParseException e) {
+				getActivity().setProgressBarIndeterminateVisibility(false);
+				if (e == null) {
+					for (ParseObject item : items) {
+						// initiate the hash map for the adapter
+						HashMap<String, String> itemInfo = new HashMap<String, String>();
+
+						// get the values
+						String objectId = item.getObjectId();
+						String name = item.getString(ParseConstants.KEY_NAME);
+						Integer rating = item.getInt(ParseConstants.KEY_RATING);
+
+						// put to the adapter
+						itemInfo.put(ParseConstants.KEY_NAME, name);
+						itemInfo.put(ParseConstants.KEY_RATING,
+								rating.toString());
+						itemsInfo.add(itemInfo);
+						itemsId.add(objectId);
+
+					}
+					setListItemAdapter();
+					mListItem.setOnItemClickListener(itemSelected);
+
+				} else {
+					parseErrorDialog(e);
+				}
+			}
+
+		});
+	}
+
+	/*
+	 * On Click Item Listener
+	 */
+
+	OnItemClickListener itemSelected = new OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			// Get the Variable
+			String objectId = itemsId.get(position);
+
+			// Start intent
+			final Intent intent = new Intent(getActivity(),
+					ItemInformation.class);
+			intent.putExtra(ParseConstants.KEY_OBJECT_ID, objectId);
+			startActivity(intent);
+		}
+	};
+
+	/*
+	 * Set Adapter
+	 */
+	private void setListItemAdapter() {
+		mListItem = (ListView) getActivity().findViewById(
+				R.id.listItem);
+		
+		String[] keys = { ParseConstants.KEY_NAME, ParseConstants.KEY_RATING };
+		int[] ids = { android.R.id.text1, android.R.id.text2 };
+
+		SimpleAdapter adapter = new SimpleAdapter(getActivity(), itemsInfo,
+				android.R.layout.simple_list_item_2, keys, ids);
+
+		mListItem.setAdapter(adapter);
 	}
 
 	/*

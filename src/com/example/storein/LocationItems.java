@@ -57,7 +57,7 @@ public class LocationItems extends Fragment {
 
 		// get the placeId
 		getPlaceID();
-		
+
 		return rootView;
 	}
 
@@ -81,12 +81,14 @@ public class LocationItems extends Fragment {
 	 */
 
 	protected void doItemsQuery() {
-		getActivity().setProgressBarIndeterminateVisibility(true); // set progress bar
+		getActivity().setProgressBarIndeterminateVisibility(true); // set
+																	// progress
+																	// bar
 		itemInfo.clear();
 		itemsId.clear();
 		itemsInfo.clear();
-		
-		if(placeId == null){
+
+		if (placeId == null) {
 			getPlaceID();
 		}
 
@@ -122,8 +124,8 @@ public class LocationItems extends Fragment {
 						itemsId.add(objectId);
 
 					}
-					setListItemAdapter();
-					mListItem.setOnItemClickListener(itemSelected);
+					// setListItemAdapter();
+					// mListItem.setOnItemClickListener(itemSelected);
 
 				} else {
 					parseErrorDialog(e);
@@ -146,7 +148,8 @@ public class LocationItems extends Fragment {
 			String objectId = itemsId.get(position);
 
 			// Start intent
-			final Intent intent = new Intent(getActivity(), ItemInformation.class);
+			final Intent intent = new Intent(getActivity(),
+					ItemInformation.class);
 			intent.putExtra(ParseConstants.KEY_OBJECT_ID, objectId);
 			startActivity(intent);
 		}
@@ -156,7 +159,6 @@ public class LocationItems extends Fragment {
 	 * Set Adapter
 	 */
 	private void setListItemAdapter() {
-		mListItem = (ListView) getActivity().findViewById(R.id.listItem);
 		String[] keys = { ParseConstants.KEY_NAME, ParseConstants.KEY_RATING };
 		int[] ids = { android.R.id.text1, android.R.id.text2 };
 
