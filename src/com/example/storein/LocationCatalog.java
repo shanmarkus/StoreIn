@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,17 +14,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-public class LocationPromotions extends Fragment {
-	private static final String TAG = LocationPromotions.class.getSimpleName();
+public class LocationCatalog extends Fragment {
+	private static final String TAG = LocationCatalog.class.getSimpleName();
 
 	// UI Variables
 	ListView mListPromotion;
@@ -46,13 +45,13 @@ public class LocationPromotions extends Fragment {
 	// Parse Variable
 	ParseObject placeObj;
 
-	public LocationPromotions() {
+	public LocationCatalog() {
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_location_promotions,
+		View rootView = inflater.inflate(R.layout.fragment_location_catalog,
 				container, false);
 		getPlaceID();
 

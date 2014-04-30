@@ -135,7 +135,7 @@ public class LocationInformation extends ActionBarActivity implements
 				fragment.setArguments(args);
 				return fragment;
 			case 1:
-				fragment = new LocationPromotions();
+				fragment = new LocationCatalog();
 				fragment.setArguments(args);
 				return fragment;
 

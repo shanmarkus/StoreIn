@@ -156,7 +156,7 @@
                 android:value="com.example.storein.MainActivity" />
         </activity>
         <activity
-            android:name="com.example.storein.LocationPromotions"
+            android:name="com.example.storein.LocationCatalog"
             android:label="@string/title_activity_location_promotions"
             android:parentActivityName="com.example.storein.MainActivity" >
             <meta-data
