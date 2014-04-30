@@ -8,16 +8,21 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.parse.CountCallback;
 import com.parse.FindCallback;
@@ -101,6 +106,7 @@ public class HomeFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 		getUserInformation();
+		getUserClaimActivity();
 	}
 
 	/*
@@ -115,6 +121,10 @@ public class HomeFragment extends Fragment {
 		progressDialog.setCancelable(false);
 		progressDialog.show();
 	}
+	
+	/*
+	 * Get Recommendation place
+	 */
 
 	/*
 	 * Get Recent Claim Promotion
@@ -159,7 +169,9 @@ public class HomeFragment extends Fragment {
 						userActivities.add(friendActivity);
 						promotionsId.add(promotionId);
 					}
-					// setAdapter();
+					setAdapter();
+					mListClaimedPromotion
+							.setOnItemClickListener(itemListRecentPromotion);
 				} else {
 					// failed
 					errorAlertDialog(e);
@@ -182,10 +194,40 @@ public class HomeFragment extends Fragment {
 
 		mListClaimedPromotion.setAdapter(adapter);
 	}
-	
+
 	/*
 	 * On Click Listener
 	 */
+
+	OnItemClickListener itemListRecentPromotion = new OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			String objectId = promotionsId.get(position);
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			String title = "Please give this number to claim the reward";
+			String message = "Promotion Id " + objectId;
+			builder.setTitle(title).setMessage(message)
+					.setPositiveButton("Ok", dialogCheckInListener).show();
+
+		}
+	};
+
+	/*
+	 * Init Alert Dialog
+	 */
+
+	DialogInterface.OnClickListener dialogCheckInListener = new DialogInterface.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			switch (which) {
+			case DialogInterface.BUTTON_POSITIVE:
+				// Do nothing
+				break;
+			}
+		}
+	};
 
 	/*
 	 * Get User Information include number of check in, follower, following
