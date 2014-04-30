@@ -431,8 +431,8 @@ int id textPromotionReq 0x7f050084
 int id textPromotionReqTitle 0x7f050083
 int id textRecentActivityTitle 0x7f050058
 int id textRecomendationTitle 0x7f050069
-int id textRecommendedItem 0x7f05006b
 int id textRecommendedPlace 0x7f05006a
+int id textRecommendedPromotion 0x7f05006b
 int id textReward 0x7f05008a
 int id textRewardTitle 0x7f050089
 int id textTitleFollowing 0x7f05005e

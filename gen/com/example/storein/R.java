@@ -1332,8 +1332,8 @@ containing a value of this type.
         public static final int textPromotionReqTitle=0x7f050083;
         public static final int textRecentActivityTitle=0x7f050058;
         public static final int textRecomendationTitle=0x7f050069;
-        public static final int textRecommendedItem=0x7f05006b;
         public static final int textRecommendedPlace=0x7f05006a;
+        public static final int textRecommendedPromotion=0x7f05006b;
         public static final int textReward=0x7f05008a;
         public static final int textRewardTitle=0x7f050089;
         public static final int textTitleFollowing=0x7f05005e;

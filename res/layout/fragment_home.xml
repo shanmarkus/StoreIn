@@ -135,7 +135,7 @@
                 android:text="@string/home_recomendation_place" />
 
             <TextView
-                android:id="@+id/textRecommendedItem"
+                android:id="@+id/textRecommendedPromotion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/textRecommendedPlace"
