@@ -1,6 +1,7 @@
 package com.example.storein;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.parse.CountCallback;
@@ -118,7 +120,7 @@ public class HomeFragment extends Fragment {
 	 * Get Recent Claim Promotion
 	 */
 
-	private void getFriendClaimActivity() {
+	private void getUserClaimActivity() {
 		ParseQuery<ParseObject> query = ParseQuery
 				.getQuery(ParseConstants.TABLE_ACTV_USER_CLAIM_PROMOTION);
 		query.whereGreaterThan(ParseConstants.KEY_CREATED_AT, yesterday);
@@ -157,7 +159,7 @@ public class HomeFragment extends Fragment {
 						userActivities.add(friendActivity);
 						promotionsId.add(promotionId);
 					}
-					//setAdapter();
+					// setAdapter();
 				} else {
 					// failed
 					errorAlertDialog(e);
@@ -166,6 +168,24 @@ public class HomeFragment extends Fragment {
 			}
 		});
 	}
+
+	/*
+	 * Setup adapter
+	 */
+	public void setAdapter() {
+
+		String[] keys = { ParseConstants.KEY_NAME, ParseConstants.KEY_LOCATION };
+		int[] ids = { android.R.id.text1, android.R.id.text2 };
+
+		SimpleAdapter adapter = new SimpleAdapter(getActivity(),
+				userActivities, android.R.layout.simple_list_item_2, keys, ids);
+
+		mListClaimedPromotion.setAdapter(adapter);
+	}
+	
+	/*
+	 * On Click Listener
+	 */
 
 	/*
 	 * Get User Information include number of check in, follower, following
