@@ -116,7 +116,7 @@
             android:layout_weight="0.3" >
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/textRecomendationTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -127,19 +127,19 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/textRecommendedPlace"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/textView2"
+                android:layout_alignLeft="@+id/textRecomendationTitle"
                 android:layout_centerVertical="true"
                 android:text="@string/home_recomendation_place" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/textRecommendedItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/textView3"
-                android:layout_below="@+id/textView3"
+                android:layout_alignLeft="@+id/textRecommendedPlace"
+                android:layout_below="@+id/textRecommendedPlace"
                 android:layout_marginTop="19dp"
                 android:text="@string/home_recomended_item" />
 
@@ -151,7 +151,7 @@
             android:layout_weight="0.4" >
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/textPromotionClaimedTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -162,11 +162,11 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <ListView
-                android:id="@+id/listView1"
+                android:id="@+id/listClaimedPromotion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@+id/textView1"
+                android:layout_below="@+id/textPromotionClaimedTitle"
                 android:layout_marginTop="16dp" >
             </ListView>
 
