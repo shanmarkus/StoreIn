@@ -1,6 +1,7 @@
 package com.example.storein;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -69,8 +70,8 @@ public class AddFriend extends ActionBarActivity {
 		// Fixed variables
 		boolean isFriendExist;
 		boolean isAlreadyFollow;
-		String userId = ParseUser.getCurrentUser().getString(
-				ParseConstants.KEY_USERNAME);
+		String userId = ParseUser.getCurrentUser().getObjectId();
+		ProgressDialog progressDialog;
 
 		// ParseConstant
 		ParseObject currentUser = ParseObject.createWithoutData(
@@ -104,10 +105,24 @@ public class AddFriend extends ActionBarActivity {
 		 */
 
 		/*
+		 * Progress Dialog init
+		 */
+
+		private void initProgressDialog() {
+			progressDialog = new ProgressDialog(getActivity());
+			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			progressDialog.setMessage("Loading");
+			progressDialog.setIndeterminate(true);
+			progressDialog.setCancelable(false);
+			progressDialog.show();
+		}
+
+		/*
 		 * Check for friendId
 		 */
 
 		private void checkFriendId() {
+			initProgressDialog();
 			if (friendId == userId) {
 				isFriendExist = false;
 			} else {
@@ -127,6 +142,7 @@ public class AddFriend extends ActionBarActivity {
 								// Second Function
 								checkAlreadyFollow();
 							} else {
+								progressDialog.dismiss();
 								isFriendExist = false;
 								Toast.makeText(getActivity(),
 										"Friend ID Does not found",
@@ -136,8 +152,10 @@ public class AddFriend extends ActionBarActivity {
 								intent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
 								startActivity(intent);
 							}
-
 						} else {
+							Toast.makeText(getActivity(),
+									"Friend ID Does not found",
+									Toast.LENGTH_SHORT).show();
 							errorAlertDialog(e);
 						}
 					}
@@ -150,7 +168,7 @@ public class AddFriend extends ActionBarActivity {
 		 */
 
 		private void checkAlreadyFollow() {
-
+			findFriendDetail();
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_REL_USER_USER);
 			query.whereEqualTo(ParseConstants.KEY_USER_ID, currentUser);
@@ -161,17 +179,16 @@ public class AddFriend extends ActionBarActivity {
 				public void done(int total, ParseException e) {
 					if (e == null) {
 						if (total != 0) {
+							progressDialog.dismiss();
 							isAlreadyFollow = true;
 							mButtonAdd.setEnabled(false);
 							Toast.makeText(getActivity(),
 									"You already follow this user",
 									Toast.LENGTH_SHORT).show();
-							findFriendDetail();
 						} else {
 							isAlreadyFollow = false;
 							// third function
 							mButtonAdd.setEnabled(true);
-							findFriendDetail();
 						}
 					} else {
 						errorAlertDialog(e);
@@ -194,6 +211,7 @@ public class AddFriend extends ActionBarActivity {
 				public void done(ParseUser user, ParseException e) {
 					if (e == null) {
 						// success
+						progressDialog.dismiss();
 						String friendName = user
 								.getString(ParseConstants.KEY_NAME);
 						mTextUserName.setText(friendName);
