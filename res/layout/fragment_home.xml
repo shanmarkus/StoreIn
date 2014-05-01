@@ -141,9 +141,8 @@
                 android:id="@+id/buttonRecommend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/textRecommendedPlace"
-                android:layout_alignBottom="@+id/textRecommendedPlace"
                 android:layout_alignLeft="@+id/textRecommendedPlace"
+                android:layout_alignTop="@+id/textRecommendedPlace"
                 android:text="@string/home_button_recommend_me" />
 
         </RelativeLayout>

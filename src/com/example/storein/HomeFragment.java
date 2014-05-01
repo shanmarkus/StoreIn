@@ -7,29 +7,43 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
+import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
+import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements ConnectionCallbacks,
+		OnConnectionFailedListener, LocationListener {
 	protected static final String TAG = HomeFragment.class.getSimpleName();
 	ProgressDialog progressDialog;
 
@@ -48,11 +62,20 @@ public class HomeFragment extends Fragment {
 	ArrayList<HashMap<String, String>> userActivities = new ArrayList<HashMap<String, String>>();
 	HashMap<String, String> userActivity = new HashMap<String, String>();
 	ArrayList<String> promotionsId = new ArrayList<String>();
+	private static final double MAX_PlACE_SEARCH_DISTANCE = 10; // 10 Kilometers
 
 	// Parse Constants
 	String userId = ParseUser.getCurrentUser().getObjectId();
 	ParseObject currentUser = ParseUser.createWithoutData(
 			ParseConstants.TABLE_USER, userId);
+
+	// Location Client
+	private LocationClient mLocationClient;
+	private LocationManager locationManager;
+	private static final LocationRequest REQUEST = LocationRequest.create()
+			.setFastestInterval(16) // 16ms = 60fps
+			.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+	private Location currentLocation;
 
 	public static HomeFragment newInstance(String param1, String param2) {
 		HomeFragment fragment = new HomeFragment();
@@ -79,6 +102,13 @@ public class HomeFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_home, container,
 				false);
+
+		// Setup Location Client
+		mLocationClient = new LocationClient(getActivity(), this, this);
+
+		// Adding Location Manager
+		locationManager = (LocationManager) getActivity().getSystemService(
+				Context.LOCATION_SERVICE);
 
 		// UI Declaration
 		mHomeNumberCheckIn = (TextView) rootView
@@ -118,11 +148,61 @@ public class HomeFragment extends Fragment {
 	private void setRecommendationUIFalse() {
 		mTextRecommendedPlace.setVisibility(View.INVISIBLE);
 		mTextRecommendedPromotion.setVisibility(View.INVISIBLE);
+
+		// Set button become true
+		mButtonRecommend.setVisibility(View.VISIBLE);
+		mButtonRecommend.setEnabled(true);
 	}
 
 	private void setRecommendationUITrue() {
 		mTextRecommendedPlace.setVisibility(View.VISIBLE);
 		mTextRecommendedPromotion.setVisibility(View.VISIBLE);
+
+		// Set button become false
+		mButtonRecommend.setVisibility(View.INVISIBLE);
+		mButtonRecommend.setEnabled(false);
+	}
+
+	/*
+	 * Button Listener
+	 */
+
+	OnClickListener buttonRecomend = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			// Setup GPS
+			if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+				Toast.makeText(getActivity(), "GPS is Enabled in your devide",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				showGPSDisabledAlertToUser();
+			}
+			setRecommendationUIFalse();
+
+			// get user position
+			currentLocation = mLocationClient.getLastLocation();
+			if (currentLocation != null) {
+				getRecomendationPlace();
+			}
+		}
+	};
+
+	/*
+	 * Query for finding recommendation
+	 */
+
+	private void getRecomendationPlace() {
+
+		ParseGeoPoint location = new ParseGeoPoint(
+				currentLocation.getLatitude(), currentLocation.getLongitude());
+
+		// Do the Query
+		ParseQuery<ParseObject> query = ParseQuery
+				.getQuery(ParseConstants.TABLE_PLACE);
+		query.whereWithinKilometers(ParseConstants.KEY_LOCATION, location,
+				MAX_PlACE_SEARCH_DISTANCE);
+
 	}
 
 	/*
@@ -351,6 +431,32 @@ public class HomeFragment extends Fragment {
 		});
 	}
 
+	// Check GPS
+	private void showGPSDisabledAlertToUser() {
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+				getActivity());
+		alertDialogBuilder
+				.setMessage(
+						"GPS is disabled in your device. Would you like to enable it?")
+				.setCancelable(false)
+				.setPositiveButton("Goto Settings Page To Enable GPS",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								Intent callGPSSettingIntent = new Intent(
+										android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+								startActivity(callGPSSettingIntent);
+							}
+						});
+		alertDialogBuilder.setNegativeButton("Cancel",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+		AlertDialog alert = alertDialogBuilder.create();
+		alert.show();
+	}
+
 	/*
 	 * Error Dialog Parse
 	 */
@@ -362,6 +468,46 @@ public class HomeFragment extends Fragment {
 				.setPositiveButton(android.R.string.ok, null);
 		AlertDialog dialog = builder.create();
 		dialog.show();
+	}
+
+	/*
+	 * Generated Documentaion
+	 * 
+	 * @see
+	 * com.google.android.gms.location.LocationListener#onLocationChanged(android
+	 * .location.Location)
+	 */
+
+	private void setUpLocationClientIfNeeded() {
+		if (mLocationClient == null) {
+			mLocationClient = new LocationClient(getActivity(), this, // ConnectionCallbacks
+					this); // OnConnectionFailedListener
+		}
+	}
+
+	@Override
+	public void onLocationChanged(Location arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onConnectionFailed(ConnectionResult arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onConnected(Bundle arg0) {
+		mLocationClient.requestLocationUpdates(REQUEST, this); // LocationListener
+		Toast.makeText(getActivity(), "Connected", Toast.LENGTH_SHORT).show();
+
+	}
+
+	@Override
+	public void onDisconnected() {
+		// TODO Auto-generated method stub
+
 	}
 
 }
