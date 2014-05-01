@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 	private String placeId;
 
 	// Parse Constants
-	String userId = ParseUser.getCurrentUser().getObjectId();
+	String userId;
 	ParseObject currentUser = ParseUser.createWithoutData(
 			ParseConstants.TABLE_USER, userId);
 
