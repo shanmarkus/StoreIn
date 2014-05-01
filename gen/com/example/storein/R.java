@@ -1210,13 +1210,13 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f050026;
         public static final int action_bar_title=0x7f050025;
         public static final int action_context_bar=0x7f050020;
-        public static final int action_example=0x7f050094;
-        public static final int action_forgot_password=0x7f050095;
-        public static final int action_logout=0x7f050096;
+        public static final int action_example=0x7f050096;
+        public static final int action_forgot_password=0x7f050097;
+        public static final int action_logout=0x7f050098;
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
         public static final int action_mode_close_button=0x7f050027;
-        public static final int action_settings=0x7f050093;
+        public static final int action_settings=0x7f050095;
         public static final int activity_chooser_view_content=0x7f050028;
         public static final int always=0x7f05000b;
         public static final int beginning=0x7f050011;
@@ -1289,6 +1289,9 @@ containing a value of this type.
         public static final int pager=0x7f050040;
         public static final int passwordField=0x7f050042;
         public static final int phoneLabel=0x7f05007f;
+        public static final int placeAddress=0x7f050093;
+        public static final int placeName=0x7f05004e;
+        public static final int placeTotalPromotion=0x7f050094;
         public static final int progress_circular=0x7f050018;
         public static final int progress_horizontal=0x7f050019;
         public static final int promotion_preview_image=0x7f050081;
@@ -1339,7 +1342,6 @@ containing a value of this type.
         public static final int textTitleFollowing=0x7f05005e;
         public static final int textTopItems=0x7f050079;
         public static final int textUserName=0x7f05004b;
-        public static final int textView1=0x7f05004e;
         public static final int title=0x7f05002e;
         public static final int top_action_bar=0x7f050023;
         public static final int txtPromotionTitle=0x7f050082;
@@ -1438,7 +1440,8 @@ containing a value of this type.
         public static final int fragment_promotion_detail_and_location=0x7f03003a;
         public static final int fragment_promotion_list=0x7f03003b;
         public static final int fragment_write_review_item=0x7f03003c;
-        public static final int support_simple_spinner_dropdown_item=0x7f03003d;
+        public static final int list_place_layout=0x7f03003d;
+        public static final int support_simple_spinner_dropdown_item=0x7f03003e;
     }
     public static final class menu {
         public static final int add_friend=0x7f0c0000;

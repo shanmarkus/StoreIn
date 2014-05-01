@@ -23,6 +23,8 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.example.storein.adapter.CustomArrayAdapterPlace;
+import com.example.storein.model.Place;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
 import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
@@ -52,6 +54,11 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	ArrayList<HashMap<String, String>> placesInfo = new ArrayList<HashMap<String, String>>();
 	protected ArrayList<String> placesID = new ArrayList<String>();
 	HashMap<String, String> placeInfo = new HashMap<String, String>();
+
+	public List<Place> placeRecord = new ArrayList<Place>();
+	public ArrayList<Place> placesItem;
+	private CustomArrayAdapterPlace mAdapter;
+
 	private String placeName;
 	private String placeID;
 	private ProgressDialog progressDialog;
@@ -159,6 +166,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		placesInfo.clear();
 		placeInfo.clear();
 		placesID.clear();
+		placeRecord.clear();
 	}
 
 	/*
@@ -166,6 +174,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	 */
 
 	private void doLocationQuery() {
+
 		// Clear ArrayList
 		clearAdapter();
 
@@ -200,10 +209,17 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 							placeInfo.put(ParseConstants.KEY_ADDRESS, address);
 							placesInfo.add(placeInfo);
 
+							// add to the place
+							Place temp = new Place();
+							temp.setName(placeName);
+							temp.setAddress(address);
+
+							placeRecord.add(temp);
 							// add ID
 							placesID.add(id);
 						}
-						setAdapter();
+						setCustomAdapter();
+
 					} else {
 						String message = "Sorry there are no promotion near you, please use browse to find other promotion";
 						Toast.makeText(getActivity(), message,
@@ -214,8 +230,8 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 				}
 
 			}
-		});
 
+		});
 	}
 
 	/*
@@ -243,6 +259,17 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 
 		mListPlace = (ListView) getActivity().findViewById(R.id.listPlace);
 		mListPlace.setAdapter(adapter);
+	}
+
+	public void setCustomAdapter() {
+
+		placesItem = (ArrayList<Place>) placeRecord;
+
+		mAdapter = new CustomArrayAdapterPlace(getActivity(), R.id.listPlace,
+				placesItem);
+
+		mListPlace = (ListView) getActivity().findViewById(R.id.listPlace);
+		mListPlace.setAdapter(mAdapter);
 	}
 
 	/*

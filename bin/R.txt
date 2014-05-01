@@ -309,13 +309,13 @@ int id action_bar_root 0x7f05001d
 int id action_bar_subtitle 0x7f050026
 int id action_bar_title 0x7f050025
 int id action_context_bar 0x7f050020
-int id action_example 0x7f050094
-int id action_forgot_password 0x7f050095
-int id action_logout 0x7f050096
+int id action_example 0x7f050096
+int id action_forgot_password 0x7f050097
+int id action_logout 0x7f050098
 int id action_menu_divider 0x7f050016
 int id action_menu_presenter 0x7f050017
 int id action_mode_close_button 0x7f050027
-int id action_settings 0x7f050093
+int id action_settings 0x7f050095
 int id activity_chooser_view_content 0x7f050028
 int id always 0x7f05000b
 int id beginning 0x7f050011
@@ -388,6 +388,9 @@ int id normal 0x7f050000
 int id pager 0x7f050040
 int id passwordField 0x7f050042
 int id phoneLabel 0x7f05007f
+int id placeAddress 0x7f050093
+int id placeName 0x7f05004e
+int id placeTotalPromotion 0x7f050094
 int id progress_circular 0x7f050018
 int id progress_horizontal 0x7f050019
 int id promotion_preview_image 0x7f050081
@@ -438,7 +441,6 @@ int id textRewardTitle 0x7f050089
 int id textTitleFollowing 0x7f05005e
 int id textTopItems 0x7f050079
 int id textUserName 0x7f05004b
-int id textView1 0x7f05004e
 int id title 0x7f05002e
 int id top_action_bar 0x7f050023
 int id txtPromotionTitle 0x7f050082
@@ -511,7 +513,8 @@ int layout fragment_promotion_detail 0x7f030039
 int layout fragment_promotion_detail_and_location 0x7f03003a
 int layout fragment_promotion_list 0x7f03003b
 int layout fragment_write_review_item 0x7f03003c
-int layout support_simple_spinner_dropdown_item 0x7f03003d
+int layout list_place_layout 0x7f03003d
+int layout support_simple_spinner_dropdown_item 0x7f03003e
 int menu add_friend 0x7f0c0000
 int menu beacon 0x7f0c0001
 int menu beacon_manager 0x7f0c0002
