@@ -1210,13 +1210,13 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f050026;
         public static final int action_bar_title=0x7f050025;
         public static final int action_context_bar=0x7f050020;
-        public static final int action_example=0x7f050096;
-        public static final int action_forgot_password=0x7f050097;
-        public static final int action_logout=0x7f050098;
+        public static final int action_example=0x7f050097;
+        public static final int action_forgot_password=0x7f050098;
+        public static final int action_logout=0x7f050099;
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
         public static final int action_mode_close_button=0x7f050027;
-        public static final int action_settings=0x7f050095;
+        public static final int action_settings=0x7f050096;
         public static final int activity_chooser_view_content=0x7f050028;
         public static final int always=0x7f05000b;
         public static final int beginning=0x7f050011;
@@ -1262,6 +1262,7 @@ containing a value of this type.
         public static final int icon=0x7f05002d;
         public static final int ifRoom=0x7f05000a;
         public static final int image=0x7f05002a;
+        public static final int imagePlaceBackground=0x7f050093;
         public static final int imageView1=0x7f05004a;
         public static final int itemDescriptionLabel=0x7f050072;
         public static final int itemTitleLabel=0x7f050071;
@@ -1289,9 +1290,9 @@ containing a value of this type.
         public static final int pager=0x7f050040;
         public static final int passwordField=0x7f050042;
         public static final int phoneLabel=0x7f05007f;
-        public static final int placeAddress=0x7f050093;
+        public static final int placeAddress=0x7f050094;
         public static final int placeName=0x7f05004e;
-        public static final int placeTotalPromotion=0x7f050094;
+        public static final int placeTotalPromotion=0x7f050095;
         public static final int progress_circular=0x7f050018;
         public static final int progress_horizontal=0x7f050019;
         public static final int promotion_preview_image=0x7f050081;
