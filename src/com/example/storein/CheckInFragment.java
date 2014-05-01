@@ -24,7 +24,7 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.example.storein.adapter.CustomArrayAdapterPlace;
-import com.example.storein.adapter.Place;
+import com.example.storein.model.Place;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
 import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
@@ -34,6 +34,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -202,6 +203,8 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 							placeName = place.getName();
 							String address = place.getAddress();
 							String id = place.getObjectId();
+							ParseFile image = place.getParseFile(ParseConstants.KEY_IMAGE);
+							
 
 							// add to the hash map
 							HashMap<String, String> placeInfo = new HashMap<String, String>();
@@ -213,6 +216,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 							Place temp = new Place();
 							temp.setName(placeName);
 							temp.setAddress(address);
+							temp.setImage(image);
 
 							placeRecord.add(temp);
 							// add ID
@@ -264,8 +268,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	public void setCustomAdapter() {
 
 		placesItem = (ArrayList<Place>) placeRecord;
-
-
 
 		mListPlace = (ListView) getActivity().findViewById(R.id.listPlace);
 		mListPlace.setAdapter(mAdapter);
