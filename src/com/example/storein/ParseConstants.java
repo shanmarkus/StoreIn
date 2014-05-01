@@ -46,6 +46,8 @@ public final class ParseConstants {
 	public static final String KEY_CLAIMABLE = "claimable";
 	public static final String KEY_REWARD_POINT = "rewardPoint";
 	public static final String KEY_QUOTA = "quota";
+	public static final String KEY_TOTAL_CHECK_IN = "totalCheckIn";
+	public static final String KEY_TOTAL_CLAIMED ="totalClaimed";
 
 	// Relational names
 	public static final String KEY_RELATION_ITEMS_CATALOG = "itemsCatalog";

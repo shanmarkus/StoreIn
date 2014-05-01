@@ -64,6 +64,11 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 	ArrayList<String> promotionsId = new ArrayList<String>();
 	private static final double MAX_PlACE_SEARCH_DISTANCE = 10; // 10 Kilometers
 
+	ArrayList<String> recommendationText = new ArrayList<String>();
+	ArrayList<String> recommendationId = new ArrayList<String>();
+
+	private String placeId;
+
 	// Parse Constants
 	String userId = ParseUser.getCurrentUser().getObjectId();
 	ParseObject currentUser = ParseUser.createWithoutData(
@@ -202,8 +207,79 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 				.getQuery(ParseConstants.TABLE_PLACE);
 		query.whereWithinKilometers(ParseConstants.KEY_LOCATION, location,
 				MAX_PlACE_SEARCH_DISTANCE);
+		query.addAscendingOrder(ParseConstants.KEY_TOTAL_CHECK_IN);
+		query.getFirstInBackground(new GetCallback<ParseObject>() {
 
+			@Override
+			public void done(ParseObject place, ParseException e) {
+				if (e == null) {
+
+					String objectId = place.getObjectId();
+					placeId = objectId;
+
+					String placeName = place.getString(ParseConstants.KEY_NAME);
+					Integer numberCheckIn = place
+							.getInt(ParseConstants.KEY_TOTAL_CHECK_IN);
+					ParseGeoPoint placeGeoPoint = place
+							.getParseGeoPoint(ParseConstants.KEY_LOCATION);
+					Location tempPlace = new Location("");
+					tempPlace.setLatitude(placeGeoPoint.getLatitude());
+					tempPlace.setLongitude(placeGeoPoint.getLongitude());
+					// Get the distance
+					double tempDistance = currentLocation.distanceTo(tempPlace);
+
+					Integer distance = (int) Math.round(Math.abs(tempDistance));
+
+					String text = "Check Out this "
+							+ placeName
+							+ " there are "
+							+ numberCheckIn
+							+ " number of people already check in to this place";
+				} else {
+					errorAlertDialog(e);
+				}
+			}
+		});
 	}
+
+	private void getRecemmendationPromotion() {
+		ParseQuery<ParseObject> query = ParseQuery
+				.getQuery(ParseConstants.TABLE_REL_PROMOTION_PLACE);
+		query.addAscendingOrder(ParseConstants.KEY_TOTAL_CLAIMED);
+		query.include(ParseConstants.KEY_PROMOTION_ID);
+		query.setLimit(2);
+		query.findInBackground(new FindCallback<ParseObject>() {
+
+			@Override
+			public void done(List<ParseObject> promotions, ParseException e) {
+				if (e == null) {
+					for (ParseObject promotion : promotions) {
+
+						Integer totalPromotionClaim = promotion
+								.getInt(ParseConstants.KEY_TOTAL_CLAIMED);
+
+						ParseObject object = promotion
+								.getParseObject(ParseConstants.KEY_PROMOTION_ID);
+						String objectId = object.getObjectId();
+						String objectName = object
+								.getString(ParseConstants.KEY_NAME);
+
+						String message = objectName + " is trending, "
+								+ totalPromotionClaim + " already claimed";
+						recommendationText.add(message);
+						recommendationId.add(objectId);
+					}
+				} else {
+
+				}
+			}
+		});
+	}
+	
+	/*
+	 * Set Recommendation to textview
+	 */
+	
 
 	/*
 	 * Progress Dialog initiate
