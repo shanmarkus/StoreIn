@@ -309,13 +309,13 @@ int id action_bar_root 0x7f05001d
 int id action_bar_subtitle 0x7f050026
 int id action_bar_title 0x7f050025
 int id action_context_bar 0x7f050020
-int id action_example 0x7f050097
-int id action_forgot_password 0x7f050098
-int id action_logout 0x7f050099
+int id action_example 0x7f050098
+int id action_forgot_password 0x7f050099
+int id action_logout 0x7f05009a
 int id action_menu_divider 0x7f050016
 int id action_menu_presenter 0x7f050017
 int id action_mode_close_button 0x7f050027
-int id action_settings 0x7f050096
+int id action_settings 0x7f050097
 int id activity_chooser_view_content 0x7f050028
 int id always 0x7f05000b
 int id beginning 0x7f050011
@@ -390,8 +390,8 @@ int id pager 0x7f050040
 int id passwordField 0x7f050042
 int id phoneLabel 0x7f05007f
 int id placeAddress 0x7f050094
-int id placeName 0x7f05004e
-int id placeTotalPromotion 0x7f050095
+int id placeName 0x7f050095
+int id placeTotalPromotion 0x7f050096
 int id progress_circular 0x7f050018
 int id progress_horizontal 0x7f050019
 int id promotion_preview_image 0x7f050081
@@ -442,6 +442,7 @@ int id textRewardTitle 0x7f050089
 int id textTitleFollowing 0x7f05005e
 int id textTopItems 0x7f050079
 int id textUserName 0x7f05004b
+int id textView1 0x7f05004e
 int id title 0x7f05002e
 int id top_action_bar 0x7f050023
 int id txtPromotionTitle 0x7f050082

@@ -142,8 +142,8 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 	@Override
 	public void onResume() {
 		super.onResume();
-		//getUserInformation();
-		//getUserClaimActivity();
+		getUserInformation();
+		getUserClaimActivity();
 	}
 
 	/*

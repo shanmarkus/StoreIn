@@ -23,8 +23,6 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import com.example.storein.adapter.CustomArrayAdapterPlace;
-import com.example.storein.adapter.Place;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
 import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
@@ -32,10 +30,11 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
-import com.parse.ParseQueryAdapter;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -54,11 +53,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	ArrayList<HashMap<String, String>> placesInfo = new ArrayList<HashMap<String, String>>();
 	protected ArrayList<String> placesID = new ArrayList<String>();
 	HashMap<String, String> placeInfo = new HashMap<String, String>();
-
-	public List<Place> placeRecord = new ArrayList<Place>();
-	private ParseQueryAdapter<Place> mainAdapter;
-	private CustomArrayAdapterPlace favoritesAdapter;
-
 	private String placeName;
 	private String placeID;
 	private ProgressDialog progressDialog;
@@ -121,8 +115,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 				false);
 
 
-		favoritesAdapter = new CustomArrayAdapterPlace(getActivity());
-
 		
 
 		// Setup Location Client
@@ -168,7 +160,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		placesInfo.clear();
 		placeInfo.clear();
 		placesID.clear();
-		placeRecord.clear();
 	}
 
 	/*
@@ -176,7 +167,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	 */
 
 	private void doLocationQuery() {
-
 		// Clear ArrayList
 		clearAdapter();
 
@@ -185,14 +175,47 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		ParseGeoPoint location = new ParseGeoPoint(
 				currentLocation.getLatitude(), currentLocation.getLongitude());
 
-		CustomArrayAdapterPlace.setLocation(location);
-		CustomArrayAdapterPlace
-				.setMAX_PlACE_SEARCH_DISTANCE(MAX_PlACE_SEARCH_DISTANCE);
-		CustomArrayAdapterPlace
-				.setMAX_PLACE_SEARCH_RESULTS(MAX_PLACE_SEARCH_RESULTS);
-		favoritesAdapter.loadObjects();
-		mListPlace = (ListView) getActivity().findViewById(R.id.listPlace);
-		mListPlace.setAdapter(favoritesAdapter);
+		// Do the Query
+		ParseObject.registerSubclass(ParsePlace.class);
+		ParseQuery<ParsePlace> query = ParsePlace.getQuery();
+		query.whereWithinKilometers(ParseConstants.KEY_LOCATION, location,
+				MAX_PlACE_SEARCH_DISTANCE);
+		query.orderByAscending(ParseConstants.KEY_NAME);
+		query.setLimit(MAX_PLACE_SEARCH_RESULTS);
+		query.findInBackground(new FindCallback<ParsePlace>() {
+
+			@Override
+			public void done(List<ParsePlace> places, ParseException e) {
+				getActivity().setProgressBarIndeterminateVisibility(false);
+				if (e == null) {
+					// success
+					if (places.size() > 0) {
+						for (ParsePlace place : places) {
+							placeName = place.getName();
+							String address = place.getAddress();
+							String id = place.getObjectId();
+
+							// add to the hash map
+							HashMap<String, String> placeInfo = new HashMap<String, String>();
+							placeInfo.put(ParseConstants.KEY_NAME, placeName);
+							placeInfo.put(ParseConstants.KEY_ADDRESS, address);
+							placesInfo.add(placeInfo);
+
+							// add ID
+							placesID.add(id);
+						}
+						setAdapter();
+					} else {
+						String message = "Sorry there are no promotion near you, please use browse to find other promotion";
+						Toast.makeText(getActivity(), message,
+								Toast.LENGTH_LONG).show();
+					}
+				} else {
+					errorAlertDialog(e);
+				}
+
+			}
+		});
 	}
 
 	/*
@@ -222,9 +245,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		mListPlace.setAdapter(adapter);
 	}
 
-	public void setCustomAdapter() {
-	}
-
 	/*
 	 * Set Listener to the ListView to open other intent
 	 */
@@ -239,8 +259,8 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 				placeID = placesID.get(position);
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						getActivity());
-				String temp = placeRecord.get(position).getName();
-				String message = "Check In at " + temp;
+				//String temp = placeRecord.get(position).getName();
+				String message = "Check In at " + "sdgasgd";
 				builder.setMessage(message)
 						.setPositiveButton("Ok", dialogCheckInListener)
 						.setNeutralButton("Share", dialogCheckInListener)
