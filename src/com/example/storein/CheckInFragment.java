@@ -24,7 +24,7 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.example.storein.adapter.CustomArrayAdapterPlace;
-import com.example.storein.model.Place;
+import com.example.storein.adapter.Place;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
 import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
@@ -265,8 +265,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 
 		placesItem = (ArrayList<Place>) placeRecord;
 
-		mAdapter = new CustomArrayAdapterPlace(getActivity(), R.id.listPlace,
-				placesItem);
+
 
 		mListPlace = (ListView) getActivity().findViewById(R.id.listPlace);
 		mListPlace.setAdapter(mAdapter);
