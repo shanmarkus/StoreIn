@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/imagePlaceBackground"
         android:layout_alignLeft="@+id/placeName"
+        android:singleLine="true"
         android:text="Address of the place "
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -29,8 +30,8 @@
         android:layout_above="@+id/placeAddress"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="17dp"
-        android:text="Name of Places"
         android:singleLine="true"
+        android:text="Name of Places"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ImageView
@@ -39,7 +40,6 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/placeName"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/promotion_icon" />
+        android:layout_alignParentTop="true" />
 
 </RelativeLayout>

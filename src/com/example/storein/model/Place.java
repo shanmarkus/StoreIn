@@ -5,6 +5,7 @@ import com.parse.ParseGeoPoint;
 
 public class Place {
 
+	String objectId;
 	String address;
 	String name;
 	Integer phone;
@@ -18,9 +19,11 @@ public class Place {
 
 	}
 
-	public Place(String address, String name, Integer phone, Integer rating,
-			Integer totalCheckIn, ParseGeoPoint location, Boolean isPromotion, String category) {
+	public Place(String objectId, String address, String name, Integer phone,
+			Integer rating, Integer totalCheckIn, ParseGeoPoint location,
+			Boolean isPromotion, String category) {
 		super();
+		this.objectId = objectId;
 		this.address = address;
 		this.name = name;
 		this.phone = phone;
@@ -93,6 +96,14 @@ public class Place {
 
 	public void setCategory(String category) {
 		this.category = category;
+	}
+
+	public String getObjectId() {
+		return objectId;
+	}
+
+	public void setObjectId(String objectId) {
+		this.objectId = objectId;
 	}
 
 }

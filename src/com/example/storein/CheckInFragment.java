@@ -1,8 +1,9 @@
 package com.example.storein;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+
+import org.json.JSONArray;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -16,11 +17,11 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.example.storein.adapter.CustomArrayAdapterPlace;
@@ -35,10 +36,10 @@ import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -53,9 +54,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	ListView mListPlace;
 
 	// Variables
-	ArrayList<HashMap<String, String>> placesInfo = new ArrayList<HashMap<String, String>>();
-	protected ArrayList<String> placesID = new ArrayList<String>();
-	HashMap<String, String> placeInfo = new HashMap<String, String>();
 
 	public List<Place> placeRecord = new ArrayList<Place>();
 	public ArrayList<Place> placesItem;
@@ -165,9 +163,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	 */
 
 	private void clearAdapter() {
-		placesInfo.clear();
-		placeInfo.clear();
-		placesID.clear();
 		placeRecord.clear();
 	}
 
@@ -192,6 +187,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 				MAX_PlACE_SEARCH_DISTANCE);
 		query.orderByAscending(ParseConstants.KEY_NAME);
 		query.setLimit(MAX_PLACE_SEARCH_RESULTS);
+		query.include(ParseConstants.KEY_CATEGORY);
 		query.findInBackground(new FindCallback<ParsePlace>() {
 
 			@Override
@@ -204,28 +200,33 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 							placeName = place.getName();
 							String address = place.getAddress();
 							String id = place.getObjectId();
-							ParseFile image = place
-									.getParseFile(ParseConstants.KEY_IMAGE);
 
-							// add to the hash map
-							HashMap<String, String> placeInfo = new HashMap<String, String>();
-							placeInfo.put(ParseConstants.KEY_NAME, placeName);
-							placeInfo.put(ParseConstants.KEY_ADDRESS, address);
-							placesInfo.add(placeInfo);
+							ParseObject category = place
+									.getParseObject(ParseConstants.KEY_CATEGORY);
+							String placeCategory = category
+									.getString(ParseConstants.KEY_NAME);
+
+							JSONArray promotions = place
+									.getJSONArray("listPromotion");
+
+							int totalPromotion = promotions.length();
 
 							// add to the place
 							Place temp = new Place();
 							temp.setName(placeName);
 							temp.setAddress(address);
+							temp.setCategory(placeCategory);
+							temp.setObjectId(id);
+							if (totalPromotion != 0) {
+								temp.setIsPromotion(true);
+							} else {
+								temp.setIsPromotion(false);
+							}
 
+							// add to list
 							placeRecord.add(temp);
-							// add ID
-							placesID.add(id);
 						}
-						Toast.makeText(getActivity(), placeRecord.size() + "",
-								Toast.LENGTH_SHORT).show();
 						setCustomAdapter();
-
 					} else {
 						String message = "Sorry there are no promotion near you, please use browse to find other promotion";
 						Toast.makeText(getActivity(), message,
@@ -236,7 +237,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 				}
 
 			}
-
 		});
 	}
 
@@ -255,17 +255,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	/*
 	 * Set Adapter for list view
 	 */
-
-	public void setAdapter() {
-		String[] keys = { ParseConstants.KEY_NAME, ParseConstants.KEY_ADDRESS };
-		int[] ids = { android.R.id.text1, android.R.id.text2 };
-
-		SimpleAdapter adapter = new SimpleAdapter(getActivity(), placesInfo,
-				android.R.layout.simple_list_item_2, keys, ids);
-
-		mListPlace = (ListView) getActivity().findViewById(R.id.listPlace);
-		mListPlace.setAdapter(adapter);
-	}
 
 	public void setCustomAdapter() {
 
@@ -287,7 +276,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				placeID = placesID.get(position);
+				placeID = placesItem.get(position).getObjectId();
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						getActivity());
 				placeName = placesItem.get(position).getName();

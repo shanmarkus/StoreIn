@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.storein.R;
 import com.example.storein.model.Place;
@@ -63,8 +64,14 @@ public class CustomArrayAdapterPlace extends ArrayAdapter<Place> {
 		// show the data from database
 		holder.mTextPlaceName.setText(record.getName() + "");
 		holder.mTextPlaceAddress.setText(record.getAddress());
-		
-		// holder.mTextPlaceTotalPromotion.setText(record.getCreated_atString());
+		Toast.makeText(getContext(), record.getIsPromotion() + " ",
+				Toast.LENGTH_SHORT).show();
+		if (record.getIsPromotion() == true) {
+			holder.mImagePromotionIcon
+					.setImageResource(R.drawable.promotion_icon);
+		} else {
+			// do nothing
+		}
 
 		return convertView;
 	}
