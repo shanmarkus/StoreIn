@@ -203,8 +203,8 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 							placeName = place.getName();
 							String address = place.getAddress();
 							String id = place.getObjectId();
-							ParseFile image = place.getParseFile(ParseConstants.KEY_IMAGE);
-							
+							ParseFile image = place
+									.getParseFile(ParseConstants.KEY_IMAGE);
 
 							// add to the hash map
 							HashMap<String, String> placeInfo = new HashMap<String, String>();
@@ -222,6 +222,8 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 							// add ID
 							placesID.add(id);
 						}
+						Toast.makeText(getActivity(), placeRecord.size() + "",
+								Toast.LENGTH_SHORT).show();
 						setCustomAdapter();
 
 					} else {
@@ -268,7 +270,8 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	public void setCustomAdapter() {
 
 		placesItem = (ArrayList<Place>) placeRecord;
-
+		mAdapter = new CustomArrayAdapterPlace(getActivity(), R.id.listPlace,
+				placesItem);
 		mListPlace = (ListView) getActivity().findViewById(R.id.listPlace);
 		mListPlace.setAdapter(mAdapter);
 	}
@@ -287,7 +290,10 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 				placeID = placesID.get(position);
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						getActivity());
+				placeName = placesItem.get(position).getName();
 				String message = "Check In at " + placeName;
+				Toast.makeText(getActivity(), placeID, Toast.LENGTH_SHORT)
+						.show();
 				builder.setMessage(message)
 						.setPositiveButton("Ok", dialogCheckInListener)
 						.setNeutralButton("Share", dialogCheckInListener)
