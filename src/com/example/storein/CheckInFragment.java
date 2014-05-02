@@ -24,7 +24,6 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.example.storein.adapter.CustomArrayAdapterPlace;
-import com.example.storein.adapter.CustomParseArrayAdapterPlace;
 import com.example.storein.model.Place;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
@@ -35,10 +34,10 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseQueryAdapter;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -59,15 +58,11 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 
 	public List<Place> placeRecord = new ArrayList<Place>();
 	public ArrayList<Place> placesItem;
-	private ParseQueryAdapter<ParsePlace> mainAdapter;
 	private CustomArrayAdapterPlace mAdapter;
 
 	private String placeName;
 	private String placeID;
 	private ProgressDialog progressDialog;
-
-	ProgressDialog mProgressDialog;
-	List<ParsePlace> ob;
 
 	// Place Constant
 	private Location currentLocation = null;
@@ -97,7 +92,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 	}
 
 	@Override
@@ -132,7 +126,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 
 		// Setup Location Client
 		mLocationClient = new LocationClient(getActivity(), this, this);
-
 
 		// Adding Location Manager
 		LocationManager locationManager = (LocationManager) getActivity()
@@ -187,6 +180,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		clearAdapter();
 
 		getActivity().setProgressBarIndeterminateVisibility(true);
+
 		ParseGeoPoint location = new ParseGeoPoint(
 				currentLocation.getLatitude(), currentLocation.getLongitude());
 
@@ -209,6 +203,8 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 							placeName = place.getName();
 							String address = place.getAddress();
 							String id = place.getObjectId();
+							ParseFile image = place.getParseFile(ParseConstants.KEY_IMAGE);
+							
 
 							// add to the hash map
 							HashMap<String, String> placeInfo = new HashMap<String, String>();
@@ -220,6 +216,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 							Place temp = new Place();
 							temp.setName(placeName);
 							temp.setAddress(address);
+							temp.setImage(image);
 
 							placeRecord.add(temp);
 							// add ID
@@ -269,10 +266,11 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	}
 
 	public void setCustomAdapter() {
+
 		placesItem = (ArrayList<Place>) placeRecord;
+
 		mListPlace = (ListView) getActivity().findViewById(R.id.listPlace);
 		mListPlace.setAdapter(mAdapter);
-
 	}
 
 	/*
@@ -289,7 +287,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 				placeID = placesID.get(position);
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						getActivity());
-				placeName = placeRecord.get(position).getName();
 				String message = "Check In at " + placeName;
 				builder.setMessage(message)
 						.setPositiveButton("Ok", dialogCheckInListener)
@@ -461,9 +458,8 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 
 	@Override
 	public void onLocationChanged(Location arg0) {
-		if (mLocationClient.isConnected()) {
+		// TODO Auto-generated method stub
 
-		}
 	}
 
 }

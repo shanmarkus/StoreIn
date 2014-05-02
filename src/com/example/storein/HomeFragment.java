@@ -17,8 +17,8 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 	private String placeId;
 
 	// Parse Constants
-	String userId;
+	String userId = ParseUser.getCurrentUser().getObjectId();
 	ParseObject currentUser = ParseUser.createWithoutData(
 			ParseConstants.TABLE_USER, userId);
 

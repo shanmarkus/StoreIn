@@ -1262,7 +1262,7 @@ containing a value of this type.
         public static final int icon=0x7f05002d;
         public static final int ifRoom=0x7f05000a;
         public static final int image=0x7f05002a;
-        public static final int imageView1=0x7f05004a;
+        public static final int imagePlaceBackground=0x7f05004a;
         public static final int itemDescriptionLabel=0x7f050072;
         public static final int itemTitleLabel=0x7f050071;
         public static final int lblReviewIt=0x7f050090;
