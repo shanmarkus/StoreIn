@@ -12,7 +12,7 @@
         android:id="@+id/ButtonAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imagePlaceBackground"
+        android:layout_below="@+id/imageView1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
         android:text="@string/add_friend_button_follow" />
@@ -28,7 +28,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ImageView
-        android:id="@+id/imagePlaceBackground"
+        android:id="@+id/imageView1"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_below="@+id/textUserName"
