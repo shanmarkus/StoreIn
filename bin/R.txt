@@ -376,11 +376,11 @@ int id listPromotion 0x7f050078
 int id listPromotions 0x7f05008f
 int id listUsersReview 0x7f050076
 int id list_item 0x7f05002c
-int id locationAddressLabel 0x7f05007e
-int id locationNameLabel 0x7f05007d
-int id locationPhoneLabel 0x7f050080
-int id locationRatingBar 0x7f05007c
-int id locationView 0x7f05007b
+int id locationAddressLabel 0x7f05007d
+int id locationNameLabel 0x7f05007c
+int id locationPhoneLabel 0x7f05007f
+int id locationRatingBar 0x7f05007b
+int id locationView 0x7f050080
 int id loginButton 0x7f050043
 int id middle 0x7f050012
 int id navigation_drawer 0x7f050046
@@ -389,7 +389,7 @@ int id none 0x7f050010
 int id normal 0x7f050000
 int id pager 0x7f050040
 int id passwordField 0x7f050042
-int id phoneLabel 0x7f05007f
+int id phoneLabel 0x7f05007e
 int id placeAddress 0x7f050093
 int id placeName 0x7f05004e
 int id progress_circular 0x7f050018

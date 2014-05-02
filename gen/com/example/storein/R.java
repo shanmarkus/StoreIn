@@ -1277,11 +1277,11 @@ containing a value of this type.
         public static final int listPromotions=0x7f05008f;
         public static final int listUsersReview=0x7f050076;
         public static final int list_item=0x7f05002c;
-        public static final int locationAddressLabel=0x7f05007e;
-        public static final int locationNameLabel=0x7f05007d;
-        public static final int locationPhoneLabel=0x7f050080;
-        public static final int locationRatingBar=0x7f05007c;
-        public static final int locationView=0x7f05007b;
+        public static final int locationAddressLabel=0x7f05007d;
+        public static final int locationNameLabel=0x7f05007c;
+        public static final int locationPhoneLabel=0x7f05007f;
+        public static final int locationRatingBar=0x7f05007b;
+        public static final int locationView=0x7f050080;
         public static final int loginButton=0x7f050043;
         public static final int middle=0x7f050012;
         public static final int navigation_drawer=0x7f050046;
@@ -1290,7 +1290,7 @@ containing a value of this type.
         public static final int normal=0x7f050000;
         public static final int pager=0x7f050040;
         public static final int passwordField=0x7f050042;
-        public static final int phoneLabel=0x7f05007f;
+        public static final int phoneLabel=0x7f05007e;
         public static final int placeAddress=0x7f050093;
         public static final int placeName=0x7f05004e;
         public static final int progress_circular=0x7f050018;
