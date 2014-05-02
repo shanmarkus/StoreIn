@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -59,10 +61,14 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	public List<Place> placeRecord = new ArrayList<Place>();
 	public ArrayList<Place> placesItem;
 	private CustomArrayAdapterPlace mAdapter;
+	private ListAdapter adapter;
 
 	private String placeName;
 	private String placeID;
 	private ProgressDialog progressDialog;
+
+	ProgressDialog mProgressDialog;
+	List<ParsePlace> ob;
 
 	// Place Constant
 	private Location currentLocation = null;
@@ -170,6 +176,78 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		placeRecord.clear();
 	}
 
+	// RemoteDataTask AsyncTask
+	private class RemoteDataTask extends AsyncTask<Void, Void, Void> {
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			// Create a progressdialog
+			mProgressDialog = new ProgressDialog(getActivity());
+			// Set progressdialog title
+			mProgressDialog.setTitle("Parse.com Custom ListView Tutorial");
+			// Set progressdialog message
+			mProgressDialog.setMessage("Loading...");
+			mProgressDialog.setIndeterminate(false);
+			// Show progressdialog
+			mProgressDialog.show();
+		}
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			placeRecord = new ArrayList<Place>();
+			try {
+				ParseGeoPoint location = new ParseGeoPoint(
+						currentLocation.getLatitude(),
+						currentLocation.getLongitude());
+
+				// Do the Query
+				ParseQuery<ParsePlace> query = ParseQuery
+						.getQuery(ParseConstants.TABLE_PLACE);
+				query.whereWithinKilometers(ParseConstants.KEY_LOCATION,
+						location, MAX_PlACE_SEARCH_DISTANCE);
+				query.orderByAscending(ParseConstants.KEY_NAME);
+				query.setLimit(MAX_PLACE_SEARCH_RESULTS);
+				ob = query.find();
+				Toast.makeText(getActivity(), ob.size() + "",
+						Toast.LENGTH_SHORT).show();
+				if (ob.size() > 0) {
+					for (ParseObject place : ob) {
+						placeName = place.getString(ParseConstants.KEY_NAME);
+						String address = place
+								.getString(ParseConstants.KEY_ADDRESS);
+						String id = place.getObjectId();
+						ParseFile image = place
+								.getParseFile(ParseConstants.KEY_IMAGE);
+
+						// add to the place
+						Place temp = new Place();
+						temp.setName(placeName);
+						temp.setAddress(address);
+						temp.setImage(image);
+
+						placeRecord.add(temp);
+						placesID.add(id);
+						Toast.makeText(getActivity(), placeRecord.size() + "",
+								Toast.LENGTH_SHORT).show();
+					}
+				} else {
+					String message = "Sorry there are no promotion near you, please use browse to find other promotion";
+					Toast.makeText(getActivity(), message, Toast.LENGTH_LONG)
+							.show();
+				}
+			} catch (Exception e) {
+
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			mProgressDialog.dismiss();
+			setCustomAdapter();
+		}
+	}
+
 	/*
 	 * Location Query
 	 */
@@ -185,7 +263,8 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 				currentLocation.getLatitude(), currentLocation.getLongitude());
 
 		// Do the Query
-		ParseQuery<ParsePlace> query = ParseQuery.getQuery(ParseConstants.TABLE_PLACE);
+		ParseQuery<ParsePlace> query = ParseQuery
+				.getQuery(ParseConstants.TABLE_PLACE);
 		query.whereWithinKilometers(ParseConstants.KEY_LOCATION, location,
 				MAX_PlACE_SEARCH_DISTANCE);
 		query.orderByAscending(ParseConstants.KEY_NAME);
@@ -199,8 +278,10 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 					// success
 					if (places.size() > 0) {
 						for (ParseObject place : places) {
-							placeName = place.getString(ParseConstants.KEY_NAME);
-							String address = place.getString(ParseConstants.KEY_ADDRESS);
+							placeName = place
+									.getString(ParseConstants.KEY_NAME);
+							String address = place
+									.getString(ParseConstants.KEY_ADDRESS);
 							String id = place.getObjectId();
 							ParseFile image = place
 									.getParseFile(ParseConstants.KEY_IMAGE);
@@ -426,7 +507,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	public void onConnected(Bundle connectionHint) {
 		mLocationClient.requestLocationUpdates(REQUEST, this); // LocationListener
 		Toast.makeText(getActivity(), "Connected", Toast.LENGTH_SHORT).show();
-		initFindPlace();
+		new RemoteDataTask().execute();
 	}
 
 	/**
@@ -459,8 +540,9 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 
 	@Override
 	public void onLocationChanged(Location arg0) {
-		// TODO Auto-generated method stub
-
+		if (mLocationClient.isConnected()) {
+			
+		}
 	}
 
 }
