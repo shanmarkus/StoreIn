@@ -1,6 +1,5 @@
 package com.example.storein.model;
 
-import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 
 public class Place {

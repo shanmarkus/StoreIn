@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <ImageView
+        <com.parse.ParseImageView
             android:id="@+id/locationView"
             android:layout_width="fill_parent"
             android:layout_height="140dp"
@@ -65,6 +65,41 @@
             android:layout_below="@+id/phoneLabel"
             android:layout_marginTop="16dp"
             android:text="@string/location_phone_label" />
+
+        <TextView
+            android:id="@+id/textTitleTotalCheckIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/phoneLabel"
+            android:layout_toRightOf="@+id/locationNameLabel"
+            android:text="@string/location_detail_title_total_check_in" />
+
+        <TextView
+            android:id="@+id/textTotalCheckIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/locationPhoneLabel"
+            android:layout_alignLeft="@+id/textTitleTotalCheckIn"
+            android:text="@string/location_detail_total_check_in" />
+
+        <TextView
+            android:id="@+id/textTitleOpeningHour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/locationPhoneLabel"
+            android:layout_below="@+id/locationPhoneLabel"
+            android:layout_marginTop="26dp"
+            android:text="@string/location_detail_title_opening_hour" />
+
+        <TextView
+            android:id="@+id/textOpeningHour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_alignLeft="@+id/textTitleOpeningHour"
+            android:layout_below="@+id/textTitleOpeningHour"
+            android:text="@string/location_detail_opening_hour" />
+
     </RelativeLayout>
 
 </ScrollView>

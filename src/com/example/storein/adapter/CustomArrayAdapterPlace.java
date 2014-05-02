@@ -10,14 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.storein.R;
 import com.example.storein.model.Place;
-import com.parse.GetDataCallback;
-import com.parse.ParseException;
-import com.parse.ParseFile;
-import com.parse.ParseImageView;
 
 public class CustomArrayAdapterPlace extends ArrayAdapter<Place> {
 
@@ -34,7 +29,6 @@ public class CustomArrayAdapterPlace extends ArrayAdapter<Place> {
 		TextView mTextPlaceName;
 		TextView mTextPlaceAddress;
 		ImageView mImagePromotionIcon;
-		ParseImageView mImagePlaceBackground;
 
 	}
 
@@ -54,8 +48,6 @@ public class CustomArrayAdapterPlace extends ArrayAdapter<Place> {
 					.findViewById(R.id.placeAddress);
 			holder.mImagePromotionIcon = (ImageView) convertView
 					.findViewById(R.id.imagePromotionIcon);
-			holder.mImagePlaceBackground = (ParseImageView) convertView
-					.findViewById(R.id.imagePlaceBackground);
 
 			convertView.setTag(holder);
 		} else
@@ -64,8 +56,6 @@ public class CustomArrayAdapterPlace extends ArrayAdapter<Place> {
 		// show the data from database
 		holder.mTextPlaceName.setText(record.getName() + "");
 		holder.mTextPlaceAddress.setText(record.getAddress());
-		Toast.makeText(getContext(), record.getIsPromotion() + " ",
-				Toast.LENGTH_SHORT).show();
 		if (record.getIsPromotion() == true) {
 			holder.mImagePromotionIcon
 					.setImageResource(R.drawable.promotion_icon);

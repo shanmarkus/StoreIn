@@ -96,5 +96,9 @@
     <string name="home_recomendation_place">Recommended place</string>
     <string name="home_recomended_item">recomended item</string>
     <string name="home_button_recommend_me">"Recommend Me "</string>
+    <string name="location_detail_title_total_check_in">Total Check In</string>
+    <string name="location_detail_total_check_in">1</string>
+    <string name="location_detail_title_opening_hour">Opening Hour</string>
+    <string name="location_detail_opening_hour">[\"Monday: 08:00-10:00\",\n\"Tuesday: 08:00-10:00\",\n\"Wednesday: 08:00-10:00\",\n\"Thursday: 08:00-10:00\",\n\"Friday: 08:00-10:00\"]</string>
 
 </resources>

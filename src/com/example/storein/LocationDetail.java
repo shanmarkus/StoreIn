@@ -2,6 +2,8 @@ package com.example.storein;
 
 import java.util.List;
 
+import org.json.JSONArray;
+
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,8 +17,12 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -29,12 +35,13 @@ public class LocationDetail extends Fragment {
 	protected String placeID;
 
 	// UI Variable
-	protected ImageView mLocationView;
+	protected ParseImageView mLocationView;
 	protected TextView mLocationNameLabel;
 	protected TextView mLocationAddressLabel;
 	protected TextView mLocationPhoneLabel;
+	protected TextView mLocationTotalCheckIn;
+	protected TextView mLocationOpeningHour;
 	protected RatingBar mLocationRatingBar;
-	protected Button mLocationCheckIn;
 
 	// Variables
 	protected ParseGeoPoint mCurrentGeoPoint;
@@ -52,14 +59,20 @@ public class LocationDetail extends Fragment {
 		getPlaceID();
 
 		// Setting up the UI
+		mLocationView = (ParseImageView) rootView
+				.findViewById(R.id.locationView);
 		mLocationNameLabel = (TextView) rootView
 				.findViewById(R.id.locationNameLabel);
 		mLocationAddressLabel = (TextView) rootView
 				.findViewById(R.id.locationAddressLabel);
 		mLocationPhoneLabel = (TextView) rootView
 				.findViewById(R.id.locationPhoneLabel);
+		mLocationTotalCheckIn = (TextView) rootView
+				.findViewById(R.id.textTotalCheckIn);
 		mLocationRatingBar = (RatingBar) rootView
 				.findViewById(R.id.locationRatingBar);
+		mLocationOpeningHour = (TextView) rootView
+				.findViewById(R.id.textOpeningHour);
 
 		return rootView;
 	}
@@ -103,14 +116,13 @@ public class LocationDetail extends Fragment {
 		ParseQuery<ParseObject> query = ParseQuery
 				.getQuery(ParseConstants.TABLE_PLACE);
 		query.whereEqualTo(ParseConstants.KEY_OBJECT_ID, placeID);
-		query.findInBackground(new FindCallback<ParseObject>() {
+		query.getFirstInBackground(new GetCallback<ParseObject>() {
 
 			@Override
-			public void done(List<ParseObject> locationDetail, ParseException e) {
-				getActivity().setProgressBarIndeterminateVisibility(false);
+			public void done(ParseObject location, ParseException e) {
 				if (e == null) {
-					// success
-					ParseObject location = locationDetail.get(0);
+					ParseFile image = location
+							.getParseFile(ParseConstants.KEY_IMAGE);
 					String nameLocation = location
 							.getString(ParseConstants.KEY_NAME);
 					String addressLocation = location
@@ -119,26 +131,30 @@ public class LocationDetail extends Fragment {
 					String phoneLocation = temp.toString();
 					Float ratingLocation = (float) location
 							.getInt(ParseConstants.KEY_RATING);
-
-//					// Setting the information detail
-//					mLocationNameLabel = (TextView) getActivity().findViewById(
-//							R.id.locationNameLabel);
-//					mLocationAddressLabel = (TextView) getActivity()
-//							.findViewById(R.id.locationAddressLabel);
-//					mLocationPhoneLabel = (TextView) getActivity()
-//							.findViewById(R.id.locationPhoneLabel);
-//					mLocationRatingBar = (RatingBar) getActivity()
-//							.findViewById(R.id.locationRatingBar);
+					Integer totalCheckIn = location.getInt(ParseConstants.KEY_TOTAL_CHECK_IN);
+					JSONArray array = location.getJSONArray(ParseConstants.KEY_OPERATIONAL_HOUR);
+					String tempOpeningHour = array.toString();
 
 					mLocationNameLabel.setText(nameLocation);
 					mLocationAddressLabel.setText(addressLocation);
 					mLocationPhoneLabel.setText(phoneLocation);
 					mLocationRatingBar.setRating(ratingLocation);
+					mLocationTotalCheckIn.setText(totalCheckIn+"");
+					mLocationOpeningHour.setText(tempOpeningHour);
 
+					mLocationView.setParseFile(image);
+					mLocationView.loadInBackground(new GetDataCallback() {
+						
+						@Override
+						public void done(byte[] arg0, ParseException arg1) {
+							// DO Nothing
+							
+						}
+					});
 				} else {
-					// failed
 					parseErrorDialog(e);
 				}
+
 			}
 		});
 
