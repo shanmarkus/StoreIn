@@ -17,7 +17,6 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -33,13 +32,11 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
-import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -207,7 +204,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 									.getString(ParseConstants.KEY_NAME);
 
 							JSONArray promotions = place
-									.getJSONArray("listPromotion");
+									.getJSONArray(ParseConstants.KEY_LIST_PROMOTION);
 
 							int totalPromotion = promotions.length();
 
@@ -453,7 +450,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 
 	@Override
 	public void onLocationChanged(Location e) {
-		// TODO Auto-generated method stub
 
 	}
 
