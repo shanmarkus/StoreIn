@@ -452,7 +452,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	}
 
 	@Override
-	public void onLocationChanged(Location arg0) {
+	public void onLocationChanged(Location e) {
 		// TODO Auto-generated method stub
 
 	}
