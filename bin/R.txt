@@ -296,7 +296,8 @@ int drawable ic_plusone_tall_off_client 0x7f020077
 int drawable overscroll_left 0x7f020078
 int drawable overscroll_right 0x7f020079
 int drawable petronas_twin_tower 0x7f02007a
-int drawable ulm 0x7f02007b
+int drawable promotion_icon 0x7f02007b
+int drawable ulm 0x7f02007c
 int id ButtonAdd 0x7f050049
 int id LocationsList 0x7f05008e
 int id ScrollView1 0x7f05006e
@@ -362,6 +363,7 @@ int id icon 0x7f05002d
 int id ifRoom 0x7f05000a
 int id image 0x7f05002a
 int id imagePlaceBackground 0x7f05004a
+int id imagePromotionIcon 0x7f050094
 int id itemDescriptionLabel 0x7f050072
 int id itemTitleLabel 0x7f050071
 int id lblReviewIt 0x7f050090
@@ -390,7 +392,6 @@ int id passwordField 0x7f050042
 int id phoneLabel 0x7f05007f
 int id placeAddress 0x7f050093
 int id placeName 0x7f05004e
-int id placeTotalPromotion 0x7f050094
 int id progress_circular 0x7f050018
 int id progress_horizontal 0x7f050019
 int id promotion_preview_image 0x7f050081

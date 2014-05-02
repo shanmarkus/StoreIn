@@ -1195,7 +1195,8 @@ containing a value of this type.
         public static final int overscroll_left=0x7f020078;
         public static final int overscroll_right=0x7f020079;
         public static final int petronas_twin_tower=0x7f02007a;
-        public static final int ulm=0x7f02007b;
+        public static final int promotion_icon=0x7f02007b;
+        public static final int ulm=0x7f02007c;
     }
     public static final class id {
         public static final int ButtonAdd=0x7f050049;
@@ -1263,6 +1264,7 @@ containing a value of this type.
         public static final int ifRoom=0x7f05000a;
         public static final int image=0x7f05002a;
         public static final int imagePlaceBackground=0x7f05004a;
+        public static final int imagePromotionIcon=0x7f050094;
         public static final int itemDescriptionLabel=0x7f050072;
         public static final int itemTitleLabel=0x7f050071;
         public static final int lblReviewIt=0x7f050090;
@@ -1291,7 +1293,6 @@ containing a value of this type.
         public static final int phoneLabel=0x7f05007f;
         public static final int placeAddress=0x7f050093;
         public static final int placeName=0x7f05004e;
-        public static final int placeTotalPromotion=0x7f050094;
         public static final int progress_circular=0x7f050018;
         public static final int progress_horizontal=0x7f050019;
         public static final int promotion_preview_image=0x7f050081;

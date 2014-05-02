@@ -20,7 +20,7 @@
         android:layout_alignBottom="@+id/imagePlaceBackground"
         android:layout_alignLeft="@+id/placeName"
         android:text="Address of the place "
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
         android:id="@+id/placeName"
@@ -30,15 +30,16 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="17dp"
         android:text="Name of Places"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
-        android:id="@+id/placeTotalPromotion"
+    <ImageView
+        android:id="@+id/imagePromotionIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/placeName"
         android:layout_alignParentRight="true"
-        android:text="Number Promotion"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:layout_alignParentTop="true"
+        android:src="@drawable/promotion_icon" />
 
 </RelativeLayout>

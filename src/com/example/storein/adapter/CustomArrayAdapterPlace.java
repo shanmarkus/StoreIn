@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.storein.R;
@@ -31,7 +32,7 @@ public class CustomArrayAdapterPlace extends ArrayAdapter<Place> {
 	private class ViewHolder {
 		TextView mTextPlaceName;
 		TextView mTextPlaceAddress;
-		TextView mTextPlaceTotalPromotion;
+		ImageView mImagePromotionIcon;
 		ParseImageView mImagePlaceBackground;
 
 	}
@@ -50,8 +51,8 @@ public class CustomArrayAdapterPlace extends ArrayAdapter<Place> {
 					.findViewById(R.id.placeName);
 			holder.mTextPlaceAddress = (TextView) convertView
 					.findViewById(R.id.placeAddress);
-			holder.mTextPlaceTotalPromotion = (TextView) convertView
-					.findViewById(R.id.placeTotalPromotion);
+			holder.mImagePromotionIcon = (ImageView) convertView
+					.findViewById(R.id.imagePromotionIcon);
 			holder.mImagePlaceBackground = (ParseImageView) convertView
 					.findViewById(R.id.imagePlaceBackground);
 
@@ -62,17 +63,7 @@ public class CustomArrayAdapterPlace extends ArrayAdapter<Place> {
 		// show the data from database
 		holder.mTextPlaceName.setText(record.getName() + "");
 		holder.mTextPlaceAddress.setText(record.getAddress());
-		ParseFile photoFile = record.getImage();
-		if (photoFile != null) {
-			holder.mImagePlaceBackground.setParseFile(photoFile);
-			holder.mImagePlaceBackground
-					.loadInBackground(new GetDataCallback() {
-						@Override
-						public void done(byte[] data, ParseException e) {
-							// nothing to do
-						}
-					});
-		}
+		
 		// holder.mTextPlaceTotalPromotion.setText(record.getCreated_atString());
 
 		return convertView;

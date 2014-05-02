@@ -11,14 +11,15 @@ public class Place {
 	Integer rating;
 	Integer totalCheckIn;
 	ParseGeoPoint location;
-	ParseFile image;
+	Boolean isPromotion;
+	String category;
 
 	public Place() {
 
 	}
 
 	public Place(String address, String name, Integer phone, Integer rating,
-			Integer totalCheckIn, ParseGeoPoint location, ParseFile image) {
+			Integer totalCheckIn, ParseGeoPoint location, Boolean isPromotion, String category) {
 		super();
 		this.address = address;
 		this.name = name;
@@ -26,7 +27,8 @@ public class Place {
 		this.rating = rating;
 		this.totalCheckIn = totalCheckIn;
 		this.location = location;
-		this.image = image;
+		this.isPromotion = isPromotion;
+		this.category = category;
 	}
 
 	public String getAddress() {
@@ -77,12 +79,20 @@ public class Place {
 		this.location = location;
 	}
 
-	public ParseFile getImage() {
-		return image;
+	public Boolean getIsPromotion() {
+		return isPromotion;
 	}
 
-	public void setImage(ParseFile image) {
-		this.image = image;
+	public void setIsPromotion(Boolean isPromotion) {
+		this.isPromotion = isPromotion;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 }

@@ -32,6 +32,7 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
+import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -216,7 +217,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 							Place temp = new Place();
 							temp.setName(placeName);
 							temp.setAddress(address);
-							temp.setImage(image);
 
 							placeRecord.add(temp);
 							// add ID
