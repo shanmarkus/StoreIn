@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- ListRow Left sied Thumbnail image -->
+
+    <TextView
+        android:id="@+id/textListItemName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_toLeftOf="@+id/thumbnail"
+        android:paddingLeft="10dip"
+        android:paddingTop="5dip"
+        android:text="@string/list_item_name"
+        android:textSize="20sp" />
+
+    <!-- Description -->
+
+    <TextView
+        android:id="@+id/textListItemDescription"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/thumbnail"
+        android:layout_below="@id/textListItemName"
+        android:layout_marginTop="1dip"
+        android:layout_toLeftOf="@+id/thumbnail"
+        android:paddingLeft="10dip"
+        android:text="@string/list_item_description"
+        android:textSize="12sp" />
+
+    <LinearLayout
+        android:id="@+id/thumbnail"
+        android:layout_width="120dip"
+        android:layout_height="60dip"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dip"
+        android:orientation="horizontal"
+        android:padding="0dip" >
+
+        <TextView
+            android:id="@+id/textListItemTotalLoved"
+            android:layout_width="70dip"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:textSize="35sp" />
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="40dip"
+            android:layout_height="fill_parent"
+            android:contentDescription="heart_beat"
+            android:src="@drawable/heart_bpm" />
+    </LinearLayout>
+
+</RelativeLayout>

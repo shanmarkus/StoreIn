@@ -100,5 +100,8 @@
     <string name="location_detail_total_check_in">1</string>
     <string name="location_detail_title_opening_hour">Opening Hour</string>
     <string name="location_detail_opening_hour">[\"Monday: 08:00-10:00\",\n\"Tuesday: 08:00-10:00\",\n\"Wednesday: 08:00-10:00\",\n\"Thursday: 08:00-10:00\",\n\"Friday: 08:00-10:00\"]</string>
+    <string name="list_item_name">Item Name</string>
+    <string name="list_item_description">item about what this description about</string>
+    <string name="list_item_total_loved">100</string>
 
 </resources>
