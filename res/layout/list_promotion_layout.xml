@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/thumbnail"
+        android:singleLine="true"
         android:layout_toLeftOf="@+id/textListPromotionTitleFlash"
         android:paddingLeft="10dip"
         android:paddingTop="5dip"
