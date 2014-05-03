@@ -53,7 +53,7 @@ public class ItemDetail extends Fragment {
 				container, false);
 
 		// Declare UI Variables
-		mViewPager = (ViewPager) rootView.findViewById(R.id.view_pager);
+		mViewPager = (ViewPager) rootView.findViewById(R.id.imageView);
 		mBtnLoveIt = (Button) rootView.findViewById(R.id.btnLoveIt);
 		mBtnReviewIt = (Button) rootView.findViewById(R.id.btnReviewIt);
 		mItemTitleLabel = (TextView) rootView.findViewById(R.id.itemTitleLabel);
@@ -99,7 +99,7 @@ public class ItemDetail extends Fragment {
 
 	protected void findAllUI() {
 		// Declare UI Variables
-		mViewPager = (ViewPager) getActivity().findViewById(R.id.view_pager);
+		mViewPager = (ViewPager) getActivity().findViewById(R.id.imageView);
 		mBtnLoveIt = (Button) getActivity().findViewById(R.id.btnLoveIt);
 		mBtnReviewIt = (Button) getActivity().findViewById(R.id.btnReviewIt);
 		mItemTitleLabel = (TextView) getActivity().findViewById(
