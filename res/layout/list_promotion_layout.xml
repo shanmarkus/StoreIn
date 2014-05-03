@@ -3,18 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <!-- ListRow Left sied Thumbnail image -->
-
     <TextView
         android:id="@+id/textListPromotionName"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/thumbnail"
-        android:layout_toLeftOf="@+id/thumbnail"
+        android:layout_toLeftOf="@+id/textListPromotionTitleFlash"
         android:paddingLeft="10dip"
         android:paddingTop="5dip"
         android:text="@string/list_item_name"
-        android:textSize="20sp" />
+        android:textSize="16sp" />
 
     <!-- Description -->
 
@@ -43,7 +42,7 @@
         <TextView
             android:id="@+id/textListItemTotalReward"
             android:layout_width="70dip"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/list_item_total_loved"
             android:textSize="35sp" />
@@ -51,10 +50,20 @@
         <ImageView
             android:id="@+id/imageView1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
             android:contentDescription="heart_beat"
-            android:src="@drawable/heart_bpm" />
+            android:src="@drawable/reward_icon" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textListPromotionTitleFlash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textListPromotionDuration"
+        android:layout_centerHorizontal="true"
+        android:text="@string/list_promotion_title_flash_deal"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/redTitleFlash" />
 
 </RelativeLayout>

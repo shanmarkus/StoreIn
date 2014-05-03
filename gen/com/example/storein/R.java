@@ -947,7 +947,7 @@ containing a value of this type.
         public static final int abc_split_action_bar_is_narrow=0x7f060002;
     }
     public static final class color {
-        public static final int abc_search_url_text_holo=0x7f07000e;
+        public static final int abc_search_url_text_holo=0x7f07000f;
         public static final int abc_search_url_text_normal=0x7f070000;
         public static final int abc_search_url_text_pressed=0x7f070002;
         public static final int abc_search_url_text_selected=0x7f070001;
@@ -963,9 +963,10 @@ containing a value of this type.
         public static final int common_signin_btn_light_text_disabled=0x7f070009;
         public static final int common_signin_btn_light_text_focused=0x7f07000a;
         public static final int common_signin_btn_light_text_pressed=0x7f070008;
-        public static final int common_signin_btn_text_dark=0x7f07000f;
-        public static final int common_signin_btn_text_light=0x7f070010;
+        public static final int common_signin_btn_text_dark=0x7f070010;
+        public static final int common_signin_btn_text_light=0x7f070011;
         public static final int overscroll=0x7f07000d;
+        public static final int redTitleFlash=0x7f07000e;
     }
     public static final class dimen {
         /**  Default height of an action bar. 
@@ -1197,7 +1198,8 @@ containing a value of this type.
         public static final int overscroll_right=0x7f02007a;
         public static final int petronas_twin_tower=0x7f02007b;
         public static final int promotion_icon=0x7f02007c;
-        public static final int ulm=0x7f02007d;
+        public static final int reward_icon=0x7f02007d;
+        public static final int ulm=0x7f02007e;
     }
     public static final class id {
         public static final int ButtonAdd=0x7f050049;
@@ -1212,13 +1214,13 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f050026;
         public static final int action_bar_title=0x7f050025;
         public static final int action_context_bar=0x7f050020;
-        public static final int action_example=0x7f05009f;
-        public static final int action_forgot_password=0x7f0500a0;
-        public static final int action_logout=0x7f0500a1;
+        public static final int action_example=0x7f0500a0;
+        public static final int action_forgot_password=0x7f0500a1;
+        public static final int action_logout=0x7f0500a2;
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
         public static final int action_mode_close_button=0x7f050027;
-        public static final int action_settings=0x7f05009e;
+        public static final int action_settings=0x7f05009f;
         public static final int activity_chooser_view_content=0x7f050028;
         public static final int always=0x7f05000b;
         public static final int beginning=0x7f050011;
@@ -1327,9 +1329,10 @@ containing a value of this type.
         public static final int terrain=0x7f05001b;
         public static final int textFindFriend=0x7f05005b;
         public static final int textFlashDealNumber=0x7f050090;
-        public static final int textListItemDescription=0x7f050099;
-        public static final int textListItemName=0x7f050097;
-        public static final int textListItemTotalLoved=0x7f05009a;
+        public static final int textListItemTotalReward=0x7f05009a;
+        public static final int textListPromotionDuration=0x7f050099;
+        public static final int textListPromotionName=0x7f050097;
+        public static final int textListPromotionTitleFlash=0x7f05009e;
         public static final int textOpeningHour=0x7f050084;
         public static final int textPromotion=0x7f050077;
         public static final int textPromotionClaimedTitle=0x7f05006c;
@@ -1453,7 +1456,8 @@ containing a value of this type.
         public static final int fragment_write_review_item=0x7f03003c;
         public static final int list_item_layout=0x7f03003d;
         public static final int list_place_layout=0x7f03003e;
-        public static final int support_simple_spinner_dropdown_item=0x7f03003f;
+        public static final int list_promotion_layout=0x7f03003f;
+        public static final int support_simple_spinner_dropdown_item=0x7f030040;
     }
     public static final class menu {
         public static final int add_friend=0x7f0c0000;
@@ -1523,8 +1527,8 @@ containing a value of this type.
         public static final int action_example=0x7f0a002f;
         public static final int action_forgot_password=0x7f0a003e;
         public static final int action_settings=0x7f0a0030;
-        public static final int action_sign_in_register=0x7f0a0090;
-        public static final int action_sign_in_short=0x7f0a0091;
+        public static final int action_sign_in_register=0x7f0a0091;
+        public static final int action_sign_in_short=0x7f0a0092;
         public static final int add_friend_button_follow=0x7f0a007d;
         public static final int add_friend_username=0x7f0a007e;
         public static final int app_name=0x7f0a0027;
@@ -1626,10 +1630,10 @@ containing a value of this type.
          */
         public static final int common_signin_button_text_long=0x7f0a0020;
         public static final int email_hint=0x7f0a0038;
-        public static final int error_field_required=0x7f0a0096;
-        public static final int error_incorrect_password=0x7f0a0095;
-        public static final int error_invalid_email=0x7f0a0093;
-        public static final int error_invalid_password=0x7f0a0094;
+        public static final int error_field_required=0x7f0a0097;
+        public static final int error_incorrect_password=0x7f0a0096;
+        public static final int error_invalid_email=0x7f0a0094;
+        public static final int error_invalid_password=0x7f0a0095;
         public static final int error_title=0x7f0a0042;
         public static final int friend_information_friend_list_title=0x7f0a0078;
         public static final int friend_information_hint=0x7f0a0077;
@@ -1659,6 +1663,7 @@ containing a value of this type.
         public static final int list_item_description=0x7f0a008b;
         public static final int list_item_name=0x7f0a008a;
         public static final int list_item_total_loved=0x7f0a008c;
+        public static final int list_promotion_title_flash_deal=0x7f0a008d;
         public static final int location_address_label=0x7f0a0048;
         public static final int location_detail_opening_hour=0x7f0a0089;
         public static final int location_detail_title_opening_hour=0x7f0a0088;
@@ -1673,7 +1678,7 @@ containing a value of this type.
         public static final int login_button_label=0x7f0a003c;
         public static final int login_error_message=0x7f0a0034;
         public static final int login_error_title=0x7f0a0035;
-        public static final int login_progress_signing_in=0x7f0a0092;
+        public static final int login_progress_signing_in=0x7f0a0093;
         public static final int love_it=0x7f0a004e;
         public static final int menu_logout_label=0x7f0a003d;
         public static final int navigation_drawer_close=0x7f0a002e;
@@ -1694,8 +1699,8 @@ containing a value of this type.
         public static final int promotion_start_end_date_title=0x7f0a005c;
         /**  Strings related to login 
          */
-        public static final int prompt_email=0x7f0a008e;
-        public static final int prompt_password=0x7f0a008f;
+        public static final int prompt_email=0x7f0a008f;
+        public static final int prompt_password=0x7f0a0090;
         public static final int sign_up_button_label=0x7f0a0039;
         public static final int sign_up_label=0x7f0a0031;
         public static final int signup_error_message=0x7f0a003a;
@@ -1715,7 +1720,7 @@ containing a value of this type.
         public static final int title_activity_location_information=0x7f0a006c;
         public static final int title_activity_location_items=0x7f0a0070;
         public static final int title_activity_location_promotions=0x7f0a0071;
-        public static final int title_activity_login=0x7f0a008d;
+        public static final int title_activity_login=0x7f0a008e;
         public static final int title_activity_promotion_detail=0x7f0a0055;
         public static final int title_activity_promotion_list=0x7f0a0054;
         public static final int title_activity_sign_up=0x7f0a0032;

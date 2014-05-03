@@ -103,5 +103,6 @@
     <string name="list_item_name">Item Name</string>
     <string name="list_item_description">item about what this description about</string>
     <string name="list_item_total_loved">100</string>
+    <string name="list_promotion_title_flash_deal">Flash</string>
 
 </resources>

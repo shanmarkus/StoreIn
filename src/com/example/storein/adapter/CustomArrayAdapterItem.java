@@ -42,11 +42,11 @@ public class CustomArrayAdapterItem extends ArrayAdapter<Item> {
 			convertView = mInflater.inflate(R.layout.list_item_layout, null);
 			holder = new ViewHolder();
 			holder.mTextListItemName = (TextView) convertView
-					.findViewById(R.id.textListItemName);
+					.findViewById(R.id.textListPromotionName);
 			holder.mTextListItemDescription = (TextView) convertView
-					.findViewById(R.id.textListItemDescription);
+					.findViewById(R.id.textListPromotionDuration);
 			holder.mTextListItemTotalLoved = (TextView) convertView
-					.findViewById(R.id.textListItemTotalLoved);
+					.findViewById(R.id.textListItemTotalReward);
 
 			convertView.setTag(holder);
 		} else

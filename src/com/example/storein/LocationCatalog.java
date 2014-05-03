@@ -17,11 +17,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 import com.example.storein.adapter.CustomArrayAdapterItem;
-import com.example.storein.adapter.CustomArrayAdapterPlace;
+import com.example.storein.adapter.CustomArrayAdapterPromotion;
 import com.example.storein.model.Item;
+import com.example.storein.model.Promotion;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -40,6 +40,10 @@ public class LocationCatalog extends Fragment {
 	public HashMap<String, String> promotionInfo = new HashMap<String, String>();
 	public ArrayList<String> promotionsId = new ArrayList<String>();
 	public ArrayList<Boolean> promotionsClaimable = new ArrayList<Boolean>();
+
+	public List<Promotion> promotionList = new ArrayList<Promotion>();
+	public ArrayList<Promotion> promotionRecord;
+	private CustomArrayAdapterPromotion mPromotionAdapter;
 
 	protected static final int MAX_ITEMS = 5;
 
@@ -71,7 +75,7 @@ public class LocationCatalog extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		// doPromotionQuery();
+		doPromotionQuery();
 		doItemsQuery();
 	}
 
@@ -131,25 +135,26 @@ public class LocationCatalog extends Fragment {
 						// get promotion value
 						ParseObject tempPromo = promo
 								.getParseObject(ParseConstants.KEY_PROMOTION_ID);
+						String promoId = tempPromo.getObjectId();
 						String promoName = tempPromo
 								.getString(ParseConstants.KEY_NAME);
+						Date promoEndDate = tempPromo
+								.getDate(ParseConstants.KEY_END_DATE);
+						Integer promoReward = tempPromo
+								.getInt(ParseConstants.KEY_REWARD_POINT);
 						Boolean claimable = tempPromo
 								.getBoolean(ParseConstants.KEY_CLAIMABLE);
 
-						// put to the hash table
-						if (claimable == true) {
-							promotionInfo.put(ParseConstants.KEY_CLAIMABLE,
-									"FLASH DEALS");
-						} else {
-							Date endDate = tempPromo
-									.getDate(ParseConstants.KEY_END_DATE);
-							promotionInfo.put(ParseConstants.KEY_CLAIMABLE,
-									endDate.toString());
-						}
-						promotionInfo.put(ParseConstants.KEY_NAME, promoName);
-						promotionsInfo.add(promotionInfo);
-						promotionsId.add(tempPromo.getObjectId());
-						promotionsClaimable.add(claimable);
+						// Create new Promotion Object
+						Promotion tempPromotion = new Promotion();
+						tempPromotion.setObjectId(promoId);
+						tempPromotion.setName(promoName);
+						tempPromotion.setRewardPoint(promoReward);
+						tempPromotion.setClaimable(claimable);
+						tempPromotion.setEndDate(promoEndDate);
+
+						promotionList.add(tempPromotion);
+
 					}
 					setListPromotionAdapter();
 					mListPromotion.setOnItemClickListener(promotionSelected);
@@ -170,14 +175,13 @@ public class LocationCatalog extends Fragment {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			String promotionId = promotionsId.get(position);
-			Boolean claimable = promotionsClaimable.get(position);
+			String promotionId = promotionList.get(position).getObjectId();
+			Boolean claimable = promotionList.get(position).isClaimable();
 			Intent intent = new Intent(getActivity(), PromotionDetail.class);
 			intent.putExtra(ParseConstants.KEY_OBJECT_ID, promotionId);
 			intent.putExtra(ParseConstants.KEY_CLAIMABLE, claimable);
 			intent.putExtra(ParseConstants.KEY_PLACE_ID, placeId);
 			startActivity(intent);
-
 		}
 	};
 
@@ -186,15 +190,12 @@ public class LocationCatalog extends Fragment {
 	 */
 
 	private void setListPromotionAdapter() {
+		promotionRecord = (ArrayList<Promotion>) promotionList;
+		mPromotionAdapter = new CustomArrayAdapterPromotion(getActivity(),
+				R.id.listPromotion, promotionRecord);
 		mListPromotion = (ListView) getActivity().findViewById(
 				R.id.listPromotion);
-		String[] keys = { ParseConstants.KEY_NAME, ParseConstants.KEY_CLAIMABLE };
-		int[] ids = { android.R.id.text1, android.R.id.text2 };
-
-		SimpleAdapter adapter = new SimpleAdapter(getActivity(),
-				promotionsInfo, android.R.layout.simple_list_item_2, keys, ids);
-
-		mListPromotion.setAdapter(adapter);
+		mListPromotion.setAdapter(mPromotionAdapter);
 	}
 
 	// ////////////////////////// Items Query
@@ -281,7 +282,6 @@ public class LocationCatalog extends Fragment {
 				itemRecord);
 		mListItem = (ListView) getActivity().findViewById(R.id.listItem);
 		mListItem.setAdapter(mItemAdapter);
-
 	}
 
 	/*
