@@ -46,7 +46,7 @@ public class CustomArrayAdapterItem extends ArrayAdapter<Item> {
 			holder.mTextListItemDescription = (TextView) convertView
 					.findViewById(R.id.textListPromotionDuration);
 			holder.mTextListItemTotalLoved = (TextView) convertView
-					.findViewById(R.id.textListItemTotalReward);
+					.findViewById(R.id.textItemDetailTotalReward);
 
 			convertView.setTag(holder);
 		} else

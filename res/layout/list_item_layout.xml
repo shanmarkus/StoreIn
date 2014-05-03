@@ -41,7 +41,7 @@
         android:padding="0dip" >
 
         <TextView
-            android:id="@+id/textListItemTotalReward"
+            android:id="@+id/textItemDetailTotalReward"
             android:layout_width="70dip"
             android:layout_height="fill_parent"
             android:gravity="center"
