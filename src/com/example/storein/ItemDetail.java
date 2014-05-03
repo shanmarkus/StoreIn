@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ public class ItemDetail extends Fragment {
 	TextView mItemTitleLabel;
 	TextView mItemDescription;
 	TextView mTextItemDetailTotalReward;
+	RatingBar mRattingBar;
 
 	// Fixed Variables
 	private Integer totalLoved;
@@ -63,6 +65,7 @@ public class ItemDetail extends Fragment {
 				.findViewById(R.id.itemDescriptionLabel);
 		mTextItemDetailTotalReward = (TextView) rootView
 				.findViewById(R.id.textItemDetailTotalReward);
+		mRattingBar = (RatingBar) rootView.findViewById(R.id.ratingBar1);
 
 		// Intent Variables
 		// Setup Variable from the previous intents
@@ -289,7 +292,9 @@ public class ItemDetail extends Fragment {
 							.getString(ParseConstants.KEY_DESCRIPTION);
 					Integer totalLoved = item
 							.getInt(ParseConstants.KEY_TOTAL_LOVED);
+					Integer numStars = item.getInt(ParseConstants.KEY_RATING);
 
+					mRattingBar.setNumStars(numStars);
 					mItemTitleLabel.setText(title);
 					mItemDescription.setText(description);
 					mTextItemDetailTotalReward.setText(totalLoved + "");
@@ -335,7 +340,8 @@ public class ItemDetail extends Fragment {
 			public void done(ParseObject item, ParseException e) {
 				if (e == null) {
 					item.put(ParseConstants.KEY_TOTAL_LOVED, totalLoved);
-					Toast.makeText(getActivity(), "updatedTotalLoved" + totalLoved,
+					Toast.makeText(getActivity(),
+							"updatedTotalLoved" + totalLoved,
 							Toast.LENGTH_SHORT).show();
 					item.saveInBackground();
 				} else {
