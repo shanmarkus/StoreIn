@@ -278,8 +278,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 						getActivity());
 				placeName = placesItem.get(position).getName();
 				String message = "Check In at " + placeName;
-				Toast.makeText(getActivity(), placeID, Toast.LENGTH_SHORT)
-						.show();
 				builder.setMessage(message)
 						.setPositiveButton("Ok", dialogCheckInListener)
 						.setNeutralButton("Share", dialogCheckInListener)

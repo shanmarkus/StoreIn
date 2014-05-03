@@ -8,60 +8,54 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.storein.R;
-import com.example.storein.model.Place;
+import com.example.storein.model.Item;
 
-public class CustomArrayAdapterItem extends ArrayAdapter<Place> {
+public class CustomArrayAdapterItem extends ArrayAdapter<Item> {
 
 	Context context;
 
 	public CustomArrayAdapterItem(Context context, int textViewResourceId,
-			List<Place> items) {
+			List<Item> items) {
 		super(context, textViewResourceId, items);
 		this.context = context;
 	}
 
 	/* private view holder class */
 	private class ViewHolder {
-		TextView mTextPlaceName;
-		TextView mTextPlaceAddress;
-		ImageView mImagePromotionIcon;
+		TextView mTextListItemName;
+		TextView mTextListItemDescription;
+		TextView mTextListItemTotalLoved;
 
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder = null;
-		Place record = (Place) getItem(position);
+		Item record = (Item) getItem(position);
 
 		LayoutInflater mInflater = (LayoutInflater) context
 				.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.list_place_layout, null);
+			convertView = mInflater.inflate(R.layout.list_item_layout, null);
 			holder = new ViewHolder();
-			holder.mTextPlaceName = (TextView) convertView
-					.findViewById(R.id.placeName);
-			holder.mTextPlaceAddress = (TextView) convertView
-					.findViewById(R.id.placeAddress);
-			holder.mImagePromotionIcon = (ImageView) convertView
-					.findViewById(R.id.imagePromotionIcon);
+			holder.mTextListItemName = (TextView) convertView
+					.findViewById(R.id.textListItemName);
+			holder.mTextListItemDescription = (TextView) convertView
+					.findViewById(R.id.textListItemDescription);
+			holder.mTextListItemTotalLoved = (TextView) convertView
+					.findViewById(R.id.textListItemTotalLoved);
 
 			convertView.setTag(holder);
 		} else
 			holder = (ViewHolder) convertView.getTag();
 
 		// show the data from database
-		holder.mTextPlaceName.setText(record.getName() + "");
-		holder.mTextPlaceAddress.setText(record.getAddress());
-		if (record.getIsPromotion() == true) {
-			holder.mImagePromotionIcon
-					.setImageResource(R.drawable.promotion_icon);
-		} else {
-			// do nothing
-		}
+		holder.mTextListItemName.setText(record.getName());
+		holder.mTextListItemDescription.setText(record.getDescription());
+		holder.mTextListItemTotalLoved.setText(record.getItemLoved() + "");
 
 		return convertView;
 	}

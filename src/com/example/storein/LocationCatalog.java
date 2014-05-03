@@ -17,7 +17,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
+import com.example.storein.adapter.CustomArrayAdapterItem;
+import com.example.storein.adapter.CustomArrayAdapterPlace;
+import com.example.storein.model.Item;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -38,9 +42,10 @@ public class LocationCatalog extends Fragment {
 	public ArrayList<Boolean> promotionsClaimable = new ArrayList<Boolean>();
 
 	protected static final int MAX_ITEMS = 5;
-	protected ArrayList<HashMap<String, String>> itemsInfo = new ArrayList<HashMap<String, String>>();
-	public HashMap<String, String> itemInfo = new HashMap<String, String>();
-	public ArrayList<String> itemsId = new ArrayList<String>();
+
+	public List<Item> itemList = new ArrayList<Item>();
+	public ArrayList<Item> itemRecord;
+	private CustomArrayAdapterItem mItemAdapter;
 
 	// Parse Variable
 	ParseObject placeObj;
@@ -66,7 +71,7 @@ public class LocationCatalog extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		doPromotionQuery();
+		// doPromotionQuery();
 		doItemsQuery();
 	}
 
@@ -196,46 +201,49 @@ public class LocationCatalog extends Fragment {
 
 	protected void doItemsQuery() {
 		// set progress bar
-		getActivity().setProgressBarIndeterminateVisibility(true); 
-		itemInfo.clear();
-		itemsId.clear();
-		itemsInfo.clear();
+		getActivity().setProgressBarIndeterminateVisibility(true);
 
 		if (placeId == null) {
 			getPlaceID();
 		}
 
+		Toast.makeText(getActivity(), placeId + "", Toast.LENGTH_SHORT).show();
+
 		// Do the rest
+
 		ParseQuery<ParseObject> query = ParseQuery
 				.getQuery(ParseConstants.TABLE_REL_PLACE_ITEM);
-		query.whereEqualTo(ParseConstants.KEY_PLACE_ID, placeId);
-		ParseQuery<ParseObject> innerQuery = ParseQuery
-				.getQuery(ParseConstants.TABLE_ITEM);
-		innerQuery.whereMatchesKeyInQuery(ParseConstants.KEY_OBJECT_ID,
-				ParseConstants.KEY_ITEM_ID, query);
-
-		innerQuery.findInBackground(new FindCallback<ParseObject>() {
+		query.whereEqualTo(ParseConstants.KEY_PLACE_ID, placeObj);
+		query.include(ParseConstants.KEY_ITEM_ID);
+		query.findInBackground(new FindCallback<ParseObject>() {
 
 			@Override
-			public void done(List<ParseObject> items, ParseException e) {
+			public void done(List<ParseObject> locations, ParseException e) {
 				getActivity().setProgressBarIndeterminateVisibility(false);
 				if (e == null) {
-					for (ParseObject item : items) {
-						// initiate the hash map for the adapter
-						HashMap<String, String> itemInfo = new HashMap<String, String>();
+					for (ParseObject location : locations) {
 
+						ParseObject item = location
+								.getParseObject(ParseConstants.KEY_ITEM_ID);
 						// get the values
 						String objectId = item.getObjectId();
-						String name = item.getString(ParseConstants.KEY_NAME);
-						Integer rating = item.getInt(ParseConstants.KEY_RATING);
+						String tempName = item
+								.getString(ParseConstants.KEY_NAME);
+						String description = item
+								.getString(ParseConstants.KEY_DESCRIPTION);
+						Integer totalLoved = item
+								.getInt(ParseConstants.KEY_TOTAL_LOVED);
 
-						// put to the adapter
-						itemInfo.put(ParseConstants.KEY_NAME, name);
-						itemInfo.put(ParseConstants.KEY_RATING,
-								rating.toString());
-						itemsInfo.add(itemInfo);
-						itemsId.add(objectId);
+						// create new item
+						Item tempItem = new Item();
+						tempItem.setName(tempName);
+						tempItem.setObjectId(objectId);
+						tempItem.setDescription(description);
+						tempItem.setItemLoved(totalLoved);
 
+						Toast.makeText(getActivity(), tempName,
+								Toast.LENGTH_SHORT).show();
+						itemList.add(tempItem);
 					}
 					setListItemAdapter();
 					mListItem.setOnItemClickListener(itemSelected);
@@ -258,7 +266,7 @@ public class LocationCatalog extends Fragment {
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			// Get the Variable
-			String objectId = itemsId.get(position);
+			String objectId = itemList.get(position).getObjectId();
 
 			// Start intent
 			final Intent intent = new Intent(getActivity(),
@@ -272,16 +280,12 @@ public class LocationCatalog extends Fragment {
 	 * Set Adapter
 	 */
 	private void setListItemAdapter() {
-		mListItem = (ListView) getActivity().findViewById(
-				R.id.listItem);
-		
-		String[] keys = { ParseConstants.KEY_NAME, ParseConstants.KEY_RATING };
-		int[] ids = { android.R.id.text1, android.R.id.text2 };
+		itemRecord = (ArrayList<Item>) itemList;
+		mItemAdapter = new CustomArrayAdapterItem(getActivity(), R.id.listItem,
+				itemRecord);
+		mListItem = (ListView) getActivity().findViewById(R.id.listItem);
+		mListItem.setAdapter(mItemAdapter);
 
-		SimpleAdapter adapter = new SimpleAdapter(getActivity(), itemsInfo,
-				android.R.layout.simple_list_item_2, keys, ids);
-
-		mListItem.setAdapter(adapter);
 	}
 
 	/*

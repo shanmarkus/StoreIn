@@ -3,19 +3,21 @@ package com.example.storein.model;
 import com.parse.ParseFile;
 
 public class Item {
+	String objectId;
 	String name;
 	Integer rating;
 	String description;
 	Integer itemLoved;
 	ParseFile image;
-	
-	public Item(){
-		
+
+	public Item() {
+
 	}
 
-	public Item(String name, Integer rating, String description,
-			Integer itemLoved, ParseFile image) {
+	public Item(String objectId, String name, Integer rating,
+			String description, Integer itemLoved, ParseFile image) {
 		super();
+		this.objectId = objectId;
 		this.name = name;
 		this.rating = rating;
 		this.description = description;
@@ -61,6 +63,14 @@ public class Item {
 
 	public void setImage(ParseFile image) {
 		this.image = image;
+	}
+
+	public String getObjectId() {
+		return objectId;
+	}
+
+	public void setObjectId(String objectId) {
+		this.objectId = objectId;
 	}
 
 }

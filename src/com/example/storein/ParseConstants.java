@@ -51,6 +51,7 @@ public final class ParseConstants {
 	public static final String KEY_LIST_PROMOTION = "listPromotion";
 	public static final String KEY_IMAGE = "image";
 	public static final String KEY_OPERATIONAL_HOUR = "operationalHour";
+	public static final String KEY_TOTAL_LOVED = "totalLoved";
 	
 
 	// Relational names
