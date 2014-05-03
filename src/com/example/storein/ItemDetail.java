@@ -317,7 +317,7 @@ public class ItemDetail extends Fragment {
 				if (e == null) {
 					// success
 					totalLoved = total;
-					updateTotalLoved(totalLoved);
+					updateTotalLoved();
 				} else {
 					// failed
 					parseErrorDialog(e);
@@ -326,7 +326,7 @@ public class ItemDetail extends Fragment {
 		});
 	}
 
-	private void updateTotalLoved(Integer total) {
+	private void updateTotalLoved() {
 		ParseQuery<ParseObject> query = ParseQuery
 				.getQuery(ParseConstants.TABLE_ITEM);
 		query.getInBackground(itemId, new GetCallback<ParseObject>() {
@@ -335,6 +335,9 @@ public class ItemDetail extends Fragment {
 			public void done(ParseObject item, ParseException e) {
 				if (e == null) {
 					item.put(ParseConstants.KEY_TOTAL_LOVED, totalLoved);
+					Toast.makeText(getActivity(), "updatedTotalLoved" + totalLoved,
+							Toast.LENGTH_SHORT).show();
+					item.saveInBackground();
 				} else {
 					parseErrorDialog(e);
 				}
