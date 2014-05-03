@@ -51,7 +51,8 @@
         <ImageView
             android:id="@+id/imageView1"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
             android:contentDescription="heart_beat"
             android:src="@drawable/heart_bpm" />
     </LinearLayout>

@@ -207,8 +207,6 @@ public class LocationCatalog extends Fragment {
 			getPlaceID();
 		}
 
-		Toast.makeText(getActivity(), placeId + "", Toast.LENGTH_SHORT).show();
-
 		// Do the rest
 
 		ParseQuery<ParseObject> query = ParseQuery
@@ -241,8 +239,6 @@ public class LocationCatalog extends Fragment {
 						tempItem.setDescription(description);
 						tempItem.setItemLoved(totalLoved);
 
-						Toast.makeText(getActivity(), tempName,
-								Toast.LENGTH_SHORT).show();
 						itemList.add(tempItem);
 					}
 					setListItemAdapter();
