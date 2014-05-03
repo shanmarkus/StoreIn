@@ -1224,8 +1224,8 @@ containing a value of this type.
         public static final int activity_chooser_view_content=0x7f050028;
         public static final int always=0x7f05000b;
         public static final int beginning=0x7f050011;
-        public static final int btnLoveIt=0x7f050075;
-        public static final int btnReviewIt=0x7f050073;
+        public static final int btnLoveIt=0x7f050079;
+        public static final int btnReviewIt=0x7f050077;
         public static final int btnSubmit=0x7f05009c;
         public static final int buttonRecommend=0x7f05006b;
         public static final int buttonStatus=0x7f050057;
@@ -1243,7 +1243,7 @@ containing a value of this type.
         public static final int end=0x7f050013;
         public static final int expand_activities_button=0x7f050029;
         public static final int expanded_menu=0x7f05002f;
-        public static final int firstRelativeLayout=0x7f050076;
+        public static final int firstRelativeLayout=0x7f050070;
         public static final int friendNumberCheckIn=0x7f050054;
         public static final int friendNumberCheckInTitle=0x7f050051;
         public static final int friendNumberFollower=0x7f050055;
@@ -1270,9 +1270,9 @@ containing a value of this type.
         public static final int imagePlaceBackground=0x7f05004a;
         public static final int imagePromotionIcon=0x7f0500a0;
         public static final int imageView=0x7f05006f;
-        public static final int imageView1=0x7f050079;
-        public static final int itemDescriptionLabel=0x7f050072;
-        public static final int itemTitleLabel=0x7f050071;
+        public static final int imageView1=0x7f050073;
+        public static final int itemDescriptionLabel=0x7f050076;
+        public static final int itemTitleLabel=0x7f050075;
         public static final int lblReviewIt=0x7f05009a;
         public static final int listClaimedPromotion=0x7f05006d;
         public static final int listFriend=0x7f05005f;
@@ -1318,7 +1318,7 @@ containing a value of this type.
         public static final int search_plate=0x7f050039;
         public static final int search_src_text=0x7f05003a;
         public static final int search_voice_btn=0x7f05003e;
-        public static final int secondRelativeLayout=0x7f050070;
+        public static final int secondRelativeLayout=0x7f050074;
         public static final int section_label=0x7f05007b;
         public static final int shortcut=0x7f050031;
         public static final int showCustom=0x7f050007;
@@ -1332,7 +1332,7 @@ containing a value of this type.
         public static final int terrain=0x7f05001b;
         public static final int textFindFriend=0x7f05005b;
         public static final int textFlashDealNumber=0x7f050096;
-        public static final int textItemDetailTotalReward=0x7f050078;
+        public static final int textItemDetailTotalReward=0x7f050072;
         public static final int textListPromotionDuration=0x7f05009e;
         public static final int textListPromotionName=0x7f05009d;
         public static final int textListPromotionTitleFlash=0x7f0500a1;
@@ -1358,8 +1358,8 @@ containing a value of this type.
         public static final int textTopItems=0x7f05007f;
         public static final int textTotalCheckIn=0x7f050088;
         public static final int textUserName=0x7f05004b;
-        public static final int thumbnail=0x7f050074;
-        public static final int thumbnailSecond=0x7f050077;
+        public static final int thumbnail=0x7f050078;
+        public static final int thumbnailSecond=0x7f050071;
         public static final int title=0x7f05002e;
         public static final int top_action_bar=0x7f050023;
         public static final int txtPromotionTitle=0x7f05008c;

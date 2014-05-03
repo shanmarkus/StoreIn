@@ -36,10 +36,6 @@ public class LocationCatalog extends Fragment {
 
 	// Fixed Variables
 	private String placeId;
-	protected ArrayList<HashMap<String, String>> promotionsInfo = new ArrayList<HashMap<String, String>>();
-	public HashMap<String, String> promotionInfo = new HashMap<String, String>();
-	public ArrayList<String> promotionsId = new ArrayList<String>();
-	public ArrayList<Boolean> promotionsClaimable = new ArrayList<Boolean>();
 
 	public List<Promotion> promotionList = new ArrayList<Promotion>();
 	public ArrayList<Promotion> promotionRecord;
@@ -84,10 +80,10 @@ public class LocationCatalog extends Fragment {
 	 */
 
 	private void clearArrayList() {
-		promotionInfo.clear();
-		promotionsClaimable.clear();
-		promotionsId.clear();
-		promotionsInfo.clear();
+		if(promotionRecord != null || itemRecord !=null){
+			promotionRecord.clear();
+			itemRecord.clear();
+		}
 	}
 
 	/*

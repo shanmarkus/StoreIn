@@ -245,6 +245,9 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		currentLocation = mLocationClient.getLastLocation();
 		if (currentLocation != null) {
 			doLocationQuery();
+		} else {
+			Toast.makeText(getActivity(), "Cannot get user Location",
+					Toast.LENGTH_SHORT).show();
 		}
 
 	}

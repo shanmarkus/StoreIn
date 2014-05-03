@@ -323,8 +323,8 @@ int id action_settings 0x7f0500a2
 int id activity_chooser_view_content 0x7f050028
 int id always 0x7f05000b
 int id beginning 0x7f050011
-int id btnLoveIt 0x7f050075
-int id btnReviewIt 0x7f050073
+int id btnLoveIt 0x7f050079
+int id btnReviewIt 0x7f050077
 int id btnSubmit 0x7f05009c
 int id buttonRecommend 0x7f05006b
 int id buttonStatus 0x7f050057
@@ -342,7 +342,7 @@ int id emailField 0x7f050047
 int id end 0x7f050013
 int id expand_activities_button 0x7f050029
 int id expanded_menu 0x7f05002f
-int id firstRelativeLayout 0x7f050076
+int id firstRelativeLayout 0x7f050070
 int id friendNumberCheckIn 0x7f050054
 int id friendNumberCheckInTitle 0x7f050051
 int id friendNumberFollower 0x7f050055
@@ -369,9 +369,9 @@ int id image 0x7f05002a
 int id imagePlaceBackground 0x7f05004a
 int id imagePromotionIcon 0x7f0500a0
 int id imageView 0x7f05006f
-int id imageView1 0x7f050079
-int id itemDescriptionLabel 0x7f050072
-int id itemTitleLabel 0x7f050071
+int id imageView1 0x7f050073
+int id itemDescriptionLabel 0x7f050076
+int id itemTitleLabel 0x7f050075
 int id lblReviewIt 0x7f05009a
 int id listClaimedPromotion 0x7f05006d
 int id listFriend 0x7f05005f
@@ -417,7 +417,7 @@ int id search_mag_icon 0x7f050038
 int id search_plate 0x7f050039
 int id search_src_text 0x7f05003a
 int id search_voice_btn 0x7f05003e
-int id secondRelativeLayout 0x7f050070
+int id secondRelativeLayout 0x7f050074
 int id section_label 0x7f05007b
 int id shortcut 0x7f050031
 int id showCustom 0x7f050007
@@ -431,7 +431,7 @@ int id tabMode 0x7f050002
 int id terrain 0x7f05001b
 int id textFindFriend 0x7f05005b
 int id textFlashDealNumber 0x7f050096
-int id textItemDetailTotalReward 0x7f050078
+int id textItemDetailTotalReward 0x7f050072
 int id textListPromotionDuration 0x7f05009e
 int id textListPromotionName 0x7f05009d
 int id textListPromotionTitleFlash 0x7f0500a1
@@ -457,8 +457,8 @@ int id textTitleTotalCheckIn 0x7f050087
 int id textTopItems 0x7f05007f
 int id textTotalCheckIn 0x7f050088
 int id textUserName 0x7f05004b
-int id thumbnail 0x7f050074
-int id thumbnailSecond 0x7f050077
+int id thumbnail 0x7f050078
+int id thumbnailSecond 0x7f050071
 int id title 0x7f05002e
 int id top_action_bar 0x7f050023
 int id txtPromotionTitle 0x7f05008c
