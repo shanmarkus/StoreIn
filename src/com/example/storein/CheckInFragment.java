@@ -1,8 +1,9 @@
 package com.example.storein;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+
+import org.json.JSONArray;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -11,7 +12,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -20,9 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.example.storein.adapter.CustomArrayAdapterPlace;
@@ -36,7 +34,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -54,21 +51,14 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	ListView mListPlace;
 
 	// Variables
-	ArrayList<HashMap<String, String>> placesInfo = new ArrayList<HashMap<String, String>>();
-	protected ArrayList<String> placesID = new ArrayList<String>();
-	HashMap<String, String> placeInfo = new HashMap<String, String>();
 
 	public List<Place> placeRecord = new ArrayList<Place>();
 	public ArrayList<Place> placesItem;
 	private CustomArrayAdapterPlace mAdapter;
-	private ListAdapter adapter;
 
 	private String placeName;
 	private String placeID;
 	private ProgressDialog progressDialog;
-
-	ProgressDialog mProgressDialog;
-	List<ParsePlace> ob;
 
 	// Place Constant
 	private Location currentLocation = null;
@@ -170,82 +160,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	 */
 
 	private void clearAdapter() {
-		placesInfo.clear();
-		placeInfo.clear();
-		placesID.clear();
 		placeRecord.clear();
-	}
-
-	// RemoteDataTask AsyncTask
-	private class RemoteDataTask extends AsyncTask<Void, Void, Void> {
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			// Create a progressdialog
-			mProgressDialog = new ProgressDialog(getActivity());
-			// Set progressdialog title
-			mProgressDialog.setTitle("Parse.com Custom ListView Tutorial");
-			// Set progressdialog message
-			mProgressDialog.setMessage("Loading...");
-			mProgressDialog.setIndeterminate(false);
-			// Show progressdialog
-			mProgressDialog.show();
-		}
-
-		@Override
-		protected Void doInBackground(Void... params) {
-			placeRecord = new ArrayList<Place>();
-			try {
-				ParseGeoPoint location = new ParseGeoPoint(
-						currentLocation.getLatitude(),
-						currentLocation.getLongitude());
-
-				// Do the Query
-				ParseQuery<ParsePlace> query = ParseQuery
-						.getQuery(ParseConstants.TABLE_PLACE);
-				query.whereWithinKilometers(ParseConstants.KEY_LOCATION,
-						location, MAX_PlACE_SEARCH_DISTANCE);
-				query.orderByAscending(ParseConstants.KEY_NAME);
-				query.setLimit(MAX_PLACE_SEARCH_RESULTS);
-				ob = query.find();
-				Toast.makeText(getActivity(), ob.size() + "",
-						Toast.LENGTH_SHORT).show();
-				if (ob.size() > 0) {
-					for (ParseObject place : ob) {
-						placeName = place.getString(ParseConstants.KEY_NAME);
-						String address = place
-								.getString(ParseConstants.KEY_ADDRESS);
-						String id = place.getObjectId();
-						ParseFile image = place
-								.getParseFile(ParseConstants.KEY_IMAGE);
-
-						// add to the place
-						Place temp = new Place();
-						temp.setName(placeName);
-						temp.setAddress(address);
-						temp.setImage(image);
-
-						placeRecord.add(temp);
-						placesID.add(id);
-						Toast.makeText(getActivity(), placeRecord.size() + "",
-								Toast.LENGTH_SHORT).show();
-					}
-				} else {
-					String message = "Sorry there are no promotion near you, please use browse to find other promotion";
-					Toast.makeText(getActivity(), message, Toast.LENGTH_LONG)
-							.show();
-				}
-			} catch (Exception e) {
-
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void result) {
-			mProgressDialog.dismiss();
-			setCustomAdapter();
-		}
 	}
 
 	/*
@@ -263,12 +178,13 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 				currentLocation.getLatitude(), currentLocation.getLongitude());
 
 		// Do the Query
-		ParseQuery<ParsePlace> query = ParseQuery
-				.getQuery(ParseConstants.TABLE_PLACE);
+		ParseObject.registerSubclass(ParsePlace.class);
+		ParseQuery<ParsePlace> query = ParsePlace.getQuery();
 		query.whereWithinKilometers(ParseConstants.KEY_LOCATION, location,
 				MAX_PlACE_SEARCH_DISTANCE);
 		query.orderByAscending(ParseConstants.KEY_NAME);
 		query.setLimit(MAX_PLACE_SEARCH_RESULTS);
+		query.include(ParseConstants.KEY_CATEGORY);
 		query.findInBackground(new FindCallback<ParsePlace>() {
 
 			@Override
@@ -277,33 +193,37 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 				if (e == null) {
 					// success
 					if (places.size() > 0) {
-						for (ParseObject place : places) {
-							placeName = place
-									.getString(ParseConstants.KEY_NAME);
-							String address = place
-									.getString(ParseConstants.KEY_ADDRESS);
+						for (ParsePlace place : places) {
+							placeName = place.getName();
+							String address = place.getAddress();
 							String id = place.getObjectId();
-							ParseFile image = place
-									.getParseFile(ParseConstants.KEY_IMAGE);
 
-							// add to the hash map
-							HashMap<String, String> placeInfo = new HashMap<String, String>();
-							placeInfo.put(ParseConstants.KEY_NAME, placeName);
-							placeInfo.put(ParseConstants.KEY_ADDRESS, address);
-							placesInfo.add(placeInfo);
+							ParseObject category = place
+									.getParseObject(ParseConstants.KEY_CATEGORY);
+							String placeCategory = category
+									.getString(ParseConstants.KEY_NAME);
+
+							JSONArray promotions = place
+									.getJSONArray(ParseConstants.KEY_LIST_PROMOTION);
+
+							int totalPromotion = promotions.length();
 
 							// add to the place
 							Place temp = new Place();
 							temp.setName(placeName);
 							temp.setAddress(address);
-							temp.setImage(image);
+							temp.setCategory(placeCategory);
+							temp.setObjectId(id);
+							if (totalPromotion != 0) {
+								temp.setIsPromotion(true);
+							} else {
+								temp.setIsPromotion(false);
+							}
 
+							// add to list
 							placeRecord.add(temp);
-							// add ID
-							placesID.add(id);
 						}
 						setCustomAdapter();
-
 					} else {
 						String message = "Sorry there are no promotion near you, please use browse to find other promotion";
 						Toast.makeText(getActivity(), message,
@@ -314,7 +234,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 				}
 
 			}
-
 		});
 	}
 
@@ -326,6 +245,9 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 		currentLocation = mLocationClient.getLastLocation();
 		if (currentLocation != null) {
 			doLocationQuery();
+		} else {
+			Toast.makeText(getActivity(), "Cannot get user Location",
+					Toast.LENGTH_SHORT).show();
 		}
 
 	}
@@ -333,17 +255,6 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	/*
 	 * Set Adapter for list view
 	 */
-
-	public void setAdapter() {
-		String[] keys = { ParseConstants.KEY_NAME, ParseConstants.KEY_ADDRESS };
-		int[] ids = { android.R.id.text1, android.R.id.text2 };
-
-		SimpleAdapter adapter = new SimpleAdapter(getActivity(), placesInfo,
-				android.R.layout.simple_list_item_2, keys, ids);
-
-		mListPlace = (ListView) getActivity().findViewById(R.id.listPlace);
-		mListPlace.setAdapter(adapter);
-	}
 
 	public void setCustomAdapter() {
 
@@ -365,10 +276,10 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				placeID = placesID.get(position);
+				placeID = placesItem.get(position).getObjectId();
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						getActivity());
-				placeName = placeRecord.get(position).getName();
+				placeName = placesItem.get(position).getName();
 				String message = "Check In at " + placeName;
 				builder.setMessage(message)
 						.setPositiveButton("Ok", dialogCheckInListener)
@@ -507,7 +418,7 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	public void onConnected(Bundle connectionHint) {
 		mLocationClient.requestLocationUpdates(REQUEST, this); // LocationListener
 		Toast.makeText(getActivity(), "Connected", Toast.LENGTH_SHORT).show();
-		new RemoteDataTask().execute();
+		initFindPlace();
 	}
 
 	/**
@@ -539,10 +450,8 @@ public class CheckInFragment extends Fragment implements ConnectionCallbacks,
 	}
 
 	@Override
-	public void onLocationChanged(Location arg0) {
-		if (mLocationClient.isConnected()) {
-			
-		}
+	public void onLocationChanged(Location e) {
+
 	}
 
 }

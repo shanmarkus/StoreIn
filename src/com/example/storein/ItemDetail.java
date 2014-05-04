@@ -1,25 +1,24 @@
 package com.example.storein;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.CountCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -29,11 +28,16 @@ public class ItemDetail extends Fragment {
 	private static final String TAG = ItemDetail.class.getSimpleName();
 
 	// UI Variable Declaration
-	Button mBtnLoveIt;
+	ParseImageView mImageView;
+	ImageButton mBtnLoveIt;
 	Button mBtnReviewIt;
 	TextView mItemTitleLabel;
 	TextView mItemDescription;
-	ViewPager mViewPager;
+	TextView mTextItemDetailTotalReward;
+	RatingBar mRattingBar;
+
+	// Fixed Variables
+	private Integer totalLoved;
 
 	// Parse Variables
 	ParseUser user = ParseUser.getCurrentUser();
@@ -53,22 +57,21 @@ public class ItemDetail extends Fragment {
 				container, false);
 
 		// Declare UI Variables
-		mViewPager = (ViewPager) rootView.findViewById(R.id.view_pager);
-		mBtnLoveIt = (Button) rootView.findViewById(R.id.btnLoveIt);
+		mImageView = (ParseImageView) rootView.findViewById(R.id.imageView);
+		mBtnLoveIt = (ImageButton) rootView.findViewById(R.id.btnLoveIt);
 		mBtnReviewIt = (Button) rootView.findViewById(R.id.btnReviewIt);
 		mItemTitleLabel = (TextView) rootView.findViewById(R.id.itemTitleLabel);
 		mItemDescription = (TextView) rootView
 				.findViewById(R.id.itemDescriptionLabel);
+		mTextItemDetailTotalReward = (TextView) rootView
+				.findViewById(R.id.textItemDetailTotalReward);
+		mRattingBar = (RatingBar) rootView.findViewById(R.id.ratingBar1);
 
 		// Intent Variables
 		// Setup Variable from the previous intents
 		getItemId();
 
 		isLoved = getActivity().getIntent().getExtras().getString("isLoved");
-
-		// Setup Image Adapter
-		ImagePagerAdapter adapter = new ImagePagerAdapter();
-		mViewPager.setAdapter(adapter);
 
 		// Find Item Details
 		findItemDetail();
@@ -99,8 +102,7 @@ public class ItemDetail extends Fragment {
 
 	protected void findAllUI() {
 		// Declare UI Variables
-		mViewPager = (ViewPager) getActivity().findViewById(R.id.view_pager);
-		mBtnLoveIt = (Button) getActivity().findViewById(R.id.btnLoveIt);
+		mBtnLoveIt = (ImageButton) getActivity().findViewById(R.id.btnLoveIt);
 		mBtnReviewIt = (Button) getActivity().findViewById(R.id.btnReviewIt);
 		mItemTitleLabel = (TextView) getActivity().findViewById(
 				R.id.itemTitleLabel);
@@ -129,11 +131,11 @@ public class ItemDetail extends Fragment {
 					// success
 					if (love != 0) {
 						isLoved = "true";
-						mBtnLoveIt.setText("Un-Love It");
+						// mBtnLoveIt.setText("Un-Love It");
 						onClickLoveItButton();
 					} else {
 						isLoved = "false";
-						mBtnLoveIt.setText("Love It");
+						// mBtnLoveIt.setText("Love It");
 						onClickLoveItButton();
 					}
 				} else {
@@ -174,6 +176,7 @@ public class ItemDetail extends Fragment {
 							Toast.makeText(getActivity(),
 									" UnLove it Parse success",
 									Toast.LENGTH_SHORT).show();
+							queryTotalLoved();
 							onResume();
 
 						} catch (ParseException e1) {
@@ -216,6 +219,7 @@ public class ItemDetail extends Fragment {
 						checkLoveButton();
 						Toast.makeText(getActivity(), "Love it Parse success",
 								Toast.LENGTH_SHORT).show();
+						queryTotalLoved();
 						onResume();
 					} else {
 						// failed
@@ -286,9 +290,14 @@ public class ItemDetail extends Fragment {
 					String title = item.getString(ParseConstants.KEY_NAME);
 					String description = item
 							.getString(ParseConstants.KEY_DESCRIPTION);
+					Integer totalLoved = item
+							.getInt(ParseConstants.KEY_TOTAL_LOVED);
+					Integer numStars = item.getInt(ParseConstants.KEY_RATING);
 
+					mRattingBar.setNumStars(numStars);
 					mItemTitleLabel.setText(title);
 					mItemDescription.setText(description);
+					mTextItemDetailTotalReward.setText(totalLoved + "");
 				} else {
 					// failed
 					parseErrorDialog(e);
@@ -299,51 +308,47 @@ public class ItemDetail extends Fragment {
 	}
 
 	/*
-	 * Image Adapter Class
+	 * Updating if the user love items
 	 */
 
-	public class ImagePagerAdapter extends PagerAdapter {
-		private int[] mImages = new int[] { R.drawable.chiang_mai,
-				R.drawable.himeji, R.drawable.petronas_twin_tower,
-				R.drawable.ulm };
+	private void queryTotalLoved() {
+		ParseQuery<ParseObject> query = ParseQuery
+				.getQuery(ParseConstants.TABLE_ITEM_LOVED);
+		query.whereEqualTo(ParseConstants.KEY_ITEM_ID, itemId);
+		query.countInBackground(new CountCallback() {
 
-		@Override
-		public int getCount() {
-			return mImages.length;
-		}
-
-		@Override
-		public boolean isViewFromObject(View view, Object object) {
-			return view == ((ImageView) object);
-		}
-
-		@Override
-		public Object instantiateItem(ViewGroup container, int position) {
-			Context context = getActivity();
-			ImageView imageView = new ImageView(context);
-			int padding = context.getResources().getDimensionPixelSize(
-					R.dimen.padding_medium);
-			imageView.setPadding(padding, padding, padding, padding);
-			imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-			imageView.setImageResource(mImages[position]);
-
-			// Go to the gallery page of promotional
-			imageView.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					Log.d(TAG, "MAHO");
-
+			@Override
+			public void done(int total, ParseException e) {
+				if (e == null) {
+					// success
+					totalLoved = total;
+					updateTotalLoved();
+				} else {
+					// failed
+					parseErrorDialog(e);
 				}
-			});
-			((ViewPager) container).addView(imageView, 0);
-			return imageView;
-		}
+			}
+		});
+	}
 
-		@Override
-		public void destroyItem(ViewGroup container, int position, Object object) {
-			((ViewPager) container).removeView((ImageView) object);
-		}
+	private void updateTotalLoved() {
+		ParseQuery<ParseObject> query = ParseQuery
+				.getQuery(ParseConstants.TABLE_ITEM);
+		query.getInBackground(itemId, new GetCallback<ParseObject>() {
+
+			@Override
+			public void done(ParseObject item, ParseException e) {
+				if (e == null) {
+					item.put(ParseConstants.KEY_TOTAL_LOVED, totalLoved);
+					Toast.makeText(getActivity(),
+							"updatedTotalLoved" + totalLoved,
+							Toast.LENGTH_SHORT).show();
+					item.saveInBackground();
+				} else {
+					parseErrorDialog(e);
+				}
+			}
+		});
 
 	}
 

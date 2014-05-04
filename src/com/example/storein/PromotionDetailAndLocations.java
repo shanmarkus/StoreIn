@@ -387,11 +387,18 @@ public class PromotionDetailAndLocations extends ActionBarActivity {
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which) {
 				case DialogInterface.BUTTON_POSITIVE:
-					String uri = String.format(Locale.ENGLISH, "geo:%f,%f",
-							placeSelected.getLatitude(),
-							placeSelected.getLongitude());
-					Intent intent = new Intent(Intent.ACTION_VIEW,
-							Uri.parse(uri));
+					String userLocationTemp = currentLocation.getLatitude()
+							+ "," + currentLocation.getLongitude();
+					String placeLocationTemp = placeSelected.getLatitude()
+							+ "," + placeSelected.getLongitude();
+
+					String uri = "http://maps.google.com/maps?saddr="
+							+ userLocationTemp + "&daddr="
+							+ placeLocationTemp;
+					Intent intent = new Intent(
+							android.content.Intent.ACTION_VIEW, Uri.parse(uri));
+					intent.setClassName("com.google.android.apps.maps",
+							"com.google.android.maps.MapsActivity");
 					startActivity(intent);
 					break;
 

@@ -42,7 +42,7 @@
     <string name="check_review">Check Review</string>
     <string name="love_it">Love It</string>
     <string name="item_detail_title">Item Name</string>
-    <string name="item_detail_description">"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"</string>
+    <string name="item_detail_description">"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse"</string>
     <string name="item_detail_write_review">Review It</string>
     <string name="title_activity_write_review_item">WriteReviewItem</string>
     <string name="title_activity_item_review">ItemReview</string>
@@ -96,5 +96,13 @@
     <string name="home_recomendation_place">Recommended place</string>
     <string name="home_recomended_item">recomended item</string>
     <string name="home_button_recommend_me">"Recommend Me "</string>
+    <string name="location_detail_title_total_check_in">Total Check In</string>
+    <string name="location_detail_total_check_in">1</string>
+    <string name="location_detail_title_opening_hour">Opening Hour</string>
+    <string name="location_detail_opening_hour">[\"Monday: 08:00-10:00\",\n\"Tuesday: 08:00-10:00\",\n\"Wednesday: 08:00-10:00\",\n\"Thursday: 08:00-10:00\",\n\"Friday: 08:00-10:00\"]</string>
+    <string name="list_item_name">Item Name</string>
+    <string name="list_item_description">item about what this description about</string>
+    <string name="list_item_total_loved">100</string>
+    <string name="list_promotion_title_flash_deal">Flash Deal</string>
 
 </resources>

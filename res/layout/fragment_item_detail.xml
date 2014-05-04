@@ -9,58 +9,117 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/view_pager"
-            android:layout_width="wrap_content"
-            android:layout_height="150dp"
-            android:onClick="myClickMethod" />
+        <com.parse.ParseImageView
+            android:id="@+id/imageView"
+            android:layout_width="fill_parent"
+            android:layout_height="140dp"
+            android:alpha=".9"
+            android:contentDescription="@string/image_preview_text"
+            android:scaleType="centerCrop"
+            android:src="@drawable/himeji" />
 
-        <Button
-            android:id="@+id/btnLoveIt"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/view_pager"
-            android:layout_centerHorizontal="true"
-            android:onClick="onClickLoveItButton"
-            android:text="@string/love_it" />
-
-        <TextView
-            android:id="@+id/itemTitleLabel"
+        <RelativeLayout
+            android:id="@+id/firstRelativeLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/btnLoveIt"
-            android:layout_centerHorizontal="true"
-            android:paddingTop="10dp"
-            android:text="@string/item_detail_title"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:layout_below="@id/imageView" >
 
-        <TextView
-            android:id="@+id/itemDescriptionLabel"
+            <LinearLayout
+                android:id="@+id/thumbnailSecond"
+                android:layout_width="120dip"
+                android:layout_height="60dip"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dip"
+                android:orientation="horizontal"
+                android:padding="0dip" >
+
+                <TextView
+                    android:id="@+id/textItemDetailTotalReward"
+                    android:layout_width="70dip"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:text="@string/list_item_total_loved"
+                    android:textSize="35sp" />
+
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:contentDescription="heart_beat"
+                    android:src="@drawable/heart_bpm" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/secondRelativeLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/itemTitleLabel"
-            android:layout_centerHorizontal="true"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp"
-            android:text="@string/item_detail_description" />
+            android:layout_below="@id/firstRelativeLayout" >
+
+            <TextView
+                android:id="@+id/itemTitleLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="12dp"
+                android:paddingTop="10dp"
+                android:text="@string/item_detail_title"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/itemDescriptionLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/itemTitleLabel"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:text="@string/item_detail_description" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:layout_below="@id/secondRelativeLayout"
+            android:paddingTop="10dp" >
+
+            <Button
+                android:id="@+id/btnReviewIt"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/thumbnail"
+                android:layout_toLeftOf="@+id/thumbnail"
+                android:text="@string/item_detail_write_review" />
+
+            <LinearLayout
+                android:id="@+id/thumbnail"
+                android:layout_width="70dip"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dip"
+                android:orientation="horizontal"
+                android:padding="0dip" >
+
+                <ImageButton
+                    android:id="@+id/btnLoveIt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/image_preview_text"
+                    android:onClick="onClickLoveItButton"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/heart_bpm"
+                    android:text="@string/love_it" />
+            </LinearLayout>
+        </RelativeLayout>
 
         <RatingBar
             android:id="@+id/ratingBar1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/itemDescriptionLabel"
-            android:layout_centerHorizontal="true"
+            android:layout_alignBottom="@+id/imageView"
+            android:layout_alignParentRight="true"
             android:isIndicator="true"
             android:paddingTop="10dp" />
-
-        <Button
-            android:id="@+id/btnReviewIt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ratingBar1"
-            android:layout_centerHorizontal="true"
-            android:text="@string/item_detail_write_review" />
     </RelativeLayout>
 
 </ScrollView>

@@ -1,6 +1,7 @@
 package com.example.storein;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -51,16 +52,12 @@ public class WriteReviewItem extends ActionBarActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.write_review_item, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			return true;
@@ -79,6 +76,7 @@ public class WriteReviewItem extends ActionBarActivity {
 
 		// Variable
 		ParseUser user = ParseUser.getCurrentUser();
+		ProgressDialog progressDialog;
 
 		// Getting User Id
 		String userId = user.getObjectId();
@@ -133,12 +131,25 @@ public class WriteReviewItem extends ActionBarActivity {
 		}
 
 		/*
+		 * Progress Dialog init
+		 */
+
+		private void initProgressDialog() {
+			progressDialog = new ProgressDialog(getActivity());
+			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			progressDialog.setMessage("Loading");
+			progressDialog.setIndeterminate(true);
+			progressDialog.setCancelable(false);
+			progressDialog.show();
+		}
+
+		/*
 		 * Check Whether user already review the item or not
 		 */
 
 		public void checkExistingUserReview() {
 			// Set Progress bar
-			getActivity().setProgressBarIndeterminateVisibility(true);
+			initProgressDialog();
 
 			// Do the Query
 			ParseQuery<ParseObject> query = ParseQuery
@@ -149,14 +160,13 @@ public class WriteReviewItem extends ActionBarActivity {
 
 				@Override
 				public void done(int count, ParseException e) {
-					// set progress bar
-					getActivity().setProgressBarIndeterminateVisibility(false);
 					if (e == null) {
 						// success
 						if (count == 0) {
 							// User have not review it yet
 							isReviewed = "false";
 							onSubmitBtn(); // listen to the submit button
+							progressDialog.dismiss();
 						} else {
 							isReviewed = "true";
 							mBtnSubmit.setEnabled(false); // disable the button
@@ -177,8 +187,6 @@ public class WriteReviewItem extends ActionBarActivity {
 		 */
 
 		protected void fillReview() {
-			// Set progress Bar
-			getActivity().setProgressBarIndeterminateVisibility(true);
 
 			// Do the Query
 			ParseQuery<ParseObject> query = ParseQuery
@@ -190,7 +198,7 @@ public class WriteReviewItem extends ActionBarActivity {
 				@Override
 				public void done(ParseObject review, ParseException e) {
 					// set progress bar
-					getActivity().setProgressBarIndeterminateVisibility(false);
+					progressDialog.dismiss();
 					if (e == null) {
 						// Set up the view
 						mTxtUserReview = (EditText) getActivity().findViewById(
@@ -202,6 +210,7 @@ public class WriteReviewItem extends ActionBarActivity {
 						mRatingBar.setRating(review
 								.getInt(ParseConstants.KEY_RATING));
 						mBtnSubmit.setEnabled(true);
+
 					} else {
 						// throw exception
 						parseErrorDialog(e);
@@ -228,7 +237,7 @@ public class WriteReviewItem extends ActionBarActivity {
 
 				@Override
 				public void done(ParseException e) {
-					getActivity().setProgressBarIndeterminateVisibility(false);
+					progressDialog.dismiss();
 					if (e == null) {
 						// success
 						Toast.makeText(getActivity(), "Review Saved",
@@ -270,7 +279,8 @@ public class WriteReviewItem extends ActionBarActivity {
 
 			@Override
 			public void onClick(View v) {
-				getActivity().setProgressBarIndeterminateVisibility(true);
+				// Set Progress bar
+				initProgressDialog();
 				ParseObject review = new ParseObject(
 						ParseConstants.TABLE_ITEM_REVIEW);
 				updateReview(review);
@@ -283,7 +293,8 @@ public class WriteReviewItem extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				// Set Progress bar
-				getActivity().setProgressBarIndeterminateVisibility(true);
+				initProgressDialog();
+
 				ParseQuery<ParseObject> query = ParseQuery
 						.getQuery(ParseConstants.TABLE_ITEM_REVIEW);
 				query.whereEqualTo(ParseConstants.KEY_ITEM_ID, itemId);
