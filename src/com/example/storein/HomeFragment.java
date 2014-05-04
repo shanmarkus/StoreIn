@@ -70,9 +70,8 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 	private String placeId;
 
 	// Parse Constants
-	String userId = ParseUser.getCurrentUser().getObjectId();
-	ParseObject currentUser = ParseUser.createWithoutData(
-			ParseConstants.TABLE_USER, userId);
+	String userId;
+	ParseObject currentUser;
 
 	// Location Client
 	private LocationClient mLocationClient;
@@ -97,11 +96,6 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		if (userId == null) {
-			navigateToLogin();
-		}
-
 		if (getArguments() != null) {
 
 		}
@@ -112,6 +106,14 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_home, container,
 				false);
+
+		if (ParseUser.getCurrentUser() == null) {
+			navigateToLogin();
+		} else {
+			userId = ParseUser.getCurrentUser().getObjectId();
+			currentUser = ParseUser.createWithoutData(
+					ParseConstants.TABLE_USER, userId);
+		}
 
 		// Setup Location Client
 		mLocationClient = new LocationClient(getActivity(), this, this);
