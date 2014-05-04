@@ -97,6 +97,11 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (userId == null) {
+			navigateToLogin();
+		}
+
 		if (getArguments() != null) {
 
 		}
@@ -142,8 +147,15 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 	@Override
 	public void onResume() {
 		super.onResume();
-		//getUserInformation();
-		//getUserClaimActivity();
+		// getUserInformation();
+		// getUserClaimActivity();
+	}
+
+	private void navigateToLogin() {
+		Intent intent = new Intent(getActivity(), LoginActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		startActivity(intent);
 	}
 
 	/*
@@ -275,11 +287,10 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 			}
 		});
 	}
-	
+
 	/*
 	 * Set Recommendation to textview
 	 */
-	
 
 	/*
 	 * Progress Dialog initiate
