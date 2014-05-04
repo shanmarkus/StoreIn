@@ -1,10 +1,12 @@
 package com.example.storein;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.example.storein.adapter.CustomArrayAdapterActivity;
 import com.example.storein.model.UserActivity;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -36,7 +39,11 @@ public class UpdatesFragment extends Fragment {
 
 	// Fixed Variables
 	ArrayList<String> friendsId = new ArrayList<String>();
-	public List<UserActivity> activityList = new ArrayList<UserActivity>();
+	public List<UserActivity> userActivityList = new ArrayList<UserActivity>();
+	public ArrayList<UserActivity> userActivityRecord;
+	private CustomArrayAdapterActivity mUserActivityAdapter;
+
+	ProgressDialog progressDialog;
 
 	public UpdatesFragment() {
 	}
@@ -46,20 +53,49 @@ public class UpdatesFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_updates_fragement,
 				container, false);
+
+		mListUpdates = (ListView) rootView.findViewById(R.id.listUpdates);
 		return rootView;
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-
+		doUpdatesQuery();
 	}
 
 	/*
 	 * added function
 	 */
 
+	/*
+	 * Progress Dialog init
+	 */
+
+	private void initProgressDialog() {
+		progressDialog = new ProgressDialog(getActivity());
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progressDialog.setMessage("Loading");
+		progressDialog.setIndeterminate(true);
+		progressDialog.setCancelable(false);
+		progressDialog.show();
+	}
+
+	/*
+	 * 3 in 1 function It will run getListFriend then getFriendClaimActivity
+	 * then get FriendCheckIn
+	 */
+	private void doUpdatesQuery() {
+		getListFriend();
+	}
+
+	/*
+	 * get list of friends
+	 */
+
 	private void getListFriend() {
+		// Start progress dialog
+		initProgressDialog();
 		// Clear Array
 		friendsId.clear();
 		ParseQuery<ParseObject> query = ParseQuery
@@ -77,12 +113,17 @@ public class UpdatesFragment extends Fragment {
 						String friendId = friend.getObjectId();
 						friendsId.add(friendId);
 					}
+					getFriendClaimActivity();
 				} else {
 					errorAlertDialog(e);
 				}
 			}
 		});
 	}
+
+	/*
+	 * get friends claim activity
+	 */
 
 	private void getFriendClaimActivity() {
 		for (String id : friendsId) {
@@ -123,8 +164,9 @@ public class UpdatesFragment extends Fragment {
 							tempActivity.setType("claim");
 							tempActivity.setCreatedAt(date);
 
-							activityList.add(tempActivity);
+							userActivityList.add(tempActivity);
 						}
+						getFriendCheckInActivity();
 					} else {
 						errorAlertDialog(e);
 					}
@@ -134,7 +176,7 @@ public class UpdatesFragment extends Fragment {
 	}
 
 	/*
-	 * Get Recent Check In
+	 * Get friends recent Check In
 	 */
 
 	private void getFriendCheckInActivity() {
@@ -177,8 +219,9 @@ public class UpdatesFragment extends Fragment {
 							tempActivity.setCreatedAt(date);
 							tempActivity.setType("checkIn");
 
-							activityList.add(tempActivity);
+							userActivityList.add(tempActivity);
 						}
+						setAdapter();
 					} else {
 						errorAlertDialog(e);
 					}
@@ -190,6 +233,18 @@ public class UpdatesFragment extends Fragment {
 	/*
 	 * Set Adapter
 	 */
+
+	private void setAdapter() {
+		// dismiss the progress dialog
+		progressDialog.dismiss();
+
+		Collections.shuffle(userActivityList);
+		userActivityRecord = (ArrayList<UserActivity>) userActivityList;
+		mUserActivityAdapter = new CustomArrayAdapterActivity(getActivity(),
+				R.id.listPromotion, userActivityRecord);
+		mListUpdates = (ListView) getActivity().findViewById(R.id.listUpdates);
+		mListUpdates.setAdapter(mUserActivityAdapter);
+	}
 
 	/*
 	 * Error Dialog Parse
