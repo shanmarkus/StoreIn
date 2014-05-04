@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.storein.adapter.CustomArrayAdapterActivity;
 import com.example.storein.model.UserActivity;
@@ -154,8 +155,7 @@ public class UpdatesFragment extends Fragment {
 							String tempPromotionName = promotionObj
 									.getString(ParseConstants.KEY_NAME);
 							String tempObjId = claimActivity.getObjectId();
-							Date date = claimActivity
-									.getDate(ParseConstants.KEY_CREATED_AT);
+							Date date = claimActivity.getCreatedAt();
 
 							UserActivity tempActivity = new UserActivity();
 							tempActivity.setObjectId(tempObjId);
@@ -166,13 +166,13 @@ public class UpdatesFragment extends Fragment {
 
 							userActivityList.add(tempActivity);
 						}
-						getFriendCheckInActivity();
 					} else {
 						errorAlertDialog(e);
 					}
 				}
 			});
 		}
+		getFriendCheckInActivity();
 	}
 
 	/*
@@ -209,8 +209,7 @@ public class UpdatesFragment extends Fragment {
 									.getString(ParseConstants.KEY_USERNAME);
 							String tempPlaceName = objActivity
 									.getString(ParseConstants.KEY_NAME);
-							Date date = checkInActivity
-									.getDate(ParseConstants.KEY_CREATED_AT);
+							Date date = checkInActivity.getCreatedAt();
 
 							UserActivity tempActivity = new UserActivity();
 							tempActivity.setObjectId(activityId);

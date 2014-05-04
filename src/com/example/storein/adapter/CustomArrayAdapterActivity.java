@@ -56,8 +56,8 @@ public class CustomArrayAdapterActivity extends ArrayAdapter<UserActivity> {
 			holder = (ViewHolder) convertView.getTag();
 
 		// Set Date
-		//Date temp = record.getCreatedAt();
-		//String date = new SimpleDateFormat("yyyy-MM-dd").format(temp);
+		Date temp = record.getCreatedAt();
+		String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(temp);
 
 		// show the data from database
 		holder.mTextListActivityFriendName.setText(record.getuserName());
@@ -70,7 +70,7 @@ public class CustomArrayAdapterActivity extends ArrayAdapter<UserActivity> {
 			message = "I just check in at " + objectName;
 		}
 		holder.mTextlistActivityFriendActivity.setText(message);
-		//holder.mTextlistActivityDate.setText(date);
+		holder.mTextlistActivityDate.setText(date);
 
 		return convertView;
 	}
