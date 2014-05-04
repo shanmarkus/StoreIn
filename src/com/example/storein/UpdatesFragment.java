@@ -91,7 +91,45 @@ public class UpdatesFragment extends Fragment {
 
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_ACTV_USER_CLAIM_PROMOTION);
-			
+			query.whereEqualTo(ParseConstants.KEY_USER_ID, objFriend);
+			query.orderByAscending(ParseConstants.KEY_CREATED_AT);
+			query.setLimit(2);
+			query.include(ParseConstants.KEY_PROMOTION_ID);
+			query.include(ParseConstants.KEY_USER_ID);
+			query.findInBackground(new FindCallback<ParseObject>() {
+
+				@Override
+				public void done(List<ParseObject> claimAcitivities,
+						ParseException e) {
+					if (e == null) {
+						for (ParseObject claimActivity : claimAcitivities) {
+							ParseObject userObj = claimActivity
+									.getParseObject(ParseConstants.KEY_USER_ID);
+							ParseObject promotionObj = claimActivity
+									.getParseObject(ParseConstants.KEY_PROMOTION_ID);
+
+							String tempUserName = userObj
+									.getString(ParseConstants.KEY_USERNAME);
+							String tempPromotionName = promotionObj
+									.getString(ParseConstants.KEY_NAME);
+							String tempObjId = claimActivity.getObjectId();
+							Date date = claimActivity
+									.getDate(ParseConstants.KEY_CREATED_AT);
+
+							Activity tempActivity = new Activity();
+							tempActivity.setObjectId(tempObjId);
+							tempActivity.setuserName(tempUserName);
+							tempActivity.setobjectName(tempPromotionName);
+							tempActivity.setType("claim");
+							tempActivity.setCreatedAt(date);
+
+							activityList.add(tempActivity);
+						}
+					} else {
+						errorAlertDialog(e);
+					}
+				}
+			});
 		}
 	}
 
@@ -108,7 +146,7 @@ public class UpdatesFragment extends Fragment {
 					.getQuery(ParseConstants.TABLE_ACTV_USER_CHECK_IN_PLACE);
 			query.whereEqualTo(ParseConstants.KEY_USER_ID, objFriend);
 			query.orderByAscending(ParseConstants.KEY_CREATED_AT);
-			query.setLimit(5);
+			query.setLimit(2);
 			query.include(ParseConstants.KEY_PLACE_ID);
 			query.include(ParseConstants.KEY_USER_ID);
 			query.findInBackground(new FindCallback<ParseObject>() {
