@@ -105,5 +105,7 @@
     <string name="list_item_total_loved">100</string>
     <string name="list_promotion_title_flash_deal">Flash Deal</string>
     <string name="title_activity_updates_fragement">Updates</string>
+    <string name="list_activity_friend_name">Username</string>
+    <string name="list_activity_friend_activity">I just claimed / check in to this object</string>
 
 </resources>

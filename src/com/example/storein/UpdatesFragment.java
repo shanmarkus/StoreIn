@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.example.storein.model.Activity;
+import com.example.storein.model.UserActivity;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -36,7 +36,7 @@ public class UpdatesFragment extends Fragment {
 
 	// Fixed Variables
 	ArrayList<String> friendsId = new ArrayList<String>();
-	public List<Activity> activityList = new ArrayList<Activity>();
+	public List<UserActivity> activityList = new ArrayList<UserActivity>();
 
 	public UpdatesFragment() {
 	}
@@ -116,7 +116,7 @@ public class UpdatesFragment extends Fragment {
 							Date date = claimActivity
 									.getDate(ParseConstants.KEY_CREATED_AT);
 
-							Activity tempActivity = new Activity();
+							UserActivity tempActivity = new UserActivity();
 							tempActivity.setObjectId(tempObjId);
 							tempActivity.setuserName(tempUserName);
 							tempActivity.setobjectName(tempPromotionName);
@@ -170,7 +170,7 @@ public class UpdatesFragment extends Fragment {
 							Date date = checkInActivity
 									.getDate(ParseConstants.KEY_CREATED_AT);
 
-							Activity tempActivity = new Activity();
+							UserActivity tempActivity = new UserActivity();
 							tempActivity.setObjectId(activityId);
 							tempActivity.setuserName(tempUserName);
 							tempActivity.setobjectName(tempPlaceName);
@@ -186,6 +186,10 @@ public class UpdatesFragment extends Fragment {
 			});
 		}
 	}
+
+	/*
+	 * Set Adapter
+	 */
 
 	/*
 	 * Error Dialog Parse

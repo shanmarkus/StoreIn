@@ -2,18 +2,18 @@ package com.example.storein.model;
 
 import java.util.Date;
 
-public class Activity {
+public class UserActivity {
 	String objectId;
 	String userName;
 	String objectName;
 	String type;
 	Date createdAt;
 
-	public Activity() {
+	public UserActivity() {
 
 	}
 
-	public Activity(String objectId, String userName, String objectName,
+	public UserActivity(String objectId, String userName, String objectName,
 			String type, Date createdAt) {
 		super();
 		this.objectId = objectId;
