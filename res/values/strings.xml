@@ -6,7 +6,7 @@
     <string name="title_section2">Browse</string>
     <string name="title_section3">Check In!</string>
     <string name="title_section4">Friends</string>
-    <string name="title_section5">Beacons</string>
+    <string name="title_section5">Updates</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
@@ -94,7 +94,7 @@
     <string name="home_claimed_promotion_title">Claimed Promotion</string>
     <string name="home_recomendation_title">Recomendation</string>
     <string name="home_recomendation_place">Recommended place</string>
-    <string name="home_recomended_item">recomended item</string>
+    <string name="home_recomended_item">recommended item</string>
     <string name="home_button_recommend_me">"Recommend Me "</string>
     <string name="location_detail_title_total_check_in">Total Check In</string>
     <string name="location_detail_total_check_in">1</string>
@@ -104,5 +104,6 @@
     <string name="list_item_description">item about what this description about</string>
     <string name="list_item_total_loved">100</string>
     <string name="list_promotion_title_flash_deal">Flash Deal</string>
+    <string name="title_activity_updates_fragement">Updates</string>
 
 </resources>

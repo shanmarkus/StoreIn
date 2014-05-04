@@ -76,7 +76,7 @@ public class MainActivity extends ActionBarActivity implements
 			fragment = new FriendInformation();
 			break;
 		case 4:
-			fragment = new BeaconFragment();
+			fragment = new UpdatesFragment();
 			break;
 		}
 

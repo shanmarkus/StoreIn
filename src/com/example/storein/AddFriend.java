@@ -153,6 +153,7 @@ public class AddFriend extends ActionBarActivity {
 								startActivity(intent);
 							}
 						} else {
+							// dismiss the dialog 
 							progressDialog.dismiss();
 							Toast.makeText(getActivity(),
 									"Friend ID Does not found",
