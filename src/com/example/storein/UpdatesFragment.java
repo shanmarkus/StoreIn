@@ -1,6 +1,7 @@
 package com.example.storein;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.example.storein.model.Activity;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -34,6 +36,7 @@ public class UpdatesFragment extends Fragment {
 
 	// Fixed Variables
 	ArrayList<String> friendsId = new ArrayList<String>();
+	public List<Activity> activityList = new ArrayList<Activity>();
 
 	public UpdatesFragment() {
 	}
@@ -81,28 +84,66 @@ public class UpdatesFragment extends Fragment {
 		});
 	}
 
+	private void getFriendClaimActivity() {
+		for (String id : friendsId) {
+			ParseObject objFriend = ParseObject.createWithoutData(
+					ParseConstants.TABLE_USER, id);
+
+		}
+	}
+
 	/*
 	 * Get Recent Check In
 	 */
 
-	private void getFriendActivity() {
-		ParseQuery<ParseObject> query = ParseQuery
-				.getQuery(ParseConstants.TABLE_ACTV_USER_CHECK_IN_PLACE);
-		query.whereContainsAll(ParseConstants.KEY_USER_ID, friendsId);
-		query.orderByAscending(ParseConstants.KEY_CREATED_AT);
-		query.setLimit(10);
-		query.findInBackground(new FindCallback<ParseObject>() {
+	private void getFriendCheckInActivity() {
+		for (String id : friendsId) {
+			ParseObject objFriend = ParseObject.createWithoutData(
+					ParseConstants.TABLE_USER, id);
 
-			@Override
-			public void done(List<ParseObject> checkInActivities,
-					ParseException e) {
-				if (e == null) {
+			ParseQuery<ParseObject> query = ParseQuery
+					.getQuery(ParseConstants.TABLE_ACTV_USER_CHECK_IN_PLACE);
+			query.whereEqualTo(ParseConstants.KEY_USER_ID, objFriend);
+			query.orderByAscending(ParseConstants.KEY_CREATED_AT);
+			query.setLimit(5);
+			query.include(ParseConstants.KEY_PLACE_ID);
+			query.include(ParseConstants.KEY_USER_ID);
+			query.findInBackground(new FindCallback<ParseObject>() {
 
-				} else {
-					errorAlertDialog(e);
+				@Override
+				public void done(List<ParseObject> checkInActivities,
+						ParseException e) {
+					if (e == null) {
+						for (ParseObject checkInActivity : checkInActivities) {
+							// Get 2 object user and place
+							ParseObject objActivity = checkInActivity
+									.getParseObject(ParseConstants.KEY_PLACE_ID);
+							ParseObject objUser = checkInActivity
+									.getParseObject(ParseConstants.KEY_USER_ID);
+
+							String activityId = checkInActivity.getObjectId();
+							String tempUserName = objUser
+									.getString(ParseConstants.KEY_USERNAME);
+							String tempPlaceName = objActivity
+									.getString(ParseConstants.KEY_NAME);
+							Date date = checkInActivity
+									.getDate(ParseConstants.KEY_CREATED_AT);
+
+							Activity tempActivity = new Activity();
+							tempActivity.setObjectId(activityId);
+							tempActivity.setuserName(tempUserName);
+							tempActivity.setobjectName(tempPlaceName);
+							tempActivity.setCreatedAt(date);
+							tempActivity.setType("checkIn");
+
+							activityList.add(tempActivity);
+						}
+					} else {
+						errorAlertDialog(e);
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 
 	/*

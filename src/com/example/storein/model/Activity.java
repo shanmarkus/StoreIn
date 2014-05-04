@@ -4,8 +4,8 @@ import java.util.Date;
 
 public class Activity {
 	String objectId;
-	String userId;
-	String friendId;
+	String userName;
+	String objectName;
 	String type;
 	Date createdAt;
 
@@ -13,12 +13,12 @@ public class Activity {
 
 	}
 
-	public Activity(String objectId, String userId, String friendId,
+	public Activity(String objectId, String userName, String objectName,
 			String type, Date createdAt) {
 		super();
 		this.objectId = objectId;
-		this.userId = userId;
-		this.friendId = friendId;
+		this.userName = userName;
+		this.objectName = objectName;
 		this.type = type;
 		this.createdAt = createdAt;
 	}
@@ -27,12 +27,12 @@ public class Activity {
 		return objectId;
 	}
 
-	public String getUserId() {
-		return userId;
+	public String getuserName() {
+		return userName;
 	}
 
-	public String getFriendId() {
-		return friendId;
+	public String getobjectName() {
+		return objectName;
 	}
 
 	public String getType() {
@@ -47,12 +47,12 @@ public class Activity {
 		this.objectId = objectId;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setuserName(String userName) {
+		this.userName = userName;
 	}
 
-	public void setFriendId(String friendId) {
-		this.friendId = friendId;
+	public void setobjectName(String objectName) {
+		this.objectName = objectName;
 	}
 
 	public void setType(String type) {
