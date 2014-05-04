@@ -24,4 +24,13 @@
         android:text="@string/list_activity_friend_activity"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
+    <TextView
+        android:id="@+id/textlistActivityDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textlistActivityFriendActivity"
+        android:layout_below="@+id/textlistActivityFriendActivity"
+        android:text="Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
 </RelativeLayout>

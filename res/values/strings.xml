@@ -107,5 +107,6 @@
     <string name="title_activity_updates_fragement">Updates</string>
     <string name="list_activity_friend_name">Username</string>
     <string name="list_activity_friend_activity">I just claimed / check in to this object</string>
+    <string name="list_activity_date">date</string>
 
 </resources>

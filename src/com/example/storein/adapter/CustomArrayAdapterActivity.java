@@ -29,6 +29,7 @@ public class CustomArrayAdapterActivity extends ArrayAdapter<UserActivity> {
 	private class ViewHolder {
 		TextView mTextListActivityFriendName;
 		TextView mTextlistActivityFriendActivity;
+		TextView mTextlistActivityDate;
 
 	}
 
@@ -47,6 +48,8 @@ public class CustomArrayAdapterActivity extends ArrayAdapter<UserActivity> {
 					.findViewById(R.id.textListActivityFriendName);
 			holder.mTextlistActivityFriendActivity = (TextView) convertView
 					.findViewById(R.id.textlistActivityFriendActivity);
+			holder.mTextlistActivityDate = (TextView) convertView
+					.findViewById(R.id.textlistActivityDate);
 
 			convertView.setTag(holder);
 		} else
@@ -58,7 +61,16 @@ public class CustomArrayAdapterActivity extends ArrayAdapter<UserActivity> {
 
 		// show the data from database
 		holder.mTextListActivityFriendName.setText(record.getuserName());
-		holder.mTextlistActivityFriendActivity.setText(record.getobjectName());
+		String type = record.getType();
+		String objectName = record.getobjectName();
+		String message;
+		if (type.equals("claim")) {
+			message = "I just claimed " + objectName;
+		} else {
+			message = "I just check in at " + objectName;
+		}
+		holder.mTextlistActivityFriendActivity.setText(message);
+		holder.mTextlistActivityDate.setText(date);
 
 		return convertView;
 	}
