@@ -89,6 +89,9 @@ public class UpdatesFragment extends Fragment {
 			ParseObject objFriend = ParseObject.createWithoutData(
 					ParseConstants.TABLE_USER, id);
 
+			ParseQuery<ParseObject> query = ParseQuery
+					.getQuery(ParseConstants.TABLE_ACTV_USER_CLAIM_PROMOTION);
+			
 		}
 	}
 

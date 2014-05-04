@@ -398,11 +398,16 @@ public class PromotionDetail extends ActionBarActivity {
 		 */
 
 		public void saveUserClaimActivity() {
+			if (placeId == null) {
+				getPlaceId();
+			}
 			String userId = ParseUser.getCurrentUser().getObjectId();
 			ParseObject tempUserId = ParseObject.createWithoutData(
 					ParseConstants.TABLE_USER, userId);
+
 			ParseObject tempPlaceId = ParseObject.createWithoutData(
 					ParseConstants.TABLE_PLACE, placeId);
+
 			final ParseObject tempPromotionId = ParseObject.createWithoutData(
 					ParseConstants.TABLE_PROMOTION, promotionId);
 			ParseObject claimActivity = new ParseObject(
@@ -432,6 +437,7 @@ public class PromotionDetail extends ActionBarActivity {
 								.setNeutralButton("Share",
 										dialogClaimClickListener).show();
 					} else {
+						Log.d(TAG, "error in saving");
 						parseErrorDialog(e);
 					}
 				}
