@@ -1,5 +1,6 @@
 package com.example.storein;
 
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -56,52 +57,13 @@ public class LoginActivity extends Activity {
 		mLoginButton = (Button) findViewById(R.id.loginButton);
 		mLoginWithFacebook = (Button) findViewById(R.id.buttonLoginFacebook);
 
-		mLoginButton.setOnClickListener(loginWithFacebookListener);
+		mLoginWithFacebook.setOnClickListener(loginWithFacebookListener);
+		mLoginButton.setOnClickListener(normalLogin);
 
-		mLoginButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				username = mUserNameField.getText().toString();
-				password = mPasswordField.getText().toString();
-
-				username = username.trim();
-				password = password.trim();
-
-				if (username.isEmpty() || password.isEmpty()) {
-					AlertDialog.Builder builder = new AlertDialog.Builder(
-							LoginActivity.this);
-					builder.setMessage(R.string.login_error_message);
-					builder.setTitle(R.string.login_error_title);
-					builder.setPositiveButton(android.R.string.ok, null);
-					AlertDialog dialog = builder.create();
-					dialog.show();
-				} else {
-					// Login
-					setProgressBarIndeterminateVisibility(true);
-					ParseUser.logInInBackground(username, password,
-							new LogInCallback() {
-
-								@Override
-								public void done(ParseUser user,
-										ParseException e) {
-									setProgressBarIndeterminateVisibility(false);
-									if (e == null) {
-										Intent intent = new Intent(
-												LoginActivity.this,
-												MainActivity.class);
-										intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-										intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-										startActivity(intent);
-									} else {
-										errorAlertDialog(e);
-									}
-								}
-							});
-				}
-			}
-		});
-
+		ParseUser currentUser = ParseUser.getCurrentUser();
+		if (currentUser != null && ParseFacebookUtils.isLinked(currentUser)) {
+			navigateToMainActivity();
+		}
 	}
 
 	@Override
@@ -115,6 +77,63 @@ public class LoginActivity extends Activity {
 	 * added function
 	 */
 
+	/*
+	 * Normal Login Function
+	 */
+
+	OnClickListener normalLogin = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			username = mUserNameField.getText().toString();
+			password = mPasswordField.getText().toString();
+
+			username = username.trim();
+			password = password.trim();
+
+			if (username.isEmpty() || password.isEmpty()) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						LoginActivity.this);
+				builder.setMessage(R.string.login_error_message);
+				builder.setTitle(R.string.login_error_title);
+				builder.setPositiveButton(android.R.string.ok, null);
+				AlertDialog dialog = builder.create();
+				dialog.show();
+			} else {
+				// Login
+				setProgressBarIndeterminateVisibility(true);
+				ParseUser.logInInBackground(username, password,
+						new LogInCallback() {
+
+							@Override
+							public void done(ParseUser user, ParseException e) {
+								setProgressBarIndeterminateVisibility(false);
+								if (e == null) {
+									navigateToMainActivity();
+								} else {
+									errorAlertDialog(e);
+								}
+							}
+						});
+			}
+		}
+	};
+
+	/*
+	 * Navigate to main Activity function
+	 */
+
+	private void navigateToMainActivity() {
+		Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		startActivity(intent);
+	}
+
+	/*
+	 * Login With Facebook Function
+	 */
+
 	private void loginWithFacebook() {
 		ParseFacebookUtils.logIn(this, new LogInCallback() {
 
@@ -124,9 +143,9 @@ public class LoginActivity extends Activity {
 					if (user == null) {
 						Log.d(TAG, "user has cancelled the facebook Login");
 					} else if (user.isNew()) {
-						Log.d(TAG, "user has sign in with facebook");
+						navigateToMainActivity();
 					} else {
-						Log.d(TAG, "user logged in through facebook");
+						navigateToMainActivity();
 					}
 				} else {
 					errorAlertDialog(e);
