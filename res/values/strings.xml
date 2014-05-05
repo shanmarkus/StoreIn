@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="facebookAppID">1410606722535641</string>
     <string name="app_name">StoreIn</string>
     <string name="title_section1">Home</string>
     <string name="title_section2">Browse</string>
@@ -108,5 +109,6 @@
     <string name="list_activity_friend_name">Username</string>
     <string name="list_activity_friend_activity">I just claimed / check in to this object</string>
     <string name="list_activity_date">date</string>
+    <string name="activity_login_log_in_with_facebook">Login with Facebook</string>
 
 </resources>

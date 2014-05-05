@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,9 +15,11 @@ import android.widget.TextView;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
 
 public class LoginActivity extends Activity {
+	private static final String TAG = LoginActivity.class.getSimpleName();
 
 	// Values for email and password at the time of the login attempt.
 	private String username;
@@ -27,6 +30,7 @@ public class LoginActivity extends Activity {
 	private EditText mPasswordField;
 	private TextView mSignUpText;
 	private Button mLoginButton;
+	private Button mLoginWithFacebook;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,9 @@ public class LoginActivity extends Activity {
 		mUserNameField = (EditText) findViewById(R.id.usernameField);
 		mPasswordField = (EditText) findViewById(R.id.passwordField);
 		mLoginButton = (Button) findViewById(R.id.loginButton);
+		mLoginWithFacebook = (Button) findViewById(R.id.buttonLoginFacebook);
+
+		mLoginButton.setOnClickListener(loginWithFacebookListener);
 
 		mLoginButton.setOnClickListener(new OnClickListener() {
 
@@ -87,16 +94,7 @@ public class LoginActivity extends Activity {
 										intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 										startActivity(intent);
 									} else {
-										AlertDialog.Builder builder = new AlertDialog.Builder(
-												LoginActivity.this);
-										builder.setMessage(e.getMessage())
-												.setTitle(
-														R.string.login_error_title)
-												.setPositiveButton(
-														android.R.string.ok,
-														null);
-										AlertDialog dialog = builder.create();
-										dialog.show();
+										errorAlertDialog(e);
 									}
 								}
 							});
@@ -112,4 +110,51 @@ public class LoginActivity extends Activity {
 		getMenuInflater().inflate(R.menu.login, menu);
 		return true;
 	}
+
+	/*
+	 * added function
+	 */
+
+	private void loginWithFacebook() {
+		ParseFacebookUtils.logIn(this, new LogInCallback() {
+
+			@Override
+			public void done(ParseUser user, ParseException e) {
+				if (e == null) {
+					if (user == null) {
+						Log.d(TAG, "user has cancelled the facebook Login");
+					} else if (user.isNew()) {
+						Log.d(TAG, "user has sign in with facebook");
+					} else {
+						Log.d(TAG, "user logged in through facebook");
+					}
+				} else {
+					errorAlertDialog(e);
+				}
+
+			}
+		});
+	}
+
+	OnClickListener loginWithFacebookListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			loginWithFacebook();
+		}
+	};
+
+	/*
+	 * Parse Error handling
+	 */
+
+	private void errorAlertDialog(ParseException e) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(
+				LoginActivity.this);
+		builder.setMessage(e.getMessage()).setTitle(R.string.login_error_title)
+				.setPositiveButton(android.R.string.ok, null);
+		AlertDialog dialog = builder.create();
+		dialog.show();
+	}
+
 }

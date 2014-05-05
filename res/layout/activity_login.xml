@@ -47,4 +47,12 @@
         android:layout_marginTop="69dp"
         android:text="@string/sign_up_label" />
 
+    <Button
+        android:id="@+id/buttonLoginFacebook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/loginButton"
+        android:layout_below="@+id/loginButton"
+        android:text="@string/activity_login_log_in_with_facebook" />
+
 </RelativeLayout>
