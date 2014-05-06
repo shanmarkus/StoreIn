@@ -2,29 +2,28 @@ package com.example.storein;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.RemoteException;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Region;
 
-public class Beacons extends ActionBarActivity {
+public class Beacons extends Activity {
 
 	private static final String TAG = Beacons.class.getSimpleName();
+
+	// Beacon Manager
 	private static final String ESTIMOTE_PROXIMITY_UUID = "B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 	private static final Region ALL_ESTIMOTE_BEACONS = new Region("regionId",
 			ESTIMOTE_PROXIMITY_UUID, null, null);
-
 	private BeaconManager beaconManager = new BeaconManager(this);
+	private static List<Beacon> currentBeacons;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,14 +34,10 @@ public class Beacons extends ActionBarActivity {
 
 			@Override
 			public void onBeaconsDiscovered(Region region, List<Beacon> beacons) {
+				currentBeacons = beacons;
 				Log.d(TAG, "Ranged beacons: " + beacons);
 			}
 		});
-
-		if (savedInstanceState == null) {
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
-		}
 	}
 
 	@Override
@@ -58,6 +53,12 @@ public class Beacons extends ActionBarActivity {
 				}
 			}
 		});
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		test();
 	}
 
 	@Override
@@ -95,23 +96,8 @@ public class Beacons extends ActionBarActivity {
 	 */
 
 	public void test() {
-
-	}
-
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_beacon_manager,
-					container, false);
-			return rootView;
+		for (Beacon beacon : currentBeacons) {
+			Toast.makeText(this, beacon.getName(), Toast.LENGTH_SHORT).show();
 		}
 	}
 
