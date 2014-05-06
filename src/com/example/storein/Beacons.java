@@ -1,26 +1,72 @@
 package com.example.storein;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
+import java.util.List;
+
 import android.os.Bundle;
+import android.os.RemoteException;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
 
-public class BeaconManager extends ActionBarActivity {
+import com.estimote.sdk.Beacon;
+import com.estimote.sdk.BeaconManager;
+import com.estimote.sdk.Region;
+
+public class Beacons extends ActionBarActivity {
+
+	private static final String TAG = Beacons.class.getSimpleName();
+	private static final String ESTIMOTE_PROXIMITY_UUID = "B9407F30-F5F8-466E-AFF9-25556B57FE6D";
+	private static final Region ALL_ESTIMOTE_BEACONS = new Region("regionId",
+			ESTIMOTE_PROXIMITY_UUID, null, null);
+
+	private BeaconManager beaconManager = new BeaconManager(this);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_beacon_manager);
 
+		beaconManager.setRangingListener(new BeaconManager.RangingListener() {
+
+			@Override
+			public void onBeaconsDiscovered(Region region, List<Beacon> beacons) {
+				Log.d(TAG, "Ranged beacons: " + beacons);
+			}
+		});
+
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
+		}
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
+			@Override
+			public void onServiceReady() {
+				try {
+					beaconManager.startRanging(ALL_ESTIMOTE_BEACONS);
+				} catch (RemoteException e) {
+					Log.e(TAG, "Cannot start ranging", e);
+				}
+			}
+		});
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		try {
+			beaconManager.stopRanging(ALL_ESTIMOTE_BEACONS);
+		} catch (RemoteException e) {
+			Log.e(TAG, "Cannot stop but it does not matter now", e);
 		}
 	}
 
@@ -42,6 +88,14 @@ public class BeaconManager extends ActionBarActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	/*
+	 * Added Function
+	 */
+
+	public void test() {
+
 	}
 
 	/**

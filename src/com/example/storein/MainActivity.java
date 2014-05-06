@@ -79,7 +79,7 @@ public class MainActivity extends ActionBarActivity implements
 			fragment = new UpdatesFragment();
 			break;
 		case 5:
-			Intent intent = new Intent(this, BeaconManager.class);
+			Intent intent = new Intent(this, Beacons.class);
 			startActivity(intent);
 		}
 
