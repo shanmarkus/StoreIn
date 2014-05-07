@@ -22,16 +22,16 @@
         android:required="true" />
 
     <!-- ParsePush Notification Permission -->
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-
     <permission
         android:name="com.example.storein.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.parse.starter.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.example.storein.permission.C2D_MESSAGE" />
 
     <application
         android:name="com.example.storein.StoreInApplication"
@@ -43,7 +43,6 @@
         android:logo="@drawable/ic_launcher"
         android:theme="@style/AppTheme"
         android:vmSafeMode="true" >
-
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyD5szxtCRk0QvMKKrNiSIsJM-hOy-esjSk" />
