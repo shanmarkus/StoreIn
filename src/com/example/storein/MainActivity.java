@@ -20,7 +20,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.ParseAnalytics;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
+import com.parse.PushService;
 
 public class MainActivity extends ActionBarActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -41,6 +43,10 @@ public class MainActivity extends ActionBarActivity implements
 
 		ParseAnalytics.trackAppOpened(getIntent());
 		ParseUser currentUser = ParseUser.getCurrentUser();
+
+		// push notification testing
+		PushService.setDefaultPushCallback(this, MainActivity.class);
+		ParseInstallation.getCurrentInstallation().saveInBackground();
 
 		if (currentUser == null) {
 			navigateToLogin();
