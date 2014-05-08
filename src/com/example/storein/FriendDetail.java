@@ -262,13 +262,8 @@ public class FriendDetail extends ActionBarActivity {
 		 */
 
 		// Get All
-
+		
 		private void getFriendInformation() {
-			getFriendName(); // 4 in 1 method
-		}
-
-		// Get the name
-		private void getFriendName() {
 			// Set progress dialog
 			initProgressDialog();
 
@@ -285,89 +280,28 @@ public class FriendDetail extends ActionBarActivity {
 						// success
 						String friendName = friend
 								.getString(ParseConstants.KEY_NAME);
+						Integer friendFollowerTotal = friend
+								.getInt(ParseConstants.KEY_FOLLOWER);
+						Integer friendFollowingTotal = friend
+								.getInt(ParseConstants.KEY_FOLLOWING);
+						Integer friendCheckInTotal = friend
+								.getInt(ParseConstants.KEY_TOTAL_CHECK_IN);
+
 						mFriendUsername.setText(friendName);
-						countThread += 1;
-						// Run the second Query
-						getFriendCheckIn();
+						mFriendNumberFollower.setText(friendFollowerTotal + "");
+						mFriendNumberFollowing.setText(friendFollowingTotal
+								+ "");
+						mFriendNumberCheckIn.setText(friendCheckInTotal + "");
+						
+						progressDialog.dismiss();
+						
 					} else {
 						errorAlertDialog(e);
 					}
 				}
 			});
 		}
-
-		// Get number of check in
-		private void getFriendCheckIn() {
-			ParseObject tempFriend = ParseObject.createWithoutData(
-					ParseConstants.TABLE_USER, friendId);
-			ParseQuery<ParseObject> query = ParseQuery
-					.getQuery(ParseConstants.TABLE_ACTV_USER_CHECK_IN_PLACE);
-			query.whereEqualTo(ParseConstants.KEY_USER_ID, tempFriend);
-			query.countInBackground(new CountCallback() {
-
-				@Override
-				public void done(int total, ParseException e) {
-					if (e == null) {
-						mFriendNumberCheckIn.setText(total + "");
-						countThread += 1;
-						// Run the third task
-						getNumberFollower();
-					} else {
-						errorAlertDialog(e);
-					}
-				}
-			});
-		}
-
-		// Get number of follower
-		private void getNumberFollower() {
-			ParseObject tempFriendObj = ParseObject.createWithoutData(
-					ParseConstants.TABLE_USER, friendId);
-			ParseQuery<ParseObject> query = ParseQuery
-					.getQuery(ParseConstants.TABLE_REL_USER_USER);
-			query.whereEqualTo(ParseConstants.KEY_USER_ID, tempFriendObj);
-			query.countInBackground(new CountCallback() {
-
-				@Override
-				public void done(int total, ParseException e) {
-					if (e == null) {
-						// success
-						mFriendNumberFollower.setText(total + "");
-						countThread += 1;
-						// run the forth task
-						getNumberFollowing();
-					} else {
-						// failed
-						errorAlertDialog(e);
-					}
-				}
-			});
-		}
-
-		// Get number of following
-		private void getNumberFollowing() {
-			ParseObject tempFriendObj = ParseObject.createWithoutData(
-					ParseConstants.TABLE_USER, friendId);
-			ParseQuery<ParseObject> query = ParseQuery
-					.getQuery(ParseConstants.TABLE_REL_USER_USER);
-			query.whereEqualTo(ParseConstants.KEY_FOLLOWING_ID, tempFriendObj);
-			query.countInBackground(new CountCallback() {
-
-				@Override
-				public void done(int total, ParseException e) {
-					progressDialog.dismiss();
-					if (e == null) {
-						// success
-						mFriendNumberFollowing.setText(total + "");
-						countThread += 1;
-					} else {
-						// failed
-						errorAlertDialog(e);
-					}
-				}
-			});
-		}
-
+		
 		/*
 		 * Get User recent Check In Activity
 		 */
