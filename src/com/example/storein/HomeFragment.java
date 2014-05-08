@@ -149,7 +149,7 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 	public void onResume() {
 		super.onResume();
 		getUserInformation();
-		//getUserClaimActivity();
+		getUserClaimActivity();
 	}
 
 	/*
@@ -320,10 +320,10 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 	private void getUserClaimActivity() {
 		ParseQuery<ParseObject> query = ParseQuery
 				.getQuery(ParseConstants.TABLE_ACTV_USER_CLAIM_PROMOTION);
-		query.whereGreaterThan(ParseConstants.KEY_CREATED_AT, yesterday);
 		query.whereEqualTo(ParseConstants.KEY_USER_ID, currentUser);
 		query.orderByAscending(ParseConstants.KEY_CREATED_AT);
 		query.orderByAscending(ParseConstants.KEY_CLAIMABLE);
+		query.setLimit(10);
 		query.include(ParseConstants.KEY_PROMOTION_ID);
 		query.include(ParseConstants.KEY_PLACE_ID);
 		query.findInBackground(new FindCallback<ParseObject>() {
@@ -335,7 +335,7 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 					// success
 					for (ParseObject activity : userClaimAcitivities) {
 						// Setup Hash map
-						HashMap<String, String> friendActivity = new HashMap<String, String>();
+						HashMap<String, String> userActivity = new HashMap<String, String>();
 
 						String promotionId = activity.getObjectId();
 
@@ -353,7 +353,7 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 								.put(ParseConstants.KEY_NAME, promotionName);
 						userActivity.put(ParseConstants.KEY_LOCATION,
 								promotionPlace);
-						userActivities.add(friendActivity);
+						userActivities.add(userActivity);
 						promotionsId.add(promotionId);
 					}
 					setAdapter();
