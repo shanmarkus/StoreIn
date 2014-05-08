@@ -147,12 +147,14 @@ public class LoginActivity extends Activity {
 	 */
 
 	private void loginWithFacebook() {
-
+		progressDialog = ProgressDialog.show(LoginActivity.this, "",
+				"Logging in...", true);
 		List<String> permissions = Arrays.asList("basic_info", "user_about_me",
 				"user_relationships", "user_birthday", "user_location");
 		ParseFacebookUtils.logIn(permissions, this, new LogInCallback() {
 			@Override
 			public void done(ParseUser user, ParseException e) {
+				progressDialog.dismiss();
 				if (e == null) {
 					if (user == null) {
 						Log.d(TAG, "user has cancelled the facebook Login");

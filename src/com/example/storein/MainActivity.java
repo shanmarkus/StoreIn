@@ -182,12 +182,19 @@ public class MainActivity extends ActionBarActivity implements
 											ParseConstants.KEY_USERNAME,
 											facebookId);
 								} else {
-									// Show the default, blank user profile
-									// picture
 									currentUser.put(
 											ParseConstants.KEY_USERNAME, null);
 								}
 
+								if (userProfile.getString("name") != null) {
+									String name = userProfile.get("name")
+											.toString();
+									currentUser.put(ParseConstants.KEY_NAME,
+											name);
+								} else {
+									currentUser.put(
+											ParseConstants.KEY_USERNAME, null);
+								}
 								currentUser.put("profile", userProfile);
 								currentUser.saveInBackground();
 
