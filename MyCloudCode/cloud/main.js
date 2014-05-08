@@ -8,9 +8,9 @@ Parse.Cloud.define("hello", function(request, response) {
 // Finding user total follower of current User
 
 Parse.Cloud.define("calculateUserFollower", function(request, response) {
+  var objectId = request.params.objectId;
   var User = Parse.Object.extend("_User");
   var user = new User();
-  var objectId = request.params.objectId;
   user.id = objectId;
 
   var query = new Parse.Query("Rel_User_User");
@@ -28,9 +28,9 @@ Parse.Cloud.define("calculateUserFollower", function(request, response) {
 // Finding user total number of user that the current user following 
 
 Parse.Cloud.define("calculateUserFollowing", function(request, response) {
+  var objectId = request.params.objectId;
   var User = Parse.Object.extend("_User");
   var user = new User();
-  var objectId = request.params.userId;
   user.id = objectId;
 
   var query = new Parse.Query("Rel_User_User");
@@ -45,24 +45,64 @@ Parse.Cloud.define("calculateUserFollowing", function(request, response) {
   });
 });
 
-// After Save User adding user
+// Define User update user
 
+Parse.Cloud.define("updateUserDemographic",function(request, response) {
+  // get Item Id
+  var userId = request.params.objectId;
+  var totalNumberFollower;
+  var totalNumberFollowing;
+
+  // get the average ratings
+  var numberFollower = Parse.Cloud.run('calculateUserFollower', {objectId:userId},{
+    success: function(result) {
+        // getting the result
+        totalNumberFollower = result;
+        var numberFollowing = Parse.Cloud.run('calculateUserFollowing', {objectId:userId},{
+          success: function(result) {
+            totalNumberFollowing = result;
+             // query
+             var User = Parse.Object.extend("_User");
+             var query = new Parse.Query(User);
+             query.equalTo("objectId", userId);
+             query.find({
+              success: function(results) {
+                var obj = results[0];
+                obj.set("following", totalNumberFollowing);
+                obj.set("follower", totalNumberFollower);
+                obj.save(null,{
+                  success: function (object) {
+                    response.success(object);
+                  },
+                  error: function (object, error) {
+                    response.error(error);
+                  }
+                });
+              },
+              error: function(error) {
+                console.error("Got an error " + error.code + " : " + error.message);
+              }
+            });
+           },
+           error: function(error) {
+            console.error("Got an error " + error.code + " : " + error.message);
+          }
+        });
+},
+error: function(error) {
+  console.error("Got an error " + error.code + " : " + error.message);
+}
+});
+
+});
+
+// Calculating after save item Review
 Parse.Cloud.afterSave("Rel_User_User", function(request, response) {
   var currentUser = Parse.User.current();
-  var userId = currentUser.id;
-
-  var numberFollower = Parse.Cloud.run('calculateUserFollower', {objectId:userId},{
+  var objId = currentUser.id;
+  Parse.Cloud.run("updateUserDemographic",{ objectId: objId },{
     sucess: function(results) {
-      // if no error do find the number followeing
-      var numberFollower = Parse.Cloud.run('calculateUserFollowing', {objectId:userId},{
-        sucess: function(results) {
-          // do nothing
-          
-        },
-        error: function(results, error) {
-          response.error(errorMessageMaker("running chained function",error));
-        }
-      });
+      response.success(results);
     },
     error: function(results, error) {
       response.error(errorMessageMaker("running chained function",error));
