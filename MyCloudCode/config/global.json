@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "StoreIn": {
+            "applicationId": "mgDWPieWTeiy4SRWiefaJ5QFLTlj2XGJwVAVuiJ3", 
+            "masterKey": "iB6WJE3xezbO41EyJUvu38P8KSHGKNn43OasnSvM"
+        }, 
+        "_default": {
+            "link": "StoreIn"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.2.18"
+    }
+}
