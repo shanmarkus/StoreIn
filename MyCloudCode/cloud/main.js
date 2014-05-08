@@ -10,7 +10,7 @@ Parse.Cloud.define("hello", function(request, response) {
 Parse.Cloud.define("calculateUserFollower", function(request, response) {
   var User = Parse.Object.extend("_User");
   var user = new User();
-  var objectId = request.params.userId;
+  var objectId = request.params.objectId;
   user.id = objectId;
 
   var query = new Parse.Query("Rel_User_User");
@@ -28,14 +28,44 @@ Parse.Cloud.define("calculateUserFollower", function(request, response) {
 // Finding user total number of user that the current user following 
 
 Parse.Cloud.define("calculateUserFollowing", function(request, response) {
+  var User = Parse.Object.extend("_User");
+  var user = new User();
+  var objectId = request.params.userId;
+  user.id = objectId;
+
   var query = new Parse.Query("Rel_User_User");
-  query.equalTo("followingId", request.params.userId);
+  query.equalTo("userId", user);
   query.find({
     success: function(results) {
       response.success(results.length);
     },
     error: function() {
       response.error("item lookup failed");
+    }
+  });
+});
+
+// After Save User adding user
+
+Parse.Cloud.afterSave("Rel_User_User", function(request, response) {
+  var currentUser = Parse.User.current();
+  var userId = currentUser.id;
+
+  var numberFollower = Parse.Cloud.run('calculateUserFollower', {objectId:userId},{
+    sucess: function(results) {
+      // if no error do find the number followeing
+      var numberFollower = Parse.Cloud.run('calculateUserFollowing', {objectId:userId},{
+        sucess: function(results) {
+          // do nothing
+          
+        },
+        error: function(results, error) {
+          response.error(errorMessageMaker("running chained function",error));
+        }
+      });
+    },
+    error: function(results, error) {
+      response.error(errorMessageMaker("running chained function",error));
     }
   });
 });
