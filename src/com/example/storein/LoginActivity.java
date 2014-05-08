@@ -1,8 +1,11 @@
 package com.example.storein;
 
+import java.util.Arrays;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +35,9 @@ public class LoginActivity extends Activity {
 	private TextView mSignUpText;
 	private Button mLoginButton;
 	private Button mLoginWithFacebook;
+
+	// Variables
+	ProgressDialog progressDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +77,12 @@ public class LoginActivity extends Activity {
 		super.onCreateOptionsMenu(menu);
 		getMenuInflater().inflate(R.menu.login, menu);
 		return true;
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
 	}
 
 	/*
@@ -135,16 +147,21 @@ public class LoginActivity extends Activity {
 	 */
 
 	private void loginWithFacebook() {
-		ParseFacebookUtils.logIn(this, new LogInCallback() {
 
+		List<String> permissions = Arrays.asList("basic_info", "user_about_me",
+				"user_relationships", "user_birthday", "user_location");
+		ParseFacebookUtils.logIn(permissions, this, new LogInCallback() {
 			@Override
 			public void done(ParseUser user, ParseException e) {
 				if (e == null) {
 					if (user == null) {
 						Log.d(TAG, "user has cancelled the facebook Login");
 					} else if (user.isNew()) {
+						Log.d(TAG,
+								"User signed up and logged in through Facebook!");
 						navigateToMainActivity();
 					} else {
+						Log.d(TAG, "User logged in through Facebook!");
 						navigateToMainActivity();
 					}
 				} else {
