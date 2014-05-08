@@ -149,10 +149,13 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 	@Override
 	public void onResume() {
 		super.onResume();
-		// getUserInformation();
-		// getUserClaimActivity();
+		 getUserInformation();
+		 getUserClaimActivity();
 	}
-
+	
+	/*
+	 * Navigate to Login
+	 */
 	private void navigateToLogin() {
 		Intent intent = new Intent(getActivity(), LoginActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

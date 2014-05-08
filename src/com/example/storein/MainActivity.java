@@ -44,10 +44,6 @@ public class MainActivity extends ActionBarActivity implements
 		ParseAnalytics.trackAppOpened(getIntent());
 		ParseUser currentUser = ParseUser.getCurrentUser();
 
-		// push notification testing
-		PushService.setDefaultPushCallback(this, MainActivity.class);
-		ParseInstallation.getCurrentInstallation().saveInBackground();
-
 		if (currentUser == null) {
 			navigateToLogin();
 		} else {
@@ -84,9 +80,6 @@ public class MainActivity extends ActionBarActivity implements
 		case 4:
 			fragment = new UpdatesFragment();
 			break;
-		case 5:
-			Intent intent = new Intent(this, Beacons.class);
-			startActivity(intent);
 		}
 
 		fragmentManager.beginTransaction().replace(R.id.container, fragment)
@@ -106,9 +99,6 @@ public class MainActivity extends ActionBarActivity implements
 			break;
 		case 4:
 			mTitle = getString(R.string.title_section4);
-			break;
-		case 5:
-			mTitle = getString(R.string.title_section5);
 			break;
 		}
 	}
