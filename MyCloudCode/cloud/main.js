@@ -5,6 +5,41 @@ Parse.Cloud.define("hello", function(request, response) {
   response.success("Hello world!");
 });
 
+// Finding user total follower of current User
+
+Parse.Cloud.define("calculateUserFollower", function(request, response) {
+  var User = Parse.Object.extend("_User");
+  var user = new User();
+  var objectId = request.params.userId;
+  user.id = objectId;
+
+  var query = new Parse.Query("Rel_User_User");
+  query.equalTo("followingId", user);
+  query.find({
+    success: function(results) {
+      response.success(results.length);
+    },
+    error: function() {
+      response.error("item lookup failed");
+    }
+  });
+});
+
+// Finding user total number of user that the current user following 
+
+Parse.Cloud.define("calculateUserFollowing", function(request, response) {
+  var query = new Parse.Query("Rel_User_User");
+  query.equalTo("followingId", request.params.userId);
+  query.find({
+    success: function(results) {
+      response.success(results.length);
+    },
+    error: function() {
+      response.error("item lookup failed");
+    }
+  });
+});
+
 // Finding Average Stars
 Parse.Cloud.define("averageRatings", function(request, response) {
   var query = new Parse.Query("ItemReview");
@@ -33,7 +68,7 @@ Parse.Cloud.define("SaveReviewAverage",function(request, response) {
   var rating = Parse.Cloud.run('averageRatings', {itemId:objId},{
     success: function(result) {
     // getting the result
-      AverageRating = result;
+    AverageRating = result;
         // query
         var Item = Parse.Object.extend("Item");
         var query = new Parse.Query(Item);
@@ -76,3 +111,6 @@ Parse.Cloud.afterSave("ItemReview", function(request, response) {
     }
   });
 });
+
+
+
