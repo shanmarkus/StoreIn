@@ -5,6 +5,81 @@ Parse.Cloud.define("hello", function(request, response) {
   response.success("Hello world!");
 });
 
+
+// Calculating Total Checkin 
+
+Parse.Cloud.define("calculateUserCheckIn", function(request, response) {
+  var objectId = request.params.objectId;
+  var User = Parse.Object.extend("_User");
+  var user = new User();
+  user.id = objectId;
+
+  var query = new Parse.Query("Activity_User_Check_In_Place");
+  query.equalTo("userId", user);
+  query.find({
+    success: function(results) {
+      response.success(results.length);
+    },
+    error: function() {
+      response.error("item lookup failed");
+    }
+  });
+});
+
+// Saving to the Table (Total CheckIn)
+Parse.Cloud.define("SaveTotalCheckIn",function(request, response) {
+  // get Item Id
+  var userId = request.params.objectId;
+  var totalCheckIn;
+
+  // get total Check in
+  var CheckIn = Parse.Cloud.run('calculateUserCheckIn', {objectId:userId},{
+    success: function(result) {
+    // getting the result
+    totalCheckIn = result;
+        // query
+        var User = Parse.Object.extend("_User");
+        var query = new Parse.Query(User);
+        query.equalTo("objectId", userId);
+        query.find({
+          success: function(results) {
+            var obj = results[0];
+            obj.set("totalCheckIn", totalCheckIn);
+            obj.save(null,{
+              success: function (object) {
+                response.success(object);
+              },
+              error: function (object, error) {
+                response.error(error);
+              }
+            });
+          },
+          error: function(error) {
+            console.error("Got an error " + error.code + " : " + error.message);
+          }
+        });
+      },
+      error: function(error) {
+        console.error("Got an error " + error.code + " : " + error.message);
+      }
+    });
+});
+
+// Calculating after save item Review
+Parse.Cloud.afterSave("Activity_User_Check_In_Place", function(request, response) {
+  var currentUser = Parse.User.current();
+  var objId = currentUser.id;
+  Parse.Cloud.run("SaveTotalCheckIn",{ objectId: objId },{
+    sucess: function(results) {
+      response.success(results);
+    },
+    error: function(results, error) {
+      response.error(errorMessageMaker("running chained function",error));
+    }
+  });
+});
+
+
 // Finding user total follower of current User
 
 Parse.Cloud.define("calculateUserFollower", function(request, response) {
