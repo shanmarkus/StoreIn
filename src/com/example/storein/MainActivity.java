@@ -136,6 +136,10 @@ public class MainActivity extends ActionBarActivity implements
 	/*
 	 * Added function
 	 */
+
+	/*
+	 * Getting Request From Facebook
+	 */
 	private void makeMeRequest() {
 		Request request = Request.newMeRequest(ParseFacebookUtils.getSession(),
 				new Request.GraphUserCallback() {
@@ -170,11 +174,25 @@ public class MainActivity extends ActionBarActivity implements
 								// Save the user profile info in a user property
 								ParseUser currentUser = ParseUser
 										.getCurrentUser();
+
+								if (userProfile.getString("facebookId") != null) {
+									String facebookId = userProfile.get(
+											"facebookId").toString();
+									currentUser.put(
+											ParseConstants.KEY_USERNAME,
+											facebookId);
+								} else {
+									// Show the default, blank user profile
+									// picture
+									currentUser.put(
+											ParseConstants.KEY_USERNAME, null);
+								}
+
 								currentUser.put("profile", userProfile);
 								currentUser.saveInBackground();
 
 								// Show the user info
-								//updateViewsWithProfileInfo();
+								// updateViewsWithProfileInfo();
 							} catch (JSONException e) {
 								Log.d(TAG, "Error parsing returned user data.");
 							}
@@ -184,7 +202,7 @@ public class MainActivity extends ActionBarActivity implements
 									|| (response.getError().getCategory() == FacebookRequestError.Category.AUTHENTICATION_REOPEN_SESSION)) {
 								Log.d(TAG,
 										"The facebook session was invalidated.");
-								//onLogoutButtonClicked();
+								// onLogoutButtonClicked();
 							} else {
 								Log.d(TAG, "Some other error: "
 										+ response.getError().getErrorMessage());
@@ -196,6 +214,9 @@ public class MainActivity extends ActionBarActivity implements
 
 	}
 
+	/*
+	 * Navigate To Login Functions
+	 */
 	private void navigateToLogin() {
 		Intent intent = new Intent(this, LoginActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
