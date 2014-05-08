@@ -33,7 +33,6 @@ import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailed
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
-import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -149,10 +148,10 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 	@Override
 	public void onResume() {
 		super.onResume();
-		 getUserInformation();
-		 getUserClaimActivity();
+		getUserInformation();
+		//getUserClaimActivity();
 	}
-	
+
 	/*
 	 * Navigate to Login
 	 */
@@ -424,11 +423,6 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 	// Get All
 
 	private void getUserInformation() {
-		getFriendName(); // 4 in 1 method
-	}
-
-	// Get the name
-	private void getFriendName() {
 		// Set progress dialog
 		initProgressDialog();
 
@@ -442,81 +436,20 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 				if (e == null) {
 					// success
 					String userName = user.getString(ParseConstants.KEY_NAME);
+					Integer userFollower = user
+							.getInt(ParseConstants.KEY_FOLLOWER);
+					Integer userFollowing = user
+							.getInt(ParseConstants.KEY_FOLLOWING);
+					Integer userTotalCheckIn = user
+							.getInt(ParseConstants.KEY_TOTAL_CHECK_IN);
+
 					mHomeUserName.setText(userName);
-					// Run the second Query
-					getFriendCheckIn();
+					mHomeNumberFollower.setText(userFollower + "");
+					mHomeNumberFollowing.setText(userFollowing + "");
+					mHomeNumberCheckIn.setText(userTotalCheckIn + "");
+
+					progressDialog.dismiss();
 				} else {
-					errorAlertDialog(e);
-				}
-			}
-		});
-	}
-
-	// Get number of check in
-	private void getFriendCheckIn() {
-		// ParseObject tempFriend = ParseObject.createWithoutData(
-		// ParseConstants.TABLE_USER, friendId);
-
-		ParseQuery<ParseObject> query = ParseQuery
-				.getQuery(ParseConstants.TABLE_ACTV_USER_CHECK_IN_PLACE);
-		query.whereEqualTo(ParseConstants.KEY_USER_ID, currentUser);
-		query.countInBackground(new CountCallback() {
-
-			@Override
-			public void done(int total, ParseException e) {
-				if (e == null) {
-					mHomeNumberCheckIn.setText(total + "");
-					// Run the third task
-					getNumberFollower();
-				} else {
-					errorAlertDialog(e);
-				}
-			}
-		});
-	}
-
-	// Get number of follower
-	private void getNumberFollower() {
-		// ParseObject tempFriendObj = ParseObject.createWithoutData(
-		// ParseConstants.TABLE_USER, friendId);
-
-		ParseQuery<ParseObject> query = ParseQuery
-				.getQuery(ParseConstants.TABLE_REL_USER_USER);
-		query.whereEqualTo(ParseConstants.KEY_USER_ID, currentUser);
-		query.countInBackground(new CountCallback() {
-
-			@Override
-			public void done(int total, ParseException e) {
-				if (e == null) {
-					// success
-					mHomeNumberFollower.setText(total + "");
-					// run the forth task
-					getNumberFollowing();
-				} else {
-					// failed
-					errorAlertDialog(e);
-				}
-			}
-		});
-	}
-
-	// Get number of following
-	private void getNumberFollowing() {
-		// ParseObject tempFriendObj = ParseObject.createWithoutData(
-		// ParseConstants.TABLE_USER, friendId);
-
-		ParseQuery<ParseObject> query = ParseQuery
-				.getQuery(ParseConstants.TABLE_REL_USER_USER);
-		query.whereEqualTo(ParseConstants.KEY_FOLLOWING_ID, currentUser);
-		query.countInBackground(new CountCallback() {
-			@Override
-			public void done(int total, ParseException e) {
-				progressDialog.dismiss();
-				if (e == null) {
-					// success
-					mHomeNumberFollowing.setText(total + "");
-				} else {
-					// failed
 					errorAlertDialog(e);
 				}
 			}
