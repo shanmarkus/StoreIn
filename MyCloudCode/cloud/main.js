@@ -25,38 +25,51 @@ Parse.Cloud.define("averageRatings", function(request, response) {
 
 // Saving to the Table
 Parse.Cloud.define("SaveReviewAverage",function(request, response) {
-  var query = new Parse.Query("Item");
-  var objId = request.object.get("itemId");
-  var rating = request.params.rating;
-  query.equalTo("objectId", objId);
-  query.find({
-    success: function(results) {
-      var obj = results[0];
-      obj.set("rating", 188);
-      obj.save(null,{
-        success: function (object) {
-          response.success(object);
-        },
-        error: function (object, error) {
-          response.error(error);
-        }
-      });
-    },
-    error: function(error) {
-      console.error("Got an error " + error.code + " : " + error.message);
-    }
-  });
+  // get Item Id
+  var objId = request.params.objectId;
+  var AverageRating;
+
+  // get the average ratings
+  var rating = Parse.Cloud.run('averageRatings', {itemId:objId},{
+    success: function(result) {
+    // getting the result
+      AverageRating = result;
+        // query
+        var Item = Parse.Object.extend("Item");
+        var query = new Parse.Query(Item);
+        query.equalTo("objectId", objId);
+        query.find({
+          success: function(results) {
+            var obj = results[0];
+            obj.set("rating", AverageRating);
+            obj.save(null,{
+              success: function (object) {
+                response.success(object);
+              },
+              error: function (object, error) {
+                response.error(error);
+              }
+            });
+          },
+          error: function(error) {
+            console.error("Got an error " + error.code + " : " + error.message);
+          }
+        });
+      },
+      error: function(error) {
+        console.error("Got an error " + error.code + " : " + error.message);
+      }
+    });
+
 });
 
 
 // Calculating after save item Review
 Parse.Cloud.afterSave("ItemReview", function(request, response) {
   var objId = request.object.get("itemId");
-  Parse.Cloud.run("averageRatings",{ itemId: objId },{
+  Parse.Cloud.run("SaveReviewAverage",{ objectId: objId },{
     sucess: function(results) {
-
       response.success(results);
-
     },
     error: function(results, error) {
       response.error(errorMessageMaker("running chained function",error));
