@@ -44,15 +44,15 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-public class CheckInFragment2 extends ActionBarActivity {
-	protected final static String TAG = CheckInFragment2.class.getSimpleName()
+public class CheckInActivity extends ActionBarActivity {
+	protected final static String TAG = CheckInActivity.class.getSimpleName()
 			.toString();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setContentView(R.layout.activity_check_in_fragment2);
+		setContentView(R.layout.activity_check_in_fragment);
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();

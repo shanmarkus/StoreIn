@@ -101,6 +101,7 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 		setUpLocationClientIfNeeded();
 		mLocationClient.connect();
 		onClickListener();
+
 	}
 
 	@Override
@@ -161,7 +162,7 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), BrowseFragment2.class);
+				Intent intent = new Intent(getActivity(), BrowseActivity.class);
 				startActivity(intent);
 			}
 		});
@@ -170,8 +171,7 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(),
-						CheckInFragment2.class);
+				Intent intent = new Intent(getActivity(), CheckInActivity.class);
 				startActivity(intent);
 			}
 		});
@@ -226,6 +226,13 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 	private void initFindPlace() {
 		currentLocation = mLocationClient.getLastLocation();
 		if (currentLocation != null) {
+			// Adding Maps
+			mMap.addCircle(new CircleOptions()
+					.center(new LatLng(currentLocation.getLatitude(),
+							currentLocation.getLongitude())).radius(100)
+					.strokeColor(Color.RED));
+			
+			// Do the Query
 			doLocationQuery();
 		}
 
@@ -293,9 +300,7 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 		CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng,
 				16);
 		mMap.animateCamera(cameraUpdate);
-		mMap.addCircle(new CircleOptions()
-				.center(new LatLng(location.getLatitude(), location
-						.getLongitude())).radius(100).strokeColor(Color.RED));
+
 	}
 
 	@Override

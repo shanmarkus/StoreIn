@@ -242,11 +242,11 @@
         </receiver>
 
         <activity
-            android:name="com.example.storein.CheckInFragment2"
+            android:name="com.example.storein.CheckInActivity"
             android:label="@string/title_activity_check_in_fragment2" >
         </activity>
         <activity
-            android:name="com.example.storein.BrowseFragment2"
+            android:name="com.example.storein.BrowseActivity"
             android:label="@string/title_activity_browse_fragment2" >
         </activity>
         <activity

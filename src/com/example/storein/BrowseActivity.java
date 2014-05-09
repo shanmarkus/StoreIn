@@ -26,13 +26,13 @@ import android.widget.GridView;
 import android.widget.SimpleAdapter;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class BrowseFragment2 extends ActionBarActivity {
+public class BrowseActivity extends ActionBarActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setContentView(R.layout.activity_browse_fragment2);
+		setContentView(R.layout.activity_browse_fragment);
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
@@ -66,7 +66,7 @@ public class BrowseFragment2 extends ActionBarActivity {
 		String[] categories;
 
 		// Other Variables
-		public static final String TAG = BrowseFragment2.class.getSimpleName();
+		public static final String TAG = BrowseActivity.class.getSimpleName();
 		protected ArrayList<HashMap<String, String>> categoriesInfo = new ArrayList<HashMap<String, String>>();
 		public HashMap<String, String> categoryInfo = new HashMap<String, String>();
 		protected ArrayList<String> objectsId = new ArrayList<String>();
