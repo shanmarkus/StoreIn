@@ -1,22 +1,26 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:weightSum="1"
     tools:context="com.example.storein.HomeFragment" >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="0dp"
+        android:layout_weight="0.3" >
 
         <ImageView
             android:id="@+id/homeProfilePicture"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:scaleType="fitXY"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:adjustViewBounds="true"
             android:contentDescription="@string/image_description_testing"
-            android:padding="10dp"
+            android:padding="15dp"
             android:src="@drawable/himeji" />
 
         <TextView
@@ -24,74 +28,112 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="26dp"
+            android:layout_marginTop="16dp"
             android:layout_toRightOf="@+id/homeProfilePicture"
             android:text="@string/home_username"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textSize="16dp" />
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="100dp"
-            android:layout_below="@+id/homeProfilePicture"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:alpha="0.5"
-            android:background="@color/box_bg_color"
-            android:paddingBottom="15dp" >
-
-            <TextView
-                android:id="@+id/homeNumberFollowerTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/homeNumberCheckInTitle"
-                android:layout_alignBottom="@+id/homeNumberCheckInTitle"
-                android:layout_centerHorizontal="true"
-                android:text="@string/home_follower_title"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/homeNumberFollowingTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/homeNumberFollowerTitle"
-                android:layout_alignBottom="@+id/homeNumberFollowerTitle"
-                android:layout_marginLeft="28dp"
-                android:layout_toRightOf="@+id/homeNumberFollowerTitle"
-                android:text="@string/home_following_title"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/homeNumberCheckInTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="34dp"
-                android:layout_marginTop="31dp"
-                android:layout_toLeftOf="@+id/homeNumberFollowerTitle"
-                android:text="@string/home_check_in_title"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/homeNumberCheckIn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingTop="5dp"
-                android:layout_alignLeft="@+id/homeNumberCheckInTitle"
-                android:layout_below="@+id/homeNumberCheckInTitle"
-                android:text="@string/home_example_number"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@android:color/white" />
-
-        </RelativeLayout>
     </RelativeLayout>
 
-</FrameLayout>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="66dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:alpha="0.5"
+        android:background="@color/box_bg_color" >
+
+        <TextView
+            android:id="@+id/homeNumberFollowerTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/homeNumberCheckInTitle"
+            android:layout_alignBottom="@+id/homeNumberCheckInTitle"
+            android:layout_centerHorizontal="true"
+            android:text="@string/home_follower_title"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/homeNumberFollowingTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/homeNumberFollowerTitle"
+            android:layout_alignBottom="@+id/homeNumberFollowerTitle"
+            android:layout_marginLeft="28dp"
+            android:layout_toRightOf="@+id/homeNumberFollowerTitle"
+            android:text="@string/home_following_title"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/homeNumberCheckIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/homeNumberCheckInTitle"
+            android:layout_below="@+id/homeNumberCheckInTitle"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
+            android:text="@string/home_example_number"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/homeNumberFollower"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/homeNumberFollowerTitle"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="5dp"
+            android:text="@string/home_example_number"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/homeNumberFollowing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/homeNumberFollowingTitle"
+            android:layout_below="@+id/homeNumberFollowingTitle"
+            android:layout_marginRight="24dp"
+            android:paddingTop="5dp"
+            android:text="@string/home_example_number"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/white" />
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="2dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="14dp"
+            android:layout_toLeftOf="@+id/homeNumberFollowerTitle"
+            android:background="@android:color/white" />
+
+        <TextView
+            android:id="@+id/homeNumberCheckInTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="14dp"
+            android:layout_toLeftOf="@+id/view1"
+            android:text="@string/home_check_in_title"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="2dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="14dp"
+            android:layout_toRightOf="@+id/homeNumberFollowerTitle"
+            android:background="@android:color/white" />
+
+    </RelativeLayout>
+
+</LinearLayout>
