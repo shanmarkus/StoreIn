@@ -5,6 +5,81 @@ Parse.Cloud.define("hello", function(request, response) {
   response.success("Hello world!");
 });
 
+/* Start ------------------------------------------------ Calculation of User Claimed Promotion */
+Parse.Cloud.define("calculateTotalPromotion", function(request, response) {
+  var objectId = request.params.objectId;
+  var User = Parse.Object.extend("_User");
+  var user = new User();
+  user.id = objectId;
+
+  var query = new Parse.Query("Activity_User_Claim_Promotion");
+  query.equalTo("userId", user);
+  query.find({
+    success: function(results) {
+      response.success(results.length);
+    },
+    error: function() {
+      response.error("item lookup failed");
+    }
+  });
+});
+
+Parse.Cloud.define("SaveTotalClaimedPromotion",function(request, response) {
+  // get Item Id
+  var userId = request.params.objectId;
+  var totalClaimedPromotion;
+
+  // get total Check in
+  var CheckIn = Parse.Cloud.run('calculateTotalPromotion', {objectId:userId},{
+    success: function(result) {
+    // getting the result
+    totalClaimedPromotion = result;
+        // query
+        var User = Parse.Object.extend("_User");
+        var query = new Parse.Query(User);
+        query.equalTo("objectId", userId);
+        query.find({
+          success: function(results) {
+            var obj = results[0];
+            obj.set("totalClaimedPromotion", totalClaimedPromotion);
+            obj.save(null,{
+              success: function (object) {
+                response.success(object);
+              },
+              error: function (object, error) {
+                response.error(error);
+              }
+            });
+          },
+          error: function(error) {
+            console.error("Got an error " + error.code + " : " + error.message);
+          }
+        });
+      },
+      error: function(error) {
+        console.error("Got an error " + error.code + " : " + error.message);
+      }
+    });
+});
+
+// Run after save to database
+
+Parse.Cloud.afterSave("Activity_User_Claim_Promotion", function(request, response) {
+  var currentUser = Parse.User.current();
+  var objId = currentUser.id;
+
+  Parse.Cloud.run("SaveTotalClaimedPromotion",{ objectId: objId},{
+    sucess: function(results) {
+      response.success(results);
+    },
+    error: function(results, error) {
+      response.error(errorMessageMaker("running chained function",error));
+    }
+  });
+});
+
+/* End ------------------------------------------------ Calculation of User Claimed Promotion */
+
 /* Start ------------------------------------------------ Calculation of Place Check In */
 Parse.Cloud.define("calculatePlaceCheckIn", function(request, response) {
   var objectId = request.params.objectPlaceId;
@@ -24,9 +99,6 @@ Parse.Cloud.define("calculatePlaceCheckIn", function(request, response) {
   });
 });
 
-/* End ------------------------------------------------ Calculation of Place Check In */
-
-/* Start ------------------------------------------------ Calculation of User Check In */
 // Calculating Total Checkin 
 
 Parse.Cloud.define("calculateUserCheckIn", function(request, response) {
