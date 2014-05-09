@@ -80,7 +80,7 @@ public class MainActivity extends ActionBarActivity implements
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		switch (position) {
 		case 0:
-			fragment = new HomeFragment();
+			fragment = new DiscoverFragment();
 			break;
 		case 1:
 			fragment = new BrowseFragment();

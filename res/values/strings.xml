@@ -111,5 +111,8 @@
     <string name="list_activity_friend_activity">I just claimed / check in to this object</string>
     <string name="list_activity_date">date</string>
     <string name="activity_login_log_in_with_facebook">Login with Facebook</string>
+    <string name="title_activity_check_in_fragment2">Nearby Place</string>
+    <string name="title_activity_browse_fragment2">Browse Promotions</string>
+    <string name="title_activity_discover_fragment">Discover</string>
 
 </resources>

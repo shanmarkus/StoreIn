@@ -27,6 +27,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
     <permission
         android:name="com.example.storein.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
@@ -239,6 +240,19 @@
                 <category android:name="com.example.storein" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name="com.example.storein.CheckInFragment2"
+            android:label="@string/title_activity_check_in_fragment2" >
+        </activity>
+        <activity
+            android:name="com.example.storein.BrowseFragment2"
+            android:label="@string/title_activity_browse_fragment2" >
+        </activity>
+        <activity
+            android:name="com.example.storein.DiscoverFragment"
+            android:label="@string/title_activity_discover_fragment" >
+        </activity>
     </application>
 
 </manifest>
