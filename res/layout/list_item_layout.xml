@@ -49,7 +49,7 @@
             android:textSize="35sp" />
 
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/imageRewardIcon"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"

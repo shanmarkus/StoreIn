@@ -15,12 +15,12 @@
             android:id="@+id/homeProfilePicture"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:scaleType="fitXY"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:adjustViewBounds="true"
             android:contentDescription="@string/image_description_testing"
             android:padding="15dp"
+            android:scaleType="fitXY"
             android:src="@drawable/himeji" />
 
         <TextView
@@ -33,12 +33,12 @@
             android:text="@string/home_username"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textSize="16dp" />
-
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="276dp"
         android:layout_height="66dp"
+        android:layout_gravity="center"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:alpha="0.5"
@@ -133,7 +133,63 @@
             android:layout_marginLeft="14dp"
             android:layout_toRightOf="@+id/homeNumberFollowerTitle"
             android:background="@android:color/white" />
+    </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="276dp"
+        android:layout_height="66dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="25dp"
+        android:alpha="0.5"
+        android:background="@color/box_bg_color" >
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="276dp"
+        android:layout_height="66dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="25dp"
+        android:alpha="0.5"
+        android:background="@color/box_bg_color" >
+
+        <ImageView
+            android:id="@+id/imageRewardIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/reward_icon" />
+
+        <TextView
+            android:id="@+id/homeTextRewardPoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/home_reward_points"
+            android:textColor="@android:color/white"
+            android:textSize="30sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="276dp"
+        android:layout_height="66dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="25dp"
+        android:alpha="0.5"
+        android:background="@color/box_bg_color" >
+
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/chiang_mai" />
     </RelativeLayout>
 
 </LinearLayout>

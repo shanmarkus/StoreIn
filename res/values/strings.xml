@@ -112,5 +112,7 @@
     <string name="title_activity_check_in_fragment2">Nearby Place</string>
     <string name="title_activity_browse_fragment2">Browse Promotions</string>
     <string name="title_activity_discover_fragment">Discover</string>
+    <string name="home_title_reward_point">Reward Point :</string>
+    <string name="home_reward_points">100</string>
 
 </resources>
