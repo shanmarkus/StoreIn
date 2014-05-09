@@ -44,7 +44,7 @@ import com.parse.ParseQuery;
 public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 		OnConnectionFailedListener, LocationListener {
 
-	protected final static String TAG = CheckInFragment.class.getSimpleName()
+	protected final static String TAG = DiscoverFragment.class.getSimpleName()
 			.toString();
 
 	// UI Variable
@@ -74,8 +74,8 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 			.setFastestInterval(16) // 16ms = 60fps
 			.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-	public static CheckInFragment newInstance(String param1, String param2) {
-		CheckInFragment fragment = new CheckInFragment();
+	public static DiscoverFragment newInstance(String param1, String param2) {
+		DiscoverFragment fragment = new DiscoverFragment();
 		Bundle args = new Bundle();
 		fragment.setArguments(args);
 		return fragment;
@@ -97,10 +97,10 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 			mMap = fragment.getMap();
 			mMap.setMyLocationEnabled(true);
 		}
+		mMap.clear();
 		setUpLocationClientIfNeeded();
 		mLocationClient.connect();
 		onClickListener();
-
 	}
 
 	@Override
@@ -287,7 +287,6 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 
 	@Override
 	public void onLocationChanged(Location location) {
-		mMap.clear();
 		currentLocation = location;
 		LatLng latLng = new LatLng(location.getLatitude(),
 				location.getLongitude());
@@ -303,6 +302,7 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 	public void onConnected(Bundle connectionHint) {
 		mLocationClient.requestLocationUpdates(REQUEST, this); // LocationListener
 		initFindPlace();
+
 	}
 
 	@Override

@@ -29,7 +29,6 @@ import com.facebook.Session;
 import com.facebook.model.GraphUser;
 import com.parse.ParseAnalytics;
 import com.parse.ParseFacebookUtils;
-import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 public class MainActivity extends ActionBarActivity implements
@@ -83,15 +82,12 @@ public class MainActivity extends ActionBarActivity implements
 			fragment = new DiscoverFragment();
 			break;
 		case 1:
-			fragment = new BrowseFragment();
+			fragment = new HomeFragment();
 			break;
 		case 2:
-			fragment = new CheckInFragment();
-			break;
-		case 3:
 			fragment = new FriendInformation();
 			break;
-		case 4:
+		case 3:
 			fragment = new UpdatesFragment();
 			break;
 		}

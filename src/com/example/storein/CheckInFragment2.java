@@ -45,7 +45,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 public class CheckInFragment2 extends ActionBarActivity {
-	protected final static String TAG = CheckInFragment.class.getSimpleName()
+	protected final static String TAG = CheckInFragment2.class.getSimpleName()
 			.toString();
 
 	@Override

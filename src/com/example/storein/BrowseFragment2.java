@@ -66,7 +66,7 @@ public class BrowseFragment2 extends ActionBarActivity {
 		String[] categories;
 
 		// Other Variables
-		public static final String TAG = BrowseFragment.class.getSimpleName();
+		public static final String TAG = BrowseFragment2.class.getSimpleName();
 		protected ArrayList<HashMap<String, String>> categoriesInfo = new ArrayList<HashMap<String, String>>();
 		public HashMap<String, String> categoryInfo = new HashMap<String, String>();
 		protected ArrayList<String> objectsId = new ArrayList<String>();
