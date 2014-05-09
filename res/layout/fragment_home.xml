@@ -7,9 +7,14 @@
     tools:context="com.example.storein.HomeFragment" >
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.3" >
+        android:layout_width="276dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="25dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="25dp"
+        android:background="@android:color/transparent" >
 
         <ImageView
             android:id="@+id/homeProfilePicture"
@@ -17,22 +22,32 @@
             android:layout_height="100dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:adjustViewBounds="true"
             android:contentDescription="@string/image_description_testing"
             android:padding="15dp"
             android:scaleType="fitXY"
             android:src="@drawable/himeji" />
 
         <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:layout_toRightOf="@+id/homeProfilePicture"
+            android:text="Badge Wanna Be"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
             android:id="@+id/homeUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView3"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="16dp"
-            android:layout_toRightOf="@+id/homeProfilePicture"
+            android:layout_marginTop="15dp"
             android:text="@string/home_username"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textSize="16dp" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -144,6 +159,28 @@
         android:layout_marginTop="25dp"
         android:alpha="0.5"
         android:background="@color/box_bg_color" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:text="@string/home_claimed_promotion_title"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="28dp"
+            android:layout_toLeftOf="@+id/textView1"
+            android:text="@string/home_reward_points"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/white" />
     </RelativeLayout>
 
     <RelativeLayout
