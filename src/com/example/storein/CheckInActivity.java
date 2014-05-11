@@ -247,7 +247,8 @@ public class CheckInActivity extends ActionBarActivity {
 								} else {
 									temp.setIsPromotion(false);
 								}
-
+								Toast.makeText(getActivity(), placeCategory,
+										Toast.LENGTH_SHORT).show();
 								// add to list
 								placeRecord.add(temp);
 							}

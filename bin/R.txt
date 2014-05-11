@@ -320,7 +320,7 @@ int drawable com_facebook_list_divider 0x7f020066
 int drawable com_facebook_list_section_header_background 0x7f020067
 int drawable com_facebook_loginbutton_silver 0x7f020068
 int drawable com_facebook_logo 0x7f020069
-int drawable com_facebook_picker_default_separator_color 0x7f0200ab
+int drawable com_facebook_picker_default_separator_color 0x7f0200b1
 int drawable com_facebook_picker_item_background 0x7f02006a
 int drawable com_facebook_picker_list_focused 0x7f02006b
 int drawable com_facebook_picker_list_longpressed 0x7f02006c
@@ -383,9 +383,15 @@ int drawable logo_storein 0x7f0200a4
 int drawable overscroll_left 0x7f0200a5
 int drawable overscroll_right 0x7f0200a6
 int drawable petronas_twin_tower 0x7f0200a7
-int drawable promotion_icon 0x7f0200a8
-int drawable reward_icon 0x7f0200a9
-int drawable ulm 0x7f0200aa
+int drawable place_bookstore 0x7f0200a8
+int drawable place_coffee_shop 0x7f0200a9
+int drawable place_convenience_store 0x7f0200aa
+int drawable place_restaurant_and_bar 0x7f0200ab
+int drawable place_shopping_mall 0x7f0200ac
+int drawable place_university 0x7f0200ad
+int drawable promotion_icon 0x7f0200ae
+int drawable reward_icon 0x7f0200af
+int drawable ulm 0x7f0200b0
 int id ButtonAdd 0x7f05006a
 int id LocationsList 0x7f0500ba
 int id ScrollView1 0x7f050091
