@@ -3,12 +3,10 @@
 
     <string name="facebookAppID">1410606722535641</string>
     <string name="app_name">StoreIn</string>
-    <string name="title_section1">Home</string>
-    <string name="title_section2">Browse</string>
-    <string name="title_section3">Check In!</string>
-    <string name="title_section4">Friends</string>
-    <string name="title_section5">Updates</string>
-    <string name="title_section6">Beacons</string>
+    <string name="title_section1">Discover</string>
+    <string name="title_section2">Home</string>
+    <string name="title_section3">Social</string>
+    <string name="title_section4">Timeline</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
@@ -111,5 +109,10 @@
     <string name="list_activity_friend_activity">I just claimed / check in to this object</string>
     <string name="list_activity_date">date</string>
     <string name="activity_login_log_in_with_facebook">Login with Facebook</string>
+    <string name="title_activity_check_in_fragment2">Nearby Place</string>
+    <string name="title_activity_browse_fragment2">Browse Promotions</string>
+    <string name="title_activity_discover_fragment">Discover</string>
+    <string name="home_title_reward_point">Reward Point :</string>
+    <string name="home_reward_points">100</string>
 
 </resources>

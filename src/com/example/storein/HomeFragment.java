@@ -131,14 +131,6 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 		mHomeNumberCheckIn = (TextView) rootView
 				.findViewById(R.id.homeNumberCheckIn);
 		mHomeUserName = (TextView) rootView.findViewById(R.id.homeUserName);
-		mListClaimedPromotion = (ListView) rootView
-				.findViewById(R.id.listClaimedPromotion);
-		mButtonRecommend = (Button) rootView.findViewById(R.id.buttonRecommend);
-
-		mTextRecommendedPromotion = (TextView) rootView
-				.findViewById(R.id.textRecommendedPromotion);
-		mTextRecommendedPlace = (TextView) rootView
-				.findViewById(R.id.textRecommendedPlace);
 
 		setRecommendationUIFalse();
 
