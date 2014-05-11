@@ -161,7 +161,7 @@
         android:background="@color/box_bg_color" >
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/loginTextForgetPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -177,7 +177,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="28dp"
-            android:layout_toLeftOf="@+id/textView1"
+            android:layout_toLeftOf="@+id/loginTextForgetPassword"
             android:text="@string/home_reward_points"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@android:color/white" />
