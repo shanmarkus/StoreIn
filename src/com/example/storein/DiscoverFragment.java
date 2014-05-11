@@ -71,7 +71,7 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 	private static final int MAX_PlACE_SEARCH_DISTANCE = 10; // In KiloMeters
 
 	private static final LocationRequest REQUEST = LocationRequest.create()
-			.setFastestInterval(16) // 16ms = 60fps
+			.setFastestInterval(1000) // 16ms = 60fps
 			.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
 	public static DiscoverFragment newInstance(String param1, String param2) {

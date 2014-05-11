@@ -12,9 +12,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.parse.LogInCallback;
@@ -36,6 +38,7 @@ public class LoginActivity extends Activity {
 	private ImageButton mImageButtonLoginFacebook;
 	private ImageButton mLoginImageLoginButton;
 	private ImageButton mImageButtonSignUp;
+	private ImageView mLoginImagePasswordView;
 
 	// Variables
 	ProgressDialog progressDialog;
@@ -45,6 +48,9 @@ public class LoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_login);
+
+		// Set Up UI
+		mLoginImagePasswordView = (ImageView) findViewById(R.id.loginImagePasswordView);
 
 		// Set up the sign up button
 		mImageButtonSignUp = (ImageButton) findViewById(R.id.imageButtonSignUp);
@@ -149,10 +155,29 @@ public class LoginActivity extends Activity {
 	 */
 
 	private void navigateToMainActivity() {
+		unbindDrawables(getWindow().getDecorView().findViewById(
+				android.R.id.content));
+		System.gc();
 		Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		startActivity(intent);
+	}
+	
+	/*
+	 * Unbind Drawable function 
+	 */
+
+	private void unbindDrawables(View view) {
+		if (view.getBackground() != null) {
+			view.getBackground().setCallback(null);
+		}
+		if (view instanceof ViewGroup) {
+			for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+				unbindDrawables(((ViewGroup) view).getChildAt(i));
+			}
+			((ViewGroup) view).removeAllViews();
+		}
 	}
 
 	/*
