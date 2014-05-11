@@ -114,5 +114,6 @@
     <string name="title_activity_discover_fragment">Discover</string>
     <string name="home_title_reward_point">Reward Point :</string>
     <string name="home_reward_points">100</string>
+    <string name="login_forget_password">forgot your password ?</string>
 
 </resources>

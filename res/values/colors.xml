@@ -3,5 +3,6 @@
     <color name="overscroll">#33b5e5</color>
     <color name="redTitleFlash">#cc0000</color>
     <color name="box_bg_color">#000000</color>
+    <color name="bg_color">#00A5DB</color>
 
 </resources>
