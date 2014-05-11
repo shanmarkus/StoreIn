@@ -17,7 +17,6 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -132,8 +131,6 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 				.findViewById(R.id.homeNumberCheckIn);
 		mHomeUserName = (TextView) rootView.findViewById(R.id.homeUserName);
 
-		setRecommendationUIFalse();
-
 		return rootView;
 	}
 
@@ -153,53 +150,6 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		startActivity(intent);
 	}
-
-	/*
-	 * Set Recommendation UI to false on the start
-	 */
-
-	private void setRecommendationUIFalse() {
-		mTextRecommendedPlace.setVisibility(View.INVISIBLE);
-		mTextRecommendedPromotion.setVisibility(View.INVISIBLE);
-
-		// Set button become true
-		mButtonRecommend.setVisibility(View.VISIBLE);
-		mButtonRecommend.setEnabled(true);
-	}
-
-	private void setRecommendationUITrue() {
-		mTextRecommendedPlace.setVisibility(View.VISIBLE);
-		mTextRecommendedPromotion.setVisibility(View.VISIBLE);
-
-		// Set button become false
-		mButtonRecommend.setVisibility(View.INVISIBLE);
-		mButtonRecommend.setEnabled(false);
-	}
-
-	/*
-	 * Button Listener
-	 */
-
-	OnClickListener buttonRecomend = new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			// Setup GPS
-			if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-				Toast.makeText(getActivity(), "GPS is Enabled in your devide",
-						Toast.LENGTH_SHORT).show();
-			} else {
-				showGPSDisabledAlertToUser();
-			}
-			setRecommendationUIFalse();
-
-			// get user position
-			currentLocation = mLocationClient.getLastLocation();
-			if (currentLocation != null) {
-				getRecomendationPlace();
-			}
-		}
-	};
 
 	/*
 	 * Query for finding recommendation
@@ -348,9 +298,9 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 						userActivities.add(userActivity);
 						promotionsId.add(promotionId);
 					}
-					setAdapter();
-					mListClaimedPromotion
-							.setOnItemClickListener(itemListRecentPromotion);
+					//setAdapter();
+//					mListClaimedPromotion
+//							.setOnItemClickListener(itemListRecentPromotion);
 				} else {
 					// failed
 					errorAlertDialog(e);
