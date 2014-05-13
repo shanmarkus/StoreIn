@@ -4,25 +4,11 @@
     android:layout_height="match_parent"
     tools:context="com.example.storein.CheckInFragment" >
 
-    <!-- TODO: Update blank fragment layout -->
-
     <ListView
         android:id="@+id/listPlace"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/placeName" >
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true" >
     </ListView>
-
-    <TextView
-        android:id="@+id/placeName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="17dp"
-        android:layout_marginLeft="17dp"
-        android:text="@string/check_in_title_list_place"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>
