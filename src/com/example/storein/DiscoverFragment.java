@@ -36,6 +36,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -177,6 +178,88 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 		});
 	}
 
+	/*
+	 * Query for finding recommendation
+	 */
+
+	private void getRecomendationPlace() {
+
+		ParseGeoPoint location = new ParseGeoPoint(
+				currentLocation.getLatitude(), currentLocation.getLongitude());
+
+		// Do the Query
+		ParseQuery<ParseObject> query = ParseQuery
+				.getQuery(ParseConstants.TABLE_PLACE);
+		query.whereWithinKilometers(ParseConstants.KEY_LOCATION, location,
+				MAX_PlACE_SEARCH_DISTANCE);
+		query.addAscendingOrder(ParseConstants.KEY_TOTAL_CHECK_IN);
+		query.getFirstInBackground(new GetCallback<ParseObject>() {
+
+			@Override
+			public void done(ParseObject place, ParseException e) {
+				if (e == null) {
+
+					String objectId = place.getObjectId();
+					//placeId = objectId;
+
+					String placeName = place.getString(ParseConstants.KEY_NAME);
+					Integer numberCheckIn = place
+							.getInt(ParseConstants.KEY_TOTAL_CHECK_IN);
+					ParseGeoPoint placeGeoPoint = place
+							.getParseGeoPoint(ParseConstants.KEY_LOCATION);
+					Location tempPlace = new Location("");
+					tempPlace.setLatitude(placeGeoPoint.getLatitude());
+					tempPlace.setLongitude(placeGeoPoint.getLongitude());
+					// Get the distance
+					double tempDistance = currentLocation.distanceTo(tempPlace);
+
+					Integer distance = (int) Math.round(Math.abs(tempDistance));
+
+					String text = "Check Out this "
+							+ placeName
+							+ " there are "
+							+ numberCheckIn
+							+ " number of people already check in to this place";
+				} else {
+					errorAlertDialog(e);
+				}
+			}
+		});
+	}
+
+	private void getRecemmendationPromotion() {
+		ParseQuery<ParseObject> query = ParseQuery
+				.getQuery(ParseConstants.TABLE_REL_PROMOTION_PLACE);
+		query.addAscendingOrder(ParseConstants.KEY_TOTAL_CLAIMED);
+		query.include(ParseConstants.KEY_PROMOTION_ID);
+		query.setLimit(2);
+		query.findInBackground(new FindCallback<ParseObject>() {
+
+			@Override
+			public void done(List<ParseObject> promotions, ParseException e) {
+				if (e == null) {
+					for (ParseObject promotion : promotions) {
+
+						Integer totalPromotionClaim = promotion
+								.getInt(ParseConstants.KEY_TOTAL_CLAIMED);
+
+						ParseObject object = promotion
+								.getParseObject(ParseConstants.KEY_PROMOTION_ID);
+						String objectId = object.getObjectId();
+						String objectName = object
+								.getString(ParseConstants.KEY_NAME);
+
+						String message = objectName + " is trending, "
+								+ totalPromotionClaim + " already claimed";
+
+					}
+				} else {
+
+				}
+			}
+		});
+	}
+
 	private void doLocationQuery() {
 		getActivity().setProgressBarIndeterminateVisibility(true);
 
@@ -231,7 +314,7 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 					.center(new LatLng(currentLocation.getLatitude(),
 							currentLocation.getLongitude())).radius(100)
 					.strokeColor(Color.RED));
-			
+
 			// Do the Query
 			doLocationQuery();
 		}

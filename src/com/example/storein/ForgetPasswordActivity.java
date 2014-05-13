@@ -52,7 +52,7 @@ public class ForgetPasswordActivity extends Activity {
 	 */
 
 	/*
-	 * Normal Login Function
+	 * On Click Listener
 	 */
 
 	OnClickListener resetButtonListener = new OnClickListener() {
