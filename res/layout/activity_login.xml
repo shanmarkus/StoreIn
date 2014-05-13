@@ -30,25 +30,17 @@
         android:layout_below="@+id/loginLogoImageView"
         android:layout_marginTop="20dp" >
 
-        <ImageView
-            android:id="@+id/loginImageUserNameView"
+        <EditText
+            android:id="@+id/usernameField"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/image_description_testing"
-            android:src="@drawable/login_username" />
-
-        <EditText
-            android:id="@+id/usernameField"
-            android:layout_width="190dp"
-            android:layout_height="match_parent"
-            android:layout_alignBottom="@+id/loginImageUserNameView"
             android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             android:ems="10"
             android:hint="@string/username_hint"
-            android:singleLine="true" >
+            android:singleLine="true"
+            android:textColor="@android:color/white" >
 
             <requestFocus />
         </EditText>
@@ -63,26 +55,18 @@
         android:layout_below="@+id/relativeLayout1"
         android:layout_marginTop="10dp" >
 
-        <ImageView
-            android:id="@+id/loginImagePasswordView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/image_description_testing"
-            android:src="@drawable/login_password" />
-
         <EditText
             android:id="@+id/passwordField"
             android:layout_width="190dp"
-            android:layout_height="match_parent"
-            android:layout_alignBottom="@+id/loginImagePasswordView"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             android:ems="10"
             android:hint="@string/password_hint"
             android:inputType="textPassword"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textColor="@android:color/white" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -91,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/relativeLayout3"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp" >
+        android:layout_marginTop="35dp" >
 
         <ImageButton
             android:id="@+id/imageButtonLoginFacebook"
@@ -130,29 +114,28 @@
             android:background="@drawable/login_button_login"
             android:contentDescription="@string/image_description_testing"
             android:scaleType="fitCenter" />
-
-        <ImageView
-            android:id="@+id/loginOrImageText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/loginImageLoginButton"
-            android:layout_marginTop="3dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/image_description_testing"
-            android:src="@drawable/login_or_text" />
-
     </RelativeLayout>
 
     <TextView
         android:id="@+id/loginTextForgetPassword"
         android:layout_width="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/relativeLayout2"
         android:layout_below="@+id/relativeLayout2"
+        android:layout_marginTop="8dp"
         android:text="@string/action_forgot_password"
         android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeLayout3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="---------------------------OR---------------------------"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/white" />
 
 </RelativeLayout>

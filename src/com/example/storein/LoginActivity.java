@@ -38,7 +38,6 @@ public class LoginActivity extends Activity {
 	private ImageButton mImageButtonLoginFacebook;
 	private ImageButton mLoginImageLoginButton;
 	private ImageButton mImageButtonSignUp;
-	private ImageView mLoginImagePasswordView;
 
 	// Variables
 	ProgressDialog progressDialog;
@@ -48,9 +47,6 @@ public class LoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_login);
-
-		// Set Up UI
-		mLoginImagePasswordView = (ImageView) findViewById(R.id.loginImagePasswordView);
 
 		// Set up the sign up button
 		mImageButtonSignUp = (ImageButton) findViewById(R.id.imageButtonSignUp);
@@ -163,9 +159,9 @@ public class LoginActivity extends Activity {
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		startActivity(intent);
 	}
-	
+
 	/*
-	 * Unbind Drawable function 
+	 * Unbind Drawable function
 	 */
 
 	private void unbindDrawables(View view) {
