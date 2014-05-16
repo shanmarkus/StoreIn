@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -49,9 +50,9 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 			.toString();
 
 	// UI Variable
-	Button mDiscoverButtonCheckIn;
-	Button mDiscoverButtonBrowse;
-	Button mDiscoverButtonReccomendation;
+	ImageButton mDiscoverButtonCheckIn;
+	ImageButton mDiscoverButtonBrowse;
+	ImageButton mDiscoverButtonRecommendation;
 
 	// Variables
 	ArrayList<HashMap<String, String>> placesInfo = new ArrayList<HashMap<String, String>>();
@@ -121,12 +122,12 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 				false);
 
 		// Declare UI
-		mDiscoverButtonBrowse = (Button) view
+		mDiscoverButtonBrowse = (ImageButton) view
 				.findViewById(R.id.discoverButtonBrowse);
-		mDiscoverButtonCheckIn = (Button) view
+		mDiscoverButtonCheckIn = (ImageButton) view
 				.findViewById(R.id.discoverButtonCheckIn);
-		mDiscoverButtonReccomendation = (Button) view
-				.findViewById(R.id.discoverButtonDiscover);
+		mDiscoverButtonRecommendation = (ImageButton) view
+				.findViewById(R.id.discoverButtonReccomendation);
 
 		// Adding Location Manager
 		LocationManager locationManager = (LocationManager) getActivity()
@@ -200,7 +201,7 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 				if (e == null) {
 
 					String objectId = place.getObjectId();
-					//placeId = objectId;
+					// placeId = objectId;
 
 					String placeName = place.getString(ParseConstants.KEY_NAME);
 					Integer numberCheckIn = place

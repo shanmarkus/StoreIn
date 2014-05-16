@@ -30,30 +30,37 @@
             android:layout_height="0dp"
             android:layout_weight="0.3" >
 
-            <Button
+            <ImageButton
                 android:id="@+id/discoverButtonBrowse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:text="Browse" />
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/icon_browse_square"
+                android:contentDescription="@string/image_description_testing"
+                android:scaleType="fitCenter" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/discoverButtonCheckIn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/discoverButtonBrowse"
-                android:layout_alignBottom="@+id/discoverButtonBrowse"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
-                android:text="CheckIn" />
+                android:layout_centerVertical="true"
+                android:background="@drawable/icon_checkin_square"
+                android:contentDescription="@string/image_description_testing"
+                android:scaleType="fitCenter" />
 
-            <Button
-                android:id="@+id/discoverButtonDiscover"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/discoverButtonBrowse"
+            <ImageButton
+                android:id="@+id/discoverButtonReccomendation"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_alignParentRight="true"
-                android:text="Rec" />
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/icon_recommend_square"
+                android:contentDescription="@string/image_description_testing"
+                android:scaleType="fitCenter" />
         </RelativeLayout>
     </LinearLayout>
 
