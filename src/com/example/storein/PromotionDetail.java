@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.parse.CountCallback;
 import com.parse.GetCallback;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -401,6 +402,7 @@ public class PromotionDetail extends ActionBarActivity {
 			if (placeId == null) {
 				getPlaceId();
 			}
+
 			String userId = ParseUser.getCurrentUser().getObjectId();
 			ParseObject tempUserId = ParseObject.createWithoutData(
 					ParseConstants.TABLE_USER, userId);

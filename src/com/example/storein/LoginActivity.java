@@ -12,9 +12,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.parse.LogInCallback;
@@ -32,9 +34,10 @@ public class LoginActivity extends Activity {
 	// UI references.
 	private EditText mUserNameField;
 	private EditText mPasswordField;
-	private TextView mSignUpText;
-	private Button mLoginButton;
-	private Button mLoginWithFacebook;
+	private TextView mLoginTextForgetPassword;
+	private ImageButton mImageButtonLoginFacebook;
+	private ImageButton mLoginImageLoginButton;
+	private ImageButton mImageButtonSignUp;
 
 	// Variables
 	ProgressDialog progressDialog;
@@ -46,8 +49,8 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.activity_login);
 
 		// Set up the sign up button
-		mSignUpText = (TextView) findViewById(R.id.signUpText);
-		mSignUpText.setOnClickListener(new OnClickListener() {
+		mImageButtonSignUp = (ImageButton) findViewById(R.id.imageButtonSignUp);
+		mImageButtonSignUp.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -57,14 +60,26 @@ public class LoginActivity extends Activity {
 			}
 		});
 
+		// Set up forget password
+		mLoginTextForgetPassword = (TextView) findViewById(R.id.loginTextForgetPassword);
+		mLoginTextForgetPassword.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(LoginActivity.this,
+						ForgetPasswordActivity.class);
+				startActivity(intent);
+			}
+		});
+
 		// Set up the login form.
 		mUserNameField = (EditText) findViewById(R.id.usernameField);
 		mPasswordField = (EditText) findViewById(R.id.passwordField);
-		mLoginButton = (Button) findViewById(R.id.loginButton);
-		mLoginWithFacebook = (Button) findViewById(R.id.buttonLoginFacebook);
+		mLoginImageLoginButton = (ImageButton) findViewById(R.id.loginImageLoginButton);
+		mImageButtonLoginFacebook = (ImageButton) findViewById(R.id.imageButtonLoginFacebook);
 
-		mLoginWithFacebook.setOnClickListener(loginWithFacebookListener);
-		mLoginButton.setOnClickListener(normalLogin);
+		mImageButtonLoginFacebook.setOnClickListener(loginWithFacebookListener);
+		mLoginImageLoginButton.setOnClickListener(normalLogin);
 
 		ParseUser currentUser = ParseUser.getCurrentUser();
 		if (currentUser != null && ParseFacebookUtils.isLinked(currentUser)) {
@@ -136,10 +151,29 @@ public class LoginActivity extends Activity {
 	 */
 
 	private void navigateToMainActivity() {
+		unbindDrawables(getWindow().getDecorView().findViewById(
+				android.R.id.content));
+		System.gc();
 		Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		startActivity(intent);
+	}
+
+	/*
+	 * Unbind Drawable function
+	 */
+
+	private void unbindDrawables(View view) {
+		if (view.getBackground() != null) {
+			view.getBackground().setCallback(null);
+		}
+		if (view instanceof ViewGroup) {
+			for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+				unbindDrawables(((ViewGroup) view).getChildAt(i));
+			}
+			((ViewGroup) view).removeAllViews();
+		}
 	}
 
 	/*

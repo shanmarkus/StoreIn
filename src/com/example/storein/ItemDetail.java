@@ -293,6 +293,8 @@ public class ItemDetail extends Fragment {
 					Integer totalLoved = item
 							.getInt(ParseConstants.KEY_TOTAL_LOVED);
 					Integer numStars = item.getInt(ParseConstants.KEY_RATING);
+					
+					// Add Image 
 
 					mRattingBar.setNumStars(numStars);
 					mItemTitleLabel.setText(title);

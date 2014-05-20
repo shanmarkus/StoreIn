@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -36,6 +37,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -48,9 +50,9 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 			.toString();
 
 	// UI Variable
-	Button mDiscoverButtonCheckIn;
-	Button mDiscoverButtonBrowse;
-	Button mDiscoverButtonReccomendation;
+	ImageButton mDiscoverButtonCheckIn;
+	ImageButton mDiscoverButtonBrowse;
+	ImageButton mDiscoverButtonRecommendation;
 
 	// Variables
 	ArrayList<HashMap<String, String>> placesInfo = new ArrayList<HashMap<String, String>>();
@@ -71,7 +73,7 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 	private static final int MAX_PlACE_SEARCH_DISTANCE = 10; // In KiloMeters
 
 	private static final LocationRequest REQUEST = LocationRequest.create()
-			.setFastestInterval(16) // 16ms = 60fps
+			.setFastestInterval(1000) // 16ms = 60fps
 			.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
 	public static DiscoverFragment newInstance(String param1, String param2) {
@@ -107,6 +109,7 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 	@Override
 	public void onPause() {
 		super.onPause();
+		getActivity().setProgressBarIndeterminateVisibility(false);
 		if (mLocationClient != null) {
 			mLocationClient.disconnect();
 		}
@@ -120,12 +123,12 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 				false);
 
 		// Declare UI
-		mDiscoverButtonBrowse = (Button) view
+		mDiscoverButtonBrowse = (ImageButton) view
 				.findViewById(R.id.discoverButtonBrowse);
-		mDiscoverButtonCheckIn = (Button) view
+		mDiscoverButtonCheckIn = (ImageButton) view
 				.findViewById(R.id.discoverButtonCheckIn);
-		mDiscoverButtonReccomendation = (Button) view
-				.findViewById(R.id.discoverButtonDiscover);
+		mDiscoverButtonRecommendation = (ImageButton) view
+				.findViewById(R.id.discoverButtonReccomendation);
 
 		// Adding Location Manager
 		LocationManager locationManager = (LocationManager) getActivity()
@@ -173,6 +176,88 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity(), CheckInActivity.class);
 				startActivity(intent);
+			}
+		});
+	}
+
+	/*
+	 * Query for finding recommendation
+	 */
+
+	private void getRecomendationPlace() {
+
+		ParseGeoPoint location = new ParseGeoPoint(
+				currentLocation.getLatitude(), currentLocation.getLongitude());
+
+		// Do the Query
+		ParseQuery<ParseObject> query = ParseQuery
+				.getQuery(ParseConstants.TABLE_PLACE);
+		query.whereWithinKilometers(ParseConstants.KEY_LOCATION, location,
+				MAX_PlACE_SEARCH_DISTANCE);
+		query.addAscendingOrder(ParseConstants.KEY_TOTAL_CHECK_IN);
+		query.getFirstInBackground(new GetCallback<ParseObject>() {
+
+			@Override
+			public void done(ParseObject place, ParseException e) {
+				if (e == null) {
+
+					String objectId = place.getObjectId();
+					// placeId = objectId;
+
+					String placeName = place.getString(ParseConstants.KEY_NAME);
+					Integer numberCheckIn = place
+							.getInt(ParseConstants.KEY_TOTAL_CHECK_IN);
+					ParseGeoPoint placeGeoPoint = place
+							.getParseGeoPoint(ParseConstants.KEY_LOCATION);
+					Location tempPlace = new Location("");
+					tempPlace.setLatitude(placeGeoPoint.getLatitude());
+					tempPlace.setLongitude(placeGeoPoint.getLongitude());
+					// Get the distance
+					double tempDistance = currentLocation.distanceTo(tempPlace);
+
+					Integer distance = (int) Math.round(Math.abs(tempDistance));
+
+					String text = "Check Out this "
+							+ placeName
+							+ " there are "
+							+ numberCheckIn
+							+ " number of people already check in to this place";
+				} else {
+					errorAlertDialog(e);
+				}
+			}
+		});
+	}
+
+	private void getRecemmendationPromotion() {
+		ParseQuery<ParseObject> query = ParseQuery
+				.getQuery(ParseConstants.TABLE_REL_PROMOTION_PLACE);
+		query.addAscendingOrder(ParseConstants.KEY_TOTAL_CLAIMED);
+		query.include(ParseConstants.KEY_PROMOTION_ID);
+		query.setLimit(2);
+		query.findInBackground(new FindCallback<ParseObject>() {
+
+			@Override
+			public void done(List<ParseObject> promotions, ParseException e) {
+				if (e == null) {
+					for (ParseObject promotion : promotions) {
+
+						Integer totalPromotionClaim = promotion
+								.getInt(ParseConstants.KEY_TOTAL_CLAIMED);
+
+						ParseObject object = promotion
+								.getParseObject(ParseConstants.KEY_PROMOTION_ID);
+						String objectId = object.getObjectId();
+						String objectName = object
+								.getString(ParseConstants.KEY_NAME);
+
+						String message = objectName + " is trending, "
+								+ totalPromotionClaim + " already claimed";
+
+					}
+				} else {
+
+				}
 			}
 		});
 	}
@@ -231,7 +316,7 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 					.center(new LatLng(currentLocation.getLatitude(),
 							currentLocation.getLongitude())).radius(100)
 					.strokeColor(Color.RED));
-			
+
 			// Do the Query
 			doLocationQuery();
 		}

@@ -29,6 +29,7 @@ public class CustomArrayAdapterPlace extends ArrayAdapter<Place> {
 		TextView mTextPlaceName;
 		TextView mTextPlaceAddress;
 		ImageView mImagePromotionIcon;
+		ImageView mImagePlaceBackground;
 
 	}
 
@@ -48,6 +49,8 @@ public class CustomArrayAdapterPlace extends ArrayAdapter<Place> {
 					.findViewById(R.id.placeAddress);
 			holder.mImagePromotionIcon = (ImageView) convertView
 					.findViewById(R.id.imagePromotionIcon);
+			holder.mImagePlaceBackground = (ImageView) convertView
+					.findViewById(R.id.imagePlaceBackground);
 
 			convertView.setTag(holder);
 		} else
@@ -62,7 +65,28 @@ public class CustomArrayAdapterPlace extends ArrayAdapter<Place> {
 		} else {
 			// do nothing
 		}
+		String temp = record.getCategory();
+		if (temp.equals("Food and Drink")) {
+			holder.mImagePlaceBackground
+					.setImageResource(R.drawable.place_restaurant_and_bar);
+		} else if (temp.equals("Convinience Store")) {
+			holder.mImagePlaceBackground
+					.setImageResource(R.drawable.place_convenience_store);
+		} else if (temp.equals("University")) {
+			holder.mImagePlaceBackground
+					.setImageResource(R.drawable.place_university);
+		} else if (temp.equals("Book Store")) {
+			holder.mImagePlaceBackground
+					.setImageResource(R.drawable.place_bookstore);
+		} else if (temp.equals("Coffee Shop")) {
+			holder.mImagePlaceBackground
+					.setImageResource(R.drawable.place_coffee_shop);
+		} else if (temp.equals("Shopping Mall")) {
+			holder.mImagePlaceBackground
+					.setImageResource(R.drawable.place_shopping_mall);
+		} else {
 
+		}
 		return convertView;
 	}
 }

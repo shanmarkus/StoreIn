@@ -17,7 +17,6 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -132,8 +131,6 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 				.findViewById(R.id.homeNumberCheckIn);
 		mHomeUserName = (TextView) rootView.findViewById(R.id.homeUserName);
 
-		setRecommendationUIFalse();
-
 		return rootView;
 	}
 
@@ -154,135 +151,7 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 		startActivity(intent);
 	}
 
-	/*
-	 * Set Recommendation UI to false on the start
-	 */
 
-	private void setRecommendationUIFalse() {
-		mTextRecommendedPlace.setVisibility(View.INVISIBLE);
-		mTextRecommendedPromotion.setVisibility(View.INVISIBLE);
-
-		// Set button become true
-		mButtonRecommend.setVisibility(View.VISIBLE);
-		mButtonRecommend.setEnabled(true);
-	}
-
-	private void setRecommendationUITrue() {
-		mTextRecommendedPlace.setVisibility(View.VISIBLE);
-		mTextRecommendedPromotion.setVisibility(View.VISIBLE);
-
-		// Set button become false
-		mButtonRecommend.setVisibility(View.INVISIBLE);
-		mButtonRecommend.setEnabled(false);
-	}
-
-	/*
-	 * Button Listener
-	 */
-
-	OnClickListener buttonRecomend = new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			// Setup GPS
-			if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-				Toast.makeText(getActivity(), "GPS is Enabled in your devide",
-						Toast.LENGTH_SHORT).show();
-			} else {
-				showGPSDisabledAlertToUser();
-			}
-			setRecommendationUIFalse();
-
-			// get user position
-			currentLocation = mLocationClient.getLastLocation();
-			if (currentLocation != null) {
-				getRecomendationPlace();
-			}
-		}
-	};
-
-	/*
-	 * Query for finding recommendation
-	 */
-
-	private void getRecomendationPlace() {
-
-		ParseGeoPoint location = new ParseGeoPoint(
-				currentLocation.getLatitude(), currentLocation.getLongitude());
-
-		// Do the Query
-		ParseQuery<ParseObject> query = ParseQuery
-				.getQuery(ParseConstants.TABLE_PLACE);
-		query.whereWithinKilometers(ParseConstants.KEY_LOCATION, location,
-				MAX_PlACE_SEARCH_DISTANCE);
-		query.addAscendingOrder(ParseConstants.KEY_TOTAL_CHECK_IN);
-		query.getFirstInBackground(new GetCallback<ParseObject>() {
-
-			@Override
-			public void done(ParseObject place, ParseException e) {
-				if (e == null) {
-
-					String objectId = place.getObjectId();
-					placeId = objectId;
-
-					String placeName = place.getString(ParseConstants.KEY_NAME);
-					Integer numberCheckIn = place
-							.getInt(ParseConstants.KEY_TOTAL_CHECK_IN);
-					ParseGeoPoint placeGeoPoint = place
-							.getParseGeoPoint(ParseConstants.KEY_LOCATION);
-					Location tempPlace = new Location("");
-					tempPlace.setLatitude(placeGeoPoint.getLatitude());
-					tempPlace.setLongitude(placeGeoPoint.getLongitude());
-					// Get the distance
-					double tempDistance = currentLocation.distanceTo(tempPlace);
-
-					Integer distance = (int) Math.round(Math.abs(tempDistance));
-
-					String text = "Check Out this "
-							+ placeName
-							+ " there are "
-							+ numberCheckIn
-							+ " number of people already check in to this place";
-				} else {
-					errorAlertDialog(e);
-				}
-			}
-		});
-	}
-
-	private void getRecemmendationPromotion() {
-		ParseQuery<ParseObject> query = ParseQuery
-				.getQuery(ParseConstants.TABLE_REL_PROMOTION_PLACE);
-		query.addAscendingOrder(ParseConstants.KEY_TOTAL_CLAIMED);
-		query.include(ParseConstants.KEY_PROMOTION_ID);
-		query.setLimit(2);
-		query.findInBackground(new FindCallback<ParseObject>() {
-
-			@Override
-			public void done(List<ParseObject> promotions, ParseException e) {
-				if (e == null) {
-					for (ParseObject promotion : promotions) {
-
-						Integer totalPromotionClaim = promotion
-								.getInt(ParseConstants.KEY_TOTAL_CLAIMED);
-
-						ParseObject object = promotion
-								.getParseObject(ParseConstants.KEY_PROMOTION_ID);
-						String objectId = object.getObjectId();
-						String objectName = object
-								.getString(ParseConstants.KEY_NAME);
-
-						String message = objectName + " is trending, "
-								+ totalPromotionClaim + " already claimed";
-						recommendationText.add(message);
-						recommendationId.add(objectId);
-					}
-				} else {
-
-				}
-			}
-		});
-	}
 
 	/*
 	 * Set Recommendation to textview
@@ -300,10 +169,6 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 		progressDialog.setCancelable(false);
 		progressDialog.show();
 	}
-
-	/*
-	 * Get Recommendation place
-	 */
 
 	/*
 	 * Get Recent Claim Promotion
@@ -348,9 +213,9 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks,
 						userActivities.add(userActivity);
 						promotionsId.add(promotionId);
 					}
-					setAdapter();
-					mListClaimedPromotion
-							.setOnItemClickListener(itemListRecentPromotion);
+					//setAdapter();
+//					mListClaimedPromotion
+//							.setOnItemClickListener(itemListRecentPromotion);
 				} else {
 					// failed
 					errorAlertDialog(e);
