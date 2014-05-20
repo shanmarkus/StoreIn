@@ -109,6 +109,7 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 	@Override
 	public void onPause() {
 		super.onPause();
+		getActivity().setProgressBarIndeterminateVisibility(false);
 		if (mLocationClient != null) {
 			mLocationClient.disconnect();
 		}
