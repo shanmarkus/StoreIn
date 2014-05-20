@@ -5,6 +5,54 @@ Parse.Cloud.define("hello", function(request, response) {
   response.success("Hello world!");
 });
 
+/* Start -------------------------------- adding value to the table user promotion */
+
+Parse.Cloud.define("addingColumnPromotionAfterSave", function(request, response) {
+  var currentUserId = Parse.User.current().id;
+  var User = Parse.Object.extend("_User");
+  var user = new User();
+  user.id = currentUserId;
+
+  var RelUserReward = Parse.Object.extend("Rel_User_Reward");
+  var query = new Parse.Query(RelUserReward);
+  query.equalTo("userId", user);
+  query.find({
+    success: function(results) {
+      alert("Successfully retrieved " + results.length + " scores.");
+      if(results.length === 0){
+        var relUserReward = new RelUserReward();
+        relUserReward.set("userId", user);
+        relUserReward.set("rewardPoint" , 0);
+        relUserReward.save(null, {
+          success: function(relUserReward) {
+            alert('New object created with objectId: ' + relUserReward.id);
+          },
+          error: function(relUserReward, error) {
+            alert('Failed to create new object, with error code: ' + error.description);
+          }
+        });
+      }else{
+        // do nothing
+      }
+
+    },
+    error: function(error) {
+      alert("Error: " + error.code + " " + error.message);
+    }
+  });
+});
+
+Parse.Cloud.afterSave("_User", function(request, response) {
+  Parse.Cloud.run("addingColumnPromotionAfterSave",{
+    sucess: function(results) {
+      response.success(results);
+    },
+    error: function(results, error) {
+      response.error(errorMessageMaker("running chained function",error));
+    }
+  });
+});
+
 /* Start ------------------------------------------------ Calculation of User Claimed Promotion */
 Parse.Cloud.define("calculateTotalPromotion", function(request, response) {
   var objectId = request.params.objectId;
