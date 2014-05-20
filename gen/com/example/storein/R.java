@@ -1087,12 +1087,14 @@ containing a value of this type.
         public static final int abc_split_action_bar_is_narrow=0x7f0a0002;
     }
     public static final class color {
-        public static final int abc_search_url_text_holo=0x7f070018;
+        public static final int abc_search_url_text_holo=0x7f07001e;
         public static final int abc_search_url_text_normal=0x7f070007;
         public static final int abc_search_url_text_pressed=0x7f070009;
         public static final int abc_search_url_text_selected=0x7f070008;
         public static final int bg_color=0x7f070017;
+        public static final int bookstore_place=0x7f07001a;
         public static final int box_bg_color=0x7f070016;
+        public static final int coffeeshop_place=0x7f07001b;
         public static final int com_facebook_blue=0x7f070002;
         public static final int com_facebook_loginview_text_color=0x7f070006;
         public static final int com_facebook_picker_search_bar_background=0x7f070000;
@@ -1112,10 +1114,14 @@ containing a value of this type.
         public static final int common_signin_btn_light_text_disabled=0x7f070010;
         public static final int common_signin_btn_light_text_focused=0x7f070011;
         public static final int common_signin_btn_light_text_pressed=0x7f07000f;
-        public static final int common_signin_btn_text_dark=0x7f070019;
-        public static final int common_signin_btn_text_light=0x7f07001a;
+        public static final int common_signin_btn_text_dark=0x7f07001f;
+        public static final int common_signin_btn_text_light=0x7f070020;
+        public static final int convenience_store_place=0x7f070019;
+        public static final int foor_and_bvg_place=0x7f07001c;
         public static final int overscroll=0x7f070014;
         public static final int redTitleFlash=0x7f070015;
+        public static final int shopping_mall_place=0x7f07001d;
+        public static final int university_place=0x7f070018;
     }
     public static final class dimen {
         /**  Default height of an action bar. 
@@ -1433,13 +1439,13 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f050028;
         public static final int action_bar_title=0x7f050027;
         public static final int action_context_bar=0x7f050022;
-        public static final int action_example=0x7f0500cc;
-        public static final int action_forgot_password=0x7f0500cd;
-        public static final int action_logout=0x7f0500ce;
+        public static final int action_example=0x7f0500cd;
+        public static final int action_forgot_password=0x7f0500ce;
+        public static final int action_logout=0x7f0500cf;
         public static final int action_menu_divider=0x7f050018;
         public static final int action_menu_presenter=0x7f050019;
         public static final int action_mode_close_button=0x7f050029;
-        public static final int action_settings=0x7f0500cb;
+        public static final int action_settings=0x7f0500cc;
         public static final int activity_chooser_view_content=0x7f05002a;
         public static final int always=0x7f05000d;
         public static final int beginning=0x7f050013;
@@ -1514,7 +1520,7 @@ containing a value of this type.
         public static final int imageButtonLoginFacebook=0x7f05004d;
         public static final int imageButtonSignUp=0x7f05004e;
         public static final int imagePlaceBackground=0x7f050069;
-        public static final int imagePromotionIcon=0x7f0500c8;
+        public static final int imagePromotionIcon=0x7f0500c6;
         public static final int imageRewardIcon=0x7f050090;
         public static final int imageView=0x7f050093;
         public static final int itemDescriptionLabel=0x7f050099;
@@ -1548,8 +1554,9 @@ containing a value of this type.
         public static final int passwordField=0x7f05004a;
         public static final int phoneLabel=0x7f0500a8;
         public static final int picker_subtitle=0x7f050062;
-        public static final int placeAddress=0x7f0500c6;
-        public static final int placeName=0x7f0500c7;
+        public static final int placeAddress=0x7f0500c8;
+        public static final int placeName=0x7f0500c9;
+        public static final int placeWrapper=0x7f0500c7;
         public static final int progress_circular=0x7f05001a;
         public static final int progress_horizontal=0x7f05001b;
         public static final int promotion_preview_image=0x7f0500ae;
@@ -1581,7 +1588,7 @@ containing a value of this type.
         public static final int showTitle=0x7f050008;
         public static final int small=0x7f050000;
         public static final int split_action_bar=0x7f050023;
-        public static final int status=0x7f0500ca;
+        public static final int status=0x7f0500cb;
         public static final int submit_area=0x7f05003e;
         public static final int tabMode=0x7f050004;
         public static final int terrain=0x7f05001d;
@@ -1591,7 +1598,7 @@ containing a value of this type.
         public static final int textListActivityFriendName=0x7f0500c1;
         public static final int textListPromotionDuration=0x7f0500c5;
         public static final int textListPromotionName=0x7f0500c4;
-        public static final int textListPromotionTitleFlash=0x7f0500c9;
+        public static final int textListPromotionTitleFlash=0x7f0500ca;
         public static final int textOpeningHour=0x7f0500ad;
         public static final int textPromotion=0x7f0500a0;
         public static final int textPromotionDesc=0x7f0500b3;

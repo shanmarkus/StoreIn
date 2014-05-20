@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.storein.R;
@@ -30,6 +31,7 @@ public class CustomArrayAdapterPlace extends ArrayAdapter<Place> {
 		TextView mTextPlaceAddress;
 		ImageView mImagePromotionIcon;
 		ImageView mImagePlaceBackground;
+		RelativeLayout mPlaceWrapper;
 
 	}
 
@@ -51,6 +53,8 @@ public class CustomArrayAdapterPlace extends ArrayAdapter<Place> {
 					.findViewById(R.id.imagePromotionIcon);
 			holder.mImagePlaceBackground = (ImageView) convertView
 					.findViewById(R.id.imagePlaceBackground);
+			holder.mPlaceWrapper = (RelativeLayout) convertView
+					.findViewById(R.id.placeWrapper);
 
 			convertView.setTag(holder);
 		} else
@@ -69,21 +73,32 @@ public class CustomArrayAdapterPlace extends ArrayAdapter<Place> {
 		if (temp.equals("Food and Drink")) {
 			holder.mImagePlaceBackground
 					.setImageResource(R.drawable.place_restaurant_and_bar);
+			holder.mPlaceWrapper
+					.setBackgroundResource(R.color.foor_and_bvg_place);
 		} else if (temp.equals("Convinience Store")) {
 			holder.mImagePlaceBackground
 					.setImageResource(R.drawable.place_convenience_store);
+			holder.mPlaceWrapper
+					.setBackgroundResource(R.color.convenience_store_place);
 		} else if (temp.equals("University")) {
 			holder.mImagePlaceBackground
 					.setImageResource(R.drawable.place_university);
+			holder.mPlaceWrapper
+					.setBackgroundResource(R.color.university_place);
 		} else if (temp.equals("Book Store")) {
 			holder.mImagePlaceBackground
 					.setImageResource(R.drawable.place_bookstore);
+			holder.mPlaceWrapper.setBackgroundResource(R.color.bookstore_place);
 		} else if (temp.equals("Coffee Shop")) {
 			holder.mImagePlaceBackground
 					.setImageResource(R.drawable.place_coffee_shop);
+			holder.mPlaceWrapper
+					.setBackgroundResource(R.color.coffeeshop_place);
 		} else if (temp.equals("Shopping Mall")) {
 			holder.mImagePlaceBackground
 					.setImageResource(R.drawable.place_shopping_mall);
+			holder.mPlaceWrapper
+					.setBackgroundResource(R.color.shopping_mall_place);
 		} else {
 
 		}

@@ -4,5 +4,11 @@
     <color name="redTitleFlash">#cc0000</color>
     <color name="box_bg_color">#000000</color>
     <color name="bg_color">#00A5DB</color>
+    <color name="university_place">#31004A</color>
+    <color name="convenience_store_place">#005B27</color>
+    <color name="bookstore_place">#0069A3</color>
+    <color name="coffeeshop_place">#3B2314</color>
+    <color name="foor_and_bvg_place">#840715</color>
+    <color name="shopping_mall_place">#C84725</color>
 
 </resources>

@@ -6,41 +6,50 @@
     <ImageView
         android:id="@+id/imagePlaceBackground"
         android:layout_width="fill_parent"
-        android:contentDescription="@string/image_description_testing"
         android:layout_height="100dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:alpha=".50"
+        android:contentDescription="@string/image_description_testing"
         android:scaleType="centerCrop"
         android:src="@drawable/himeji" />
-
-    <TextView
-        android:id="@+id/placeAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imagePlaceBackground"
-        android:layout_alignLeft="@+id/placeName"
-        android:singleLine="true"
-        android:text="Address of the place "
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <TextView
-        android:id="@+id/placeName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/placeAddress"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="17dp"
-        android:singleLine="true"
-        android:text="Name of Places"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ImageView
         android:id="@+id/imagePromotionIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/placeName"
+        android:layout_alignBottom="@+id/imagePlaceBackground"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true" />
+
+    <RelativeLayout
+        android:id="@+id/placeWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imagePlaceBackground"
+        android:layout_alignParentLeft="true"
+        android:alpha="0.7"
+        android:background="@color/bg_color" >
+
+        <TextView
+            android:id="@+id/placeAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/placeName"
+            android:textColor="@android:color/white"
+            android:singleLine="true"
+            android:text="Address of the place "
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/placeName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="17dp"
+            android:textColor="@android:color/white"
+            android:singleLine="true"
+            android:text="Name of Places"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </RelativeLayout>
 
 </RelativeLayout>
