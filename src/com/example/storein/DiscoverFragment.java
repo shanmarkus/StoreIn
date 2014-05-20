@@ -279,8 +279,8 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 
 			@Override
 			public void done(List<ParsePlace> places, ParseException e) {
-				getActivity().setProgressBarIndeterminateVisibility(false);
 				if (e == null) {
+					getActivity().setProgressBarIndeterminateVisibility(false);
 					// success
 					if (places.size() > 0) {
 						for (ParsePlace place : places) {
@@ -295,6 +295,8 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 
 						}
 					} else {
+						getActivity().setProgressBarIndeterminateVisibility(
+								false);
 						String message = "Sorry there are no promotion near you, please use browse to find other promotion";
 						Toast.makeText(getActivity(), message,
 								Toast.LENGTH_LONG).show();
