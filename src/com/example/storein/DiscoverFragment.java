@@ -42,6 +42,7 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 		OnConnectionFailedListener, LocationListener {
@@ -265,7 +266,7 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 	private void doLocationQuery() {
 		getActivity().setProgressBarIndeterminateVisibility(true);
 
-		ParseGeoPoint location = new ParseGeoPoint(
+		final ParseGeoPoint location = new ParseGeoPoint(
 				currentLocation.getLatitude(), currentLocation.getLongitude());
 
 		// Do the Query
@@ -301,6 +302,8 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 						Toast.makeText(getActivity(), message,
 								Toast.LENGTH_LONG).show();
 					}
+					// Save user last location
+					saveUserLocation(location);
 				} else {
 					errorAlertDialog(e);
 				}
@@ -308,6 +311,27 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 			}
 		});
 
+	}
+
+	/*
+	 * Saving User Location
+	 */
+
+	private void saveUserLocation(final ParseGeoPoint userGeoPoint) {
+		ParseQuery<ParseUser> query = ParseUser.getQuery();
+		query.getInBackground(ParseUser.getCurrentUser().getObjectId(),
+				new GetCallback<ParseUser>() {
+
+					@Override
+					public void done(ParseUser user, ParseException e) {
+						if (e == null) {
+							user.put(ParseConstants.KEY_LOCATION, userGeoPoint);
+							user.saveEventually();
+						} else {
+							errorAlertDialog(e);
+						}
+					}
+				});
 	}
 
 	private void initFindPlace() {
