@@ -52,9 +52,11 @@
             android:id="@+id/imageRewardIcon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
             android:adjustViewBounds="true"
             android:contentDescription="heart_beat"
-            android:src="@drawable/reward_icon" />
+            android:src="@drawable/icon_reward_2_circle" />
     </LinearLayout>
 
     <TextView

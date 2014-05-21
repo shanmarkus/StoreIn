@@ -1347,7 +1347,7 @@ containing a value of this type.
         public static final int com_facebook_list_section_header_background=0x7f020067;
         public static final int com_facebook_loginbutton_silver=0x7f020068;
         public static final int com_facebook_logo=0x7f020069;
-        public static final int com_facebook_picker_default_separator_color=0x7f0200b8;
+        public static final int com_facebook_picker_default_separator_color=0x7f0200b9;
         public static final int com_facebook_picker_item_background=0x7f02006a;
         public static final int com_facebook_picker_list_focused=0x7f02006b;
         public static final int com_facebook_picker_list_longpressed=0x7f02006c;
@@ -1405,27 +1405,28 @@ containing a value of this type.
         public static final int icon_checkin_square=0x7f0200a0;
         public static final int icon_recommend_circle=0x7f0200a1;
         public static final int icon_recommend_square=0x7f0200a2;
-        public static final int icon_star=0x7f0200a3;
-        public static final int login_button_login=0x7f0200a4;
-        public static final int login_facebook=0x7f0200a5;
-        public static final int login_or_text=0x7f0200a6;
-        public static final int login_password=0x7f0200a7;
-        public static final int login_signup_storein=0x7f0200a8;
-        public static final int login_username=0x7f0200a9;
-        public static final int loginbuilding=0x7f0200aa;
-        public static final int logo_storein=0x7f0200ab;
-        public static final int overscroll_left=0x7f0200ac;
-        public static final int overscroll_right=0x7f0200ad;
-        public static final int petronas_twin_tower=0x7f0200ae;
-        public static final int place_bookstore=0x7f0200af;
-        public static final int place_coffee_shop=0x7f0200b0;
-        public static final int place_convenience_store=0x7f0200b1;
-        public static final int place_restaurant_and_bar=0x7f0200b2;
-        public static final int place_shopping_mall=0x7f0200b3;
-        public static final int place_university=0x7f0200b4;
-        public static final int promotion_icon=0x7f0200b5;
-        public static final int reward_icon=0x7f0200b6;
-        public static final int ulm=0x7f0200b7;
+        public static final int icon_reward_2_circle=0x7f0200a3;
+        public static final int icon_star=0x7f0200a4;
+        public static final int login_button_login=0x7f0200a5;
+        public static final int login_facebook=0x7f0200a6;
+        public static final int login_or_text=0x7f0200a7;
+        public static final int login_password=0x7f0200a8;
+        public static final int login_signup_storein=0x7f0200a9;
+        public static final int login_username=0x7f0200aa;
+        public static final int loginbuilding=0x7f0200ab;
+        public static final int logo_storein=0x7f0200ac;
+        public static final int overscroll_left=0x7f0200ad;
+        public static final int overscroll_right=0x7f0200ae;
+        public static final int petronas_twin_tower=0x7f0200af;
+        public static final int place_bookstore=0x7f0200b0;
+        public static final int place_coffee_shop=0x7f0200b1;
+        public static final int place_convenience_store=0x7f0200b2;
+        public static final int place_restaurant_and_bar=0x7f0200b3;
+        public static final int place_shopping_mall=0x7f0200b4;
+        public static final int place_university=0x7f0200b5;
+        public static final int promotion_icon=0x7f0200b6;
+        public static final int reward_icon=0x7f0200b7;
+        public static final int ulm=0x7f0200b8;
     }
     public static final class id {
         public static final int ButtonAdd=0x7f050069;
@@ -1440,13 +1441,13 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f050028;
         public static final int action_bar_title=0x7f050027;
         public static final int action_context_bar=0x7f050022;
-        public static final int action_example=0x7f0500ce;
-        public static final int action_forgot_password=0x7f0500cf;
-        public static final int action_logout=0x7f0500d0;
+        public static final int action_example=0x7f0500cd;
+        public static final int action_forgot_password=0x7f0500ce;
+        public static final int action_logout=0x7f0500cf;
         public static final int action_menu_divider=0x7f050018;
         public static final int action_menu_presenter=0x7f050019;
         public static final int action_mode_close_button=0x7f050029;
-        public static final int action_settings=0x7f0500cd;
+        public static final int action_settings=0x7f0500cc;
         public static final int activity_chooser_view_content=0x7f05002a;
         public static final int always=0x7f05000d;
         public static final int beginning=0x7f050013;
@@ -1590,7 +1591,6 @@ containing a value of this type.
         public static final int showTitle=0x7f050008;
         public static final int small=0x7f050000;
         public static final int split_action_bar=0x7f050023;
-        public static final int status=0x7f0500cc;
         public static final int submit_area=0x7f05003e;
         public static final int tabMode=0x7f050004;
         public static final int terrain=0x7f05001d;
@@ -1751,8 +1751,7 @@ containing a value of this type.
         public static final int list_item_layout=0x7f030053;
         public static final int list_place_layout=0x7f030054;
         public static final int list_promotion_layout=0x7f030055;
-        public static final int notify_demo=0x7f030056;
-        public static final int support_simple_spinner_dropdown_item=0x7f030057;
+        public static final int support_simple_spinner_dropdown_item=0x7f030056;
     }
     public static final class menu {
         public static final int add_friend=0x7f0c0000;
