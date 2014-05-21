@@ -159,22 +159,10 @@
             android:layout_width="fill_parent"
             android:layout_height="66dp"
             android:layout_below="@+id/secondLayout"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
             android:layout_marginTop="25dp"
             android:background="@color/bg_color" >
-
-            <ImageView
-                android:id="@+id/ImageView01"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="28dp"
-                android:adjustViewBounds="true"
-                android:scaleX="0.8"
-                android:scaleY="0.8"
-                android:src="@drawable/icon_reward_circle" />
 
             <TextView
                 android:id="@+id/loginTextForgetPassword"
@@ -197,6 +185,17 @@
                 android:textColor="@android:color/white"
                 android:textSize="30sp" />
 
+            <ImageView
+                android:id="@+id/ImageView01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:adjustViewBounds="true"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:src="@drawable/icon_reward_circle" />
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -204,8 +203,8 @@
             android:layout_width="fill_parent"
             android:layout_height="66dp"
             android:layout_below="@+id/thirdLayout"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
             android:layout_marginTop="25dp"
             android:background="@color/bg_color" >
 
