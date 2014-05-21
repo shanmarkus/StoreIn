@@ -3,8 +3,10 @@ package com.example.storein;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,7 +21,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -43,6 +44,7 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 		OnConnectionFailedListener, LocationListener {
@@ -59,6 +61,9 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 	ArrayList<HashMap<String, String>> placesInfo = new ArrayList<HashMap<String, String>>();
 	protected ArrayList<String> placesID = new ArrayList<String>();
 	HashMap<String, String> placeInfo = new HashMap<String, String>();
+	ProgressDialog progressDialog;
+
+	private String placeId;
 
 	// Place Constant
 	private Location currentLocation = null;
@@ -161,6 +166,23 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 	 * Function Added
 	 */
 
+	/*
+	 * Progress Dialog initiate
+	 */
+
+	private void initProgressDialog() {
+		progressDialog = new ProgressDialog(getActivity());
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progressDialog.setMessage("Loading");
+		progressDialog.setIndeterminate(true);
+		progressDialog.setCancelable(false);
+		progressDialog.show();
+	}
+
+	/*
+	 * On Click Listener
+	 */
+
 	private void onClickListener() {
 		mDiscoverButtonBrowse.setOnClickListener(new OnClickListener() {
 
@@ -177,6 +199,23 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity(), CheckInActivity.class);
 				startActivity(intent);
+			}
+		});
+
+		mDiscoverButtonRecommendation.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				initProgressDialog();
+				Random random = new Random();
+				Integer rand = random.nextInt(2);
+				Toast.makeText(getActivity(), rand + "", Toast.LENGTH_SHORT)
+						.show();
+				if (rand == 0) {
+					getRecomendationPlace();
+				} else {
+					getRecemmendationPromotion();
+				}
 			}
 		});
 	}
@@ -201,9 +240,9 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 			@Override
 			public void done(ParseObject place, ParseException e) {
 				if (e == null) {
+					progressDialog.dismiss();
 
-					String objectId = place.getObjectId();
-					// placeId = objectId;
+					placeId = place.getObjectId();
 
 					String placeName = place.getString(ParseConstants.KEY_NAME);
 					Integer numberCheckIn = place
@@ -223,39 +262,63 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 							+ " there are "
 							+ numberCheckIn
 							+ " number of people already check in to this place";
+
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							getActivity());
+					builder.setMessage(text)
+							.setPositiveButton("Check In",
+									dialogRecomendationListener)
+							.setNegativeButton("Cancel",
+									dialogRecomendationListener).show();
+
 				} else {
+					progressDialog.dismiss();
 					errorAlertDialog(e);
 				}
 			}
 		});
 	}
 
-	private void getRecemmendationPromotion() {
+	private void getRecemmendationPromotion(String targetPlaceId) {
+		
+		ParseObject currentPlace = ParseObject.createWithoutData(ParseConstants.TABLE_PLACE, targetPlaceId);
 		ParseQuery<ParseObject> query = ParseQuery
 				.getQuery(ParseConstants.TABLE_REL_PROMOTION_PLACE);
-		query.addAscendingOrder(ParseConstants.KEY_TOTAL_CLAIMED);
+		query.whereEqualTo(ParseConstants.KEY_PLACE_ID, currentPlace);
+		query.orderByAscending(ParseConstants.KEY_TOTAL_CLAIMED);
 		query.include(ParseConstants.KEY_PROMOTION_ID);
-		query.setLimit(2);
-		query.findInBackground(new FindCallback<ParseObject>() {
+		query.include(ParseConstants.KEY_PLACE_ID);
+		query.getFirstInBackground(new GetCallback<ParseObject>() {
 
 			@Override
-			public void done(List<ParseObject> promotions, ParseException e) {
+			public void done(ParseObject promotion, ParseException e) {
 				if (e == null) {
-					for (ParseObject promotion : promotions) {
+					progressDialog.dismiss();
+					Integer totalPromotionClaim = promotion
+							.getInt(ParseConstants.KEY_TOTAL_CLAIMED);
 
-						Integer totalPromotionClaim = promotion
-								.getInt(ParseConstants.KEY_TOTAL_CLAIMED);
+					ParseObject object = promotion
+							.getParseObject(ParseConstants.KEY_PROMOTION_ID);
+					ParseObject targetPlace = promotion
+							.getParseObject(ParseConstants.KEY_PLACE_ID);
+					
+					// get the place Id
+					placeId = targetPlace.getObjectId();
+					String objectName = object
+							.getString(ParseConstants.KEY_NAME);
 
-						ParseObject object = promotion
-								.getParseObject(ParseConstants.KEY_PROMOTION_ID);
-						String objectId = object.getObjectId();
-						String objectName = object
-								.getString(ParseConstants.KEY_NAME);
+					String message = objectName + " is trending, "
+							+ totalPromotionClaim
+							+ " already claimed, Hurry and "
+							+ "go for Check In to grab this promotion";
 
-						String message = objectName + " is trending, "
-								+ totalPromotionClaim + " already claimed";
-
-					}
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							getActivity());
+					builder.setMessage(message)
+							.setPositiveButton("Check In",
+									dialogRecomendationListener)
+							.setNegativeButton("Cancel",
+									dialogRecomendationListener).show();
 				} else {
 
 				}
@@ -285,10 +348,13 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 					// success
 					if (places.size() > 0) {
 						for (ParsePlace place : places) {
+							String objectId = place.getObjectId();
 							String name = place.getName();
 							ParseGeoPoint geoPoint = place
 									.getParseGeoPoint(ParseConstants.KEY_LOCATION);
 
+							// Adding to ArrayList
+							placesID.add(objectId);
 							// Adding Marker
 							mMap.addMarker(new MarkerOptions().position(
 									new LatLng(geoPoint.getLatitude(), geoPoint
@@ -390,6 +456,63 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 				});
 		AlertDialog alert = alertDialogBuilder.create();
 		alert.show();
+	}
+
+	/*
+	 * Alert Dialog For Check In
+	 */
+
+	DialogInterface.OnClickListener dialogRecomendationListener = new DialogInterface.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			switch (which) {
+			case DialogInterface.BUTTON_POSITIVE:
+				saveUserActivity(placeId);
+				break;
+
+			case DialogInterface.BUTTON_NEGATIVE:
+				// do nothing
+				break;
+			}
+		}
+	};
+
+	/*
+	 * Parse Save User Check In if possible
+	 */
+
+	private void saveUserActivity(final String placeID) {
+		initProgressDialog();
+		String userId = ParseUser.getCurrentUser().getObjectId();
+
+		ParseObject tempUser = ParseObject.createWithoutData(
+				ParseConstants.TABLE_USER, userId);
+		ParseObject tempPlace = ParseObject.createWithoutData(
+				ParseConstants.TABLE_PLACE, placeID);
+
+		ParseObject checkInActivity = new ParseObject(
+				ParseConstants.TABLE_ACTV_USER_CHECK_IN_PLACE);
+		checkInActivity.put(ParseConstants.KEY_USER_ID, tempUser);
+		checkInActivity.put(ParseConstants.KEY_PLACE_ID, tempPlace);
+		checkInActivity.saveInBackground(new SaveCallback() {
+
+			@Override
+			public void done(ParseException e) {
+				progressDialog.dismiss();
+				if (e == null) {
+					// success
+					Toast.makeText(getActivity(), "Check In Success",
+							Toast.LENGTH_SHORT).show();
+					Intent intent = new Intent(getActivity(),
+							LocationInformation.class);
+					intent.putExtra(ParseConstants.KEY_OBJECT_ID, placeID);
+					startActivity(intent);
+				} else {
+					// failed
+					errorAlertDialog(e);
+				}
+			}
+		});
 	}
 
 	/*

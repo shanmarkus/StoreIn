@@ -14,16 +14,15 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.CountCallback;
 import com.parse.GetCallback;
-import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -428,6 +427,10 @@ public class PromotionDetail extends ActionBarActivity {
 								"Claim Activity has been saved",
 								Toast.LENGTH_SHORT).show();
 						claimActivityId = tempPromotionId.getObjectId();
+						
+						// updating total claimed per promotion to the table 
+						getTotalClaimed(placeId, promotionId);
+						
 						String message = "Thank you for claiming this promotion, please show this "
 								+ "number to the cashier to earn your points "
 								+ claimActivityId;
@@ -471,6 +474,54 @@ public class PromotionDetail extends ActionBarActivity {
 				}
 			}
 		};
+
+		/*
+		 * private void update total claimed promotion
+		 */
+
+		private void getTotalClaimed(String promotionId, String placeId) {
+			final ParseObject currentPromotion = ParseObject.createWithoutData(
+					ParseConstants.TABLE_PROMOTION, promotionId);
+			final ParseObject currentPlace = ParseObject.createWithoutData(
+					ParseConstants.TABLE_PLACE, placeId);
+
+			ParseQuery<ParseObject> query = ParseQuery
+					.getQuery(ParseConstants.TABLE_ACTV_USER_CLAIM_PROMOTION);
+			query.whereEqualTo(ParseConstants.KEY_PROMOTION_ID,
+					currentPromotion);
+			query.whereEqualTo(ParseConstants.KEY_PLACE_ID, currentPlace);
+			query.countInBackground(new CountCallback() {
+
+				@Override
+				public void done(final int total, ParseException e) {
+					if (e == null) {
+						ParseQuery<ParseObject> innerQuery = ParseQuery
+								.getQuery(ParseConstants.TABLE_REL_PROMOTION_PLACE);
+						innerQuery.whereEqualTo(
+								ParseConstants.KEY_PROMOTION_ID,
+								currentPromotion);
+						innerQuery.whereEqualTo(ParseConstants.KEY_PLACE_ID,
+								currentPromotion);
+						innerQuery
+								.getFirstInBackground(new GetCallback<ParseObject>() {
+
+									@Override
+									public void done(
+											ParseObject relPromotionPlace,
+											ParseException e) {
+										relPromotionPlace
+												.put(ParseConstants.KEY_TOTAL_CLAIMED,
+														total);
+										relPromotionPlace.saveEventually();
+									}
+								});
+
+					} else {
+						parseErrorDialog(e);
+					}
+				}
+			});
+		}
 
 		/*
 		 * Debug if ParseException throw the alert dialog

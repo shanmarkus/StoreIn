@@ -208,18 +208,6 @@
             android:layout_marginTop="25dp"
             android:background="@color/bg_color" >
 
-            <ImageView
-                android:id="@+id/imageRewardIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="28dp"
-                android:adjustViewBounds="true"
-                android:scaleX="0.8"
-                android:scaleY="0.8"
-                android:src="@drawable/icon_reward_2_circle" />
-
             <TextView
                 android:id="@+id/TextView01"
                 android:layout_width="wrap_content"
@@ -241,6 +229,17 @@
                 android:textColor="@android:color/white"
                 android:textSize="30sp" />
 
+            <ImageView
+                android:id="@+id/imageRewardIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:adjustViewBounds="true"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:src="@drawable/icon_reward_2_circle" />
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -257,9 +256,9 @@
                 android:id="@+id/loginImageLoginButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginLeft="31dp"
+                android:layout_marginRight="16dp"
                 android:background="@drawable/icon_treasure_box_2"
                 android:scaleType="center" />
 

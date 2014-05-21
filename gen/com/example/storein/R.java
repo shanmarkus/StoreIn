@@ -1432,11 +1432,11 @@ containing a value of this type.
     }
     public static final class id {
         public static final int ButtonAdd=0x7f050069;
-        public static final int ImageView01=0x7f05008f;
+        public static final int ImageView01=0x7f050090;
         public static final int LocationsList=0x7f0500be;
         public static final int ScrollView1=0x7f050095;
         public static final int SearchButton=0x7f05007e;
-        public static final int TextView01=0x7f050094;
+        public static final int TextView01=0x7f050092;
         public static final int action_bar=0x7f050021;
         public static final int action_bar_activity_content=0x7f050017;
         public static final int action_bar_container=0x7f050020;
@@ -1517,7 +1517,7 @@ containing a value of this type.
         public static final int homeNumberFollowing=0x7f05008b;
         public static final int homeNumberFollowingTitle=0x7f050088;
         public static final int homeProfilePicture=0x7f050082;
-        public static final int homeTextRewardPoints=0x7f050092;
+        public static final int homeTextRewardPoints=0x7f050093;
         public static final int homeUserName=0x7f050084;
         public static final int hybrid=0x7f05001e;
         public static final int icon=0x7f05002f;
@@ -1527,7 +1527,7 @@ containing a value of this type.
         public static final int imageButtonSignUp=0x7f05004e;
         public static final int imagePlaceBackground=0x7f05006a;
         public static final int imagePromotionIcon=0x7f0500c9;
-        public static final int imageRewardIcon=0x7f050093;
+        public static final int imageRewardIcon=0x7f050094;
         public static final int imageView=0x7f050096;
         public static final int itemDescriptionLabel=0x7f05009c;
         public static final int itemTitleLabel=0x7f05009b;
@@ -1624,7 +1624,7 @@ containing a value of this type.
         public static final int textTotalCheckIn=0x7f0500ae;
         public static final int textUserName=0x7f05006b;
         public static final int textView1=0x7f050044;
-        public static final int textView2=0x7f050090;
+        public static final int textView2=0x7f05008f;
         public static final int textView3=0x7f050083;
         public static final int textlistActivityDate=0x7f0500c6;
         public static final int textlistActivityFriendActivity=0x7f0500c5;
