@@ -100,6 +100,16 @@
             android:layout_below="@+id/textTitleOpeningHour"
             android:text="@string/location_detail_opening_hour" />
 
+        <Button
+            android:id="@+id/locationDetailFollowButton"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textTitleOpeningHour"
+            android:layout_alignBottom="@+id/textTitleOpeningHour"
+            android:layout_alignLeft="@+id/textTotalCheckIn"
+            android:text="@string/promotion_detail_follow" />
+
     </RelativeLayout>
 
 </ScrollView>

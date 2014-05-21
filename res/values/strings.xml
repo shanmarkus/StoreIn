@@ -119,5 +119,6 @@
     <string name="forget_password_enter_email_address">Please enter your email address</string>
     <string name="forget_password_reset_password">Reset Password</string>
     <string name="home_reward_promotion_title">Points</string>
+    <string name="promotion_detail_follow">Follow</string>
 
 </resources>
