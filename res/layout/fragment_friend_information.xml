@@ -6,8 +6,9 @@
 
     <RelativeLayout
         android:id="@+id/relativeLayout1"
+        android:padding="10dp"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical" >
 
         <EditText
@@ -18,28 +19,30 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
             android:ems="10"
-            android:hint="@string/friend_information_hint" >
+            android:hint="@string/friend_information_hint"
+            android:singleLine="true" >
 
             <requestFocus />
         </EditText>
 
         <ImageButton
             android:id="@+id/SearchButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/textFindFriend"
             android:layout_marginLeft="19dp"
             android:layout_toRightOf="@+id/textFindFriend"
             android:contentDescription="@string/friend_information_imagebutton_desc"
             android:scaleType="fitXY"
-            android:src="@android:drawable/ic_search_category_default" />
+            android:background="@android:drawable/ic_search_category_default" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/relativeLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp" >
+        android:layout_below="@+id/relativeLayout1"
+        android:layout_marginTop="10dp" >
 
         <TextView
             android:id="@+id/textTitleFollowing"
@@ -55,7 +58,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp" >
         </ListView>
-
     </RelativeLayout>
 
 </RelativeLayout>
