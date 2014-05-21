@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_color"
     android:orientation="vertical"
     android:weightSum="1"
     tools:context="com.example.storein.HomeFragment" >
@@ -62,8 +61,7 @@
             android:layout_below="@+id/firstLayout"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
-            android:alpha="0.5"
-            android:background="@color/box_bg_color" >
+            android:background="@color/bg_color" >
 
             <TextView
                 android:id="@+id/homeNumberFollowerTitle"
@@ -160,12 +158,23 @@
             android:id="@+id/thirdLayout"
             android:layout_width="fill_parent"
             android:layout_height="66dp"
+            android:layout_below="@+id/secondLayout"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="25dp"
-            android:layout_below="@+id/secondLayout"
-            android:alpha="0.5"
-            android:background="@color/box_bg_color" >
+            android:background="@color/bg_color" >
+
+            <ImageView
+                android:id="@+id/ImageView01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="28dp"
+                android:adjustViewBounds="true"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:src="@drawable/icon_reward_circle" />
 
             <TextView
                 android:id="@+id/loginTextForgetPassword"
@@ -173,7 +182,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="16dp"
+                android:layout_marginRight="15dp"
                 android:text="@string/home_claimed_promotion_title"
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
@@ -182,24 +191,23 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="28dp"
-                android:layout_toLeftOf="@+id/loginTextForgetPassword"
                 android:text="@string/home_reward_points"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textSize="30sp" />
+
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/forthLayout"
-            android:layout_below="@+id/thirdLayout"
             android:layout_width="fill_parent"
             android:layout_height="66dp"
+            android:layout_below="@+id/thirdLayout"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="25dp"
-            android:alpha="0.5"
-            android:background="@color/box_bg_color" >
+            android:background="@color/bg_color" >
 
             <ImageView
                 android:id="@+id/imageRewardIcon"
@@ -207,7 +215,22 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:src="@drawable/reward_icon" />
+                android:layout_marginLeft="28dp"
+                android:adjustViewBounds="true"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:src="@drawable/icon_reward_2_circle" />
+
+            <TextView
+                android:id="@+id/TextView01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="18dp"
+                android:text="@string/home_reward_promotion_title"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/homeTextRewardPoints"
@@ -218,24 +241,29 @@
                 android:text="@string/home_reward_points"
                 android:textColor="@android:color/white"
                 android:textSize="30sp" />
+
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_below="@+id/forthLayout"
             android:layout_width="fill_parent"
             android:layout_height="66dp"
+            android:layout_below="@+id/forthLayout"
+            android:layout_marginBottom="30dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="25dp"
-            android:alpha="0.5"
-            android:layout_marginBottom="30dp"
-            android:background="@color/box_bg_color" >
+            android:background="@android:color/transparent" >
 
             <ImageButton
                 android:id="@+id/loginImageLoginButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/chiang_mai" />
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="31dp"
+                android:background="@drawable/icon_treasure_box_2"
+                android:scaleType="center" />
+
         </RelativeLayout>
     </RelativeLayout>
 
