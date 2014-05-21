@@ -18,6 +18,7 @@
     <string name="login_error_title">Login Error</string>
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
+    <string name="name_hint">Your Name</string>
     <string name="email_hint">Email</string>
     <string name="sign_up_button_label">Sign up</string>
     <string name="signup_error_message">Make sure you enter a username, email and password</string>

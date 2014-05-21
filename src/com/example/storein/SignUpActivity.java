@@ -22,6 +22,7 @@ public class SignUpActivity extends ActionBarActivity {
 	protected EditText mUsername;
 	protected EditText mPassword;
 	protected EditText mEmail;
+	protected EditText mName;
 	protected Button mSignUpButton;
 
 	@Override
@@ -33,6 +34,7 @@ public class SignUpActivity extends ActionBarActivity {
 		mUsername = (EditText) findViewById(R.id.usernameField);
 		mPassword = (EditText) findViewById(R.id.passwordField);
 		mEmail = (EditText) findViewById(R.id.emailField);
+		mName = (EditText) findViewById(R.id.nameField);
 		mSignUpButton = (Button) findViewById(R.id.resetButton);
 
 		mSignUpButton.setOnClickListener(new OnClickListener() {
@@ -42,6 +44,7 @@ public class SignUpActivity extends ActionBarActivity {
 				String username = mUsername.getText().toString();
 				String password = mPassword.getText().toString();
 				String email = mEmail.getText().toString();
+				String name = mName.getText().toString();
 
 				username = username.trim();
 				password = password.trim();
@@ -63,6 +66,7 @@ public class SignUpActivity extends ActionBarActivity {
 					user.setUsername(username);
 					user.setEmail(email);
 					user.setPassword(password);
+					user.put(ParseConstants.KEY_NAME, name);
 
 					user.signUpInBackground(new SignUpCallback() {
 
