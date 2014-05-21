@@ -214,7 +214,9 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 				if (rand == 0) {
 					getRecomendationPlace();
 				} else {
-					getRecemmendationPromotion();
+					rand = random.nextInt(placesID.size());
+					placeId = placesID.get(rand);
+					getRecemmendationPromotion(placeId);
 				}
 			}
 		});
@@ -234,7 +236,7 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 				.getQuery(ParseConstants.TABLE_PLACE);
 		query.whereWithinKilometers(ParseConstants.KEY_LOCATION, location,
 				MAX_PlACE_SEARCH_DISTANCE);
-		query.addAscendingOrder(ParseConstants.KEY_TOTAL_CHECK_IN);
+		query.orderByDescending(ParseConstants.KEY_TOTAL_CHECK_IN);
 		query.getFirstInBackground(new GetCallback<ParseObject>() {
 
 			@Override
@@ -280,12 +282,13 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 	}
 
 	private void getRecemmendationPromotion(String targetPlaceId) {
-		
-		ParseObject currentPlace = ParseObject.createWithoutData(ParseConstants.TABLE_PLACE, targetPlaceId);
+
+		ParseObject currentPlace = ParseObject.createWithoutData(
+				ParseConstants.TABLE_PLACE, targetPlaceId);
 		ParseQuery<ParseObject> query = ParseQuery
 				.getQuery(ParseConstants.TABLE_REL_PROMOTION_PLACE);
 		query.whereEqualTo(ParseConstants.KEY_PLACE_ID, currentPlace);
-		query.orderByAscending(ParseConstants.KEY_TOTAL_CLAIMED);
+		query.orderByDescending(ParseConstants.KEY_TOTAL_CLAIMED);
 		query.include(ParseConstants.KEY_PROMOTION_ID);
 		query.include(ParseConstants.KEY_PLACE_ID);
 		query.getFirstInBackground(new GetCallback<ParseObject>() {
@@ -301,7 +304,7 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 							.getParseObject(ParseConstants.KEY_PROMOTION_ID);
 					ParseObject targetPlace = promotion
 							.getParseObject(ParseConstants.KEY_PLACE_ID);
-					
+
 					// get the place Id
 					placeId = targetPlace.getObjectId();
 					String objectName = object
@@ -320,7 +323,8 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 							.setNegativeButton("Cancel",
 									dialogRecomendationListener).show();
 				} else {
-
+					errorAlertDialog(e);
+					progressDialog.dismiss();
 				}
 			}
 		});
