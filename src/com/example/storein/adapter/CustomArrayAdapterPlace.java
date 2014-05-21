@@ -47,7 +47,7 @@ public class CustomArrayAdapterPlace extends ArrayAdapter<Place> {
 			holder = new ViewHolder();
 			holder.mTextPlaceName = (TextView) convertView
 					.findViewById(R.id.placeName);
-			holder.mTextPlaceAddress = (TextView) convertView
+			holder.mTextPlaceAddress =  (TextView) convertView
 					.findViewById(R.id.placeAddress);
 			holder.mImagePromotionIcon = (ImageView) convertView
 					.findViewById(R.id.imagePromotionIcon);
@@ -65,7 +65,7 @@ public class CustomArrayAdapterPlace extends ArrayAdapter<Place> {
 		holder.mTextPlaceAddress.setText(record.getAddress());
 		if (record.getIsPromotion() == true) {
 			holder.mImagePromotionIcon
-					.setImageResource(R.drawable.promotion_icon);
+					.setImageResource(R.drawable.icon_star);
 		} else {
 			// do nothing
 		}
