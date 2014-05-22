@@ -422,13 +422,13 @@ int id action_bar_root 0x7f05001f
 int id action_bar_subtitle 0x7f050028
 int id action_bar_title 0x7f050027
 int id action_context_bar 0x7f050022
-int id action_example 0x7f0500d1
-int id action_forgot_password 0x7f0500d2
-int id action_logout 0x7f0500d3
+int id action_example 0x7f0500d2
+int id action_forgot_password 0x7f0500d3
+int id action_logout 0x7f0500d4
 int id action_menu_divider 0x7f050018
 int id action_menu_presenter 0x7f050019
 int id action_mode_close_button 0x7f050029
-int id action_settings 0x7f0500d0
+int id action_settings 0x7f0500d1
 int id activity_chooser_view_content 0x7f05002a
 int id always 0x7f05000d
 int id beginning 0x7f050013
@@ -508,6 +508,7 @@ int id imagePlaceBackground 0x7f05006a
 int id imagePromotionIcon 0x7f0500cb
 int id imageRewardIcon 0x7f050094
 int id imageView 0x7f050096
+int id imageView1 0x7f0500cf
 int id itemDescriptionLabel 0x7f05009c
 int id itemTitleLabel 0x7f05009b
 int id large 0x7f050002
@@ -584,7 +585,7 @@ int id textItemDetailTotalReward 0x7f050099
 int id textListActivityFriendName 0x7f0500c6
 int id textListPromotionDuration 0x7f0500ca
 int id textListPromotionName 0x7f0500c9
-int id textListPromotionTitleFlash 0x7f0500cf
+int id textListPromotionTitleFlash 0x7f0500d0
 int id textOpeningHour 0x7f0500b0
 int id textPromotion 0x7f0500a3
 int id textPromotionDesc 0x7f0500b7

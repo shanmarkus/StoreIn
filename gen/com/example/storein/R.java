@@ -1445,13 +1445,13 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f050028;
         public static final int action_bar_title=0x7f050027;
         public static final int action_context_bar=0x7f050022;
-        public static final int action_example=0x7f0500d1;
-        public static final int action_forgot_password=0x7f0500d2;
-        public static final int action_logout=0x7f0500d3;
+        public static final int action_example=0x7f0500d2;
+        public static final int action_forgot_password=0x7f0500d3;
+        public static final int action_logout=0x7f0500d4;
         public static final int action_menu_divider=0x7f050018;
         public static final int action_menu_presenter=0x7f050019;
         public static final int action_mode_close_button=0x7f050029;
-        public static final int action_settings=0x7f0500d0;
+        public static final int action_settings=0x7f0500d1;
         public static final int activity_chooser_view_content=0x7f05002a;
         public static final int always=0x7f05000d;
         public static final int beginning=0x7f050013;
@@ -1531,6 +1531,7 @@ containing a value of this type.
         public static final int imagePromotionIcon=0x7f0500cb;
         public static final int imageRewardIcon=0x7f050094;
         public static final int imageView=0x7f050096;
+        public static final int imageView1=0x7f0500cf;
         public static final int itemDescriptionLabel=0x7f05009c;
         public static final int itemTitleLabel=0x7f05009b;
         public static final int large=0x7f050002;
@@ -1607,7 +1608,7 @@ containing a value of this type.
         public static final int textListActivityFriendName=0x7f0500c6;
         public static final int textListPromotionDuration=0x7f0500ca;
         public static final int textListPromotionName=0x7f0500c9;
-        public static final int textListPromotionTitleFlash=0x7f0500cf;
+        public static final int textListPromotionTitleFlash=0x7f0500d0;
         public static final int textOpeningHour=0x7f0500b0;
         public static final int textPromotion=0x7f0500a3;
         public static final int textPromotionDesc=0x7f0500b7;

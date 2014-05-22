@@ -52,4 +52,11 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </RelativeLayout>
 
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:layout_below="@+id/placeWrapper"
+        android:contentDescription="@string/image_description_testing" />
+
 </RelativeLayout>

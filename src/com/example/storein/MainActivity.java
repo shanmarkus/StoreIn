@@ -1,7 +1,5 @@
 package com.example.storein;
 
-import java.util.Set;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,7 +30,6 @@ import com.facebook.model.GraphUser;
 import com.parse.ParseAnalytics;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
-import com.parse.PushService;
 
 public class MainActivity extends ActionBarActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -74,9 +71,9 @@ public class MainActivity extends ActionBarActivity implements
 		mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
 				(DrawerLayout) findViewById(R.id.drawer_layout));
 
-		// Push notif
-		Set<String> setOfAllSubscriptions = PushService
-				.getSubscriptions(getApplicationContext());
+		// // Push notif
+		// Set<String> setOfAllSubscriptions = PushService
+		// .getSubscriptions(getApplicationContext());
 
 	}
 
