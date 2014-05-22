@@ -14,12 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.parse.GetCallback;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -29,6 +31,7 @@ public class HomeFragment extends Fragment {
 	ProgressDialog progressDialog;
 
 	// UI Variables
+	ParseImageView mHomeProfilePicture;
 	TextView mHomeUserName;
 	TextView mHomeNumberCheckIn;
 	TextView mHomeNumberFollower;
@@ -82,6 +85,8 @@ public class HomeFragment extends Fragment {
 		}
 
 		// UI Declaration
+		mHomeProfilePicture = (ParseImageView) rootView
+				.findViewById(R.id.homeProfilePicture);
 		mHomeNumberCheckIn = (TextView) rootView
 				.findViewById(R.id.homeNumberCheckIn);
 		mHomeNumberFollower = (TextView) rootView
@@ -160,6 +165,8 @@ public class HomeFragment extends Fragment {
 							.getInt(ParseConstants.KEY_TOTAL_CHECK_IN);
 					Integer userTotalClaimedPromotion = user
 							.getInt(ParseConstants.KEY_TOTAL_CLAIMED_PROMOTION);
+					ParseFile userImage = user
+							.getParseFile(ParseConstants.KEY_IMAGE);
 
 					mHomeUserName.setText(userName);
 					mHomeNumberFollower.setText(userFollower + "");
@@ -167,6 +174,18 @@ public class HomeFragment extends Fragment {
 					mHomeNumberCheckIn.setText(userTotalCheckIn + "");
 					mHomeTextClaimedPromotion.setText(userTotalClaimedPromotion
 							+ "");
+					mHomeProfilePicture.setParseFile(userImage);
+
+					// Image Laoder
+					mHomeProfilePicture.loadInBackground(new GetDataCallback() {
+
+						@Override
+						public void done(byte[] arg0, ParseException arg1) {
+							// DO nothing
+
+						}
+					});
+
 					getTotalReward(userId);
 				} else {
 					progressDialog.dismiss();

@@ -8,7 +8,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical" >
 
         <RelativeLayout
@@ -21,7 +21,7 @@
             android:layout_marginTop="25dp"
             android:background="@android:color/transparent" >
 
-            <ImageView
+            <com.parse.ParseImageView
                 android:id="@+id/homeProfilePicture"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
@@ -195,7 +195,6 @@
                 android:scaleX="0.8"
                 android:scaleY="0.8"
                 android:src="@drawable/icon_reward_circle" />
-
         </RelativeLayout>
 
         <RelativeLayout
@@ -239,7 +238,6 @@
                 android:scaleX="0.8"
                 android:scaleY="0.8"
                 android:src="@drawable/icon_reward_2_circle" />
-
         </RelativeLayout>
 
         <RelativeLayout
@@ -261,7 +259,6 @@
                 android:layout_marginRight="16dp"
                 android:background="@drawable/icon_treasure_box_2"
                 android:scaleType="center" />
-
         </RelativeLayout>
     </RelativeLayout>
 
