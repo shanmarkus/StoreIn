@@ -94,7 +94,7 @@
     <string name="add_friend_username">Friend Username</string>
     <string name="title_activity_beacon">Beacon Search</string>
     <string name="title_activity_beacon_manager">Beacon Finder</string>
-    <string name="home_claimed_promotion_title">Claimed</string>
+    <string name="home_claimed_promotion_title">Promotion Claimed</string>
     <string name="home_recomendation_title">Recomendation</string>
     <string name="home_recomendation_place">Recommended place</string>
     <string name="home_recomended_item">recommended item</string>
@@ -120,7 +120,7 @@
     <string name="login_forget_password">forgot your password ?</string>
     <string name="forget_password_enter_email_address">Please enter your email address</string>
     <string name="forget_password_reset_password">Reset Password</string>
-    <string name="home_reward_promotion_title">Points</string>
+    <string name="home_reward_promotion_title">Reward Points</string>
     <string name="promotion_detail_follow">Follow</string>
     <string name="title_activity_stash">Stash</string>
     <string name="title_activity_edit_profile">Edit Profile</string>

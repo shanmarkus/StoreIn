@@ -95,10 +95,10 @@
                 android:layout_alignLeft="@+id/homeNumberCheckInTitle"
                 android:layout_below="@+id/homeNumberCheckInTitle"
                 android:paddingLeft="20dp"
-                android:paddingTop="5dp"
+                android:paddingTop="3dp"
                 android:text="@string/home_example_number"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/homeNumberFollower"
@@ -106,10 +106,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/homeNumberFollowerTitle"
                 android:layout_centerHorizontal="true"
-                android:paddingTop="5dp"
+                android:paddingTop="3dp"
                 android:text="@string/home_example_number"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/homeNumberFollowing"
@@ -118,10 +118,10 @@
                 android:layout_alignRight="@+id/homeNumberFollowingTitle"
                 android:layout_below="@+id/homeNumberFollowingTitle"
                 android:layout_marginRight="24dp"
-                android:paddingTop="5dp"
+                android:paddingTop="3dp"
                 android:text="@string/home_example_number"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
 
             <View
                 android:id="@+id/view1"
@@ -170,20 +170,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="15dp"
+                android:layout_marginRight="10dp"
                 android:text="@string/home_claimed_promotion_title"
                 android:textColor="@android:color/white"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/homeTextClaimedPromotion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:text="@string/home_reward_points"
-                android:textColor="@android:color/white"
-                android:textSize="30sp" />
+                android:textSize="14sp" />
 
             <ImageView
                 android:id="@+id/ImageView01"
@@ -195,6 +185,17 @@
                 android:scaleX="0.8"
                 android:scaleY="0.8"
                 android:src="@drawable/icon_reward_circle" />
+
+            <TextView
+                android:id="@+id/homeTextClaimedPromotion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/ImageView01"
+                android:text="@string/home_reward_points"
+                android:textColor="@android:color/white"
+                android:textSize="30sp" />
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -216,17 +217,7 @@
                 android:layout_marginRight="18dp"
                 android:text="@string/home_reward_promotion_title"
                 android:textColor="@android:color/white"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/homeTextRewardPoints"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:text="@string/home_reward_points"
-                android:textColor="@android:color/white"
-                android:textSize="30sp" />
+                android:textSize="14sp" />
 
             <ImageView
                 android:id="@+id/imageRewardIcon"
@@ -238,6 +229,17 @@
                 android:scaleX="0.8"
                 android:scaleY="0.8"
                 android:src="@drawable/icon_reward_2_circle" />
+
+            <TextView
+                android:id="@+id/homeTextRewardPoints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/imageRewardIcon"
+                android:text="@string/home_reward_points"
+                android:textColor="@android:color/white"
+                android:textSize="30sp" />
+
         </RelativeLayout>
 
         <RelativeLayout
