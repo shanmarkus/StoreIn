@@ -35,6 +35,10 @@ public class ForgetPasswordActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_forget_password);
 
+		// Set up UI
+		mEmailField = (EditText) findViewById(R.id.emailField);
+		mResetButton = (Button) findViewById(R.id.resetButton);
+
 		// Set up the on click listener
 		mResetButton.setOnClickListener(resetButtonListener);
 

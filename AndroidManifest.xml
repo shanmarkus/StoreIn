@@ -74,6 +74,12 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="com.example.storein.ForgetPasswordActivity"
+            android:label="@string/title_activity_forget_password"
+            android:parentActivityName="com.example.storein.LoginActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.example.storein.HomeActivity"
             android:label="@string/title_activity_home" >
         </activity>

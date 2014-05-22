@@ -417,8 +417,8 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 			// Adding Maps
 			mMap.addCircle(new CircleOptions()
 					.center(new LatLng(currentLocation.getLatitude(),
-							currentLocation.getLongitude())).radius(100)
-					.strokeColor(Color.RED));
+							currentLocation.getLongitude())).radius(500)
+					.strokeColor(Color.RED).strokeWidth(2.1f));
 
 			// Do the Query
 			doLocationQuery();
@@ -543,7 +543,7 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 		LatLng latLng = new LatLng(location.getLatitude(),
 				location.getLongitude());
 		CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng,
-				16);
+				15);
 		mMap.animateCamera(cameraUpdate);
 
 	}

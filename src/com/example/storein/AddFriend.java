@@ -149,11 +149,11 @@ public class AddFriend extends ActionBarActivity {
 										Toast.LENGTH_SHORT).show();
 								Intent intent = new Intent(getActivity(),
 										MainActivity.class);
-								intent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+								// intent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
 								startActivity(intent);
 							}
 						} else {
-							// dismiss the dialog 
+							// dismiss the dialog
 							progressDialog.dismiss();
 							Toast.makeText(getActivity(),
 									"Friend ID Does not found",
@@ -193,6 +193,7 @@ public class AddFriend extends ActionBarActivity {
 							mButtonAdd.setEnabled(true);
 						}
 					} else {
+						progressDialog.dismiss();
 						errorAlertDialog(e);
 					}
 				}
@@ -220,6 +221,7 @@ public class AddFriend extends ActionBarActivity {
 						mButtonAdd.setOnClickListener(addFriend);
 					} else {
 						// failed
+						progressDialog.dismiss();
 						errorAlertDialog(e);
 					}
 				}
