@@ -214,9 +214,13 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 				if (rand == 0) {
 					getRecomendationPlace();
 				} else {
-					rand = random.nextInt(placesID.size());
-					placeId = placesID.get(rand);
-					getRecemmendationPromotion(placeId);
+					if (placesID.size() != 0) {
+						rand = random.nextInt(placesID.size());
+						placeId = placesID.get(rand);
+						getRecemmendationPromotion(placeId);
+					} else {
+						getRecomendationPlace();
+					}
 				}
 			}
 		});
