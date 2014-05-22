@@ -57,9 +57,6 @@ public class PromotionList extends ActionBarActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			return true;
@@ -115,7 +112,8 @@ public class PromotionList extends ActionBarActivity {
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_PROMOTION);
 			query.whereEqualTo(ParseConstants.KEY_CATEGORY_ID, categoryId);
-			// Set only the general Promotion
+			
+			// Set only the general Promotion not the flash
 			query.whereEqualTo(ParseConstants.KEY_CLAIMABLE, false);
 
 			ParseQuery<ParseObject> innerQuery = ParseQuery
