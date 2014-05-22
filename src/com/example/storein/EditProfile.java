@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -38,6 +39,7 @@ public class EditProfile extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_edit_profile);
 
 		if (savedInstanceState == null) {
@@ -197,6 +199,7 @@ public class EditProfile extends ActionBarActivity {
 		 */
 
 		private void updateUserInformation() {
+			getActivity().setProgressBarIndeterminateVisibility(true);
 			if (userId == null) {
 				userId = user.getObjectId();
 			}
@@ -206,6 +209,7 @@ public class EditProfile extends ActionBarActivity {
 
 				@Override
 				public void done(ParseUser user, ParseException e) {
+					getActivity().setProgressBarIndeterminateVisibility(false);
 					if (e == null) {
 						// get Value
 						username = mUsername.getText().toString();
@@ -264,6 +268,7 @@ public class EditProfile extends ActionBarActivity {
 		 */
 
 		private void getUserInformation() {
+			getActivity().setProgressBarIndeterminateVisibility(true);
 			if (userId == null) {
 				userId = user.getObjectId();
 			}
@@ -273,6 +278,7 @@ public class EditProfile extends ActionBarActivity {
 
 				@Override
 				public void done(ParseUser user, ParseException e) {
+					getActivity().setProgressBarIndeterminateVisibility(false);
 					if (e == null) {
 						// Get Values
 						username = user.getUsername();
