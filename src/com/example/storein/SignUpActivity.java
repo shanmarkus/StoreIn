@@ -67,6 +67,7 @@ public class SignUpActivity extends ActionBarActivity {
 					user.setEmail(email);
 					user.setPassword(password);
 					user.put(ParseConstants.KEY_NAME, name);
+					user.put(ParseConstants.KEY_TOTAL_CLAIMED_PROMOTION, 0);
 
 					user.signUpInBackground(new SignUpCallback() {
 

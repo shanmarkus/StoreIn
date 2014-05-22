@@ -84,20 +84,15 @@ public class Stash extends ActionBarActivity {
 					container, false);
 			// Get variable
 			userId = user.getObjectId();
-
 			// Declare UI
 			mStashListClaimedPromotion = (ListView) rootView
 					.findViewById(R.id.stashListClaimedPromotion);
-
 			return rootView;
 		}
 
 		@Override
 		public void onResume() {
 			super.onResume();
-			if (userId == null) {
-				userId = user.getObjectId();
-			}
 			getAllList(userId);
 		}
 

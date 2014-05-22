@@ -20,6 +20,7 @@ public final class ParseConstants {
 	public static final String TABLE_REL_PLACE_ITEM = "Rel_Place_Item";
 	public static final String TABLE_REL_PROMOTION_PLACE = "Rel_Promotion_Place";
 	public static final String TABLE_REL_USER_USER = "Rel_User_User";
+	public static final String TABLE_REL_USER_REWARD = "Rel_User_Reward";
 
 	// Field names
 	public static final String KEY_USERNAME = "username";
@@ -54,6 +55,7 @@ public final class ParseConstants {
 	public static final String KEY_FOLLOWER = "follower";
 	public static final String KEY_FOLLOWING = "following";
 	public static final String KEY_IS_CLAIMED = "isClaimed";
+	public static final String KEY_TOTAL_CLAIMED_PROMOTION = "totalClaimedPromotion";
 
 	// Relational names
 	public static final String KEY_RELATION_ITEMS_CATALOG = "itemsCatalog";

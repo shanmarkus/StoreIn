@@ -75,7 +75,7 @@ public class LoginActivity extends Activity {
 		// Set up the login form.
 		mUserNameField = (EditText) findViewById(R.id.usernameField);
 		mPasswordField = (EditText) findViewById(R.id.passwordField);
-		mLoginImageLoginButton = (ImageButton) findViewById(R.id.loginImageLoginButton);
+		mLoginImageLoginButton = (ImageButton) findViewById(R.id.homeStashButton);
 		mImageButtonLoginFacebook = (ImageButton) findViewById(R.id.imageButtonLoginFacebook);
 
 		mImageButtonLoginFacebook.setOnClickListener(loginWithFacebookListener);

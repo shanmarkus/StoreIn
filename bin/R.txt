@@ -494,6 +494,8 @@ int id homeNumberFollowerTitle 0x7f050086
 int id homeNumberFollowing 0x7f05008b
 int id homeNumberFollowingTitle 0x7f050088
 int id homeProfilePicture 0x7f050082
+int id homeStashButton 0x7f05004f
+int id homeTextClaimedPromotion 0x7f05008f
 int id homeTextRewardPoints 0x7f050093
 int id homeUserName 0x7f050084
 int id hybrid 0x7f05001e
@@ -525,7 +527,6 @@ int id locationNameLabel 0x7f0500a8
 int id locationPhoneLabel 0x7f0500ac
 int id locationRatingBar 0x7f0500aa
 int id locationView 0x7f0500a7
-int id loginImageLoginButton 0x7f05004f
 int id loginLogoImageView 0x7f050046
 int id loginTextForgetPassword 0x7f050050
 int id map 0x7f05006e
@@ -603,7 +604,6 @@ int id textTopItems 0x7f0500a5
 int id textTotalCheckIn 0x7f0500ae
 int id textUserName 0x7f05006b
 int id textView1 0x7f050044
-int id textView2 0x7f05008f
 int id textView3 0x7f050083
 int id textlistActivityDate 0x7f0500c8
 int id textlistActivityFriendActivity 0x7f0500c7

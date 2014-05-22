@@ -416,6 +416,7 @@ public class PromotionDetail extends ActionBarActivity {
 			claimActivity.put(ParseConstants.KEY_USER_ID, tempUserId);
 			claimActivity.put(ParseConstants.KEY_PROMOTION_ID, tempPromotionId);
 			claimActivity.put(ParseConstants.KEY_PLACE_ID, tempPlaceId);
+			claimActivity.put(ParseConstants.KEY_IS_CLAIMED, false);
 			claimActivity.saveInBackground(new SaveCallback() {
 
 				@Override
@@ -427,10 +428,10 @@ public class PromotionDetail extends ActionBarActivity {
 								"Claim Activity has been saved",
 								Toast.LENGTH_SHORT).show();
 						claimActivityId = tempPromotionId.getObjectId();
-						
-						// updating total claimed per promotion to the table 
-						getTotalClaimed(placeId, promotionId);
-						
+
+						// updating total claimed per promotion to the table
+						getTotalClaimed(promotionId, placeId);
+
 						String message = "Thank you for claiming this promotion, please show this "
 								+ "number to the cashier to earn your points "
 								+ claimActivityId;
@@ -495,30 +496,33 @@ public class PromotionDetail extends ActionBarActivity {
 				@Override
 				public void done(final int total, ParseException e) {
 					if (e == null) {
-						ParseQuery<ParseObject> innerQuery = ParseQuery
-								.getQuery(ParseConstants.TABLE_REL_PROMOTION_PLACE);
-						innerQuery.whereEqualTo(
-								ParseConstants.KEY_PROMOTION_ID,
-								currentPromotion);
-						innerQuery.whereEqualTo(ParseConstants.KEY_PLACE_ID,
-								currentPromotion);
-						innerQuery
-								.getFirstInBackground(new GetCallback<ParseObject>() {
-
-									@Override
-									public void done(
-											ParseObject relPromotionPlace,
-											ParseException e) {
-										relPromotionPlace
-												.put(ParseConstants.KEY_TOTAL_CLAIMED,
-														total);
-										relPromotionPlace.saveEventually();
-									}
-								});
-
+						updateTotalClaimed(currentPromotion, currentPlace,
+								total);
 					} else {
 						parseErrorDialog(e);
 					}
+				}
+			});
+		}
+
+		/*
+		 * private void update totalClaimed
+		 */
+
+		private void updateTotalClaimed(ParseObject currentPromotion,
+				ParseObject currentPlace, final Integer total) {
+			ParseQuery<ParseObject> innerQuery = ParseQuery
+					.getQuery(ParseConstants.TABLE_REL_PROMOTION_PLACE);
+			innerQuery.whereEqualTo(ParseConstants.KEY_PROMOTION_ID,
+					currentPromotion);
+			innerQuery.whereEqualTo(ParseConstants.KEY_PLACE_ID, currentPlace);
+			innerQuery.getFirstInBackground(new GetCallback<ParseObject>() {
+
+				@Override
+				public void done(ParseObject relPromotionPlace, ParseException e) {
+					relPromotionPlace.put(ParseConstants.KEY_TOTAL_CLAIMED,
+							total);
+					relPromotionPlace.saveEventually();
 				}
 			});
 		}

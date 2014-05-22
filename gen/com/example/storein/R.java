@@ -1517,6 +1517,8 @@ containing a value of this type.
         public static final int homeNumberFollowing=0x7f05008b;
         public static final int homeNumberFollowingTitle=0x7f050088;
         public static final int homeProfilePicture=0x7f050082;
+        public static final int homeStashButton=0x7f05004f;
+        public static final int homeTextClaimedPromotion=0x7f05008f;
         public static final int homeTextRewardPoints=0x7f050093;
         public static final int homeUserName=0x7f050084;
         public static final int hybrid=0x7f05001e;
@@ -1548,7 +1550,6 @@ containing a value of this type.
         public static final int locationPhoneLabel=0x7f0500ac;
         public static final int locationRatingBar=0x7f0500aa;
         public static final int locationView=0x7f0500a7;
-        public static final int loginImageLoginButton=0x7f05004f;
         public static final int loginLogoImageView=0x7f050046;
         public static final int loginTextForgetPassword=0x7f050050;
         public static final int map=0x7f05006e;
@@ -1626,7 +1627,6 @@ containing a value of this type.
         public static final int textTotalCheckIn=0x7f0500ae;
         public static final int textUserName=0x7f05006b;
         public static final int textView1=0x7f050044;
-        public static final int textView2=0x7f05008f;
         public static final int textView3=0x7f050083;
         public static final int textlistActivityDate=0x7f0500c8;
         public static final int textlistActivityFriendActivity=0x7f0500c7;

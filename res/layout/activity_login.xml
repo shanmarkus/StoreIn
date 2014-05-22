@@ -105,7 +105,7 @@
         android:layout_marginTop="15dp" >
 
         <ImageButton
-            android:id="@+id/loginImageLoginButton"
+            android:id="@+id/homeStashButton"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
