@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -94,6 +95,10 @@ public class Stash extends ActionBarActivity {
 		@Override
 		public void onResume() {
 			super.onResume();
+			if (userId == null) {
+				userId = user.getObjectId();
+			}
+			getAllList(userId);
 		}
 
 		/*
@@ -124,7 +129,8 @@ public class Stash extends ActionBarActivity {
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_ACTV_USER_CLAIM_PROMOTION);
 			query.whereEqualTo(ParseConstants.KEY_USER_ID, currentUser);
-			query.orderByAscending(ParseConstants.KEY_IS_CLAIMED);
+			query.whereEqualTo(ParseConstants.KEY_IS_CLAIMED, false);
+			query.orderByDescending(ParseConstants.KEY_CREATED_AT);
 			query.include(ParseConstants.KEY_PROMOTION_ID);
 			query.include(ParseConstants.KEY_PLACE_ID);
 			query.findInBackground(new FindCallback<ParseObject>() {
@@ -160,6 +166,8 @@ public class Stash extends ActionBarActivity {
 							claimedPromotionsId.add(claimedPromotionId);
 						}
 						setAdapter();
+						mStashListClaimedPromotion
+								.setOnItemClickListener(onClaimedPromotionClick);
 					} else {
 						errorAlertDialog(e);
 					}
@@ -191,15 +199,31 @@ public class Stash extends ActionBarActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				
-				
+				String objectId = claimedPromotionsId.get(position);
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						getActivity());
+				String title = "Please give this number to claim the reward";
+				String message = "Promotion Id " + objectId;
+				builder.setTitle(title).setMessage(message)
+						.setPositiveButton("Ok", dialogCheckInListener).show();
 			}
 		};
 
 		/*
-		 * Alert dialog
+		 * Initiate Alert Dialog
 		 */
-		
+
+		DialogInterface.OnClickListener dialogCheckInListener = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch (which) {
+				case DialogInterface.BUTTON_POSITIVE:
+					// Do nothing
+					break;
+				}
+			}
+		};
+
 		/*
 		 * Error Dialog
 		 */
