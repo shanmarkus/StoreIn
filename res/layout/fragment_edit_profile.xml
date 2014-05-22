@@ -38,7 +38,7 @@
         android:layout_below="@+id/nameField"
         android:layout_marginTop="5dp"
         android:ems="10"
-        android:hint="@string/password_re_hint"
+        android:hint="@string/password_hint"
         android:inputType="textPassword" />
     
     <EditText
@@ -49,7 +49,7 @@
         android:layout_below="@+id/passwordField"
         android:layout_marginTop="5dp"
         android:ems="10"
-        android:hint="@string/password_hint"
+        android:hint="@string/password_re_hint"
         android:inputType="textPassword" />
 
     <EditText
