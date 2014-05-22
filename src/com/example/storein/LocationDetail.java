@@ -47,6 +47,7 @@ public class LocationDetail extends Fragment {
 
 	// Variables
 	protected ParseGeoPoint mCurrentGeoPoint;
+	String nameLocation;
 
 	public LocationDetail() {
 	}
@@ -86,7 +87,6 @@ public class LocationDetail extends Fragment {
 		super.onResume();
 		// Init Function
 		doLocationQuery();
-		findButtonValue();
 	}
 
 	@Override
@@ -112,15 +112,19 @@ public class LocationDetail extends Fragment {
 	 * Get the button follow value
 	 */
 
-	private void findButtonValue() {
+	private void findButtonValue(String nameLocation) {
 		if (placeID == null) {
 			getPlaceID();
 		}
+		// Get Channels
+		String tempTenants = nameLocation.replaceAll("\\p{Z}", "");
+		tempTenants = tempTenants + placeID;
+
 		ParseInstallation instal = ParseInstallation.getCurrentInstallation();
 		String id = instal.getObjectId();
 		ParseQuery<ParseInstallation> pushQuery = ParseInstallation.getQuery();
 		pushQuery.whereEqualTo("objectId", id);
-		pushQuery.whereEqualTo("channels", placeID);
+		pushQuery.whereEqualTo("channels", tempTenants);
 		pushQuery.countInBackground(new CountCallback() {
 
 			@Override
@@ -150,8 +154,11 @@ public class LocationDetail extends Fragment {
 
 		@Override
 		public void onClick(View v) {
-			PushService.subscribe(getActivity(), placeID, MainActivity.class);
-			findButtonValue();
+			String tempTenants = nameLocation.replaceAll("\\p{Z}", "");
+			tempTenants = tempTenants + placeID;
+			PushService.subscribe(getActivity(), tempTenants,
+					MainActivity.class);
+			findButtonValue(nameLocation);
 			onResume();
 		}
 	};
@@ -160,8 +167,10 @@ public class LocationDetail extends Fragment {
 
 		@Override
 		public void onClick(View v) {
-			PushService.unsubscribe(getActivity(), placeID);
-			findButtonValue();
+			String tempTenants = nameLocation.replaceAll("\\p{Z}", "");
+			tempTenants = tempTenants + placeID;
+			PushService.unsubscribe(getActivity(), tempTenants);
+			findButtonValue(nameLocation);
 			onResume();
 		}
 	};
@@ -184,10 +193,10 @@ public class LocationDetail extends Fragment {
 			@Override
 			public void done(ParseObject location, ParseException e) {
 				if (e == null) {
+					getActivity().setProgressBarIndeterminateVisibility(false);
 					ParseFile image = location
 							.getParseFile(ParseConstants.KEY_IMAGE);
-					String nameLocation = location
-							.getString(ParseConstants.KEY_NAME);
+					nameLocation = location.getString(ParseConstants.KEY_NAME);
 					String addressLocation = location
 							.getString(ParseConstants.KEY_ADDRESS);
 					Integer temp = location.getInt(ParseConstants.KEY_PHONE);
@@ -208,15 +217,21 @@ public class LocationDetail extends Fragment {
 					mLocationOpeningHour.setText(tempOpeningHour);
 
 					mLocationView.setParseFile(image);
+
+					// get value of the button
+					findButtonValue(nameLocation);
+
+					// IMAGE LOADER
+
 					mLocationView.loadInBackground(new GetDataCallback() {
 
 						@Override
 						public void done(byte[] arg0, ParseException arg1) {
 							// DO Nothing
-
 						}
 					});
 				} else {
+					getActivity().setProgressBarIndeterminateVisibility(false);
 					parseErrorDialog(e);
 				}
 
