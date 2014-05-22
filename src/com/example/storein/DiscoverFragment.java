@@ -259,9 +259,12 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 					tempPlace.setLatitude(placeGeoPoint.getLatitude());
 					tempPlace.setLongitude(placeGeoPoint.getLongitude());
 					// Get the distance
-					double tempDistance = currentLocation.distanceTo(tempPlace);
+					
+					// double tempDistance =
+					// currentLocation.distanceTo(tempPlace);
 
-					Integer distance = (int) Math.round(Math.abs(tempDistance));
+					// Integer distance = (int)
+					// Math.round(Math.abs(tempDistance));
 
 					String text = "Check Out this "
 							+ placeName

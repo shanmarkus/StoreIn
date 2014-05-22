@@ -120,5 +120,6 @@
     <string name="forget_password_reset_password">Reset Password</string>
     <string name="home_reward_promotion_title">Points</string>
     <string name="promotion_detail_follow">Follow</string>
+    <string name="title_activity_stash">Stash</string>
 
 </resources>
