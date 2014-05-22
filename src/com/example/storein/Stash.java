@@ -1,17 +1,33 @@
 package com.example.storein;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 public class Stash extends ActionBarActivity {
+
+	private final static String TAG = Stash.class.getSimpleName();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +50,6 @@ public class Stash extends ActionBarActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			return true;
@@ -49,6 +62,17 @@ public class Stash extends ActionBarActivity {
 	 */
 	public static class PlaceholderFragment extends Fragment {
 
+		// UI Declaration
+		ListView mStashListClaimedPromotion;
+
+		// Variables
+		ArrayList<HashMap<String, String>> claimedPromotionsList = new ArrayList<HashMap<String, String>>();
+		HashMap<String, String> claimedPromotionList = new HashMap<String, String>();
+		ArrayList<String> claimedPromotionsId = new ArrayList<String>();
+
+		ParseUser user = ParseUser.getCurrentUser();
+		String userId;
+
 		public PlaceholderFragment() {
 		}
 
@@ -57,8 +81,138 @@ public class Stash extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_stash,
 					container, false);
+			// Get variable
+			userId = user.getObjectId();
+
+			// Declare UI
+			mStashListClaimedPromotion = (ListView) rootView
+					.findViewById(R.id.stashListClaimedPromotion);
+
 			return rootView;
 		}
+
+		@Override
+		public void onResume() {
+			super.onResume();
+		}
+
+		/*
+		 * Added Function
+		 */
+
+		/*
+		 * Clear ArrayList
+		 */
+
+		private void clearArray() {
+			claimedPromotionsId.clear();
+			claimedPromotionList.clear();
+			claimedPromotionsList.clear();
+		}
+
+		/*
+		 * Getting all list claimed promotion
+		 */
+
+		private void getAllList(String userId) {
+			// Clear ArrayList
+			clearArray();
+			;
+			// Do the query
+			ParseObject currentUser = ParseObject.createWithoutData(
+					ParseConstants.TABLE_USER, userId);
+			ParseQuery<ParseObject> query = ParseQuery
+					.getQuery(ParseConstants.TABLE_ACTV_USER_CLAIM_PROMOTION);
+			query.whereEqualTo(ParseConstants.KEY_USER_ID, currentUser);
+			query.orderByAscending(ParseConstants.KEY_IS_CLAIMED);
+			query.include(ParseConstants.KEY_PROMOTION_ID);
+			query.include(ParseConstants.KEY_PLACE_ID);
+			query.findInBackground(new FindCallback<ParseObject>() {
+
+				@Override
+				public void done(List<ParseObject> claimedPromotions,
+						ParseException e) {
+					if (e == null) {
+						for (ParseObject claimedPromotion : claimedPromotions) {
+							HashMap<String, String> claimedPromotionList = new HashMap<String, String>();
+
+							// Get object
+							ParseObject currentPromotion = claimedPromotion
+									.getParseObject(ParseConstants.KEY_PROMOTION_ID);
+							ParseObject currentLocation = claimedPromotion
+									.getParseObject(ParseConstants.KEY_PLACE_ID);
+
+							String namePromotion = currentPromotion
+									.getString(ParseConstants.KEY_NAME);
+							String namePlace = currentLocation
+									.getString(ParseConstants.KEY_NAME);
+							String claimedPromotionId = claimedPromotion
+									.getObjectId();
+
+							claimedPromotionList.put(
+									ParseConstants.KEY_PROMOTION_ID,
+									namePromotion);
+							claimedPromotionList.put(
+									ParseConstants.KEY_PLACE_ID, namePlace);
+							claimedPromotionsList.add(claimedPromotionList);
+
+							// Add id
+							claimedPromotionsId.add(claimedPromotionId);
+						}
+						setAdapter();
+					} else {
+						errorAlertDialog(e);
+					}
+				}
+			});
+		}
+
+		/*
+		 * Setup adapter
+		 */
+		public void setAdapter() {
+
+			String[] keys = { ParseConstants.KEY_PROMOTION_ID,
+					ParseConstants.KEY_PLACE_ID };
+			int[] ids = { android.R.id.text1, android.R.id.text2 };
+
+			SimpleAdapter adapter = new SimpleAdapter(getActivity(),
+					claimedPromotionsList, android.R.layout.simple_list_item_2,
+					keys, ids);
+			mStashListClaimedPromotion.setAdapter(adapter);
+		}
+
+		/*
+		 * On Item Click Listener
+		 */
+
+		OnItemClickListener onClaimedPromotionClick = new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				
+				
+			}
+		};
+
+		/*
+		 * Alert dialog
+		 */
+		
+		/*
+		 * Error Dialog
+		 */
+		private void errorAlertDialog(ParseException e) {
+			// failed
+			Log.e(TAG, e.getMessage());
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			builder.setMessage(e.getMessage()).setTitle(R.string.error_title)
+					.setPositiveButton(android.R.string.ok, null);
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		}
+
 	}
 
 }

@@ -1,10 +1,9 @@
 package com.example.storein;
 
-
 public final class ParseConstants {
-	
+
 	// Class name
-	public static final String TABLE_USER ="_User";
+	public static final String TABLE_USER = "_User";
 	public static final String TABLE_PLACE = "Place";
 	public static final String TABLE_ITEM = "Item";
 	public static final String TABLE_ITEM_REVIEW = "ItemReview";
@@ -34,7 +33,7 @@ public final class ParseConstants {
 	public static final String KEY_PLACE_ID = "placeId";
 	public static final String KEY_DESCRIPTION = "description";
 	public static final String KEY_USER_ID = "userId";
-	public static final String KEY_FOLLOWING_ID ="followingId";
+	public static final String KEY_FOLLOWING_ID = "followingId";
 	public static final String KEY_REVIEW = "review";
 	public static final String KEY_CATEGORY = "category";
 	public static final String KEY_CATEGORY_ID = "categoryId";
@@ -47,19 +46,19 @@ public final class ParseConstants {
 	public static final String KEY_REWARD_POINT = "rewardPoint";
 	public static final String KEY_QUOTA = "quota";
 	public static final String KEY_TOTAL_CHECK_IN = "totalCheckIn";
-	public static final String KEY_TOTAL_CLAIMED ="totalClaimed";
+	public static final String KEY_TOTAL_CLAIMED = "totalClaimed";
 	public static final String KEY_LIST_PROMOTION = "listPromotion";
 	public static final String KEY_IMAGE = "image";
 	public static final String KEY_OPERATIONAL_HOUR = "operationalHour";
 	public static final String KEY_TOTAL_LOVED = "totalLoved";
 	public static final String KEY_FOLLOWER = "follower";
 	public static final String KEY_FOLLOWING = "following";
-	
+	public static final String KEY_IS_CLAIMED = "isClaimed";
 
 	// Relational names
 	public static final String KEY_RELATION_ITEMS_CATALOG = "itemsCatalog";
 
 	// Pointer names
 	public static final String KEY_POINTER_ITEM = "item";
-	
+
 }

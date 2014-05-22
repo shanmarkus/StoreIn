@@ -259,7 +259,7 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 					tempPlace.setLatitude(placeGeoPoint.getLatitude());
 					tempPlace.setLongitude(placeGeoPoint.getLongitude());
 					// Get the distance
-					
+
 					// double tempDistance =
 					// currentLocation.distanceTo(tempPlace);
 
@@ -427,49 +427,6 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 	}
 
 	/*
-	 * Error Dialog
-	 */
-	private void errorAlertDialog(ParseException e) {
-		// failed
-		Log.e(TAG, e.getMessage());
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setMessage(e.getMessage()).setTitle(R.string.error_title)
-				.setPositiveButton(android.R.string.ok, null);
-		AlertDialog dialog = builder.create();
-		dialog.show();
-	}
-
-	/*
-	 * Check GPS Function
-	 */
-
-	// Check GPS
-	private void showGPSDisabledAlertToUser() {
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-				getActivity());
-		alertDialogBuilder
-				.setMessage(
-						"GPS is disabled in your device. Would you like to enable it?")
-				.setCancelable(false)
-				.setPositiveButton("Goto Settings Page To Enable GPS",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								Intent callGPSSettingIntent = new Intent(
-										android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-								startActivity(callGPSSettingIntent);
-							}
-						});
-		alertDialogBuilder.setNegativeButton("Cancel",
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.cancel();
-					}
-				});
-		AlertDialog alert = alertDialogBuilder.create();
-		alert.show();
-	}
-
-	/*
 	 * Alert Dialog For Check In
 	 */
 
@@ -524,6 +481,49 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 				}
 			}
 		});
+	}
+
+	/*
+	 * Error Dialog
+	 */
+	private void errorAlertDialog(ParseException e) {
+		// failed
+		Log.e(TAG, e.getMessage());
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setMessage(e.getMessage()).setTitle(R.string.error_title)
+				.setPositiveButton(android.R.string.ok, null);
+		AlertDialog dialog = builder.create();
+		dialog.show();
+	}
+
+	/*
+	 * Check GPS Function
+	 */
+
+	// Check GPS
+	private void showGPSDisabledAlertToUser() {
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+				getActivity());
+		alertDialogBuilder
+				.setMessage(
+						"GPS is disabled in your device. Would you like to enable it?")
+				.setCancelable(false)
+				.setPositiveButton("Goto Settings Page To Enable GPS",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								Intent callGPSSettingIntent = new Intent(
+										android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+								startActivity(callGPSSettingIntent);
+							}
+						});
+		alertDialogBuilder.setNegativeButton("Cancel",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+		AlertDialog alert = alertDialogBuilder.create();
+		alert.show();
 	}
 
 	/*
