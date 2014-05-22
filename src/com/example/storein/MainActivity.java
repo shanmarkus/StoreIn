@@ -200,8 +200,6 @@ public class MainActivity extends ActionBarActivity implements
 								currentUser.put("profile", userProfile);
 								currentUser.saveInBackground();
 
-								// Show the user info
-								// updateViewsWithProfileInfo();
 							} catch (JSONException e) {
 								Log.d(TAG, "Error parsing returned user data.");
 							}
@@ -261,7 +259,8 @@ public class MainActivity extends ActionBarActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
-			return true;
+			Intent intent = new Intent(this, EditProfile.class);
+			startActivity(intent);
 		}
 		// Log out menu item
 		else if (id == R.id.action_logout) {
