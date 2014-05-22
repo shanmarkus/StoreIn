@@ -104,10 +104,9 @@
                     android:id="@+id/btnLoveIt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/heart_bpm"
                     android:contentDescription="@string/image_preview_text"
-                    android:onClick="onClickLoveItButton"
                     android:scaleType="fitXY"
-                    android:src="@drawable/heart_bpm"
                     android:text="@string/love_it" />
             </LinearLayout>
         </RelativeLayout>

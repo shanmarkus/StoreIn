@@ -79,11 +79,11 @@ public class ItemReview extends Fragment {
 
 	public void getUsersReview() {
 		getActivity().setProgressBarIndeterminateVisibility(true);
-		
+
 		if (itemId == null) {
 			getItemId();
 		}
-		
+
 		// Clear ArrayList
 		clearArrayList();
 		ParseQuery<ParseObject> query = ParseQuery
@@ -104,7 +104,8 @@ public class ItemReview extends Fragment {
 						// Get User Information
 						ParseUser userInfo = review
 								.getParseUser(ParseConstants.KEY_USER_ID);
-						String userName = userInfo.getUsername();
+						String userName = userInfo
+								.getString(ParseConstants.KEY_NAME);
 						reviewList.put(ParseConstants.KEY_NAME, userName);
 
 						// Get the review text Information
