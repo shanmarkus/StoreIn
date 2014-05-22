@@ -53,7 +53,7 @@
         android:inputType="textEmailAddress" />
 
     <Button
-        android:id="@+id/resetButton"
+        android:id="@+id/editProfileGetImageButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/emailField"

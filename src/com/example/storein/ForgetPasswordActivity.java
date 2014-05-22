@@ -37,7 +37,7 @@ public class ForgetPasswordActivity extends Activity {
 
 		// Set up UI
 		mEmailField = (EditText) findViewById(R.id.emailField);
-		mResetButton = (Button) findViewById(R.id.resetButton);
+		mResetButton = (Button) findViewById(R.id.editProfileGetImageButton);
 
 		// Set up the on click listener
 		mResetButton.setOnClickListener(resetButtonListener);

@@ -35,7 +35,7 @@ public class SignUpActivity extends ActionBarActivity {
 		mPassword = (EditText) findViewById(R.id.passwordField);
 		mEmail = (EditText) findViewById(R.id.emailField);
 		mName = (EditText) findViewById(R.id.nameField);
-		mSignUpButton = (Button) findViewById(R.id.resetButton);
+		mSignUpButton = (Button) findViewById(R.id.editProfileGetImageButton);
 
 		mSignUpButton.setOnClickListener(new OnClickListener() {
 

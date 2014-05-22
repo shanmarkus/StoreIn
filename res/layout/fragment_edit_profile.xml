@@ -38,6 +38,17 @@
         android:layout_below="@+id/nameField"
         android:layout_marginTop="5dp"
         android:ems="10"
+        android:hint="@string/password_re_hint"
+        android:inputType="textPassword" />
+    
+    <EditText
+        android:id="@+id/rePasswordField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/passwordField"
+        android:layout_below="@+id/passwordField"
+        android:layout_marginTop="5dp"
+        android:ems="10"
         android:hint="@string/password_hint"
         android:inputType="textPassword" />
 
@@ -45,20 +56,28 @@
         android:id="@+id/emailField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/passwordField"
-        android:layout_below="@+id/passwordField"
+        android:layout_alignLeft="@+id/rePasswordField"
+        android:layout_below="@+id/rePasswordField"
         android:layout_marginTop="5dp"
         android:ems="10"
         android:hint="@string/email_hint"
         android:inputType="textEmailAddress" />
 
     <Button
-        android:id="@+id/resetButton"
+        android:id="@+id/editProfileGetImageButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/emailField"
         android:layout_below="@+id/emailField"
-        android:layout_marginTop="16dp"
-        android:text="@string/sign_up_button_label" />
+        android:layout_marginTop="17dp"
+        android:text="@string/edit_profile_get_image" />
+
+    <Button
+        android:id="@+id/editProfileSubmitButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editProfileGetImageButton"
+        android:layout_below="@+id/editProfileGetImageButton"
+        android:text="@string/edit_profile_submit" />
 
 </RelativeLayout>

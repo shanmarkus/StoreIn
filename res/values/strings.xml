@@ -124,5 +124,8 @@
     <string name="promotion_detail_follow">Follow</string>
     <string name="title_activity_stash">Stash</string>
     <string name="title_activity_edit_profile">Edit Profile</string>
+    <string name="edit_profile_get_image">Get Profile Image</string>
+    <string name="edit_profile_submit">Submit change</string>
+    <string name="password_re_hint">re enter password</string>
 
 </resources>
