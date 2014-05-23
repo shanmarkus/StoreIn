@@ -71,13 +71,13 @@ public class CustomArrayAdapterActivity extends ArrayAdapter<UserActivity> {
 			message = "I just claimed " + objectName + " on " + date;
 			holder.mImageRewardIcon
 					.setBackgroundResource(R.drawable.icon_reward_2_circle);
-		} else {
+			holder.mTextlistActivityFriendActivity.setText(message);
+		} else if (type.equals("checkIn")) {
 			message = "I just check in at " + objectName + " on " + date;
 			holder.mImageRewardIcon
 					.setBackgroundResource(R.drawable.icon_checkin_circle);
+			holder.mTextlistActivityFriendActivity.setText(message);
 		}
-		holder.mTextlistActivityFriendActivity.setText(message);
-
 		return convertView;
 	}
 }
