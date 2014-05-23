@@ -28,6 +28,8 @@ import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -69,6 +71,7 @@ public class FriendDetail extends ActionBarActivity {
 		TextView mFriendUsername;
 		TextView mFriendNumberCheckIn;
 		TextView mFriendNumberFollower;
+		ParseImageView mFriendProfilePicture;
 		TextView mFriendNumberFollowing;
 		ListView mRecentActivity;
 		Button mButtonStatus;
@@ -124,6 +127,8 @@ public class FriendDetail extends ActionBarActivity {
 			mRecentActivity = (ListView) rootView
 					.findViewById(R.id.recentActivity);
 			mButtonStatus = (Button) rootView.findViewById(R.id.buttonStatus);
+			mFriendProfilePicture = (ParseImageView) rootView
+					.findViewById(R.id.friendProfilePicture);
 
 			getFriendAllActivity(); // 2 in 1
 
@@ -262,7 +267,7 @@ public class FriendDetail extends ActionBarActivity {
 		 */
 
 		// Get All
-		
+
 		private void getFriendInformation() {
 			// Set progress dialog
 			initProgressDialog();
@@ -286,22 +291,25 @@ public class FriendDetail extends ActionBarActivity {
 								.getInt(ParseConstants.KEY_FOLLOWING);
 						Integer friendCheckInTotal = friend
 								.getInt(ParseConstants.KEY_TOTAL_CHECK_IN);
+						ParseFile image = friend
+								.getParseFile(ParseConstants.KEY_IMAGE);
 
+						mFriendProfilePicture.setParseFile(image);
 						mFriendUsername.setText(friendName);
 						mFriendNumberFollower.setText(friendFollowerTotal + "");
 						mFriendNumberFollowing.setText(friendFollowingTotal
 								+ "");
 						mFriendNumberCheckIn.setText(friendCheckInTotal + "");
-						
+						mFriendProfilePicture.loadInBackground();
 						progressDialog.dismiss();
-						
+
 					} else {
 						errorAlertDialog(e);
 					}
 				}
 			});
 		}
-		
+
 		/*
 		 * Get User recent Check In Activity
 		 */

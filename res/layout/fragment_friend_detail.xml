@@ -13,29 +13,7 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3" >
-
-            <ImageView
-                android:id="@+id/friendProfilePicture"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/image_description_testing"
-                android:padding="10dp"
-                android:src="@drawable/himeji" />
-
-            <TextView
-                android:id="@+id/friendUserName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/friendProfilePicture"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="15dp"
-                android:text="@string/home_username"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:layout_weight="0.6" >
 
             <TextView
                 android:id="@+id/friendNumberCheckInTitle"
@@ -101,19 +79,40 @@
             <Button
                 android:id="@+id/buttonStatus"
                 style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_alignBaseline="@+id/friendUserName"
-                android:layout_alignBottom="@+id/friendUserName"
-                android:layout_alignLeft="@+id/friendNumberFollowingTitle"
+                android:layout_alignLeft="@+id/friendUserName"
+                android:layout_below="@+id/friendNumberCheckInTitle"
+                android:layout_marginTop="20dp"
                 android:text="@string/friend_relation_status" />
 
+            <com.parse.ParseImageView
+                android:id="@+id/friendProfilePicture"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="22dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/image_description_testing"
+                android:padding="10dp"
+                android:src="@drawable/himeji" />
+
+            <TextView
+                android:id="@+id/friendUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/friendNumberCheckIn"
+                android:layout_marginBottom="16dp"
+                android:layout_toRightOf="@+id/friendProfilePicture"
+                android:text="@string/home_username"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.7" >
+            android:layout_weight="0.4" >
 
             <TextView
                 android:id="@+id/textRecentActivityTitle"
@@ -128,7 +127,7 @@
             <ListView
                 android:id="@+id/recentActivity"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="200dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true" >
             </ListView>
