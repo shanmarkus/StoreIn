@@ -1087,11 +1087,12 @@ containing a value of this type.
         public static final int abc_split_action_bar_is_narrow=0x7f0a0002;
     }
     public static final class color {
-        public static final int abc_search_url_text_holo=0x7f07001e;
+        public static final int abc_search_url_text_holo=0x7f07001f;
         public static final int abc_search_url_text_normal=0x7f070007;
         public static final int abc_search_url_text_pressed=0x7f070009;
         public static final int abc_search_url_text_selected=0x7f070008;
         public static final int bg_color=0x7f070017;
+        public static final int bg_yellow_color=0x7f07001e;
         public static final int bookstore_place=0x7f07001a;
         public static final int box_bg_color=0x7f070016;
         public static final int coffeeshop_place=0x7f07001b;
@@ -1114,8 +1115,8 @@ containing a value of this type.
         public static final int common_signin_btn_light_text_disabled=0x7f070010;
         public static final int common_signin_btn_light_text_focused=0x7f070011;
         public static final int common_signin_btn_light_text_pressed=0x7f07000f;
-        public static final int common_signin_btn_text_dark=0x7f07001f;
-        public static final int common_signin_btn_text_light=0x7f070020;
+        public static final int common_signin_btn_text_dark=0x7f070020;
+        public static final int common_signin_btn_text_light=0x7f070021;
         public static final int convenience_store_place=0x7f070019;
         public static final int foor_and_bvg_place=0x7f07001c;
         public static final int overscroll=0x7f070014;
@@ -1432,7 +1433,7 @@ containing a value of this type.
     }
     public static final class id {
         public static final int ButtonAdd=0x7f050069;
-        public static final int ImageView01=0x7f050092;
+        public static final int ImageView01=0x7f050091;
         public static final int LocationsList=0x7f0500c1;
         public static final int ScrollView1=0x7f050097;
         public static final int SearchButton=0x7f050080;
@@ -1520,8 +1521,8 @@ containing a value of this type.
         public static final int homeNumberFollowingTitle=0x7f05008a;
         public static final int homeProfilePicture=0x7f050084;
         public static final int homeStashButton=0x7f05004f;
-        public static final int homeTextClaimedPromotion=0x7f050091;
-        public static final int homeTextRewardPoints=0x7f050095;
+        public static final int homeTextClaimedPromotion=0x7f050092;
+        public static final int homeTextRewardPoints=0x7f050096;
         public static final int homeUserName=0x7f050086;
         public static final int hybrid=0x7f05001e;
         public static final int icon=0x7f05002f;
@@ -1531,7 +1532,7 @@ containing a value of this type.
         public static final int imageButtonSignUp=0x7f05004e;
         public static final int imagePlaceBackground=0x7f05006a;
         public static final int imagePromotionIcon=0x7f0500cd;
-        public static final int imageRewardIcon=0x7f050096;
+        public static final int imageRewardIcon=0x7f050095;
         public static final int imageView=0x7f050098;
         public static final int imageView1=0x7f0500d1;
         public static final int itemDescriptionLabel=0x7f05009e;

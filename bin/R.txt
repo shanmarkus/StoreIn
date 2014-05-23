@@ -151,11 +151,12 @@ int bool abc_config_actionMenuItemAllCaps 0x7f0a0005
 int bool abc_config_allowActionMenuItemTextWithIcon 0x7f0a0004
 int bool abc_config_showMenuShortcutsWhenKeyboardPresent 0x7f0a0003
 int bool abc_split_action_bar_is_narrow 0x7f0a0002
-int color abc_search_url_text_holo 0x7f07001e
+int color abc_search_url_text_holo 0x7f07001f
 int color abc_search_url_text_normal 0x7f070007
 int color abc_search_url_text_pressed 0x7f070009
 int color abc_search_url_text_selected 0x7f070008
 int color bg_color 0x7f070017
+int color bg_yellow_color 0x7f07001e
 int color bookstore_place 0x7f07001a
 int color box_bg_color 0x7f070016
 int color coffeeshop_place 0x7f07001b
@@ -176,8 +177,8 @@ int color common_signin_btn_light_text_default 0x7f07000e
 int color common_signin_btn_light_text_disabled 0x7f070010
 int color common_signin_btn_light_text_focused 0x7f070011
 int color common_signin_btn_light_text_pressed 0x7f07000f
-int color common_signin_btn_text_dark 0x7f07001f
-int color common_signin_btn_text_light 0x7f070020
+int color common_signin_btn_text_dark 0x7f070020
+int color common_signin_btn_text_light 0x7f070021
 int color convenience_store_place 0x7f070019
 int color foor_and_bvg_place 0x7f07001c
 int color overscroll 0x7f070014
@@ -409,7 +410,7 @@ int drawable promotion_icon 0x7f0200b8
 int drawable reward_icon 0x7f0200b9
 int drawable ulm 0x7f0200ba
 int id ButtonAdd 0x7f050069
-int id ImageView01 0x7f050092
+int id ImageView01 0x7f050091
 int id LocationsList 0x7f0500c1
 int id ScrollView1 0x7f050097
 int id SearchButton 0x7f050080
@@ -497,8 +498,8 @@ int id homeNumberFollowing 0x7f05008d
 int id homeNumberFollowingTitle 0x7f05008a
 int id homeProfilePicture 0x7f050084
 int id homeStashButton 0x7f05004f
-int id homeTextClaimedPromotion 0x7f050091
-int id homeTextRewardPoints 0x7f050095
+int id homeTextClaimedPromotion 0x7f050092
+int id homeTextRewardPoints 0x7f050096
 int id homeUserName 0x7f050086
 int id hybrid 0x7f05001e
 int id icon 0x7f05002f
@@ -508,7 +509,7 @@ int id imageButtonLoginFacebook 0x7f05004d
 int id imageButtonSignUp 0x7f05004e
 int id imagePlaceBackground 0x7f05006a
 int id imagePromotionIcon 0x7f0500cd
-int id imageRewardIcon 0x7f050096
+int id imageRewardIcon 0x7f050095
 int id imageView 0x7f050098
 int id imageView1 0x7f0500d1
 int id itemDescriptionLabel 0x7f05009e
