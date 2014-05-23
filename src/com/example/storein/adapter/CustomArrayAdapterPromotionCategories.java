@@ -57,8 +57,79 @@ public class CustomArrayAdapterPromotionCategories extends
 		String objectID = record.getObjectId();
 
 		// show the data from database
-
 		holder.mTextView.setText(tempName);
+		if (objectID.equals("KcrrXPZQGf")) {
+			// Appareal
+			holder.mImageView
+					.setBackgroundResource(R.drawable.categories_apparel);
+		} else if (objectID.equals("KHBlp64sKs")) {
+			// Automotive
+			holder.mImageView
+					.setBackgroundResource(R.drawable.categories_automotive);
+		} else if (objectID.equals("TwwYAAywnW")) {
+			// Babies and Kids
+			holder.mImageView
+					.setBackgroundResource(R.drawable.categories_babies_and_kids);
+		} else if (objectID.equals("Q6NN9YrPPR")) {
+			// Books and MAgazine
+			holder.mImageView
+					.setBackgroundResource(R.drawable.categories_books_n_mag);
+		} else if (objectID.equals("wzvWaypOuG")) {
+			// College and Education
+			holder.mImageView
+					.setBackgroundResource(R.drawable.categories_college_and_education);
+		} else if (objectID.equals("7i6Yz26mov")) {
+			// DeptStore
+			holder.mImageView
+					.setBackgroundResource(R.drawable.categories_dept_store);
+		} else if (objectID.equals("gIniMnWYgI")) {
+			// Electronics
+			holder.mImageView
+					.setBackgroundResource(R.drawable.categories_electronics);
+		} else if (objectID.equals("gHzn2Iysvi")) {
+			// Green Living
+			holder.mImageView
+					.setBackgroundResource(R.drawable.categories_green_living);
+		} else if (objectID.equals("XiG6NAxhfT")) {
+			// Health and Beauty
+			holder.mImageView
+					.setBackgroundResource(R.drawable.categories_health_n_beauty);
+		} else if (objectID.equals("wf7RMebx3R")) {
+			// Hobby and Collectible
+			holder.mImageView
+					.setBackgroundResource(R.drawable.categories_hobby_and_collectible);
+		} else if (objectID.equals("CIZ0gkEoFz")) {
+			// House and Home
+			holder.mImageView
+					.setBackgroundResource(R.drawable.categories_house_n_home);
+		} else if (objectID.equals("3C3lyL5EvU")) {
+			// Jewellery
+			holder.mImageView
+					.setBackgroundResource(R.drawable.categories_jewelery);
+		} else if (objectID.equals("A2NpI9sMm2")) {
+			// Movies and Music
+			holder.mImageView
+					.setBackgroundResource(R.drawable.categories_movies);
+		} else if (objectID.equals("vhge6Dn79J")) {
+			// Outdoors
+			holder.mImageView
+					.setBackgroundResource(R.drawable.categories_outdoor);
+		} else if (objectID.equals("7Ji88UPqiE")) {
+			// Restaurant
+			holder.mImageView
+					.setBackgroundResource(R.drawable.categories_resto_n_bar);
+		} else if (objectID.equals("rngzWZq5HE")) {
+			// Restaurant
+			holder.mImageView
+					.setBackgroundResource(R.drawable.categories_grocery);
+		} else if (objectID.equals("so6LBEfC0g")) {
+			// Travel
+			holder.mImageView
+					.setBackgroundResource(R.drawable.categories_travel);
+		} else {
+			// Blank
+		}
+
 		return convertView;
 	}
 }
