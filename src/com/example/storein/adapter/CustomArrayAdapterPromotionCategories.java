@@ -58,6 +58,7 @@ public class CustomArrayAdapterPromotionCategories extends
 
 		// show the data from database
 
+		holder.mTextView.setText(tempName);
 		return convertView;
 	}
 }

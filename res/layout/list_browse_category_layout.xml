@@ -10,8 +10,7 @@
         android:id="@+id/imageView"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginRight="10dp"
-        android:src="@drawable/ic_launcher" />
+        android:layout_marginRight="10dp" />
 
     <TextView
         android:id="@+id/textView"

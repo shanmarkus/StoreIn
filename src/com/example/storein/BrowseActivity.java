@@ -1,13 +1,7 @@
 package com.example.storein;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -22,9 +16,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.SimpleAdapter;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
+
+import com.example.storein.adapter.CustomArrayAdapterPromotionCategories;
+import com.example.storein.model.PromotionCategory;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 public class BrowseActivity extends ActionBarActivity {
 
@@ -67,9 +67,11 @@ public class BrowseActivity extends ActionBarActivity {
 
 		// Other Variables
 		public static final String TAG = BrowseActivity.class.getSimpleName();
-		protected ArrayList<HashMap<String, String>> categoriesInfo = new ArrayList<HashMap<String, String>>();
-		public HashMap<String, String> categoryInfo = new HashMap<String, String>();
 		protected ArrayList<String> objectsId = new ArrayList<String>();
+
+		public List<PromotionCategory> userActivityList = new ArrayList<PromotionCategory>();
+		public ArrayList<PromotionCategory> userActivityRecord;
+		private CustomArrayAdapterPromotionCategories mPromotionCategoryAdapter;
 
 		public PlaceholderFragment() {
 		}
@@ -109,26 +111,19 @@ public class BrowseActivity extends ActionBarActivity {
 					if (e == null) {
 						// success
 						for (ParseObject category : categoryInfos) {
-							HashMap<String, String> categoryInfo = new HashMap<String, String>();
 							String categoryId = category.getObjectId();
 							String categoryName = category
 									.getString(ParseConstants.KEY_NAME);
-							categoryInfo.put(ParseConstants.KEY_NAME,
-									categoryName);
+							PromotionCategory temp = new PromotionCategory();
+							temp.setName(categoryName);
+							temp.setObjectId(categoryId);
+							userActivityList.add(temp);
+
 							objectsId.add(categoryId);
-							categoriesInfo.add(categoryInfo);
 						}
 						setAdapter();
 					} else {
-						// failed
-						Log.e(TAG, e.getMessage());
-						AlertDialog.Builder builder = new AlertDialog.Builder(
-								getActivity());
-						builder.setMessage(e.getMessage())
-								.setTitle(R.string.error_title)
-								.setPositiveButton(android.R.string.ok, null);
-						AlertDialog dialog = builder.create();
-						dialog.show();
+						errorAlertDialog(e);
 					}
 
 				}
@@ -137,15 +132,11 @@ public class BrowseActivity extends ActionBarActivity {
 
 		// Setting up the grid view
 		public void setAdapter() {
-			String[] keys = { ParseConstants.KEY_NAME,
-					ParseConstants.KEY_RATING };
-			int[] ids = { android.R.id.text1, android.R.id.text2 };
-
-			SimpleAdapter adapter = new SimpleAdapter(getActivity(),
-					categoriesInfo, android.R.layout.simple_list_item_2, keys,
-					ids);
-
-			mGridView.setAdapter(adapter);
+			userActivityRecord = (ArrayList<PromotionCategory>) userActivityList;
+			mPromotionCategoryAdapter = new CustomArrayAdapterPromotionCategories(
+					getActivity(), R.id.gridView, userActivityRecord);
+			mGridView = (GridView) getActivity().findViewById(R.id.gridView);
+			mGridView.setAdapter(mPromotionCategoryAdapter);
 		}
 
 		// Add listener to GridView
@@ -163,6 +154,19 @@ public class BrowseActivity extends ActionBarActivity {
 					startActivity(intent);
 				}
 			});
+		}
+
+		/*
+		 * Error Dialog Parse
+		 */
+		private void errorAlertDialog(ParseException e) {
+			// failed
+			Log.e(TAG, e.getMessage());
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			builder.setMessage(e.getMessage()).setTitle(R.string.error_title)
+					.setPositiveButton(android.R.string.ok, null);
+			AlertDialog dialog = builder.create();
+			dialog.show();
 		}
 	}
 
