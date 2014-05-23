@@ -110,6 +110,8 @@
                     android:background="@drawable/icon_love_merah_empty"
                     android:contentDescription="@string/image_preview_text"
                     android:scaleType="fitXY"
+                    android:scaleX="0.7"
+                    android:scaleY="0.7"
                     android:text="@string/love_it" />
             </LinearLayout>
         </RelativeLayout>
