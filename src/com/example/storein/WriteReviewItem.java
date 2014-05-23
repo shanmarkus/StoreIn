@@ -52,15 +52,25 @@ public class WriteReviewItem extends ActionBarActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
-		getMenuInflater().inflate(R.menu.write_review_item, menu);
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+		if (id == R.id.action_edit_profile) {
+			Intent intent = new Intent(this, EditProfile.class);
+			startActivity(intent);
+		}
+		// Log out menu item
+		else if (id == R.id.action_logout) {
+			ParseUser.logOut();
+			Intent intent = new Intent(this, LoginActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			startActivity(intent);
 		}
 		return super.onOptionsItemSelected(item);
 	}

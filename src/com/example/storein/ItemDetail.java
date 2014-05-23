@@ -30,7 +30,7 @@ public class ItemDetail extends Fragment {
 	// UI Variable Declaration
 	ParseImageView mImageView;
 	ImageButton mBtnLoveIt;
-	Button mBtnReviewIt;
+	ImageButton mBtnReviewIt;
 	TextView mItemTitleLabel;
 	TextView mItemDescription;
 	TextView mTextItemDetailTotalReward;
@@ -59,7 +59,7 @@ public class ItemDetail extends Fragment {
 		// Declare UI Variables
 		mImageView = (ParseImageView) rootView.findViewById(R.id.imageView);
 		mBtnLoveIt = (ImageButton) rootView.findViewById(R.id.btnLoveIt);
-		mBtnReviewIt = (Button) rootView.findViewById(R.id.btnReviewIt);
+		mBtnReviewIt = (ImageButton) rootView.findViewById(R.id.btnReviewIt);
 		mItemTitleLabel = (TextView) rootView.findViewById(R.id.itemTitleLabel);
 		mItemDescription = (TextView) rootView
 				.findViewById(R.id.itemDescriptionLabel);
@@ -103,7 +103,8 @@ public class ItemDetail extends Fragment {
 	protected void findAllUI() {
 		// Declare UI Variables
 		mBtnLoveIt = (ImageButton) getActivity().findViewById(R.id.btnLoveIt);
-		mBtnReviewIt = (Button) getActivity().findViewById(R.id.btnReviewIt);
+		mBtnReviewIt = (ImageButton) getActivity().findViewById(
+				R.id.btnReviewIt);
 		mItemTitleLabel = (TextView) getActivity().findViewById(
 				R.id.itemTitleLabel);
 		mItemDescription = (TextView) getActivity().findViewById(
@@ -255,7 +256,8 @@ public class ItemDetail extends Fragment {
 	 * When user wants to review the item by giving comments and ratings
 	 */
 	public void onClickReviewItButton() {
-		mBtnReviewIt = (Button) getActivity().findViewById(R.id.btnReviewIt);
+		mBtnReviewIt = (ImageButton) getActivity().findViewById(
+				R.id.btnReviewIt);
 		mBtnReviewIt.setOnClickListener(new OnClickListener() {
 
 			@Override

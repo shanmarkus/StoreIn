@@ -25,6 +25,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 public class PromotionList extends ActionBarActivity {
 	// Variables
@@ -51,15 +52,24 @@ public class PromotionList extends ActionBarActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.promotion_list, menu);
+		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+		if (id == R.id.action_edit_profile) {
+			Intent intent = new Intent(this, EditProfile.class);
+			startActivity(intent);
+		}
+		// Log out menu item
+		else if (id == R.id.action_logout) {
+			ParseUser.logOut();
+			Intent intent = new Intent(this, LoginActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			startActivity(intent);
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -112,7 +122,7 @@ public class PromotionList extends ActionBarActivity {
 			ParseQuery<ParseObject> query = ParseQuery
 					.getQuery(ParseConstants.TABLE_PROMOTION);
 			query.whereEqualTo(ParseConstants.KEY_CATEGORY_ID, categoryId);
-			
+
 			// Set only the general Promotion not the flash
 			query.whereEqualTo(ParseConstants.KEY_CLAIMABLE, false);
 
