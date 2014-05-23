@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -34,6 +35,7 @@ public class Stash extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_stash);
 
 		if (savedInstanceState == null) {
@@ -125,9 +127,10 @@ public class Stash extends ActionBarActivity {
 		 */
 
 		private void getAllList(String userId) {
+			getActivity().setProgressBarIndeterminateVisibility(true);
 			// Clear ArrayList
 			clearArray();
-			;
+
 			// Do the query
 			ParseObject currentUser = ParseObject.createWithoutData(
 					ParseConstants.TABLE_USER, userId);
@@ -144,6 +147,8 @@ public class Stash extends ActionBarActivity {
 				public void done(List<ParseObject> claimedPromotions,
 						ParseException e) {
 					if (e == null) {
+						getActivity().setProgressBarIndeterminateVisibility(
+								false);
 						for (ParseObject claimedPromotion : claimedPromotions) {
 							HashMap<String, String> claimedPromotionList = new HashMap<String, String>();
 
@@ -174,6 +179,8 @@ public class Stash extends ActionBarActivity {
 						mStashListClaimedPromotion
 								.setOnItemClickListener(onClaimedPromotionClick);
 					} else {
+						getActivity().setProgressBarIndeterminateVisibility(
+								false);
 						errorAlertDialog(e);
 					}
 				}

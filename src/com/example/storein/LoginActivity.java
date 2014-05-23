@@ -87,19 +87,6 @@ public class LoginActivity extends Activity {
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		getMenuInflater().inflate(R.menu.login, menu);
-		return true;
-	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
-	}
-
 	/*
 	 * added function
 	 */

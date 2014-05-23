@@ -1468,13 +1468,12 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f050028;
         public static final int action_bar_title=0x7f050027;
         public static final int action_context_bar=0x7f050022;
-        public static final int action_edit_profile=0x7f0500d4;
-        public static final int action_forgot_password=0x7f0500d3;
-        public static final int action_logout=0x7f0500d5;
+        public static final int action_edit_profile=0x7f0500d2;
+        public static final int action_logout=0x7f0500d3;
         public static final int action_menu_divider=0x7f050018;
         public static final int action_menu_presenter=0x7f050019;
         public static final int action_mode_close_button=0x7f050029;
-        public static final int action_settings=0x7f0500d2;
+        public static final int action_settings=0x7f0500d4;
         public static final int activity_chooser_view_content=0x7f05002a;
         public static final int always=0x7f05000d;
         public static final int beginning=0x7f050013;
@@ -1790,34 +1789,13 @@ containing a value of this type.
         public static final int support_simple_spinner_dropdown_item=0x7f03005b;
     }
     public static final class menu {
-        public static final int add_friend=0x7f0c0000;
-        public static final int beacon=0x7f0c0001;
-        public static final int beacon_manager=0x7f0c0002;
-        public static final int browse_fragment2=0x7f0c0003;
-        public static final int check_in_fragment2=0x7f0c0004;
-        public static final int claim_promotion=0x7f0c0005;
-        public static final int discover=0x7f0c0006;
-        public static final int edit_profile=0x7f0c0007;
-        public static final int friend_detail=0x7f0c0008;
-        public static final int friend_information=0x7f0c0009;
-        public static final int global=0x7f0c000a;
-        public static final int home=0x7f0c000b;
-        public static final int item_detail=0x7f0c000c;
-        public static final int item_information=0x7f0c000d;
-        public static final int item_review=0x7f0c000e;
-        public static final int location_catalog=0x7f0c000f;
-        public static final int location_detail=0x7f0c0010;
-        public static final int location_information=0x7f0c0011;
-        public static final int location_items=0x7f0c0012;
-        public static final int location_promotions=0x7f0c0013;
-        public static final int login=0x7f0c0014;
-        public static final int main=0x7f0c0015;
-        public static final int promotion_detail=0x7f0c0016;
-        public static final int promotion_list=0x7f0c0017;
-        public static final int sign_up=0x7f0c0018;
-        public static final int stash=0x7f0c0019;
-        public static final int updates_fragement=0x7f0c001a;
-        public static final int write_review_item=0x7f0c001b;
+        public static final int main=0x7f0c0000;
+        public static final int promotion_detail=0x7f0c0001;
+        public static final int promotion_list=0x7f0c0002;
+        public static final int sign_up=0x7f0c0003;
+        public static final int stash=0x7f0c0004;
+        public static final int updates_fragement=0x7f0c0005;
+        public static final int write_review_item=0x7f0c0006;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
