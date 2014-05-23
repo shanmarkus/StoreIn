@@ -131,11 +131,13 @@ public class ItemDetail extends Fragment {
 					// success
 					if (love != 0) {
 						isLoved = "true";
-						// mBtnLoveIt.setText("Un-Love It");
+						mBtnLoveIt
+								.setBackgroundResource(R.drawable.icon_love_merah_empty);
 						onClickLoveItButton();
 					} else {
 						isLoved = "false";
-						// mBtnLoveIt.setText("Love It");
+						mBtnLoveIt
+								.setBackgroundResource(R.drawable.love_merah_full);
 						onClickLoveItButton();
 					}
 				} else {
@@ -293,8 +295,8 @@ public class ItemDetail extends Fragment {
 					Integer totalLoved = item
 							.getInt(ParseConstants.KEY_TOTAL_LOVED);
 					Integer numStars = item.getInt(ParseConstants.KEY_RATING);
-					
-					// Add Image 
+
+					// Add Image
 
 					mRattingBar.setNumStars(numStars);
 					mItemTitleLabel.setText(title);

@@ -83,13 +83,16 @@
             android:layout_below="@id/secondRelativeLayout"
             android:paddingTop="10dp" >
 
-            <Button
+            <ImageButton
                 android:id="@+id/btnReviewIt"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
                 android:layout_alignTop="@+id/thumbnail"
                 android:layout_toLeftOf="@+id/thumbnail"
-                android:text="@string/item_detail_write_review" />
+                android:background="@drawable/item_detail_review_it"
+                android:contentDescription="@string/image_description_testing" />
 
             <LinearLayout
                 android:id="@+id/thumbnail"
@@ -104,7 +107,7 @@
                     android:id="@+id/btnLoveIt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/heart_bpm"
+                    android:background="@drawable/icon_love_merah_empty"
                     android:contentDescription="@string/image_preview_text"
                     android:scaleType="fitXY"
                     android:text="@string/love_it" />
