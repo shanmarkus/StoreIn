@@ -267,6 +267,9 @@ public class AddFriend extends ActionBarActivity {
 
 			@Override
 			public void onClick(View v) {
+				// add progress bar
+				initProgressDialog();
+
 				String userId = ParseUser.getCurrentUser().getObjectId();
 				ParseObject tempUser = ParseObject.createWithoutData(
 						ParseConstants.TABLE_USER, userId);
@@ -278,6 +281,9 @@ public class AddFriend extends ActionBarActivity {
 
 					@Override
 					public void done(ParseException e) {
+						// Adding progress bar dismiss
+						progressDialog.dismiss();
+
 						if (e == null) {
 							Toast.makeText(getActivity(),
 									"Successful Following User",
