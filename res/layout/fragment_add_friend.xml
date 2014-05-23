@@ -27,12 +27,13 @@
         android:text="@string/add_friend_username"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <ImageView
-        android:id="@+id/imagePlaceBackground"
+    <com.parse.ParseImageView
+        android:id="@+id/imageViewFriend"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_below="@+id/textUserName"
         android:layout_centerHorizontal="true"
+        android:scaleType="fitXY"
         android:src="@drawable/common_signin_btn_icon_normal_dark" />
 
 </RelativeLayout>

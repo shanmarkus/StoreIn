@@ -19,7 +19,10 @@ import android.widget.Toast;
 
 import com.parse.CountCallback;
 import com.parse.GetCallback;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -77,6 +80,7 @@ public class AddFriend extends ActionBarActivity {
 		ParseObject currentUser = ParseObject.createWithoutData(
 				ParseConstants.TABLE_USER, userId);
 		ParseObject friendObj;
+		ParseImageView mImageViewFriend;
 
 		public PlaceholderFragment() {
 		}
@@ -90,6 +94,8 @@ public class AddFriend extends ActionBarActivity {
 			// UI Initiate
 			mButtonAdd = (Button) rootView.findViewById(R.id.ButtonAdd);
 			mTextUserName = (TextView) rootView.findViewById(R.id.textUserName);
+			mImageViewFriend = (ParseImageView) rootView
+					.findViewById(R.id.imageViewFriend);
 
 			return rootView;
 		}
@@ -215,10 +221,24 @@ public class AddFriend extends ActionBarActivity {
 					if (e == null) {
 						// success
 						progressDialog.dismiss();
+						ParseFile image = user
+								.getParseFile(ParseConstants.KEY_IMAGE);
 						String friendName = user
 								.getString(ParseConstants.KEY_NAME);
 						mTextUserName.setText(friendName);
 						mButtonAdd.setOnClickListener(addFriend);
+						mImageViewFriend.setParseFile(image);
+						// LOADER IMAGE
+						mImageViewFriend
+								.loadInBackground(new GetDataCallback() {
+
+									@Override
+									public void done(byte[] arg0,
+											ParseException arg1) {
+										// DO nothing
+									}
+								});
+
 					} else {
 						// failed
 						progressDialog.dismiss();
