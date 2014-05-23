@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/relativeLayout3"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="35dp" >
+        android:layout_marginTop="60dp" >
 
         <ImageButton
             android:id="@+id/imageButtonLoginFacebook"
@@ -133,7 +133,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/relativeLayout3"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:text="---------------------------OR---------------------------"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/white" />
