@@ -69,8 +69,8 @@ public class BrowseActivity extends ActionBarActivity {
 		public static final String TAG = BrowseActivity.class.getSimpleName();
 		protected ArrayList<String> objectsId = new ArrayList<String>();
 
-		public List<PromotionCategory> userActivityList = new ArrayList<PromotionCategory>();
-		public ArrayList<PromotionCategory> userActivityRecord;
+		public List<PromotionCategory> promotionCategoryList = new ArrayList<PromotionCategory>();
+		public ArrayList<PromotionCategory> promotionCategoryRecord;
 		private CustomArrayAdapterPromotionCategories mPromotionCategoryAdapter;
 
 		public PlaceholderFragment() {
@@ -117,7 +117,7 @@ public class BrowseActivity extends ActionBarActivity {
 							PromotionCategory temp = new PromotionCategory();
 							temp.setName(categoryName);
 							temp.setObjectId(categoryId);
-							userActivityList.add(temp);
+							promotionCategoryList.add(temp);
 
 							objectsId.add(categoryId);
 						}
@@ -132,9 +132,9 @@ public class BrowseActivity extends ActionBarActivity {
 
 		// Setting up the grid view
 		public void setAdapter() {
-			userActivityRecord = (ArrayList<PromotionCategory>) userActivityList;
+			promotionCategoryRecord = (ArrayList<PromotionCategory>) promotionCategoryList;
 			mPromotionCategoryAdapter = new CustomArrayAdapterPromotionCategories(
-					getActivity(), R.id.gridView, userActivityRecord);
+					getActivity(), R.id.gridView, promotionCategoryRecord);
 			mGridView = (GridView) getActivity().findViewById(R.id.gridView);
 			mGridView.setAdapter(mPromotionCategoryAdapter);
 		}
