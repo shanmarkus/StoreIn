@@ -1348,7 +1348,7 @@ containing a value of this type.
         public static final int com_facebook_list_section_header_background=0x7f020067;
         public static final int com_facebook_loginbutton_silver=0x7f020068;
         public static final int com_facebook_logo=0x7f020069;
-        public static final int com_facebook_picker_default_separator_color=0x7f0200be;
+        public static final int com_facebook_picker_default_separator_color=0x7f0200bf;
         public static final int com_facebook_picker_item_background=0x7f02006a;
         public static final int com_facebook_picker_list_focused=0x7f02006b;
         public static final int com_facebook_picker_list_longpressed=0x7f02006c;
@@ -1432,7 +1432,8 @@ containing a value of this type.
         public static final int place_university=0x7f0200ba;
         public static final int promotion_icon=0x7f0200bb;
         public static final int reward_icon=0x7f0200bc;
-        public static final int ulm=0x7f0200bd;
+        public static final int timeline_icon_check_in=0x7f0200bd;
+        public static final int ulm=0x7f0200be;
     }
     public static final class id {
         public static final int ButtonAdd=0x7f050069;
@@ -1449,13 +1450,13 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f050028;
         public static final int action_bar_title=0x7f050027;
         public static final int action_context_bar=0x7f050022;
-        public static final int action_edit_profile=0x7f0500d5;
-        public static final int action_forgot_password=0x7f0500d4;
-        public static final int action_logout=0x7f0500d6;
+        public static final int action_edit_profile=0x7f0500d2;
+        public static final int action_forgot_password=0x7f0500d1;
+        public static final int action_logout=0x7f0500d3;
         public static final int action_menu_divider=0x7f050018;
         public static final int action_menu_presenter=0x7f050019;
         public static final int action_mode_close_button=0x7f050029;
-        public static final int action_settings=0x7f0500d3;
+        public static final int action_settings=0x7f0500d0;
         public static final int activity_chooser_view_content=0x7f05002a;
         public static final int always=0x7f05000d;
         public static final int beginning=0x7f050013;
@@ -1534,10 +1535,10 @@ containing a value of this type.
         public static final int imageButtonLoginFacebook=0x7f05004d;
         public static final int imageButtonSignUp=0x7f05004e;
         public static final int imagePlaceBackground=0x7f05006a;
-        public static final int imagePromotionIcon=0x7f0500cd;
+        public static final int imagePromotionIcon=0x7f0500ca;
         public static final int imageRewardIcon=0x7f050095;
         public static final int imageView=0x7f050098;
-        public static final int imageView1=0x7f0500d1;
+        public static final int imageView1=0x7f0500ce;
         public static final int itemDescriptionLabel=0x7f05009e;
         public static final int itemTitleLabel=0x7f05009d;
         public static final int large=0x7f050002;
@@ -1570,9 +1571,9 @@ containing a value of this type.
         public static final int passwordField=0x7f05004a;
         public static final int phoneLabel=0x7f0500ad;
         public static final int picker_subtitle=0x7f050063;
-        public static final int placeAddress=0x7f0500cf;
-        public static final int placeName=0x7f0500d0;
-        public static final int placeWrapper=0x7f0500ce;
+        public static final int placeAddress=0x7f0500cc;
+        public static final int placeName=0x7f0500cd;
+        public static final int placeWrapper=0x7f0500cb;
         public static final int progress_circular=0x7f05001a;
         public static final int progress_horizontal=0x7f05001b;
         public static final int promotion_preview_image=0x7f0500b4;
@@ -1612,9 +1613,7 @@ containing a value of this type.
         public static final int textFlashDealNumber=0x7f0500bf;
         public static final int textItemDetailTotalReward=0x7f05009b;
         public static final int textListActivityFriendName=0x7f0500c8;
-        public static final int textListPromotionDuration=0x7f0500cc;
-        public static final int textListPromotionName=0x7f0500cb;
-        public static final int textListPromotionTitleFlash=0x7f0500d2;
+        public static final int textListPromotionTitleFlash=0x7f0500cf;
         public static final int textOpeningHour=0x7f0500b2;
         public static final int textPromotion=0x7f0500a5;
         public static final int textPromotionDesc=0x7f0500b9;
@@ -1635,7 +1634,6 @@ containing a value of this type.
         public static final int textUserName=0x7f05006b;
         public static final int textView1=0x7f050044;
         public static final int textView3=0x7f050085;
-        public static final int textlistActivityDate=0x7f0500ca;
         public static final int textlistActivityFriendActivity=0x7f0500c9;
         public static final int thirdLayout=0x7f050090;
         public static final int thumbnail=0x7f0500a0;
@@ -1768,8 +1766,7 @@ containing a value of this type.
         public static final int list_item_layout=0x7f030057;
         public static final int list_place_layout=0x7f030058;
         public static final int list_promotion_layout=0x7f030059;
-        public static final int list_timeline_layout=0x7f03005a;
-        public static final int support_simple_spinner_dropdown_item=0x7f03005b;
+        public static final int support_simple_spinner_dropdown_item=0x7f03005a;
     }
     public static final class menu {
         public static final int add_friend=0x7f0c0000;
@@ -1846,8 +1843,8 @@ containing a value of this type.
         public static final int action_example=0x7f080048;
         public static final int action_forgot_password=0x7f08005a;
         public static final int action_settings=0x7f080049;
-        public static final int action_sign_in_register=0x7f0800c1;
-        public static final int action_sign_in_short=0x7f0800c2;
+        public static final int action_sign_in_register=0x7f0800c3;
+        public static final int action_sign_in_short=0x7f0800c4;
         public static final int activity_login_log_in_with_facebook=0x7f0800ae;
         public static final int add_friend_button_follow=0x7f080099;
         public static final int add_friend_username=0x7f08009a;
@@ -1977,10 +1974,10 @@ containing a value of this type.
         public static final int edit_profile_get_image=0x7f0800bb;
         public static final int edit_profile_submit=0x7f0800bc;
         public static final int email_hint=0x7f080054;
-        public static final int error_field_required=0x7f0800c7;
-        public static final int error_incorrect_password=0x7f0800c6;
-        public static final int error_invalid_email=0x7f0800c4;
-        public static final int error_invalid_password=0x7f0800c5;
+        public static final int error_field_required=0x7f0800c9;
+        public static final int error_incorrect_password=0x7f0800c8;
+        public static final int error_invalid_email=0x7f0800c6;
+        public static final int error_invalid_password=0x7f0800c7;
         public static final int error_title=0x7f08005e;
         public static final int facebookAppID=0x7f080040;
         public static final int forget_password_enter_email_address=0x7f0800b5;
@@ -2019,7 +2016,9 @@ containing a value of this type.
         public static final int list_item_description=0x7f0800a7;
         public static final int list_item_name=0x7f0800a6;
         public static final int list_item_total_loved=0x7f0800a8;
+        public static final int list_promotion_description=0x7f0800bf;
         public static final int list_promotion_title_flash_deal=0x7f0800a9;
+        public static final int list_timeline_username=0x7f0800be;
         public static final int location_address_label=0x7f080064;
         public static final int location_detail_opening_hour=0x7f0800a5;
         public static final int location_detail_title_opening_hour=0x7f0800a4;
@@ -2035,7 +2034,7 @@ containing a value of this type.
         public static final int login_error_message=0x7f08004f;
         public static final int login_error_title=0x7f080050;
         public static final int login_forget_password=0x7f0800b4;
-        public static final int login_progress_signing_in=0x7f0800c3;
+        public static final int login_progress_signing_in=0x7f0800c5;
         public static final int love_it=0x7f08006a;
         public static final int menu_logout_label=0x7f080059;
         public static final int name_hint=0x7f080053;
@@ -2059,8 +2058,8 @@ containing a value of this type.
         public static final int promotion_start_end_date_title=0x7f080078;
         /**  Strings related to login 
          */
-        public static final int prompt_email=0x7f0800bf;
-        public static final int prompt_password=0x7f0800c0;
+        public static final int prompt_email=0x7f0800c1;
+        public static final int prompt_password=0x7f0800c2;
         public static final int sign_up_button_label=0x7f080055;
         public static final int sign_up_label=0x7f08004b;
         public static final int signup_error_message=0x7f080056;
@@ -2085,7 +2084,7 @@ containing a value of this type.
         public static final int title_activity_location_information=0x7f080088;
         public static final int title_activity_location_items=0x7f08008c;
         public static final int title_activity_location_promotions=0x7f08008d;
-        public static final int title_activity_login=0x7f0800be;
+        public static final int title_activity_login=0x7f0800c0;
         public static final int title_activity_promotion_detail=0x7f080071;
         public static final int title_activity_promotion_list=0x7f080070;
         public static final int title_activity_sign_up=0x7f08004c;

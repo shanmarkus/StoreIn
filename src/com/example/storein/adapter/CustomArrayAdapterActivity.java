@@ -4,12 +4,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.app.Activity;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.storein.R;
@@ -29,7 +30,7 @@ public class CustomArrayAdapterActivity extends ArrayAdapter<UserActivity> {
 	private class ViewHolder {
 		TextView mTextListActivityFriendName;
 		TextView mTextlistActivityFriendActivity;
-		TextView mTextlistActivityDate;
+		ImageView mImageRewardIcon;
 
 	}
 
@@ -48,8 +49,8 @@ public class CustomArrayAdapterActivity extends ArrayAdapter<UserActivity> {
 					.findViewById(R.id.textListActivityFriendName);
 			holder.mTextlistActivityFriendActivity = (TextView) convertView
 					.findViewById(R.id.textlistActivityFriendActivity);
-			holder.mTextlistActivityDate = (TextView) convertView
-					.findViewById(R.id.textlistActivityDate);
+			holder.mImageRewardIcon = (ImageView) convertView
+					.findViewById(R.id.imageRewardIcon);
 
 			convertView.setTag(holder);
 		} else
@@ -57,7 +58,9 @@ public class CustomArrayAdapterActivity extends ArrayAdapter<UserActivity> {
 
 		// Set Date
 		Date temp = record.getCreatedAt();
-		String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(temp);
+		// String date = new
+		// SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(temp);
+		String date = new SimpleDateFormat("yyyy-MM-dd").format(temp);
 
 		// show the data from database
 		holder.mTextListActivityFriendName.setText(record.getuserName());
@@ -65,12 +68,15 @@ public class CustomArrayAdapterActivity extends ArrayAdapter<UserActivity> {
 		String objectName = record.getobjectName();
 		String message;
 		if (type.equals("claim")) {
-			message = "I just claimed " + objectName;
+			message = "I just claimed " + objectName + " on " + date;
+			holder.mImageRewardIcon
+					.setBackgroundResource(R.drawable.icon_reward_2_circle);
 		} else {
-			message = "I just check in at " + objectName;
+			message = "I just check in at " + objectName + " on " + date;
+			holder.mImageRewardIcon
+					.setBackgroundResource(R.drawable.icon_checkin_circle);
 		}
 		holder.mTextlistActivityFriendActivity.setText(message);
-		holder.mTextlistActivityDate.setText(date);
 
 		return convertView;
 	}

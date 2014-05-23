@@ -46,9 +46,9 @@ public class CustomArrayAdapterPromotion extends ArrayAdapter<Promotion> {
 					null);
 			holder = new ViewHolder();
 			holder.mTextListPromotionName = (TextView) convertView
-					.findViewById(R.id.textListPromotionName);
+					.findViewById(R.id.textListActivityFriendName);
 			holder.mTextListPromotionDuration = (TextView) convertView
-					.findViewById(R.id.textListPromotionDuration);
+					.findViewById(R.id.textlistActivityFriendActivity);
 			holder.mTextListTotalReward = (TextView) convertView
 					.findViewById(R.id.textItemDetailTotalReward);
 			holder.mTextTitleFlash = (TextView) convertView

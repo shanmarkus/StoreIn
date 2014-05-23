@@ -6,7 +6,7 @@
     <!-- ListRow Left sied Thumbnail image -->
 
     <TextView
-        android:id="@+id/textListPromotionName"
+        android:id="@+id/textListActivityFriendName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/thumbnail"
@@ -19,11 +19,11 @@
     <!-- Description -->
 
     <TextView
-        android:id="@+id/textListPromotionDuration"
+        android:id="@+id/textlistActivityFriendActivity"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/thumbnail"
-        android:layout_below="@id/textListPromotionName"
+        android:layout_below="@id/textListActivityFriendName"
         android:layout_marginTop="1dip"
         android:layout_toLeftOf="@+id/thumbnail"
         android:paddingLeft="10dip"

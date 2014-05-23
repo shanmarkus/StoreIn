@@ -4,7 +4,7 @@
     android:layout_height="match_parent" >
 
     <TextView
-        android:id="@+id/textListPromotionName"
+        android:id="@+id/textListActivityFriendName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -19,11 +19,11 @@
     <!-- Description -->
 
     <TextView
-        android:id="@+id/textListPromotionDuration"
+        android:id="@+id/textlistActivityFriendActivity"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/thumbnail"
-        android:layout_below="@id/textListPromotionName"
+        android:layout_below="@id/textListActivityFriendName"
         android:layout_marginTop="1dip"
         android:layout_toLeftOf="@+id/thumbnail"
         android:paddingLeft="10dip"
@@ -63,7 +63,7 @@
         android:id="@+id/textListPromotionTitleFlash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textListPromotionDuration"
+        android:layout_above="@+id/textlistActivityFriendActivity"
         android:layout_centerHorizontal="true"
         android:paddingLeft="8dp"
         android:text="@string/list_promotion_title_flash_deal"

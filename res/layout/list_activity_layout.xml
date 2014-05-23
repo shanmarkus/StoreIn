@@ -1,36 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="70dp" >
 
     <TextView
         android:id="@+id/textListActivityFriendName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="17dp"
-        android:layout_marginTop="14dp"
-        android:text="@string/list_activity_friend_name"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="10dip"
+        android:paddingTop="5dip"
+        android:singleLine="true"
+        android:text="@string/list_timeline_username"
+        android:textSize="16sp" />
+
+    <!-- Description -->
 
     <TextView
         android:id="@+id/textlistActivityFriendActivity"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textListActivityFriendName"
-        android:layout_below="@+id/textListActivityFriendName"
-        android:paddingTop="10dp"
-        android:text="@string/list_activity_friend_activity"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:layout_alignBottom="@+id/thumbnail"
+        android:layout_below="@id/textListActivityFriendName"
+        android:layout_marginTop="1dip"
+        android:layout_toLeftOf="@+id/thumbnail"
+        android:paddingLeft="10dip"
+        android:text="@string/list_promotion_description"
+        android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/textlistActivityDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textlistActivityFriendActivity"
-        android:layout_below="@+id/textlistActivityFriendActivity"
-        android:text="@string/list_activity_date"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+    <LinearLayout
+        android:id="@+id/thumbnail"
+        android:layout_width="70dip"
+        android:layout_height="60dip"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dip"
+        android:orientation="horizontal"
+        android:padding="0dip" >
+
+        <ImageView
+            android:id="@+id/imageRewardIcon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/image_description_testing"
+            android:scaleX="0.9"
+            android:scaleY="0.9"
+            android:src="@drawable/icon_checkin_circle" />
+    </LinearLayout>
 
 </RelativeLayout>

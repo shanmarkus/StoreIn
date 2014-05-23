@@ -127,5 +127,7 @@
     <string name="edit_profile_get_image">Get Profile Image</string>
     <string name="edit_profile_submit">Submit change</string>
     <string name="password_re_hint">re enter password</string>
+    <string name="list_timeline_username">User Name</string>
+    <string name="list_promotion_description">recent activity has been done in 1 hour</string>
 
 </resources>

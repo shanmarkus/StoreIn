@@ -150,7 +150,7 @@ public class UpdatesFragment extends Fragment {
 									.getParseObject(ParseConstants.KEY_PROMOTION_ID);
 
 							String tempUserName = userObj
-									.getString(ParseConstants.KEY_USERNAME);
+									.getString(ParseConstants.KEY_NAME);
 							String tempPromotionName = promotionObj
 									.getString(ParseConstants.KEY_NAME);
 							String tempObjId = claimActivity.getObjectId();
@@ -205,7 +205,7 @@ public class UpdatesFragment extends Fragment {
 
 							String activityId = checkInActivity.getObjectId();
 							String tempUserName = objUser
-									.getString(ParseConstants.KEY_USERNAME);
+									.getString(ParseConstants.KEY_NAME);
 							String tempPlaceName = objActivity
 									.getString(ParseConstants.KEY_NAME);
 							Date date = checkInActivity.getCreatedAt();
