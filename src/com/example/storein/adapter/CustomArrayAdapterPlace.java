@@ -4,6 +4,9 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +50,7 @@ public class CustomArrayAdapterPlace extends ArrayAdapter<Place> {
 			holder = new ViewHolder();
 			holder.mTextPlaceName = (TextView) convertView
 					.findViewById(R.id.placeName);
-			holder.mTextPlaceAddress =  (TextView) convertView
+			holder.mTextPlaceAddress = (TextView) convertView
 					.findViewById(R.id.placeAddress);
 			holder.mImagePromotionIcon = (ImageView) convertView
 					.findViewById(R.id.imagePromotionIcon);
@@ -64,39 +67,46 @@ public class CustomArrayAdapterPlace extends ArrayAdapter<Place> {
 		holder.mTextPlaceName.setText(record.getName() + "");
 		holder.mTextPlaceAddress.setText(record.getAddress());
 		if (record.getIsPromotion() == true) {
-			holder.mImagePromotionIcon
-					.setImageResource(R.drawable.icon_star);
+			holder.mImagePromotionIcon.setImageResource(R.drawable.icon_star);
 		} else {
 			// do nothing
 		}
 		String temp = record.getCategory();
 		if (temp.equals("Food and Drink")) {
-			holder.mImagePlaceBackground
-					.setImageResource(R.drawable.place_restaurant_and_bar);
+			Bitmap image = decodeSampledBitmapFromResource(getContext()
+					.getResources(), R.drawable.place_restaurant_and_bar, 200,
+					100);
+			holder.mImagePlaceBackground.setImageBitmap(image);
 			holder.mPlaceWrapper
 					.setBackgroundResource(R.color.foor_and_bvg_place);
 		} else if (temp.equals("Convinience Store")) {
-			holder.mImagePlaceBackground
-					.setImageResource(R.drawable.place_convenience_store);
+			Bitmap image = decodeSampledBitmapFromResource(getContext()
+					.getResources(), R.drawable.place_convenience_store, 200,
+					100);
+			holder.mImagePlaceBackground.setImageBitmap(image);
 			holder.mPlaceWrapper
 					.setBackgroundResource(R.color.convenience_store_place);
 		} else if (temp.equals("University")) {
-			holder.mImagePlaceBackground
-					.setImageResource(R.drawable.place_university);
+			Bitmap image = decodeSampledBitmapFromResource(getContext()
+					.getResources(), R.drawable.place_university, 200, 100);
+			holder.mImagePlaceBackground.setImageBitmap(image);
 			holder.mPlaceWrapper
 					.setBackgroundResource(R.color.university_place);
 		} else if (temp.equals("Book Store")) {
-			holder.mImagePlaceBackground
-					.setImageResource(R.drawable.place_bookstore);
+			Bitmap image = decodeSampledBitmapFromResource(getContext()
+					.getResources(), R.drawable.place_bookstore, 200, 100);
+			holder.mImagePlaceBackground.setImageBitmap(image);
 			holder.mPlaceWrapper.setBackgroundResource(R.color.bookstore_place);
 		} else if (temp.equals("Coffee Shop")) {
-			holder.mImagePlaceBackground
-					.setImageResource(R.drawable.place_coffee_shop);
+			Bitmap image = decodeSampledBitmapFromResource(getContext()
+					.getResources(), R.drawable.place_coffee_shop, 200, 100);
+			holder.mImagePlaceBackground.setImageBitmap(image);
 			holder.mPlaceWrapper
 					.setBackgroundResource(R.color.coffeeshop_place);
 		} else if (temp.equals("Shopping Mall")) {
-			holder.mImagePlaceBackground
-					.setImageResource(R.drawable.place_shopping_mall);
+			Bitmap image = decodeSampledBitmapFromResource(getContext()
+					.getResources(), R.drawable.place_shopping_mall, 200, 100);
+			holder.mImagePlaceBackground.setImageBitmap(image);
 			holder.mPlaceWrapper
 					.setBackgroundResource(R.color.shopping_mall_place);
 		} else {
@@ -104,4 +114,50 @@ public class CustomArrayAdapterPlace extends ArrayAdapter<Place> {
 		}
 		return convertView;
 	}
+
+	/*
+	 * Added function
+	 */
+	public static int calculateInSampleSize(BitmapFactory.Options options,
+			int reqWidth, int reqHeight) {
+		// Raw height and width of image
+		final int height = options.outHeight;
+		final int width = options.outWidth;
+		int inSampleSize = 1;
+
+		if (height > reqHeight || width > reqWidth) {
+
+			// Calculate ratios of height and width to requested height and
+			// width
+			final int heightRatio = Math.round((float) height
+					/ (float) reqHeight);
+			final int widthRatio = Math.round((float) width / (float) reqWidth);
+
+			// Choose the smallest ratio as inSampleSize value, this will
+			// guarantee
+			// a final image with both dimensions larger than or equal to the
+			// requested height and width.
+			inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+		}
+
+		return inSampleSize;
+	}
+
+	public static Bitmap decodeSampledBitmapFromResource(Resources res,
+			int resId, int reqWidth, int reqHeight) {
+
+		// First decode with inJustDecodeBounds=true to check dimensions
+		final BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		BitmapFactory.decodeResource(res, resId, options);
+
+		// Calculate inSampleSize
+		options.inSampleSize = calculateInSampleSize(options, reqWidth,
+				reqHeight);
+
+		// Decode bitmap with inSampleSize set
+		options.inJustDecodeBounds = false;
+		return BitmapFactory.decodeResource(res, resId, options);
+	}
+
 }

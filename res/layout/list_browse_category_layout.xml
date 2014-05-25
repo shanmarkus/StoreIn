@@ -10,13 +10,15 @@
         android:id="@+id/imageView"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginRight="10dp" />
+        android:layout_marginLeft="40dp"
+        android:scaleType="fitCenter" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
         android:layout_marginTop="5dp"
         android:text="@string/abc_action_mode_done"
         android:textSize="15sp" />

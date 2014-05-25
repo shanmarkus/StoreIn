@@ -1,7 +1,7 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/bg_yellow_color"
     tools:context="com.example.storein.BrowseFragment" >
 
@@ -11,11 +11,9 @@
         android:id="@+id/gridView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@android:color/black"
-        android:dividerHeight="0.5dp"
         android:horizontalSpacing="10dp"
-        android:numColumns="3"
+        android:numColumns="2"
         android:verticalSpacing="10dp" >
     </GridView>
 
-</FrameLayout>
+</RelativeLayout>
