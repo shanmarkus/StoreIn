@@ -133,6 +133,8 @@ public class FriendInformation extends Fragment {
 						// add to array list
 						friendInfo.put(ParseConstants.KEY_NAME, friendName);
 						friendsInfo.add(friendInfo);
+						
+						
 						friendIds.add(friendId);
 					}
 					// Set the adapter

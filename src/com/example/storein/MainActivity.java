@@ -54,7 +54,7 @@ public class MainActivity extends ActionBarActivity implements
 		if (currentUser == null) {
 			navigateToLogin();
 		} else {
-			Log.i(TAG, currentUser.getUsername());
+			Log.i(TAG, "Success Login");
 		}
 
 		// Fetch Facebook user info if the session is active

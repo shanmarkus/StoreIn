@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -18,6 +17,7 @@ import android.widget.Toast;
 import com.parse.CountCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -291,6 +291,8 @@ public class ItemDetail extends Fragment {
 				if (e == null) {
 					// success
 					findAllUI();
+					ParseFile image = item
+							.getParseFile(ParseConstants.KEY_IMAGE);
 					String title = item.getString(ParseConstants.KEY_NAME);
 					String description = item
 							.getString(ParseConstants.KEY_DESCRIPTION);
@@ -299,11 +301,14 @@ public class ItemDetail extends Fragment {
 					Integer numStars = item.getInt(ParseConstants.KEY_RATING);
 
 					// Add Image
-
+					mImageView.setParseFile(image);
 					mRattingBar.setNumStars(numStars);
 					mItemTitleLabel.setText(title);
 					mItemDescription.setText(description);
 					mTextItemDetailTotalReward.setText(totalLoved + "");
+
+					// Load Image In Background
+					mImageView.loadInBackground();
 				} else {
 					// failed
 					parseErrorDialog(e);
