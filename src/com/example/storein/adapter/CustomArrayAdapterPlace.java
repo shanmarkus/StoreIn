@@ -73,39 +73,40 @@ public class CustomArrayAdapterPlace extends ArrayAdapter<Place> {
 		}
 		String temp = record.getCategory();
 		if (temp.equals("Food and Drink")) {
+
 			Bitmap image = decodeSampledBitmapFromResource(getContext()
-					.getResources(), R.drawable.place_restaurant_and_bar, 200,
+					.getResources(), R.drawable.place_restaurant_and_bar, 100,
 					100);
 			holder.mImagePlaceBackground.setImageBitmap(image);
 			holder.mPlaceWrapper
 					.setBackgroundResource(R.color.foor_and_bvg_place);
 		} else if (temp.equals("Convinience Store")) {
 			Bitmap image = decodeSampledBitmapFromResource(getContext()
-					.getResources(), R.drawable.place_convenience_store, 200,
+					.getResources(), R.drawable.place_convenience_store, 100,
 					100);
 			holder.mImagePlaceBackground.setImageBitmap(image);
 			holder.mPlaceWrapper
 					.setBackgroundResource(R.color.convenience_store_place);
 		} else if (temp.equals("University")) {
 			Bitmap image = decodeSampledBitmapFromResource(getContext()
-					.getResources(), R.drawable.place_university, 200, 100);
+					.getResources(), R.drawable.place_university, 100, 100);
 			holder.mImagePlaceBackground.setImageBitmap(image);
 			holder.mPlaceWrapper
 					.setBackgroundResource(R.color.university_place);
 		} else if (temp.equals("Book Store")) {
 			Bitmap image = decodeSampledBitmapFromResource(getContext()
-					.getResources(), R.drawable.place_bookstore, 200, 100);
+					.getResources(), R.drawable.place_bookstore, 100, 100);
 			holder.mImagePlaceBackground.setImageBitmap(image);
 			holder.mPlaceWrapper.setBackgroundResource(R.color.bookstore_place);
 		} else if (temp.equals("Coffee Shop")) {
 			Bitmap image = decodeSampledBitmapFromResource(getContext()
-					.getResources(), R.drawable.place_coffee_shop, 200, 100);
+					.getResources(), R.drawable.place_coffee_shop, 100, 100);
 			holder.mImagePlaceBackground.setImageBitmap(image);
 			holder.mPlaceWrapper
 					.setBackgroundResource(R.color.coffeeshop_place);
 		} else if (temp.equals("Shopping Mall")) {
 			Bitmap image = decodeSampledBitmapFromResource(getContext()
-					.getResources(), R.drawable.place_shopping_mall, 200, 100);
+					.getResources(), R.drawable.place_shopping_mall, 100, 100);
 			holder.mImagePlaceBackground.setImageBitmap(image);
 			holder.mPlaceWrapper
 					.setBackgroundResource(R.color.shopping_mall_place);
