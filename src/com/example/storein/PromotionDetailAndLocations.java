@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -38,7 +37,9 @@ import com.google.android.gms.location.LocationRequest;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -98,6 +99,7 @@ public class PromotionDetailAndLocations extends ActionBarActivity {
 			ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
 
 		// UI Declaration
+		ParseImageView mPromotion_preview_image;
 		TextView mTxtPromotionTitle;
 		TextView mTextPromotionReq;
 		TextView mTextPromotionDesc;
@@ -315,6 +317,8 @@ public class PromotionDetailAndLocations extends ActionBarActivity {
 						// success
 
 						// Find all the Id
+						mPromotion_preview_image = (ParseImageView) getActivity()
+								.findViewById(R.id.promotion_preview_image);
 						mTxtPromotionTitle = (TextView) getActivity()
 								.findViewById(R.id.txtPromotionTitle);
 						mTextPromotionReq = (TextView) getActivity()
@@ -325,6 +329,8 @@ public class PromotionDetailAndLocations extends ActionBarActivity {
 								.findViewById(R.id.textPromotionDuration);
 
 						// Get all the important variables
+						ParseFile image = promotion
+								.getParseFile(ParseConstants.KEY_IMAGE);
 						String promoTitle = promotion
 								.getString(ParseConstants.KEY_NAME);
 						String promoRequirement = promotion
@@ -337,6 +343,9 @@ public class PromotionDetailAndLocations extends ActionBarActivity {
 								.getDate(ParseConstants.KEY_END_DATE);
 
 						// Put all the values
+						mPromotion_preview_image.setParseFile(image);
+						mPromotion_preview_image.loadInBackground();
+
 						mTxtPromotionTitle.setText(promoTitle);
 						mTextPromotionReq.setText(promoRequirement);
 						mTextPromotionDesc.setText(promoDescription);
