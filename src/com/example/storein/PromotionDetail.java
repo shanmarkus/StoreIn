@@ -24,6 +24,8 @@ import android.widget.Toast;
 import com.parse.CountCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -76,6 +78,7 @@ public class PromotionDetail extends ActionBarActivity {
 	 */
 	public static class PlaceholderFragment extends Fragment {
 		// UI Declaration
+		ParseImageView mPromotion_preview_image;
 		TextView mTxtPromotionTitle;
 		TextView mTextPromotionReq;
 		TextView mTextPromotionDesc;
@@ -113,6 +116,8 @@ public class PromotionDetail extends ActionBarActivity {
 					R.layout.fragment_promotion_detail, container, false);
 
 			// Setup UI
+			mPromotion_preview_image = (ParseImageView) rootView
+					.findViewById(R.id.promotion_preview_image);
 			mTxtPromotionTitle = (TextView) rootView
 					.findViewById(R.id.txtPromotionTitle);
 			mTextPromotionDesc = (TextView) rootView
@@ -231,6 +236,8 @@ public class PromotionDetail extends ActionBarActivity {
 								.findViewById(R.id.textPromotionDuration);
 
 						// Get all the important variables
+						ParseFile image = promotion
+								.getParseFile(ParseConstants.KEY_IMAGE);
 						promoTitle = promotion
 								.getString(ParseConstants.KEY_NAME);
 						String promoRequirement = promotion
@@ -245,6 +252,9 @@ public class PromotionDetail extends ActionBarActivity {
 								.getInt(ParseConstants.KEY_REWARD_POINT);
 
 						// Put all the values
+						mPromotion_preview_image.setParseFile(image);
+						mPromotion_preview_image.loadInBackground();
+
 						mTxtPromotionTitle.setText(promoTitle);
 						mTextPromotionReq.setText(promoRequirement);
 						mTextPromotionDesc.setText(promoDescription);
