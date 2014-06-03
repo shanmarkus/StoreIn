@@ -430,7 +430,7 @@ public class PromotionDetail extends ActionBarActivity {
 
 			final ParseObject tempPromotionId = ParseObject.createWithoutData(
 					ParseConstants.TABLE_PROMOTION, promotionId);
-			ParseObject claimActivity = new ParseObject(
+			final ParseObject claimActivity = new ParseObject(
 					ParseConstants.TABLE_ACTV_USER_CLAIM_PROMOTION);
 			claimActivity.put(ParseConstants.KEY_USER_ID, tempUserId);
 			claimActivity.put(ParseConstants.KEY_PROMOTION_ID, tempPromotionId);
@@ -446,7 +446,7 @@ public class PromotionDetail extends ActionBarActivity {
 						Toast.makeText(getActivity(),
 								"Claim Activity has been saved",
 								Toast.LENGTH_SHORT).show();
-						claimActivityId = tempPromotionId.getObjectId();
+						claimActivityId = claimActivity.getObjectId();
 
 						// updating total claimed per promotion to the table
 						getTotalClaimed(promotionId, placeId);
