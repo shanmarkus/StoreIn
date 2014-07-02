@@ -158,7 +158,7 @@ public class ItemDetail extends Fragment {
 		@Override
 		public void onClick(View v) {
 			// Create Toast
-			debugLoveVar();
+			// debugLoveVar();
 
 			// Set Progress Bar
 			getActivity().setProgressBarIndeterminateVisibility(true);
@@ -177,7 +177,7 @@ public class ItemDetail extends Fragment {
 							itemLoved.delete();
 							checkLoveButton();
 							Toast.makeText(getActivity(),
-									" UnLove it Parse success",
+									" un-Love it Parse success",
 									Toast.LENGTH_SHORT).show();
 							queryTotalLoved();
 							onResume();
@@ -201,7 +201,7 @@ public class ItemDetail extends Fragment {
 		@Override
 		public void onClick(View v) {
 			// create toast
-			debugLoveVar();
+			// debugLoveVar();
 
 			// Set Progress Bar
 			getActivity().setProgressBarIndeterminateVisibility(true);
@@ -351,9 +351,9 @@ public class ItemDetail extends Fragment {
 			public void done(ParseObject item, ParseException e) {
 				if (e == null) {
 					item.put(ParseConstants.KEY_TOTAL_LOVED, totalLoved);
-					Toast.makeText(getActivity(),
-							"updatedTotalLoved" + totalLoved,
-							Toast.LENGTH_SHORT).show();
+					// Toast.makeText(getActivity(),
+					// "updatedTotalLoved" + totalLoved,
+					// Toast.LENGTH_SHORT).show();
 					item.saveInBackground();
 				} else {
 					parseErrorDialog(e);

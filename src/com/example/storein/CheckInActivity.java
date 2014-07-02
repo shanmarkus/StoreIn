@@ -367,7 +367,7 @@ public class CheckInActivity extends ActionBarActivity {
 					sendIntent.setAction(Intent.ACTION_SEND);
 					sendIntent.putExtra(Intent.EXTRA_TEXT,
 							"Hey I Just Check In at " + placeName
-									+ " Using StoreIn");
+									+ " Using StoreIn - Available on GooglePlay");
 					sendIntent.setType("text/plain");
 					startActivity(sendIntent);
 					break;
