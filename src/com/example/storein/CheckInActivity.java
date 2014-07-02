@@ -136,8 +136,8 @@ public class CheckInActivity extends ActionBarActivity {
 
 		// Parse Constants
 		private static final int MAX_PLACE_SEARCH_RESULTS = 20;
-		private static final int MAX_PlACE_SEARCH_DISTANCE = 10; // In
-																	// KiloMeters
+		private static final float MAX_PlACE_SEARCH_DISTANCE = 0.5f; // In
+																		// Kilometers
 
 		private static final LocationRequest REQUEST = LocationRequest.create()
 				.setFastestInterval(16) // 16ms = 60fps
