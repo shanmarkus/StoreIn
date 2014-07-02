@@ -305,14 +305,18 @@ public class FriendDetail extends ActionBarActivity {
 								.getInt(ParseConstants.KEY_TOTAL_CHECK_IN);
 						ParseFile image = friend
 								.getParseFile(ParseConstants.KEY_IMAGE);
+						
+						// Check the image file
+						if (image != null) {
+							mFriendProfilePicture.setParseFile(image);
+							mFriendProfilePicture.loadInBackground();
+						}
 
-						mFriendProfilePicture.setParseFile(image);
 						mFriendUsername.setText(friendName);
 						mFriendNumberFollower.setText(friendFollowerTotal + "");
 						mFriendNumberFollowing.setText(friendFollowingTotal
 								+ "");
 						mFriendNumberCheckIn.setText(friendCheckInTotal + "");
-						mFriendProfilePicture.loadInBackground();
 						progressDialog.dismiss();
 
 					} else {
@@ -426,17 +430,24 @@ public class FriendDetail extends ActionBarActivity {
 		 * Setup adapter
 		 */
 		public void setAdapter() {
+			// Check Activities
+			if (friendActivities.size() == 0) {
+				Toast.makeText(getActivity(),
+						"Sorry, this user has not been active for 24 hours",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				Collections.shuffle(friendActivities);
 
-			Collections.shuffle(friendActivities);
+				String[] keys = { KEY_FRIEND_ACTIVITY,
+						ParseConstants.KEY_REVIEW };
+				int[] ids = { android.R.id.text1, android.R.id.text2 };
 
-			String[] keys = { KEY_FRIEND_ACTIVITY, ParseConstants.KEY_REVIEW };
-			int[] ids = { android.R.id.text1, android.R.id.text2 };
+				SimpleAdapter adapter = new SimpleAdapter(getActivity(),
+						friendActivities, android.R.layout.simple_list_item_2,
+						keys, ids);
 
-			SimpleAdapter adapter = new SimpleAdapter(getActivity(),
-					friendActivities, android.R.layout.simple_list_item_2,
-					keys, ids);
-
-			mRecentActivity.setAdapter(adapter);
+				mRecentActivity.setAdapter(adapter);
+			}
 		}
 
 		/*
