@@ -178,11 +178,11 @@ public class MainActivity extends ActionBarActivity implements
 										.getCurrentUser();
 
 								if (userProfile.getString("facebookId") != null) {
-									String facebookId = userProfile.get(
-											"facebookId").toString();
+									String username = userProfile.get("name")
+											.toString().trim();
 									currentUser.put(
 											ParseConstants.KEY_USERNAME,
-											facebookId);
+											username);
 								} else {
 									currentUser.put(
 											ParseConstants.KEY_USERNAME, null);
