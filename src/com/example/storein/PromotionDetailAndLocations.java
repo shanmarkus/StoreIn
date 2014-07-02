@@ -118,7 +118,7 @@ public class PromotionDetailAndLocations extends ActionBarActivity {
 		private Location currentLocation = null;
 		private Location placeSelected;
 		protected ParseGeoPoint placeCurrentLocation = null;
-		protected static final float MAX_DISTANCE = 10000; // 10 Km
+		protected static final float MAX_DISTANCE = 500; // 500 m
 
 		// Location Client
 		private LocationClient mLocationClient;
@@ -504,7 +504,8 @@ public class PromotionDetailAndLocations extends ActionBarActivity {
 
 		@Override
 		public void onDisconnected() {
-
+			Toast.makeText(getActivity(), "Disconnected", Toast.LENGTH_SHORT)
+					.show();
 		}
 
 		@Override
