@@ -76,7 +76,7 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 	// Parse Constants
 
 	private static final int MAX_PLACE_SEARCH_RESULTS = 20;
-	private static final int MAX_PlACE_SEARCH_DISTANCE = 10; // In KiloMeters
+	private static final float MAX_PlACE_SEARCH_DISTANCE = 0.5f; // In KiloMeters
 
 	private static final LocationRequest REQUEST = LocationRequest.create()
 			.setFastestInterval(1000) // 16ms = 60fps
@@ -208,7 +208,8 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 			public void onClick(View v) {
 				initProgressDialog();
 				Random random = new Random();
-				Integer rand = random.nextInt(2);
+				// Integer rand = random.nextInt(2);
+				Integer rand = 1;
 				Toast.makeText(getActivity(), rand + "", Toast.LENGTH_SHORT)
 						.show();
 				if (rand == 0) {
@@ -216,7 +217,12 @@ public class DiscoverFragment extends Fragment implements ConnectionCallbacks,
 				} else {
 					if (placesID.size() != 0) {
 						rand = random.nextInt(placesID.size());
+						Toast.makeText(getActivity(),
+								placesID.size() + " - " + rand,
+								Toast.LENGTH_SHORT).show();
 						placeId = placesID.get(rand);
+						Toast.makeText(getActivity(), placeId + " - ",
+								Toast.LENGTH_SHORT).show();
 						getRecemmendationPromotion(placeId);
 					} else {
 						getRecomendationPlace();
